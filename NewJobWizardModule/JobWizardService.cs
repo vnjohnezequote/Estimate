@@ -7,6 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Windows;
+using ApplicationCore.BaseModule;
+using CommonServiceLocator;
+
 namespace NewJobWizardModule
 
 {
@@ -21,17 +26,17 @@ namespace NewJobWizardModule
     /// <summary>
     /// The job wizard service.
     /// </summary>
-    public class JobWizardService : IShellService
+    public class JobWizardService : BaseWindowService
     {
         /// <summary>
         /// The _unity container.
         /// </summary>
-       private IUnityContainer _unityContainer;
+       //private IUnityContainer _unityContainer;
 
         /// <summary>
         /// The _region manager.
         /// </summary>
-        private IRegionManager _regionManager;
+        //private IRegionManager _regionManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JobWizardService"/> class. 
@@ -42,20 +47,20 @@ namespace NewJobWizardModule
         /// <param name="regionManager">
         /// The region manager.
         /// </param>
-        public JobWizardService(IUnityContainer unityContainer, IRegionManager regionManager)
+        public JobWizardService(IUnityContainer unityContainer, IRegionManager regionManager) 
+            :base(unityContainer, regionManager)
         {
-            this._unityContainer = unityContainer;
-            this._regionManager = regionManager;
-
+           
         }
 
         /// <summary>
         /// The show shell.
         /// </summary>
-        public void ShowShell()
+        public override void ShowShell<T>()
         {
-            var shell = this._unityContainer.Resolve<NewJobWizardView>();
-            var scopedRegion = this._regionManager.CreateRegionManager();
+            var shell = this.UnityContainer.Resolve<T>();
+            //var shell = ServiceLocator.Current.GetInstance<T>();
+            var scopedRegion = this.RegionManagerment.CreateRegionManager();
             RegionManager.SetRegionManager(shell, scopedRegion);
 
             // RegionManager.UpdateRegions();

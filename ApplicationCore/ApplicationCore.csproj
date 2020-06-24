@@ -92,6 +92,7 @@
     <Compile Include="BaseModule\ApplicationWindowBaseViewModel.cs" />
     <Compile Include="BaseModule\BaseFloorViewModelAware.cs" />
     <Compile Include="BaseModule\BaseModule.cs" />
+    <Compile Include="BaseModule\BaseWindowService.cs" />
     <Compile Include="BaseModule\BaseViewModel.cs" />
     <Compile Include="BaseModule\BaseViewModelAware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -119,6 +120,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ApplicationInterfaceCore\ApplicationInterfaceCore.csproj">
+      <Project>{ea2caab1-eb61-4436-b30a-7f8d993b3414}</Project>
+      <Name>ApplicationInterfaceCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ApplicationService\ApplicationService.csproj">
       <Project>{cc18caa3-e47b-4197-b088-276b0f84fcf0}</Project>
       <Name>ApplicationService</Name>

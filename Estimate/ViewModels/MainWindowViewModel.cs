@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using DrawingModule.CommandClass;
+using NewJobWizardModule.Views;
 
 namespace Estimate.ViewModels
 {
@@ -393,9 +394,12 @@ namespace Estimate.ViewModels
         /// </summary>
         private void LoadDrawingWindow()
         {
-            var drawingWindow = new DrawingWindowView();
+            //var drawingWindow = new DrawingWindowView();
+            var drawingWindow = this.UnityContainer.Resolve<BaseWindowService>();
+            //shell.ShowShell<NewJobWizardView>();
             this.EventAggre.GetEvent<JobModelService>().Publish(this.Job);
-            drawingWindow.Show();
+            drawingWindow.ShowShell<DrawingWindowView>();
+            //drawingWindow.Show();
         }
 
         /// <summary>
@@ -449,8 +453,8 @@ namespace Estimate.ViewModels
         /// </summary>
         private void CreateJobWizard()
         {
-            var shell = this.UnityContainer.Resolve<JobWizardService>();
-            shell.ShowShell();
+            var shell = this.UnityContainer.Resolve<BaseWindowService>();
+            shell.ShowShell<NewJobWizardView>();
         }
 
         /// <summary>

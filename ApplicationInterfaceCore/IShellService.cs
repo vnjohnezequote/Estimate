@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+
 namespace ApplicationInterfaceCore
 {
     /// <summary>
@@ -17,6 +19,6 @@ namespace ApplicationInterfaceCore
         /// <summary>
         /// The show shell.
         /// </summary>
-        void ShowShell();
+        void ShowShell<T>() where T:Window;
     }
 }

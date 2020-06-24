@@ -291,6 +291,7 @@
     <Compile Include="CommandLine\FallbackConverter.cs" />
     <Compile Include="CommandLine\HintCategory.cs" />
     <Compile Include="CommandLine\HintCategoryIsExpandedConverter.cs" />
+    <Compile Include="DrawingService.cs" />
     <Compile Include="Enums\HintCategoryType.cs" />
     <Compile Include="CommandLine\HintItem.cs" />
     <Compile Include="CommandLine\HintItemsPanel.cs" />
