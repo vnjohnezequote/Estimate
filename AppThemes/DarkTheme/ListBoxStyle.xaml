@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <!--<ResourceDictionary Source="DarkColor.xaml"/>-->
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.listbox.xaml" />
+        <!--<ResourceDictionary Source="ButtonStyle.xaml"/>-->
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="MaterialDesignListBoxItemCustom" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource RedAccent400Color}" />
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource RedAccent400Color}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="MaterialListBox" TargetType="{x:Type ListBox}" BasedOn="{StaticResource MaterialDesignListBox}">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource MaterialDesignListBoxItemCustom}"/>
+    </Style>
+</ResourceDictionary>

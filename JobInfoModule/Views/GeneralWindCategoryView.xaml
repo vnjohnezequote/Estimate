@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="JobInfoModule.Views.GeneralWindCategoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JobInfoModule.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
+             xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:GeneralWindCategoryViewModel, IsDesignTimeCreatable=True}"
+             Style="{DynamicResource MaterialDesignUserControl}">
+    <UserControl.Resources>
+        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
+    </UserControl.Resources>
+    <interactions:Interaction.Triggers>
+        <interactions:EventTrigger EventName="Loaded">
+            <interactions:InvokeCommandAction Command="{Binding WindLoadedCommand}"/>
+        </interactions:EventTrigger>
+    </interactions:Interaction.Triggers>
+    <StackPanel>
+        <materialDesign:Card>
+            <StackPanel>
+			<GroupBox>
+			<StackPanel>
+			<DockPanel>
+                    <RadioButton GroupName="Wind Category" Content="N1" IsChecked="{Binding WindN1}"
+                                 Command="{Binding WindCommand}"
+                                 CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}" />
+                    <RadioButton GroupName="Wind Category" Content="N2" IsChecked="{Binding WindN2}"
+                                 Command="{Binding WindCommand}"
+                                 CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}" />
+                    <RadioButton GroupName="Wind Category" Content="N3" IsChecked="{Binding WindN3}"
+                                 Command="{Binding WindCommand}"
+                                 CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}" />
+                    <RadioButton GroupName="Wind Category" Content="N4" IsChecked="{Binding WindN4}"
+                                 Command="{Binding WindCommand}"
+                                 CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}" />
+            </DockPanel>
+			</StackPanel>
+			</GroupBox>
+			<GroupBox>
+				<StackPanel>
+					<DockPanel>
+                    <RadioButton GroupName="Treatment" Content="H2" IsChecked="{Binding H2Treated}"
+                                 Command="{Binding TreatmentCommand}"
+                                 CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}" />
+                    <RadioButton GroupName="Treatment" Content="Untreated" IsChecked="{Binding UnTreated}"
+                                 Command="{Binding TreatmentCommand}"
+                                 CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}" />
+					</DockPanel>
+				</StackPanel>
+			</GroupBox>
+            </StackPanel>
+        </materialDesign:Card>
+    </StackPanel>
+</UserControl>

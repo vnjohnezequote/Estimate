@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="JobInfoModule.Views.CostDeliveryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JobInfoModule.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Style="{DynamicResource MaterialDesignUserControl}"
+             d:DataContext="{d:DesignInstance viewModels:CostDeliveryViewModel, IsDesignTimeCreatable=True}"
+             mc:Ignorable="d">
+    <DockPanel>
+            <Label Content="{Binding Level.LevelName}"/>
+            <TextBox materialDesign:HintAssist.Hint="Cost Delivery $"
+                             Text="{Binding Level.CostDelivery, TargetNullValue={x:Static sys:String.Empty},StringFormat={}{0:C}}"/>
+    </DockPanel>
+</UserControl>

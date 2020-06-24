@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1675B8F6-75D3-4F05-B58E-44438E1B5AA9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>RawInputManager</RootNamespace>
+    <AssemblyName>RawInputManager</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.4.3.0\lib\net462\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class\DeviceInfo.cs" />
+    <Compile Include="Class\DeviceType.cs" />
+    <Compile Include="Class\HidInfo.cs" />
+    <Compile Include="Class\KeyboardInfo.cs" />
+    <Compile Include="Class\KeyboardInputEventArgs.cs" />
+    <Compile Include="Class\MouseInfo.cs" />
+    <Compile Include="Class\MouseInputEventArgs.cs" />
+    <Compile Include="Class\RawInputDriver.cs" />
+    <Compile Include="Class\RawInput.cs" />
+    <Compile Include="Class\RawInputEventArgs.cs" />
+    <Compile Include="Class\WPFRawInputManager.cs" />
+    <Compile Include="Enum\DataCommand.cs" />
+    <Compile Include="Enum\DeviceNotification.cs" />
+    <Compile Include="Enum\HidUsage.cs" />
+    <Compile Include="Enum\HidUsagePage.cs" />
+    <Compile Include="Enum\KeyState.cs" />
+    <Compile Include="Enum\RawInputCaptureMode.cs" />
+    <Compile Include="Enum\RawInputDeviceFlags.cs" />
+    <Compile Include="Enum\RawInputDeviceInfo.cs" />
+    <Compile Include="Enum\RawInputType.cs" />
+    <Compile Include="Enum\RawKeyboardFlags.cs" />
+    <Compile Include="Enum\RawMouseButtons.cs" />
+    <Compile Include="Enum\RawMouseFlags.cs" />
+    <Compile Include="Enum\VirtualKeys.cs" />
+    <Compile Include="Enum\WindowsMessages.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Structure\DeviceInfo.cs" />
+    <Compile Include="Structure\DeviceInfoHid.cs" />
+    <Compile Include="Structure\DeviceInfoKeyboard.cs" />
+    <Compile Include="Structure\DeviceInfoMouse.cs" />
+    <Compile Include="Structure\InputData.cs" />
+    <Compile Include="Structure\RawData.cs" />
+    <Compile Include="Structure\RawHid.cs" />
+    <Compile Include="Structure\RawInputDevice.cs" />
+    <Compile Include="Structure\RawInputDeviceList.cs" />
+    <Compile Include="Structure\RawInputHeader.cs" />
+    <Compile Include="Structure\RawKeyboard.cs" />
+    <Compile Include="Structure\RawMouse.cs" />
+    <Compile Include="Wind32\RegistryAccess.cs" />
+    <Compile Include="Wind32\Win32Consts.cs" />
+    <Compile Include="Wind32\Win32Methods.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

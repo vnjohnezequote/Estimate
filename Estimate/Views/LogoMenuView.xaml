@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="Estimate.Views.LogoMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Estimate.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             WindowChrome.IsHitTestVisibleInChrome="True">
+    <UserControl.Resources>
+        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/LogoMenuStyle.xaml"/>
+    </UserControl.Resources>
+    <StackPanel>
+         <materialDesign:PopupBox>
+            <StackPanel>
+                <StackPanel.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="Button" BasedOn="{StaticResource FlatButton}">
+                            <Setter Property="Foreground" Value="{StaticResource MaterialDesignBody}"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        </Style>
+                        <Style TargetType="Border" BasedOn="{StaticResource LogoSpliter}"/>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="5 0 0 0"/>
+                        </Style>
+                    </ResourceDictionary>
+                </StackPanel.Resources>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="About" />
+                        <TextBlock Text="About" />
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="NewBox" />
+                        <TextBlock Text="New Job" />
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="OpenInApp" />
+                        <TextBlock Text="Open" />
+                    </StackPanel>
+                </Button>
+                <!-- Spliter-->
+                <Border/>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ContentSave" />
+                        <TextBlock Text="Save" />
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ContentSaveOutline" />
+                        <TextBlock Text="Save As" />
+                    </StackPanel>
+                </Button>
+                <!-- Spliiter-->
+                <Border />
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Settings" />
+                        <TextBlock Text="Setting" />
+                    </StackPanel>
+                </Button>
+                <!-- Spliiter-->
+                <Border/>
+                <Button Content="Close" />
+                <!-- Spliiter-->
+                <Border/>
+                <Button Name="ExitButton">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ExitToApp" />
+                        <TextBlock Text="Exit" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </materialDesign:PopupBox>    
+    </StackPanel>
+</UserControl>

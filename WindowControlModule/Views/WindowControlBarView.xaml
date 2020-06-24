@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="WindowControlModule.Views.WindowControlBarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WindowControlModule.Views"
+             xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             WindowChrome.IsHitTestVisibleInChrome="True">
+    <UserControl.Resources>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/WindowControlStyle.xaml"/>
+    </UserControl.Resources>
+    <DockPanel x:Name="RootPanel">
+		<interactions:Interaction.Triggers>
+            <interactions:EventTrigger EventName="Loaded">
+                <interactions:InvokeCommandAction Command="{Binding LoadedCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=RootPanel, Mode=OneWay}" />
+            </interactions:EventTrigger>
+		</interactions:Interaction.Triggers>
+       <TextBlock 	HorizontalAlignment="Left"
+					VerticalAlignment="Center"
+					Text="{Binding Title, Mode=OneWay}"
+					Margin="20 0 0 0"/>
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button x:Name="MinimizeButton" 
+                    Content="{materialDesign:PackIcon WindowMinimize}"
+					Command="{Binding MinimizeWindowCommand, Mode=OneWay}"
+                    />
+            <Button x:Name="MaximizeButton" 
+                    Content="{Binding MaximizeButtonIcon}" 
+					Command="{Binding MaximizeWindowCommand, Mode=OneWay}"
+                    />
+            <Button x:Name="CloseButton" 
+                    Content="{materialDesign:PackIcon Power}"
+                    Command="{Binding CloseWindowCommand, Mode=OneWay}"
+					Style="{StaticResource CloseButtonStyle}"/>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

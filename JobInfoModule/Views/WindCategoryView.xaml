@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="JobInfoModule.Views.WindCategoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:local="clr-namespace:JobInfoModule.Views"
+             xmlns:jobinfo="clr-namespace:JobInfoModule.Views;assembly=JobInfoModule"
+             xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
+             xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:controls="clr-namespace:CustomControls.Controls;assembly=CustomControls"
+             d:DataContext="{d:DesignInstance viewModels:WindCategoryViewModel, IsDesignTimeCreatable=True}"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d">
+    <Grid x:Name="WindRoot">
+        <ContentControl prism:RegionManager.RegionManager="{Binding RegionManager}"
+            prism:RegionManager.RegionName="WindRegion"/>  
+    </Grid>
+</UserControl>

@@ -1,0 +1,179 @@
+﻿<UserControl x:Class="DrawingModule.Views.DynamicInputView"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                                xmlns:local="clr-namespace:DrawingModule.Views"
+                                xmlns:viewModels="clr-namespace:DrawingModule.ViewModels"
+                                xmlns:prism="http://prismlibrary.com/"
+                                xmlns:commandLine="clr-namespace:DrawingModule.CommandLine"
+                                xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                                xmlns:helper="clr-namespace:DrawingModule.Helper"
+                                prism:ViewModelLocator.AutoWireViewModel="True"
+                                d:DataContext="{d:DesignInstance viewModels:DynamicInputViewModel, IsDesignTimeCreatable=True}"
+                                mc:Ignorable="d"
+                                Height="Auto"
+                                Width="1000"
+                                HorizontalAlignment="Left"
+                                HorizontalContentAlignment="Left"
+                                Name="TheControl"
+                                IsHitTestVisible="False"
+                                Visibility="{Binding DynamicInputVisibility}">
+    <StackPanel Width="Auto"
+          HorizontalAlignment="Left">
+        <StackPanel>
+            <TextBlock FontSize="10"
+                       Height="17"
+                       Foreground="#FFFFFFFF"
+                       HorizontalAlignment="Left"
+                       Text="{Binding ToolName}" 
+                       Visibility="{Binding ToolNameVisibility}"/>
+            <TextBlock Name="ToolMessage"
+                       Foreground="#FFFFFFFF"
+                       FontSize="10"
+                       Height="17"
+                       HorizontalAlignment="Left"
+                       IsHitTestVisible="False"
+                       Margin="0 0 0 5"
+                       Text="{Binding ToolMessage}"
+                       Visibility="{Binding ToolMessageVisibility}"/>
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal"
+                    Width="Auto"
+                    HorizontalAlignment="Left">
+            <FrameworkElement.Resources>
+                <ResourceDictionary>
+                    <Style
+                        TargetType="{x:Type TextBox}"
+                        x:Key="{x:Type TextBox}">
+                        <Setter
+                            Property="FontSize"
+                            Value="10" />
+                        <Setter Property="helper:KeepSelectionBehavior.IsEnabledForStyle" Value="True" />
+                        <Setter
+                            Property="Margin"
+                            Value="0,0,4,0" />
+                        <Setter
+                            Property="Foreground"
+                            Value="{DynamicResource SystemColors.ControlTextBrushKey}" />
+                        <Setter
+                            Property="Background"
+                            Value="{DynamicResource SystemColors.ControlDarkBrushKey}" />
+                        <Setter
+                            Property="Height"
+                            Value="17" />
+                        <Setter
+                            Property="Padding"
+                            Value="3,1,3,0" />
+                        <Setter
+                            Property="BorderThickness"
+                            Value="0" />
+                        <Style.Triggers>
+                            <Trigger
+                                Property="UIElement.IsFocused"
+                                Value="True">
+                                <Setter
+                                    Property="Background"
+                                    Value="{DynamicResource SystemColors.WindowBrushKey}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ResourceDictionary>
+            </FrameworkElement.Resources>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Visibility="{Binding CommandTextVisibility}">
+                    <TextBox Name="CommandLine"
+                             FontSize="10"
+                             Height="Auto"
+                             Width="200"
+                             Foreground="#FFFFFFFF"
+                             HorizontalAlignment="Left"
+                             Text ="{Binding CommandTextInput, UpdateSourceTrigger=PropertyChanged}"/>
+                    <commandLine:NonTopmostPopup x:Name="AutoCompletePopup"
+                                                PlacementTarget="{Binding ElementName=CommandLine}"
+                                                StaysOpen="True"
+                                                IsOpen="{Binding HintViewerVisible}"
+                                                PopupAnimation="Slide"
+                                                AllowsTransparency="True"
+                                                VerticalOffset="5">
+                        <local:HintViewer Width="{Binding ElementName=CommandLine, Path=Width}"
+                                          MinWidth="200"/>
+                    </commandLine:NonTopmostPopup>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Width="Auto"
+                            HorizontalAlignment="Left" Grid.Row="0">
+                    <TextBlock Text="Length"
+                             Visibility="{Binding LengthVisibility}"/>
+                    <TextBox Name="TextLength"
+                             Text="{Binding LengthDimension}"
+                             Visibility="{Binding LengthVisibility}"
+                             Width="50"/>
+                    <TextBlock Text="Width"
+                             Visibility="{Binding WidthVisibility, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Name="TextWidth"
+                             Text="{Binding WidthDimension, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding ElementName=TheControl, Path=TextWidthVisible}"
+                             Width="50"/>
+                    <TextBlock Text="Height"
+                             Visibility="{Binding HeightVisibility}"/>
+                    <TextBox Name="TextHeight"
+                             Text="{Binding HeightDimension,UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding HeightVisibility}"
+                             Width="50"/>
+                    <TextBlock Text="Angle"
+                             Visibility="{Binding AngleVisibility}"/>
+                    <TextBox Name ="TextAngle"
+                             Text="{Binding AngleDimension}"
+                             Visibility="{Binding AngleVisibility}"
+                             Width="50"/>
+                    <TextBox Name="TextInput"
+                             Text="{Binding TextStringContent, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding TextContentVisibility}"
+                             Width="Auto"/>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Width="Auto"
+                            HorizontalAlignment="Left" Grid.Row="1">
+                    <TextBlock Text="Text Height"
+                               Visibility="{Binding TextStringHeightVisibility}"/>
+                    <TextBox Name="TextStringHeight"
+                             Text="{Binding TextStringHeight, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding TextStringHeightVisibility}"
+                             Width="50"/>
+                    <TextBlock Text="Angle"
+                               Visibility="{Binding TextStringAngleVisibility}"/>
+                    <TextBox Name="TextStringAngle"
+                             Text="{Binding TextStringAngle, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding TextStringAngleVisibility}"
+                             Width="50"/>
+                    <TextBlock Text="Leader Segment"
+                               Visibility="{Binding LeaderSegmentVisibility}"/>
+                    <TextBox Name="LeaderSegment"
+                             Text="{Binding LeaderSegmentNumber,UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding LeaderSegmentVisibility}"
+                             Width="50"/>
+                    <TextBlock Text="Arrow Head Size"
+                               Visibility="{Binding ArrowHeadSizeVisibility}"/>
+                    <TextBox Name="ArrowHeadSize"
+                             Text="{Binding ArrowSize,UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding ArrowHeadSizeVisibility}"
+                             Width="50"/>
+                    
+                </StackPanel>
+            </Grid>
+            <!--<TextBox Name="ComandTextBox"/>-->
+            
+            <!--<TextBox Name="TextX" Width="60">0</TextBox>
+            <TextBox Name="TextY" Width="60">0</TextBox>-->
+        </StackPanel>
+
+
+    </StackPanel>
+</UserControl>

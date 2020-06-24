@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="JobInfoModule.Views.ChoosingCustomerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JobInfoModule.Views"
+             xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:converter ="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:ChoosingCustomerViewModel, IsDesignTimeCreatable=True}"
+             Style="{DynamicResource MaterialDesignUserControl}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
+                <ResourceDictionary>
+                    <converter:StringToPackIconConverter x:Key="StringToPackIconConverter"/>
+                </ResourceDictionary>
+                <!--<ResourceDictionary>
+                    <Style TargetType="ListBox" BasedOn="{StaticResource MaterialListBox}"/>
+                </ResourceDictionary>-->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel>
+        <materialDesign:Card>
+            <ListBox Name="CustomerMenu"
+            Style="{DynamicResource MaterialListBox}"
+            ItemsSource="{Binding Clients}"
+            SelectedItem="{Binding SelectedClient, Mode=TwoWay}">
+            <!-- Command Selection Customer -->
+            <interactions:Interaction.Triggers>
+                <interactions:EventTrigger EventName="Loaded">
+                    <interactions:InvokeCommandAction Command="{Binding CustomerMenuLoadedCommand}"
+                                                      CommandParameter="{Binding ElementName=CustomerMenu}"/>
+                </interactions:EventTrigger>
+                <interactions:EventTrigger EventName="SelectionChanged">
+                    <interactions:InvokeCommandAction Command="{Binding CustomerMenuSelectCommand}"
+                                                      CommandParameter="{Binding ElementName=CustomerMenu}"/>
+                </interactions:EventTrigger>
+            </interactions:Interaction.Triggers>
+            <ListBox.Resources>
+                <ResourceDictionary>
+                    <Style TargetType="materialDesign:PackIcon">
+                        <Setter Property="Width" Value="30"/>
+                        <Setter Property="Height" Value="30"/>
+                    </Style>
+                </ResourceDictionary>
+            </ListBox.Resources>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon 	x:Name="PackIcon"
+													Kind="{Binding ClientIcon, Converter={StaticResource StringToPackIconConverter}}"/>
+                        <TextBlock Text="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            </ListBox>
+        </materialDesign:Card>
+        <TextBox materialDesign:HintAssist.Hint="Please Choose Your's Folder...!"
+                 Text="{Binding Job.JobLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Content="Browser"
+                    Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
+                    Margin="{StaticResource ControlMargin}"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding JobLocationCommand}"/>
+        <TextBox x:Name="TxtJobNumber"
+                 materialDesign:HintAssist.Hint="Project Name/Job Number"
+                 Text="{Binding Job.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        </TextBox>
+    </StackPanel>
+</UserControl>

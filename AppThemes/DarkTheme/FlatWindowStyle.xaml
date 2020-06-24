@@ -1,0 +1,112 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:controls="clr-namespace:CustomControls.Controls;assembly=CustomControls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="DarkColor.xaml"/>
+        <ResourceDictionary Source="GridSpliterStyle.xaml"/>
+        <ResourceDictionary Source="ButtonStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <Style  x:Key="MaterialDesignWindow" TargetType="controls:FlatWindow">
+        <Setter Property="Background" Value="{StaticResource MaterialDesignPaper}"/>
+        <Setter Property="Foreground" Value="{StaticResource MaterialDesignBody}"/>
+        <!--<Setter Property="TitleHeight" Value="auto"/>-->
+        <Setter Property="MinHeight" Value="450"/>
+        <Setter Property="MinWidth" Value="800"/>
+        <Setter Property="Icon" Value="../Resources/Icons/e-icon-19.png"/>
+        <Setter Property="TextElement.FontSize" Value="13"/>
+        <Setter Property="TextElement.FontWeight" Value="Regular"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="Auto"/>
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome
+                            GlassFrameThickness="0" 
+                            CornerRadius="0"
+                            ResizeBorderThickness="2"
+                            CaptionHeight="40"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:FlatWindow}">
+                    <Grid x:Name="WindowRoot" Background="Transparent">
+                        <materialDesign:ColorZone
+                                    VerticalAlignment="Stretch"
+                                    Padding="{TemplateBinding OuterMarginSizeThickness}"
+                                    Mode="PrimaryDark">
+                            <Grid x:Name="LayoutRoot" Background="{TemplateBinding Background}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="{TemplateBinding TitleHeight}"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!--TitleBar-->
+                                <Grid x:Name="PART_HeaderBar"
+                                              WindowChrome.IsHitTestVisibleInChrome="True"
+                                              Background="{StaticResource DarkBackGround}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <!-- Tiltle -->
+                                    <TextBlock Text="{TemplateBinding Title}" 
+                                                Grid.Column="0"
+                                           Grid.ColumnSpan="3"
+                                           TextTrimming="CharacterEllipsis"
+                                           HorizontalAlignment="Stretch" 
+                                           FontSize="13"
+                                           TextAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Width="Auto"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           Padding="200 0 200 0"
+                                           Panel.ZIndex="0"
+                                           IsEnabled="{TemplateBinding IsActive}"/>
+                                    <!-- Window Control Button -->
+                                    <Grid x:Name="WindowControlsGrid" Grid.Column="2">
+                                        <Grid.Resources>
+                                            <ResourceDictionary>
+                                                <Style TargetType="Button" BasedOn="{StaticResource FlatButton}"/>
+                                            </ResourceDictionary>
+                                        </Grid.Resources>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="30"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button x:Name="MinimizeButton" 
+                                            Content="{materialDesign:PackIcon WindowMinimize}"
+                                            Grid.Column="0"
+                                            Style="{StaticResource FlatButtonNoPadding}"/>
+                                        <Button x:Name="MaximizeButton" 
+                                            Content="{materialDesign:PackIcon SquareOutline}"
+                                            Grid.Column="1"
+                                            Style="{StaticResource FlatButtonNoPadding}"/>
+                                        <Button x:Name="RestoreButton" 
+                                            Content="{materialDesign:PackIcon LayersOutline}"
+                                            Visibility="Collapsed"
+                                            Grid.Column="1"
+                                            Style="{StaticResource FlatButtonNoPadding}"/>
+                                        <Button x:Name="CloseButton" 
+                                            Content="{materialDesign:PackIcon Power}"
+                                            Grid.Column="2"
+                                            Style="{StaticResource CloseButtonStyle}"/>
+                                    </Grid>
+                                </Grid>
+                                <!-- Main Content Area -->
+                                <Grid x:Name="PART_MainContentGrid"
+                                          Grid.Row="1"
+                                          Panel.ZIndex="10">
+                                    <ContentPresenter x:Name="PART_MainContentPresenter"/>
+                                </Grid>
+                            </Grid>
+                        </materialDesign:ColorZone>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

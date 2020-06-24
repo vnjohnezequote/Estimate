@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="JobInfoModule.Views.JobInfomationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:local="clr-namespace:JobInfoModule.Views"
+             xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
+             xmlns:jobInforRegions="clr-namespace:DataType.Class;assembly=DataType"
+             d:DataContext="{d:DesignInstance viewModels:JobInfomationViewModel, IsDesignTimeCreatable=True}"
+             mc:Ignorable="d"
+             Style="{StaticResource MaterialDesignUserControl}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <TextBlock Text="{Binding Job.ClientName}"></TextBlock>
+		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.HJobInformation}"/>
+		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainWindInforRegion}"/>
+		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainRoofInfoRegion}"/>
+		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainDesignRegion}"/>
+		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainFloorChooseRegion}"/>
+    </StackPanel>
+</UserControl>

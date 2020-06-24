@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
+        <!--<ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/PackIconStyle.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/TextBlockStyle.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/TabControlStyle.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/FlatWindowStyle.xaml"/>-->
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

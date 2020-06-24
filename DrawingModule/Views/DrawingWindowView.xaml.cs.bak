@@ -1,0 +1,213 @@
+﻿
+using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
+using System.Windows.Controls;
+using System.Windows.Forms;
+using CustomControls.Helper;
+using devDept.Eyeshot;
+using devDept.Geometry;
+using devDept.Graphics;
+using DrawingModule.Function;
+using DrawingModule.Service;
+using DrawingModule.ViewModels;
+
+namespace DrawingModule.Views
+{
+	using System;
+	using System.Diagnostics.CodeAnalysis;
+	using System.Windows;
+	using System.Windows.Input;
+	using System.Windows.Interop;
+
+	using CustomControls.Controls;
+
+	using devDept.Eyeshot.Entities;
+
+
+	/// <summary>
+	/// Interaction logic for NewJobView.xaml
+	/// </summary>
+	[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
+	public partial class DrawingWindowView : FlatWindow
+	{
+
+		private bool inspectVertex;
+
+		public ObservableCollection<ListViewModelItem> Layers { get; set; }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DrawingWindowView"/> class. 
+		/// </summary>
+
+		public DrawingWindowView()
+		{
+			this.InitializeComponent();
+
+			Model.Wireframe.SilhouettesDrawingMode = silhouettesDrawingType.Always;
+			Model.Rendered.PlanarReflections = false;
+			Model.Rendered.ShadowMode = shadowType.None;
+			Model.Rendered.RealisticShadowQuality = realisticShadowQualityType.Low;
+			
+		}
+
+		/*private static IntPtr WndProc(IntPtr hWnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
+		{
+			/*if (!handled)
+			{
+				ContainerMessageDispatcher.RaiseWin32Message(hWnd, message, wParam, lParam, ref handled);
+			}
+
+			return IntPtr.Zero;
+		}*/
+
+		protected override void OnSourceInitialized(EventArgs e)
+		{
+			base.OnSourceInitialized(e);
+			//IntPtr handle = new WindowInteropHelper(this).Handle;
+			//int num = Win32.GetWindowLong(handle, -16).ToInt32();
+			//num = ((num | int.MinValue) & -524289);
+			//Win32.SetWindowLong(handle, -16, new IntPtr(num));
+			//HwndSource hwndSource = HwndSource.FromHwnd(handle);
+			//hwndSource.AddHook(new HwndSourceHook(DrawingWindowView.WndProc));
+		}
+
+		private void ClearPreviousSelection()
+		{
+			Model.SetView(viewType.Top, false, true);            
+			Model.ClearAllPreviousCommandData();
+		}
+
+		
+
+		private void LineButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			this.ClearPreviousSelection();
+			Model.DrawingLine = true;
+			Model.DrawingMode = true;
+
+		}
+
+		private void Rectangle_OnClick(object sender, RoutedEventArgs e)
+		{
+			this.ClearPreviousSelection();
+			Model.DrawingRectangle = true;
+			Model.DrawingMode = true;
+		}
+
+		private void layerListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (layerListView.SelectedItems.Count > 0)
+			{
+				var item = (ListViewModelItem)layerListView.SelectedItem;
+				Model.ActiveLayerName = item.LayerName;
+			}
+			else // nothing selected? we force layer zero
+			{
+				Model.ActiveLayerName = Model.Layers[0].Name;
+			}
+		}
+
+		private void layerListView_ItemChecked(object sender, RoutedEventArgs e)
+		{
+			var cb = sender as System.Windows.Controls.CheckBox;
+			var item = (ListViewModelItem)cb.DataContext;
+
+			if (item.IsChecked)
+
+				Model.Layers.TurnOn(item.LayerName);
+
+			else
+
+				Model.Layers.TurnOff(item.LayerName);
+
+			// updates bounding box, shadow and transparency
+			Model.Entities.UpdateBoundingBox();
+
+			Model.Invalidate();
+		}
+
+		private void Model_OnMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (Model.ActionMode == actionType.None && e.ChangedButton!=System.Windows.Input.MouseButton.Middle)
+			{
+				Point3D closest;
+				if (inspectVertex)
+				{
+					if (Model.FindClosestVertex(RenderContextUtility.ConvertPoint(Model.GetMousePosition(e)),50,out closest)!=-1)
+					{
+						Model.Labels.Add(new devDept.Eyeshot.Labels.LeaderAndText(closest, closest.ToString(), new System.Drawing.Font("Tahoma", 8.25f), MyModel.DrawingColor, new Vector2D(0, 50)));
+					}
+				}
+				Model.Invalidate();
+			}
+		}
+
+		protected override void OnContentRendered(EventArgs e)
+		{
+			PrepareLayers();
+			
+
+			
+			Model.SetView(viewType.Top);
+			Model.Invalidate();
+			Model.Focus();
+			base.OnContentRendered(e);
+
+
+
+		}
+
+		private void PrepareLayers()
+		{
+			layerListView.Items.Clear();
+			Layers = new ObservableCollection<ListViewModelItem>();
+
+			Model.Layers[0].LineWeight = 2;
+			Model.Layers[0].Color = MyModel.DrawingColor;
+			Model.Layers.TryAdd(new Layer("Dimensions", System.Drawing.Color.ForestGreen));
+			Model.Layers.TryAdd(new Layer("Reference geometry", System.Drawing.Color.Red));
+
+			for (int i = 0; i < Model.Layers.Count; i++)
+			{
+
+				Layer la = Model.Layers[i];
+
+				// changes color for white layers
+				if (la.Color.R == 255 && la.Color.G == 255 && la.Color.B == 255)
+					la.Color = MyModel.DrawingColor;
+
+				ListViewModelItem lvi = new ListViewModelItem(la);
+
+				Layers.Add(lvi);
+				layerListView.Items.Add(lvi);
+			}
+
+			layerListView.SelectedItem = layerListView.Items[0];
+
+			Model.ActiveLayerName = ((ListViewModelItem)layerListView.SelectedItem).LayerName;
+		}
+
+		private void Select_OnClick(object sender, RoutedEventArgs e)
+		{
+			Model.ActionMode = actionType.SelectByBox;
+		}
+
+		private void LinearButton_Onclick(object sender, RoutedEventArgs e)
+		{
+			ClearPreviousSelection();
+			Model.DrawingLinearDim = true;
+		}
+
+
+		private void Orthormode_OnClick(object sender, RoutedEventArgs e)
+		{
+			Model.IsOrthorMode = (bool)OrthorModeCheckbox.IsChecked;
+		}
+
+		private void PolyLine_OnClick(object sender, RoutedEventArgs e)
+		{
+			ClearPreviousSelection();
+			Model.DrawingPolyLine = true;
+			Model.DrawingMode = true;
+		}
+	}
+}

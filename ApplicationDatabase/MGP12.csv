@@ -1,0 +1,17 @@
+Id,Thickness,Depth,NoItem,Grade,Treatment
+1,90,35,1,MGP_12,UnTreated
+2,90,45,1,MGP_12,UnTreated
+3,140,35,1,MGP_12,UnTreated
+4,190,35,1,MGP_12,UnTreated
+5,90,35,1,MGP_12,T2 Blue
+6,90,45,1,MGP_12,T2 Blue
+7,140,35,1,MGP_12,T2 Blue
+8,190,35,1,MGP_12,T2 Blue
+9,90,35,1,MGP_12,T2 Red
+10,90,45,1,MGP_12,T2 Red
+11,140,35,1,MGP_12,T2 Red
+12,190,35,1,MGP_12,T2 Red
+13,90,35,1,MGP_12,T3 Green
+14,90,45,1,MGP_12,T3 Green
+15,140,35,1,MGP_12,T3 Green
+16,190,35,1,MGP_12,T3 Green

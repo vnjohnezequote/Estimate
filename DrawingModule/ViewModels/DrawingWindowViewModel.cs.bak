@@ -1,0 +1,145 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="NewJobWizardViewModel.cs" company="John Nguyen">
+//   John Nguyen
+// </copyright>
+// <summary>
+//   Defines the NewJobWizardViewModel type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Windows.Interop;
+using AppModels.ApplicationData;
+using CustomControls.Helper;
+using devDept.Eyeshot;
+using DrawingModule.Views;
+using RawInputManager.Class;
+using RawInputManager.Enum;
+using SharpDX.RawInput;
+
+namespace DrawingModule.ViewModels
+{
+    using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+
+    using ApplicationCore.BaseModule;
+
+    using AppModels;
+
+
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Regions;
+    using RawInputManager;
+
+    using Unity;
+
+    /// <summary>
+    /// The new job wizard view model.
+    /// </summary>
+    
+    public class DrawingWindowViewModel : ApplicationWindowBaseViewModel
+    {
+        
+        #region Private member
+
+        /// <summary>
+        /// The drawin model.
+        /// </summary>
+        private devDept.Eyeshot.Model drawingModel;
+       
+
+        #endregion
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrawingWindowViewModel"/> class.
+        /// </summary>
+        public DrawingWindowViewModel()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrawingWindowViewModel"/> class. 
+        /// </summary>
+        /// <param name="unityContainer">
+        /// The unity container.
+        /// </param>
+        /// <param name="regionManager">
+        /// The region manager.
+        /// </param>
+        /// <param name="eventAggregator">
+        /// The event Aggregator.
+        /// </param>
+        public DrawingWindowViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
+            : base(unityContainer, regionManager, eventAggregator)
+        {
+            this.ControlLoadedCommand = new DelegateCommand<Grid>(this.OnLoaded);
+            
+            this.RegionManager = RegionManager.CreateRegionManager();
+
+            
+
+
+        }
+
+        #endregion
+
+        #region Command
+
+        /// <summary>
+        /// Gets the control loaded command.
+        /// </summary>
+        public ICommand ControlLoadedCommand { get; private set; }
+
+        #endregion
+
+        #region Public Property
+
+        
+        #endregion
+
+        #region Private Function
+
+        /// <summary>
+        /// The on loaded.
+        /// </summary>
+        /// <param name="rootGrid">
+        /// The root grid.
+        /// </param>
+        private void OnLoaded(Grid rootGrid)
+        {
+            this.drawingModel = rootGrid.FindName("Model") as devDept.Eyeshot.Model;
+            var model = this.drawingModel;
+            
+            /*var parrentWindow = WindowHelper.GetWindowParent(rootGrid);
+            if (parrentWindow == null) return;
+            if (parrentWindow is Window window)
+            {
+                var rawInputManager = new WPFRawInputManager(window,RawInputCaptureMode.Foreground);
+                rawInputManager.KeyPress += RawInputManager_KeyPress;
+                rawInputManager.MousePress += RawInputManager_MousePress;
+            }*/
+
+            //this.RegionManager.RequestNavigate("CommandLineRegion",nameof(CommandLineView));
+        }
+        
+
+        private void RawInputManager_MousePress(object sender, RawInputManager.Class.MouseInputEventArgs e)
+        {
+            //MessageBox.Show(e.ButtonFlags.ToString());
+        }
+
+        private void RawInputManager_KeyPress(object sender, RawInputManager.Class.KeyboardInputEventArgs e)
+        {
+            //MessageBox.Show(e.VirtualKey.ToString());
+        }
+
+
+        #endregion
+    }
+}

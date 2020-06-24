@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="JobInfoModule.Views.DesignInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JobInfoModule.Views"
+             xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
+             d:DataContext="{d:DesignInstance viewModels:DesignInfoViewModel, IsDesignTimeCreatable=True}"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d"
+             Style="{DynamicResource MaterialDesignUserControl}">
+    <UserControl.Resources>
+        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
+    </UserControl.Resources>
+    <StackPanel>
+        <!-- Engineer Infor-->
+        <DockPanel>
+            <materialDesign:ColorZone Mode="PrimaryMid">
+                <Label Content="{Binding Job.FrameDesignInfor.Header, FallbackValue='Frame as per'}"/>
+            </materialDesign:ColorZone>
+            <ComboBox ItemsSource="{Binding FrameDesignInfors}"
+                      SelectedItem="{Binding Job.FrameDesignInfor}"
+                      SelectedValue="{Binding Job.FrameDesignInfor}"
+                      Text="{Binding Job.FrameDesignInfor.Content}"
+                      DisplayMemberPath="Content">
+                <interactions:Interaction.Triggers>
+                    <interactions:EventTrigger EventName="SelectionChanged">
+                        <interactions:InvokeCommandAction Command="{Binding BeamDesignInforChangedCommand}"/>
+                    </interactions:EventTrigger>
+                </interactions:Interaction.Triggers>
+            </ComboBox>
+
+        </DockPanel>
+        <DockPanel>
+            <materialDesign:ColorZone Mode="PrimaryMid">
+                <Label Content="{Binding Job.BeamDesignInfor.Header, FallbackValue='Beam as per'}"/>
+            </materialDesign:ColorZone>
+            <ComboBox ItemsSource="{Binding BeamDesignInfors}"
+                      SelectedItem="{Binding Job.BeamDesignInfor}"
+                      SelectedValue="{Binding Job.BeamDesignInfor}"
+                      Text="{Binding Job.BeamDesignInfor.Content}"
+                      DisplayMemberPath="Content">
+                <interactions:Interaction.Triggers>
+                    <interactions:EventTrigger EventName="SelectionChanged">
+                        <interactions:InvokeCommandAction Command="{Binding BeamDesignInforChangedCommand}"/>
+                    </interactions:EventTrigger>
+                </interactions:Interaction.Triggers>
+            </ComboBox>
+        </DockPanel>
+        <DockPanel>
+            <materialDesign:ColorZone Mode="PrimaryMid">
+                <Label Content="{Binding Job.BracingDesignInfor.Header, FallbackValue='Bracing as per'}"/>
+            </materialDesign:ColorZone>
+            <ComboBox ItemsSource="{Binding BracingInfors}"
+                      SelectedItem="{Binding Job.BracingDesignInfor}"
+                      SelectedValue="{Binding Job.BracingDesignInfor}"
+                      Text="{Binding Job.BracingDesignInfor.Content}"
+                      DisplayMemberPath="Content">
+                <interactions:Interaction.Triggers>
+                    <interactions:EventTrigger EventName="SelectionChanged">
+                        <interactions:InvokeCommandAction Command="{Binding BeamDesignInforChangedCommand}"/>
+                    </interactions:EventTrigger>
+                </interactions:Interaction.Triggers>
+            </ComboBox>
+        </DockPanel>
+        <!-- Plan Infor -->
+        <DockPanel>
+            <materialDesign:ColorZone Mode="PrimaryMid">
+                <Label Content="Plan Issue"/>
+            </materialDesign:ColorZone>
+            <DatePicker materialDesign:HintAssist.Hint="Pick Date"
+                        SelectedDate="{Binding Job.PlanIsueDate}"
+                        IsTodayHighlighted="False"
+                        Language="en-AU"/>
+
+            <CheckBox Content="E - Plan" IsChecked="{Binding Job.IsEPlan}"/>
+            <CheckBox Content="Engineer" IsChecked="{Binding Job.IsEngineer}"/>
+            <CheckBox Content="Bracing Plan" IsChecked="{Binding Job.IsBracingPlan}"/>
+        </DockPanel>
+    </StackPanel>
+</UserControl>

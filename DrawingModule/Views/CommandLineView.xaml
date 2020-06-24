@@ -1,0 +1,926 @@
+﻿<UserControl x:Class="DrawingModule.Views.CommandLineView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrawingModule.Views"
+             mc:Ignorable="d"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:viewModels="clr-namespace:DrawingModule.ViewModels"
+             xmlns:control="clr-namespace:DrawingModule.Control"
+             xmlns:commandLine="clr-namespace:DrawingModule.CommandLine"
+             Style="{StaticResource MaterialDesignUserControl}"
+             d:DataContext="{d:DesignInstance viewModels:CommandLineViewModel, IsDesignTimeCreatable=True}"
+             Padding="0"
+             SnapsToDevicePixels="True"
+             Height="27"
+             Width="Auto">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/NewJobWizardStyle.xaml"/>
+                <ResourceDictionary>
+                    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    <commandLine:ObjectConverter x:Key="IntToVisibilityConverter"
+                                                InvertBoolean="False"
+                                                AsVisibilityObject="True" />
+                    <commandLine:BooleanConverter x:Key="RevertVisibilityConverter"
+                        InvertBoolean="True"
+                        AsVisibilityObject="True" />
+                    <commandLine:MinusConverter x:Key="MinusConverter"
+                                               Minimum="0"
+                                               Append="-2" />
+                    <commandLine:BooleanAndConverter AsVisibility="True"
+                                                    x:Key="BooleanAndToVisibilityConverter" />
+                    <commandLine:RevertVisibilityMultiValueConverter x:Key="RevertVisibilityMultiValueConverter" />
+                    <commandLine:StringToLabelConverter x:Key="StringToLabelConverter" />
+                    <commandLine:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
+                    <commandLine:MultiBooleanOrConverter x:Key="MultiBooleanOrConverter" />
+                    <Style TargetType="{x:Type control:ClickableKeyword}">
+						<Setter Property="Template">
+							<Setter.Value>
+								<ControlTemplate TargetType="{x:Type control:ClickableKeyword}">
+									<Grid>
+										<Border Name="mBorder"
+                                                CornerRadius="3"
+                                                Margin="0,0,4,0"
+                                                Padding="1"
+                                                Cursor="Hand"
+                                                Background="{StaticResource DarkBackGround}">
+                                            <TextBlock Text="{Binding Keyword, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       control:ClickableKeyword.HighlightKeyword="{Binding KeywordToHighlight, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       Foreground="White"/>
+										</Border>
+									</Grid>
+									<ControlTemplate.Triggers>
+										<Trigger SourceName="mBorder"
+                                                 Property="UIElement.IsMouseOver"
+                                                 Value="True">
+											<Setter TargetName="mBorder"
+                                                    Property="Background"
+                                                    Value="Brown"/>
+										</Trigger>
+									</ControlTemplate.Triggers>
+								</ControlTemplate>
+							</Setter.Value>
+						</Setter>
+					</Style>
+					<DataTemplate x:Key="TempHistoryItemTempalte">
+						<Border CornerRadius="2"
+                                Margin="0,0,0,1"
+                                Background="{StaticResource DarkBackGround}">
+                            <TextBlock Margin="2,0"
+                                       TextWrapping="Wrap"
+                                       Text="{Binding Command}"/>
+						</Border>
+					</DataTemplate>
+					<Style x:Key="RecentCommandMenuItemContainerStyle"
+                           TargetType="{x:Type MenuItem}">
+						<Setter Property="Header"
+                                Value="{Binding Name, Converter={StaticResource StringToLabelConverter}}" />
+					</Style>
+					<Style x:Key="ButtonFocusVisual">
+						<Setter Property="Control.Template">
+							<Setter.Value>
+								<ControlTemplate>
+									<Rectangle
+                                        Margin="2"
+										SnapsToDevicePixels="True"
+										StrokeThickness="1"
+										StrokeDashArray="1 2"
+										Stroke="Aqua" />
+								</ControlTemplate>
+							</Setter.Value>
+						</Setter>
+					</Style>
+					<SolidColorBrush
+                        x:Key="CommandLineButtonBorderBrushRollover"
+						Color="Red" />
+					<SolidColorBrush
+                        x:Key="CommandLineButtonBorderBackgroundRollover"
+						Color="BlueViolet" />
+					<SolidColorBrush
+                        x:Key="CommandLineButtonBorderBrushPressed"
+						Color="Brown" />
+					<SolidColorBrush
+                        x:Key="CommandLineButtonBorderBackgroundPressed"
+						Color="Aqua" />
+					<SolidColorBrush
+                        x:Key="RecentCommandButtonBackgroundRollover"
+						Color="Green" />
+					<SolidColorBrush
+                        x:Key="RecentCommandButtonBorderRollover"
+						Color="Gray" />
+                    <SolidColorBrush
+                        x:Key="CommandLineInputAreaBorderBrush"
+						Color="Crimson" />
+					<LinearGradientBrush
+						x:Key="CommandLineBackgroundGradientBrush"
+                        EndPoint="0.5,1"
+						StartPoint="0.5,0">
+						<GradientStop
+                            Offset="0"
+							Color="Coral" />
+						<GradientStop
+                            Offset="1"
+							Color="DarkMagenta" />
+					</LinearGradientBrush>
+					<Style x:Key="CommandButtonStyle"
+                           TargetType="{x:Type ButtonBase}">
+						<Setter Property="FocusVisualStyle"
+                                Value="{StaticResource ButtonFocusVisual}" />
+						<Setter Property="Template">
+							<Setter.Value>
+								<ControlTemplate TargetType="{x:Type ButtonBase}">
+									<Border Name="mBorder"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Background="#00FFFFFF"
+                                            BorderBrush="#00FFFFFF">
+										<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                          RecognizesAccessKey="True"
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+									</Border>
+									<ControlTemplate.Triggers>
+										<Trigger Property="UIElement.IsMouseOver"
+                                                 Value="True">
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource CommandLineButtonBorderBackgroundRollover}"
+                                                    Property="Background" />
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource CommandLineButtonBorderBrushRollover}"
+                                                    Property="BorderBrush" />
+										</Trigger>
+										<Trigger Property="IsPressed"
+                                                 Value="True">
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource CommandLineButtonBorderBackgroundPressed}"
+                                                    Property="Background" />
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource CommandLineButtonBorderBrushPressed}"
+                                                    Property="BorderBrush" />
+										</Trigger>
+										<Trigger Property="ToggleButton.IsChecked"
+                                                 Value="true">
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource CommandLineButtonBorderBackgroundPressed}"
+                                                    Property="Background" />
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource CommandLineButtonBorderBrushPressed}"
+                                                    Property="BorderBrush" />
+										</Trigger>
+										<Trigger Property="IsEnabled"
+                                                 Value="False">
+											<Setter Value="0.5"
+                                                    Property="UIElement.Opacity" />
+										</Trigger>
+									</ControlTemplate.Triggers>
+								</ControlTemplate>
+							</Setter.Value>
+						</Setter>
+					</Style>
+					<Style x:Key="RecentCommandButtonStyle"
+                           TargetType="{x:Type ButtonBase}">
+						<Setter Property="FocusVisualStyle"
+                                Value="{StaticResource ButtonFocusVisual}" />
+						<Setter Property="Template">
+							<Setter.Value>
+								<ControlTemplate TargetType="{x:Type ButtonBase}">
+									<Border Name="mBorder"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Background="#00FFFFFF"
+                                            BorderBrush="#00FFFFFF">
+										<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                          RecognizesAccessKey="True"
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+									</Border>
+									<ControlTemplate.Triggers>
+										<Trigger Property="UIElement.IsMouseOver"
+                                                 Value="True">
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource RecentCommandButtonBackgroundRollover}"
+                                                    Property="Background" />
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource RecentCommandButtonBorderRollover}"
+                                                    Property="BorderBrush" />
+										</Trigger>
+										<Trigger Property="IsPressed"
+                                                 Value="True">
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource RecentCommandButtonBackgroundRollover}"
+                                                    Property="Background" />
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource RecentCommandButtonBorderRollover}"
+                                                    Property="BorderBrush" />
+										</Trigger>
+										<Trigger Property="ToggleButton.IsChecked"
+                                                 Value="true">
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource RecentCommandButtonBackgroundRollover}"
+                                                    Property="Background" />
+											<Setter TargetName="mBorder"
+                                                    Value="{StaticResource RecentCommandButtonBorderRollover}"
+                                                    Property="BorderBrush" />
+										</Trigger>
+										<Trigger Property="IsEnabled"
+                                                 Value="False">
+											<Setter Value="0.5"
+                                                    Property="UIElement.Opacity" />
+										</Trigger>
+									</ControlTemplate.Triggers>
+								</ControlTemplate>
+							</Setter.Value>
+						</Setter>
+					</Style>
+					<CornerRadius x:Key="CommandLineHistoryCornerRadius" >0</CornerRadius>
+					<SolidColorBrush x:Key="CommandLineHistoryBorderBrush"
+                                     Color="DarkSlateGray" />
+					<SolidColorBrush x:Key="CommandLineBackgroundBorderBrush"
+                                     Color="DarkOrchid" />
+					<SolidColorBrush x:Key="CommandLineButtonPathFillBrush"
+                                     Color="CornflowerBlue" />
+                    <Storyboard x:Key="TempPromptFadeStoryboard">
+						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                       Storyboard.TargetName="border">
+							<EasingDoubleKeyFrame KeyTime="0:0:3"
+                                                  Value="0" />
+						</DoubleAnimationUsingKeyFrames>
+					</Storyboard>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Name="LayoutRoot"
+        AllowDrop="True"
+        DragDrop.PreviewDragEnter="LayoutRoot_PreviewDragEnter"
+        DragDrop.PreviewDragOver="LayoutRoot_PreviewDragOver"
+        DragDrop.PreviewDrop="LayoutRoot_PreviewDrop"
+        Width="Auto">
+        <VisualStateManager.VisualStateGroups>
+			<VisualStateGroup
+                x:Name="MultiRowStateGroup">
+				<VisualState
+                    x:Name="OneRow">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.CornerRadius)"
+                                                       Storyboard.TargetName="mInputAreaBorder">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<ObjectKeyFrame.Value>
+									<CornerRadius>2</CornerRadius>
+								</ObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+				<VisualState x:Name="TwoRows">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(DockPanel.Dock)"
+                                                       Storyboard.TargetName="mCloseButton">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<ObjectKeyFrame.Value>
+									<Dock>Top</Dock>
+								</ObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)"
+                                                       Storyboard.TargetName="mConfigButton">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<ObjectKeyFrame.Value>
+									<VerticalAlignment>Top</VerticalAlignment>
+								</ObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                       Storyboard.TargetName="border">
+							<DiscreteObjectKeyFrame KeyTime="0"
+                                                    Value="{x:Static Visibility.Collapsed}" />
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(DockPanel.Dock)"
+                                                       Storyboard.TargetName="mButtonGrip">
+							<DiscreteObjectKeyFrame KeyTime="0"
+                                                    Value="{x:Static Dock.Top}" />
+						</ObjectAnimationUsingKeyFrames>
+						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)"
+                                                       Storyboard.TargetName="mButtonGrip">
+							<EasingDoubleKeyFrame KeyTime="0"
+                                                  Value="-90" />
+						</DoubleAnimationUsingKeyFrames>
+						<ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
+                                                          Storyboard.TargetName="mButtonGrip">
+							<EasingThicknessKeyFrame KeyTime="0"
+                                                     Value="2,5,0,5" />
+						</ThicknessAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
+			<VisualStateGroup
+                x:Name="DockStateGroup">
+				<VisualState
+                    x:Name="Docked">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetProperty="(Border.CornerRadius)"
+							Storyboard.TargetName="mBackgroundBorder">
+							<DiscreteObjectKeyFrame
+                                KeyTime="0">
+								<ObjectKeyFrame.Value>
+									<CornerRadius>0</CornerRadius>
+								</ObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetProperty="(UIElement.Visibility)"
+							Storyboard.TargetName="ResizeGrid">
+							<DiscreteObjectKeyFrame
+                                KeyTime="0"
+								Value="{x:Static Visibility.Collapsed}" />
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetProperty="(UIElement.Visibility)"
+							Storyboard.TargetName="resizeThumb">
+							<DiscreteObjectKeyFrame
+                                KeyTime="0"
+								Value="{x:Static Visibility.Collapsed}" />
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetProperty="(UIElement.Visibility)"
+							Storyboard.TargetName="resizeThumb1">
+							<DiscreteObjectKeyFrame
+                                KeyTime="0"
+								Value="{x:Static Visibility.Collapsed}" />
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetProperty="(UIElement.Visibility)"
+							Storyboard.TargetName="mHistoryToggleButton">
+							<DiscreteObjectKeyFrame
+                                KeyTime="0"
+								Value="{x:Static Visibility.Collapsed}" />
+						</ObjectAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+				<VisualState x:Name="Undocked">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)"
+                                                       Storyboard.TargetName="mBackgroundGrid">
+							<DiscreteObjectKeyFrame KeyTime="0"
+                                                    Value="{x:Static VerticalAlignment.Bottom}" />
+						</ObjectAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+				<VisualState x:Name="AnchorTop">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)" 
+                                                       Storyboard.TargetName="mBackgroundGrid">
+							<DiscreteObjectKeyFrame KeyTime="0"
+                                                    Value="{x:Static VerticalAlignment.Top}" />
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Popup.Placement)"
+                                                       Storyboard.TargetName="mTempHistoryPopup">
+							<DiscreteObjectKeyFrame KeyTime="0"
+                                                    Value="{x:Static PlacementMode.Bottom}" />
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Popup.Placement)"
+                                                       Storyboard.TargetName="mHistoryPopup">
+							<DiscreteObjectKeyFrame KeyTime="0"
+                                                    Value="{x:Static PlacementMode.Bottom}" />
+						</ObjectAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+        <!--<ListBox ItemsSource="{Binding TempPromptCollection}"/>-->
+        <ListBox ItemsSource="{Binding HistoryCollection}"/>
+		<Grid Name="mBackgroundGrid"
+              PreviewMouseRightButtonUp="mBackgroundBorder_PreviewMouseRightButtonUp">
+            <Border Name="mBackgroundBorder"
+                    BorderThickness="1"
+                    CornerRadius="2"
+                    BorderBrush="{StaticResource CommandLineBackgroundBorderBrush}"
+                    Background="{StaticResource CommandLineBackgroundGradientBrush}"
+                    MouseLeftButtonDown="mBackgroundBorder_MouseLeftButtonDown"
+                    Visibility="Collapsed"
+            />
+            <DockPanel>
+				<Grid Name="mButtonsGrid" Visibility="Collapsed">
+					<DockPanel>
+						<Grid Name="mButtonGrip"
+                              Height="18"
+                              IsHitTestVisible="False"
+                              RenderTransformOrigin="0.5,0.5"
+                              Margin="8,3,0,3">
+                            <materialDesign:PackIcon Kind="Drag"
+                                                     Foreground="White"
+                                                     VerticalAlignment="Center"/>
+						</Grid>
+						<Button Name="mCloseButton"
+                                VerticalAlignment="Center"
+                                Width="18"
+                                Height="18"
+                                Margin="2"
+                                Style="{StaticResource CommandButtonStyle}"
+                                ToolTip="Close"
+                                Click="OnCloseButtonClicked"
+                                ToolTipOpening="General_ToolTipOpening"
+                                Content="{materialDesign:PackIcon Close}"
+                                />
+                        <Button Name="mConfigButton"
+                                VerticalAlignment="Center"
+                                Width="18"
+                                Height="18"
+                                Margin="2"
+                                Style="{StaticResource CommandButtonStyle}"
+                                ToolTip="Customize"
+                                ToolTipOpening="General_ToolTipOpening">
+                            <FrameworkElement.ContextMenu>
+								<ContextMenu>
+									<MenuItem Header="Input Settings"
+                                              Visibility="{Binding IsOEMReadOnly, Converter={StaticResource RevertVisibilityConverter}}">
+										<MenuItem Header="AutoComplete"
+                                                  IsCheckable="True"
+                                                  IsChecked="{Binding AutoComplete}" />
+										<MenuItem Header="AutoCorrect"
+                                                  IsCheckable="True"
+                                                  IsChecked="{Binding AutoCorrect}"
+                                                  Visibility="{Binding SupportAutoCorrect, Converter={StaticResource BooleanToVisibilityConverter}}" />
+										<MenuItem Header="Search System Variables"
+                                                  IsCheckable="True"
+                                                  IsChecked="{Binding DisplaySysvar}">
+											<UIElement.IsEnabled>
+												<MultiBinding Converter="{StaticResource MultiBooleanOrConverter}"
+                                                              Mode="OneWay">
+													<Binding Path="AutoComplete" />
+													<Binding Path="AutoCorrect" />
+												</MultiBinding>
+											</UIElement.IsEnabled>
+										</MenuItem>
+										<MenuItem Header="Search Content"
+                                                  IsCheckable="True"
+                                                  IsChecked="{Binding SearchContent}" />
+										<MenuItem Header="Mid-string Search"
+                                                  IsCheckable="True"
+                                                  IsChecked="{Binding MidString}"
+                                                  IsEnabled="{Binding AutoComplete}" />
+										<MenuItem Header="Delay Time"
+                                                  Command="{Binding SetInputDelayTime, Mode=OneWay}">
+											<UIElement.IsEnabled>
+												<MultiBinding Converter="{StaticResource MultiBooleanOrConverter}"
+                                                              Mode="OneWay">
+													<Binding Path="AutoComplete" />
+													<Binding Path="AutoCorrect" />
+													<Binding Path="SearchContent" />
+												</MultiBinding>
+											</UIElement.IsEnabled>
+										</MenuItem>
+									</MenuItem>
+									<MenuItem Header="Lines of Prompt History"
+                                              Command="{Binding LinesOfPromptHistory, Mode=OneWay}"
+                                              Visibility="{Binding IsDocked, Converter={StaticResource RevertVisibilityConverter}}" />
+									<MenuItem Header="Input Search Options..."
+                                              Command="{Binding InputSearchOptions, Mode=OneWay}"
+                                              Visibility="{Binding IsOEMReadOnly, Converter={StaticResource RevertVisibilityConverter}}" />
+									<Separator>
+										<UIElement.Visibility>
+											<MultiBinding Converter="{StaticResource RevertVisibilityMultiValueConverter}">
+												<Binding  Path="IsDocked" />
+												<Binding Path="IsOEMReadOnly" />
+											</MultiBinding>
+										</UIElement.Visibility>
+									</Separator>
+									<MenuItem Header="Transparency..."
+                                              Visibility="{Binding IsDocked, Converter={StaticResource RevertVisibilityConverter}}"
+                                              Click="SetTransparency"/>
+									<MenuItem Header="Options..."
+                                              Command="{Binding Options, Mode=OneWay}" />
+								</ContextMenu>
+							</FrameworkElement.ContextMenu>
+							<materialDesign:PackIcon Kind="Tools" Width="18"/>
+						</Button>
+					</DockPanel>
+                    <control:ResizeThumb x:Name="resizeThumb"
+                                         ResizeDirection="Top"
+                                         Height="4"
+                                         VerticalAlignment="Top"
+                                         IsTabStop="False"
+                                         ResizeTarget="{Binding ElementName=mBackgroundGrid}"
+                                         IsEnabled="{Binding IsLocked, Converter={StaticResource ReverseBooleanConverter}}" />
+                    <control:ResizeThumb x:Name="resizeThumb1"
+                                         ResizeDirection="Bottom"
+                                         Height="4" 
+                                         VerticalAlignment="Bottom" 
+                                         IsTabStop="False"
+                                         ResizeTarget="{Binding ElementName=mBackgroundGrid}"
+                                         IsEnabled="{Binding IsLocked, Converter={StaticResource ReverseBooleanConverter}}" />
+				</Grid>
+				<Border Name="mInputAreaPlaceHolder"/>
+			</DockPanel>
+		</Grid>
+		<Grid Name="mForegroundGrid"
+              VerticalAlignment="{Binding VerticalAlignment, ElementName=mBackgroundGrid}">
+			<Border Name="mInputAreaBorder"
+                    CornerRadius="0,2,2,0"
+                    BorderThickness="1"
+                    BorderBrush="{StaticResource CommandLineInputAreaBorderBrush}"
+                    Cursor="IBeam"
+                    Background="{StaticResource DarkBackGround}"
+                    MouseLeftButtonDown="InputAreaBorder_MouseLeftButtonDown"
+            >
+                <DockPanel>
+					<Grid Name="mInputAreaGrid"
+                          DockPanel.Dock="Bottom">
+						<FrameworkElement.ContextMenu>
+							<ContextMenu Name="mRightClickMenu"
+                                         IsVisibleChanged="ContextMenu_IsVisibleChanged"
+                                         Visibility="Collapsed">
+								<MenuItem Header="Recent Commands"
+                                          ItemContainerStyle="{StaticResource RecentCommandMenuItemContainerStyle}"
+                                          ItemsSource="{Binding RecentCommands}"
+                                          Visibility="{Binding RecentCommands.Count, Converter={StaticResource IntToVisibilityConverter}}" />
+								<Separator Visibility="{Binding RecentCommands.Count, Converter={StaticResource IntToVisibilityConverter}}" />
+								<MenuItem Header="Input Settings"
+                                          Visibility="{Binding IsOEMReadOnly, Converter={StaticResource RevertVisibilityConverter}}">
+									<MenuItem Header="AutoComplete"
+                                              IsCheckable="True"
+                                              IsChecked="{Binding AutoComplete}" />
+									<MenuItem Header="AutoCorrect"
+                                              IsCheckable="True"
+                                              IsChecked="{Binding AutoCorrect}"
+                                              Visibility="{Binding SupportAutoCorrect, Converter={StaticResource BooleanToVisibilityConverter}}" />
+									<MenuItem Header="Search System Variables"
+                                              IsCheckable="True"
+                                              IsChecked="{Binding DisplaySysvar}">
+										<UIElement.IsEnabled>
+											<MultiBinding Converter="{StaticResource MultiBooleanOrConverter}"
+                                                          Mode="OneWay">
+												<Binding Path="AutoComplete" />
+												<Binding Path="AutoCorrect" />
+											</MultiBinding>
+										</UIElement.IsEnabled>
+									</MenuItem>
+									<MenuItem Header="Search Content"
+                                              IsCheckable="True"
+                                              IsChecked="{Binding SearchContent}" />
+									<MenuItem Header="Mid-string Search"
+                                              IsCheckable="True"
+                                              IsChecked="{Binding MidString}"
+                                              IsEnabled="{Binding AutoComplete}" />
+									<MenuItem Header="Delay Time"
+                                              Command="{Binding SetInputDelayTime, Mode=OneWay}">
+                                        <UIElement.IsEnabled>
+											<MultiBinding Converter="{StaticResource MultiBooleanOrConverter}"
+                                                          Mode="OneWay">
+												<Binding Path="AutoComplete" />
+												<Binding Path="AutoCorrect" />
+												<Binding Path="SearchContent" />
+											</MultiBinding>
+										</UIElement.IsEnabled>
+									</MenuItem>
+								</MenuItem>
+								<MenuItem Header="Lines of Prompt History" 
+                                          Command="{Binding LinesOfPromptHistory, Mode=OneWay}"
+                                          Visibility="{Binding IsDocked, Converter={StaticResource RevertVisibilityConverter}}" />
+								<MenuItem Header="Input Search Options..."
+                                          Command="{Binding InputSearchOptions, Mode=OneWay}"
+                                          Visibility="{Binding IsOEMReadOnly, Converter={StaticResource RevertVisibilityConverter}}" />
+								<MenuItem Header="Cut"
+                                          Command="{Binding Cut, Mode=OneWay}"
+                                          Visibility="{Binding IsOEMReadOnly, Converter={StaticResource RevertVisibilityConverter}}" />
+								<MenuItem Header="Copy"
+                                          Command="{Binding Copy, Mode=OneWay}"
+                                          Visibility="{Binding IsOEMReadOnly, Converter={StaticResource RevertVisibilityConverter}}" />
+								<MenuItem Header="Copy History"
+                                          Command="{Binding CopyHistory, Mode=OneWay}"
+                                          Visibility="{Binding IsOEMReadOnly, Converter={StaticResource RevertVisibilityConverter}}" />
+								<MenuItem Header="Paste"
+                                          Command="{Binding Paste, Mode=OneWay}"
+                                          Visibility="{Binding IsOEMReadOnly, Converter={StaticResource RevertVisibilityConverter}}" />
+								<MenuItem Header="Paste to CommandLine"
+                                          Command="{Binding PasteToCommandLine, Mode=OneWay}"
+                                          Visibility="{Binding IsOEMReadOnly, Converter={StaticResource RevertVisibilityConverter}}" />
+								<Separator>
+									<UIElement.Visibility>
+										<MultiBinding Converter="{StaticResource RevertVisibilityMultiValueConverter}">
+											<Binding Path="IsDocked" />
+											<Binding Path="IsOEMReadOnly" />
+										</MultiBinding>
+									</UIElement.Visibility>
+								</Separator>
+								<MenuItem Header="Transparency..."
+                                          Visibility="{Binding IsDocked, Converter={StaticResource RevertVisibilityConverter}}"
+                                          Click="SetTransparency"/>
+								<MenuItem Header="Options..."
+                                          Command="{Binding Options, Mode=OneWay}" />
+							</ContextMenu>
+						</FrameworkElement.ContextMenu>
+						<commandLine:NonTopmostPopup x:Name="mHistoryPopup"
+                                                    Placement="Top"
+                                                    StaysOpen="False"
+                                                    AllowsTransparency="True"
+                                                    PopupAnimation="Slide"
+                                                    HorizontalOffset="-1"
+                                                    IsOpen="{Binding IsExpandedHistoryOpen}"
+                                                    Visibility="Collapsed">
+							<Grid>
+								<UIElement.Effect>
+									<DropShadowEffect x:Uid="DropShadowEffect_1"
+                                                      Opacity="0.46"
+                                                      Direction="90"
+                                                      ShadowDepth="1" />
+								</UIElement.Effect>
+								<Border Name="mHistoryPopupBorder"
+                                        MinHeight="100"
+                                        MinWidth="100"
+                                        BorderThickness="1"
+                                        BorderBrush="{StaticResource CommandLineHistoryBorderBrush}"
+                                        Background="{StaticResource CommandLineHistoryBorderBrush}"
+                                        CornerRadius="{StaticResource CommandLineHistoryCornerRadius}"
+                                        Height="264.796666666667"
+                                        Width="{Binding ActualWidth, ElementName=mInputAreaBorder, Mode=OneWay}">
+									<local:HistoryViewer
+										x:Name="mPopupHistory"
+                                        HistorySource="{Binding HistoryCollection}"
+                                        ClipToBounds="True"
+                                        ContextMenu="{Binding ElementName=mInputAreaGrid, Path=ContextMenu}" />
+								</Border>
+                                <control:ResizeThumb ResizeDirection="Top"
+                                                     Height="5"
+                                                     VerticalAlignment="Top"
+                                                     IsTabStop="False" 
+                                                     ResizeTarget="{Binding ElementName=mHistoryPopupBorder, Mode=OneWay}" />
+                                <control:ResizeThumb ResizeDirection="Bottom"
+                                                     Height="5" 
+                                                     VerticalAlignment="Bottom"
+                                                     IsTabStop="False"
+                                                     ResizeTarget="{Binding ElementName=mHistoryPopupBorder, Mode=OneWay}" />
+                                <control:ResizeThumb ResizeDirection="Right"
+                                                     Width="5"
+                                                     HorizontalAlignment="Right"
+                                                     IsTabStop="False"
+                                                     ResizeTarget="{Binding ElementName=mBackgroundGrid, Mode=OneWay}"
+                                                     IsEnabled="{Binding IsLocked, Converter={StaticResource ReverseBooleanConverter}}" />
+							</Grid>
+						</commandLine:NonTopmostPopup>
+						<commandLine:NonTopmostPopup x:Name="mTempHistoryPopup"
+                                                    Placement="Top"
+                                                    AllowsTransparency="True"
+                                                    StaysOpen="True"
+                                                    PopupAnimation="Slide"
+                                                    MaxWidth="{Binding ActualWidth, ElementName=mInputAreaGrid}"
+                                                    Visibility="Collapsed">
+							<Border Name="border">
+								<ListBox Name="mTempPromptListBox"
+                                         Background="#00FFFFFF"
+                                         BorderThickness="0"
+                                         Focusable="False"
+                                         IsHitTestVisible="False"
+                                         ItemTemplate="{StaticResource TempHistoryItemTempalte}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         ItemsSource="{Binding TempPromptCollection}">
+									<UIElement.OpacityMask>
+										<LinearGradientBrush EndPoint="0.5,1"
+                                                             StartPoint="0.5,0">
+											<GradientStop Color="#99FFFFFF"
+                                                          Offset="0" />
+											<GradientStop Color="White"
+                                                          Offset="1" />
+											<GradientStop Color="White"
+                                                          Offset="0.939" />
+										</LinearGradientBrush>
+									</UIElement.OpacityMask>
+								</ListBox>
+							</Border>
+						</commandLine:NonTopmostPopup>
+						<DockPanel>
+							<ToggleButton Name="mHistoryToggleButton"
+                                          DockPanel.Dock="Right"
+                                          HorizontalAlignment="Center"
+                                          Cursor="Arrow"
+                                          Style="{StaticResource RecentCommandButtonStyle}"
+                                          Width="15"
+                                          Focusable="False"
+                                          ToolTip="Command History"
+                                          IsChecked="{Binding IsExpandedHistoryOpen}"
+                                          Click="OnHistoryToggleButtonClicked"
+                                          ToolTipOpening="General_ToolTipOpening"
+                                          Content="{materialDesign:PackIcon ArrowDropDown}"
+                                          Visibility="Collapsed">
+                            </ToggleButton>
+							<Grid>
+                                <commandLine:NonTopmostPopup x:Name="mAutoCompletePopup"
+                                                            AllowsTransparency="True"
+                                                            Placement="MousePoint"
+                                                            VerticalOffset="-1"
+                                                            PlacementTarget="{Binding ElementName=mInputAreaGrid, Mode=OneWay}"
+                                                            IsOpen="{Binding HintViewerVisible, Mode=OneWay}">
+                                    <FrameworkElement.ContextMenu>
+                                        <ContextMenu Visibility="{Binding IsOEMReadOnly, Converter={StaticResource RevertVisibilityConverter}}">
+                                            <MenuItem Header="AutoComplete"
+                                                      IsCheckable="True"
+                                                      IsChecked="{Binding AutoComplete}" />
+                                            <MenuItem Header="AutoCorrect"
+                                                      IsCheckable="True"
+                                                      IsChecked="{Binding AutoCorrect}"
+                                                      Visibility="{Binding SupportAutoCorrect, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <MenuItem Header="Search System Variables"
+                                                      IsCheckable="True"
+                                                      IsChecked="{Binding DisplaySysvar}">
+                                                <UIElement.IsEnabled>
+                                                    <MultiBinding Converter="{StaticResource MultiBooleanOrConverter}"
+                                                                  Mode="OneWay">
+                                                        <Binding Path="AutoComplete" />
+                                                        <Binding Path="AutoCorrect" />
+                                                    </MultiBinding>
+                                                </UIElement.IsEnabled>
+                                            </MenuItem>
+                                            <MenuItem Header="Search Content"
+                                                      IsCheckable="True"
+                                                      IsChecked="{Binding SearchContent}" />
+                                            <MenuItem Header="Mid-string Search"
+                                                      IsCheckable="True"
+                                                      IsChecked="{Binding MidString}"
+                                                      IsEnabled="{Binding AutoComplete}" />
+                                            <MenuItem Header="Delay Time"
+                                                      Command="{Binding SetInputDelayTime, Mode=OneWay}">
+                                                <UIElement.IsEnabled>
+                                                    <MultiBinding Converter="{StaticResource MultiBooleanOrConverter}"
+                                                                  Mode="OneWay">
+                                                        <Binding Path="AutoComplete" />
+                                                        <Binding Path="AutoCorrect" />
+                                                        <Binding Path="SearchContent" />
+                                                    </MultiBinding>
+                                                </UIElement.IsEnabled>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </FrameworkElement.ContextMenu>
+                                    <local:HintViewer/>
+                                </commandLine:NonTopmostPopup>
+                                <control:LastFillWrapPanel x:Name="PART_PromptPanel"
+                                                           Margin="3,1,0,1"
+                                                           VerticalAlignment="Center">
+                                    <Button Name="mRecentCommands"
+                                            Cursor="Arrow"
+                                            Style="{DynamicResource RecentCommandButtonStyle}"
+                                            ToolTip="Recent Commands"
+                                            ToolTipOpening="General_ToolTipOpening"
+                                            Visibility="Collapsed"
+                                            
+                                            >
+                                        <FrameworkElement.ContextMenu>
+											<ContextMenu ItemContainerStyle="{StaticResource RecentCommandMenuItemContainerStyle}"
+                                                         ItemsSource="{Binding RecentCommands}"
+                                                         IsVisibleChanged="ContextMenu_IsVisibleChanged"/>
+                                        </FrameworkElement.ContextMenu>
+                                        <materialDesign:PackIcon Kind="ConsoleLine"/>
+                                    </Button>
+                                    <TextBlock Name="PART_CurrentCommand"
+                                               FontWeight="Bold"
+                                               Margin="5,0"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding CurrentCommand}"
+                                               Visibility="Collapsed"/>
+									<TextBlock TextWrapping="Wrap"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding PromptPrefix}"
+                                               Visibility="Collapsed"/>
+									<TextBlock Name="PART_BeginOfKeywords"
+                                               Text="["
+                                               VerticalAlignment="Center"
+                                               Visibility="Collapsed"/>
+									<TextBlock Name="PART_PlainKeywords"
+                                               Margin="0,0,4,0"
+                                               VerticalAlignment="Center" 
+                                               Visibility="Collapsed"/>
+                                    <control:ClickableKeyword Keyword="PlaceHolder1"
+                                                              KeywordToHighlight="P"
+                                                              VerticalAlignment="Center"
+                                                              Focusable="False" 
+                                                              Visibility="Collapsed"
+                                                              />
+                                    <control:ClickableKeyword Keyword="PlaceHolder2"
+                                                              KeywordToHighlight="H" 
+                                                              VerticalAlignment="Center" 
+                                                              Focusable="False" 
+                                                              Visibility="Collapsed"
+                                                              />
+                                    <control:ClickableKeyword Keyword="PlaceHolder3" 
+                                                              KeywordToHighlight="3"
+                                                              VerticalAlignment="Center" 
+                                                              Focusable="False" 
+                                                              Visibility="Collapsed"
+                                                              />
+									<TextBlock Name="PART_EndOfKeywords"
+                                               Text="]"
+                                               Margin="-4,0,0,0"
+                                               VerticalAlignment="Center" 
+                                               Visibility="Collapsed"
+                                               />
+                                    <TextBlock TextWrapping="Wrap"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding PromptPostfix}"
+                                               Visibility="Collapsed"
+                                               />
+
+                                    <commandLine:CommandLineTextBox x:Name="PART_Input"
+                                                                   BorderThickness="0"
+                                                                   TextWrapping="Wrap"
+                                                                   VerticalAlignment="Center"
+                                                                   Background="DarkMagenta"
+                                                                   Text="{Binding InputText, Mode=OneWay}"
+                                                                   ContextMenu="{Binding ContextMenu, ElementName=mInputAreaGrid}"/>
+								</control:LastFillWrapPanel>
+                                
+                                
+                                <StackPanel HorizontalAlignment="Left"
+                                            Orientation="Horizontal"
+                                            VerticalAlignment="Center"
+                                            Margin="3,0,0,0"
+                                            IsHitTestVisible="False">
+                                    <UIElement.Visibility>
+                                        <MultiBinding Converter="{StaticResource BooleanAndToVisibilityConverter}">
+                                            <Binding Path="IsPromptingForInput"
+                                                     Mode="OneWay" />
+                                            <Binding ElementName="mRightClickMenu"
+                                                     Path="IsOpen"
+                                                     Converter="{StaticResource ReverseBooleanConverter}"
+                                                     Mode="OneWay" />
+                                            <Binding ElementName="PART_Input"
+                                                     Path="IsKeyboardFocused"
+                                                     Converter="{StaticResource ReverseBooleanConverter}"
+                                                     Mode="OneWay" />
+                                            <Binding Path="IsOEMReadOnly"
+                                                     Converter="{StaticResource ReverseBooleanConverter}"
+                                                     Mode="OneWay" />
+                                        </MultiBinding>
+                                    </UIElement.Visibility>
+                                    <Border Height="16"
+                                            Width="28" />
+                                    <TextBlock Text="Type a command"
+                                               TextTrimming="CharacterEllipsis"
+                                               FontStyle="Italic"
+                                               Margin="5,0,0,0" 
+                                               Visibility="Collapsed"/>
+                                </StackPanel>
+                            </Grid>
+						</DockPanel>
+					</Grid>
+					<Grid Visibility="Collapsed">
+                        
+                        <FrameworkElement.Height>
+							<MultiBinding Converter="{StaticResource MinusConverter}">
+								<Binding Path="ActualHeight"
+                                         ElementName="mBackgroundGrid" />
+								<Binding Path="ActualHeight"
+                                         ElementName="mInputAreaGrid" />
+							</MultiBinding>
+						</FrameworkElement.Height>
+
+						<Border BorderThickness="0,0,0,1"
+                                BorderBrush="{StaticResource CommandLineHistoryBorderBrush}"
+                                Background="{StaticResource CommandLineHistoryBorderBrush}"
+                                Visibility="Collapsed">
+                            <local:HistoryViewer x:Name="mInplaceHistory"
+                                                 HistorySource="{Binding HistoryCollection}" 
+                                                 ContextMenu="{Binding ElementName=mInputAreaGrid, Path=ContextMenu}" 
+                                                 Visibility="Collapsed"/>
+						</Border>
+					</Grid>
+				</DockPanel>
+			</Border>
+			<Grid Name="ResizeGrid"
+                  IsEnabled="{Binding IsLocked, Converter={StaticResource ReverseBooleanConverter}}">
+                <control:ResizeThumb ResizeDirection="Top"
+                                     Height="5"
+                                     VerticalAlignment="Top"
+                                     IsTabStop="False"
+                                     ResizeTarget="{Binding ElementName=mBackgroundGrid}" />
+                <control:ResizeThumb ResizeDirection="Bottom"
+                                     Height="5"
+                                     VerticalAlignment="Bottom"
+                                     IsTabStop="False"
+                                     ResizeTarget="{Binding ElementName=mBackgroundGrid}" />
+                <control:ResizeThumb ResizeDirection="Right"
+                                     Width="5"
+                                     HorizontalAlignment="Right" 
+                                     IsTabStop="False" 
+                                     ResizeTarget="{Binding ElementName=mBackgroundGrid}" />
+                <control:ResizeThumb ResizeDirection="TopRight"
+                                     Width="5"
+                                     Height="5"
+                                     VerticalAlignment="Top"
+                                     HorizontalAlignment="Right"
+                                     IsTabStop="False"
+                                     ResizeTarget="{Binding ElementName=mBackgroundGrid}" />
+                <control:ResizeThumb ResizeDirection="BottomRight"
+                                     Width="5" 
+                                     Height="5"
+                                     HorizontalAlignment="Right"
+                                     VerticalAlignment="Bottom"
+                                     IsTabStop="False" 
+                                     ResizeTarget="{Binding ElementName=mBackgroundGrid}" />
+			</Grid>
+		</Grid>
+	</Grid>
+</UserControl>

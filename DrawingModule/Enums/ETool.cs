@@ -1,0 +1,29 @@
+﻿namespace DrawingModule.Enums
+{
+    public enum ETool
+    {
+        None,
+        AlignDim,
+        Select,
+        Point,
+        Line,
+        LinePath,
+        LinearDim,
+        AngularDim,
+        Text,
+        Leader,
+        Rectangle,
+        XLine,
+        Ray,
+        Copy,
+        Move,
+        Mirror,
+        Trim,
+        Extend,
+        Fillet,
+        Offset,
+        Paste,
+        Scale,
+        Rotate
+    }
+}
