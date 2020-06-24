@@ -10,6 +10,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Syncfusion:SfDataGrid></Syncfusion:SfDataGrid>
+        <Syncfusion:SfDataGrid Name="LayerManagerGrid"
+                               AutoGenerateColumns="False"
+                               AllowDeleting="True"
+                               AllowEditing="True"
+                               AllowResizingColumns="True">
+            <Syncfusion:SfDataGrid.Columns>
+                <Syncfusion:GridCheckBoxColumn HeaderText="Activate"/>
+                <Syncfusion:GridTextColumn HeaderText="Layer Name"/>
+                <Syncfusion:GridTextColumn HeaderText="Color"/>
+                <Syncfusion:GridTextColumn HeaderText="Line Type"/>
+                <Syncfusion:GridTextColumn HeaderText="Line Weight"/>
+                <Syncfusion:GridCheckBoxColumn HeaderText="On"/>
+                <Syncfusion:GridCheckBoxColumn HeaderText="Lock"/>
+                <Syncfusion:GridCheckBoxColumn HeaderText="Plot"/>
+
+
+
+            </Syncfusion:SfDataGrid.Columns>
+        </Syncfusion:SfDataGrid>
     </Grid>
 </UserControl>

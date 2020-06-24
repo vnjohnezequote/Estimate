@@ -185,6 +185,11 @@
 														  CommandParameter="{Binding ElementName=QuickBar, Mode=OneWay}"/>
 					</interactions:EventTrigger>
 				</interactions:Interaction.Triggers>
+				<ScrollViewer>
+					<Grid>
+						<local:LayerManagerView></local:LayerManagerView>
+                    </Grid>
+                </ScrollViewer>
 
 			</Grid>
 			<GridSplitter x:Name="QuickPanelGridSplitter" 
