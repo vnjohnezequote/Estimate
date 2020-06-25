@@ -252,7 +252,6 @@ namespace WallFrameInputModule.ViewModels
         {
             base.OnNavigatedTo(navigationContext);
             this.Title = "Prenai - " + this.Level.LevelName;
-
             // this.Studs = this.SelectedClient.Studs;
             // this.RibbonPlates = this.SelectedClient.RibbonPlates;
             // this.TopPlates = this.SelectedClient.TopPlates;
@@ -263,6 +262,7 @@ namespace WallFrameInputModule.ViewModels
             var genericBracing = new GenericBracing { BracingInfo = new GenericBracingBase { Name = "MetalBrace" } };
             this.Level.GeneralBracings.Add(genericBracing);
             this.Level.LevelInfo.PropertyChanged += this.LevelChangedInfo;
+            //.WallLayers[1].WallColorLayer.Color
 
         }
 

@@ -50,7 +50,8 @@ namespace DrawingModule
         public override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             base.RegisterTypes(containerRegistry);
-            
+            containerRegistry.RegisterForNavigation<LayerManagerView>();
+
             //containerRegistry.RegisterForNavigation<CommandLineView>();
 
         }

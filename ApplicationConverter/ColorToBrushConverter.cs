@@ -8,16 +8,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Drawing;
 
 namespace ApplicationConverter
 {
     using System.Globalization;
     using System.Windows.Data;
     using System.Windows.Media;
-    using System.Drawing;
-
-    using Brushes = System.Windows.Media.Brushes;
-
+    using Color = System.Drawing.Color;
     /// <summary>
     /// The color to brush converter.
     /// </summary>
@@ -81,7 +79,14 @@ namespace ApplicationConverter
         /// </exception>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value is Brush brush)
+            {
+                return null;
+            }
+            else
+            {
+                return Color.Red;
+            }
         }
     }
 }

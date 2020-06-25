@@ -164,6 +164,8 @@ namespace DrawingModule.ViewModels
         {
             if (window == null) throw new ArgumentNullException(nameof(window));
             this._window = window ?? throw new ArgumentNullException(nameof(window));
+            this._drawingModel = window.CanvasDrawing.CanvasDrawing;
+            this.SetRegionManager();
             //this._drawingModel = window.FindName("CanvasDrawing") as CanvasDrawing;
             //var drawingModel = this._drawingModel;
             //if (drawingModel != null)
@@ -183,6 +185,26 @@ namespace DrawingModule.ViewModels
             //Application.DrawingModel = this._window.CanvasDrawing;
             //this.PrepareLayers();
             //this._drawingModel.MouseMove += _drawingModel_MouseMove;
+        }
+
+        private void SetRegionManager()
+        {
+            this.RegionManager = this.RegionManager.CreateRegionManager();
+            var drawingWindowRegionManager = this.RegionManager.CreateRegionManager();
+            Prism.Regions.RegionManager.SetRegionManager(this._window, drawingWindowRegionManager);
+            this.RegionManager = drawingWindowRegionManager;
+            this.LoadLayerManger();
+
+        }
+
+        private void LoadLayerManger()
+        {
+            var parameters = new NavigationParameters { { "Layers", _drawingModel.Layers } };
+            //if (this.Job.Info != null)
+            //{
+                this.RegionManager.RequestNavigate("LayerManagerRegion", nameof(LayerManagerView),parameters);
+            //}
+
         }
 
         //public bool ProcessMessages(ref MSG msg, ref bool handled)

@@ -187,7 +187,7 @@
 				</interactions:Interaction.Triggers>
 				<ScrollViewer>
 					<Grid>
-						<local:LayerManagerView></local:LayerManagerView>
+                        <ContentControl prism:RegionManager.RegionName="LayerManagerRegion"/>
                     </Grid>
                 </ScrollViewer>
 

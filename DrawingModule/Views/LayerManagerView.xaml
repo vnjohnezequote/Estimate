@@ -5,29 +5,89 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:converter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:DrawingModule.Views"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:viewModels="clr-namespace:DrawingModule.ViewModels"
+             d:DataContext="{d:DesignInstance viewModels:LayerManagerViewModel, IsDesignTimeCreatable=True}"
+             Name="LayerManagerV"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
+                <ResourceDictionary>
+                    <converter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
-        <Syncfusion:SfDataGrid Name="LayerManagerGrid"
-                               AutoGenerateColumns="False"
-                               AllowDeleting="True"
-                               AllowEditing="True"
-                               AllowResizingColumns="True">
-            <Syncfusion:SfDataGrid.Columns>
-                <Syncfusion:GridCheckBoxColumn HeaderText="Activate"/>
-                <Syncfusion:GridTextColumn HeaderText="Layer Name"/>
-                <Syncfusion:GridTextColumn HeaderText="Color"/>
-                <Syncfusion:GridTextColumn HeaderText="Line Type"/>
-                <Syncfusion:GridTextColumn HeaderText="Line Weight"/>
-                <Syncfusion:GridCheckBoxColumn HeaderText="On"/>
-                <Syncfusion:GridCheckBoxColumn HeaderText="Lock"/>
-                <Syncfusion:GridCheckBoxColumn HeaderText="Plot"/>
+        <Grid.Resources>
+            <Style TargetType="Syncfusion:VirtualizingCellsControl" x:Key="LayerTextRowStyle">
+                <Setter Property="Foreground" Value="{Binding Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
+            </Style>
+        </Grid.Resources>
+        <StackPanel>
+            <DockPanel>
+                <Button Content="New Layer"/>
+                <Button Content="Delete Layer" Margin="10 0 0 0"/>
+                <Button Content="Test Change Color Layer" Command ="{Binding LayerChangedColorCommand}"/>
+                <Syncfusion:ColorPicker Name="LayerColorPicker"
+                                        Margin="10 0 0 0"
+                                        HorizontalAlignment="Right"
+                                        Background="{StaticResource MaterialDesignDarkBackground}"
+                                        Width="200"
+                                        Brush="{Binding SelectedLayer.Color, Mode=TwoWay, Converter={StaticResource ColorToBrushConverter}}"
+                                        Foreground="{Binding SelectedLayer.Color,Mode=OneWay}"/>
+            </DockPanel>
+            
+                <Syncfusion:SfDataGrid Name="LayerManagerGrid"
+                                   AutoGenerateColumns="False"
+                                   AllowDeleting="True"
+                                   AllowEditing="True"
+                                   AllowResizingColumns="True"
+                                   AllowResizingHiddenColumns ="True"
+                                   ColumnSizer="Auto"
+                                   ItemsSource="{Binding Layers}"
+                                   RowStyle="{StaticResource LayerTextRowStyle}"
+                                   AddNewRowPosition="Bottom"
+                                   SelectionMode="Extended"
+                                   SelectedItem="{Binding SelectedLayer}"
+                                   SelectedItems="{Binding SelectedLayers}">
+                <Syncfusion:SfDataGrid.Resources>
+                    <Style TargetType="TextBox" />
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                </Syncfusion:SfDataGrid.Resources>
 
-
-
-            </Syncfusion:SfDataGrid.Columns>
-        </Syncfusion:SfDataGrid>
+                <Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:GridCheckBoxColumn HeaderText="Status" MappingName="IsSelected"/>
+                    <Syncfusion:GridTextColumn HeaderText="Layer Name" MappingName="Name"/>
+                    <Syncfusion:GridTemplateColumn MappingName="Color"
+                                               Syncfusion:FocusManagerHelper.WantsKeyInput="True">
+                        <Syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button  Content="{Binding Color}" Syncfusion:FocusManagerHelper.FocusedElement="True" 
+                                     Command="{Binding Path=DataContext.ChangeLayerColorCommand, ElementName=LayerManagerGrid}"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     Padding="5 0 5 0"
+                                     Foreground="{Binding Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
+                            </DataTemplate>
+                        </Syncfusion:GridTemplateColumn.CellTemplate>
+                    </Syncfusion:GridTemplateColumn>
+                    <Syncfusion:GridTextColumn HeaderText="Line Type" MappingName="LineTypeName"/>
+                    <Syncfusion:GridTextColumn HeaderText="Line Weight" MappingName="LineWeight"/>
+                    <Syncfusion:GridCheckBoxColumn HeaderText="On" MappingName="Visible"/>
+                    <Syncfusion:GridCheckBoxColumn HeaderText="Lock" MappingName="Locked"/>
+                    <Syncfusion:GridCheckBoxColumn HeaderText="Plot" MappingName="PrintAble"/>
+                </Syncfusion:SfDataGrid.Columns>
+            </Syncfusion:SfDataGrid>
+            
+        </StackPanel>
     </Grid>
 </UserControl>
