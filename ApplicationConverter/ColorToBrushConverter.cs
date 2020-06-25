@@ -56,7 +56,6 @@ namespace ApplicationConverter
                 return new SolidColorBrush(Colors.White);
             }
         }
-
         /// <summary>
         /// The convert back.
         /// </summary>
@@ -79,14 +78,20 @@ namespace ApplicationConverter
         /// </exception>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            //throw new NotImplementedException();
             if (value is Brush brush)
             {
-                return null;
+                var colorHex = brush.ToString();
+                var color = ((SolidColorBrush) brush).Color;
+                return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B); ;
             }
             else
             {
                 return Color.Red;
             }
         }
+
+        
+        
     }
 }

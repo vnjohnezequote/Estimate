@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Syncfusion.SfSkinManager;
+using Syncfusion.Windows.Tools.Controls;
 
 namespace DrawingModule.Views
 {
@@ -23,6 +25,9 @@ namespace DrawingModule.Views
         public LayerManagerView()
         {
             InitializeComponent();
+
         }
+
+       
     }
 }

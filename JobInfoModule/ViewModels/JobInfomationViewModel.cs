@@ -75,11 +75,11 @@ namespace JobInfoModule.ViewModels
 		public void OnNavigatedTo(NavigationContext navigationContext)
         {
              if (navigationContext.Parameters["Job"] is JobModel job)
-            {
-                this.Job = job;
-            }
+             {
+                 this.Job = job;
+             }
 			
-            this.LoadInformation();
+             this.LoadInformation();
         }
 		
 		public void LoadInformation()

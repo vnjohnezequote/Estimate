@@ -10,6 +10,7 @@
              xmlns:local="clr-namespace:DrawingModule.Views"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
              xmlns:viewModels="clr-namespace:DrawingModule.ViewModels"
+             xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
              d:DataContext="{d:DesignInstance viewModels:LayerManagerViewModel, IsDesignTimeCreatable=True}"
              Name="LayerManagerV"
              mc:Ignorable="d" 
@@ -20,6 +21,8 @@
                 <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
                 <ResourceDictionary>
                     <converter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+                    <converter:ColorToColorConverter x:Key="ColorToColorConverter"/>
+                    <converter:ColorToStringConverter x:Key="ColorToStringConverter"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -34,14 +37,25 @@
             <DockPanel>
                 <Button Content="New Layer"/>
                 <Button Content="Delete Layer" Margin="10 0 0 0"/>
-                <Button Content="Test Change Color Layer" Command ="{Binding LayerChangedColorCommand}"/>
                 <Syncfusion:ColorPicker Name="LayerColorPicker"
                                         Margin="10 0 0 0"
                                         HorizontalAlignment="Right"
-                                        Background="{StaticResource MaterialDesignDarkBackground}"
                                         Width="200"
-                                        Brush="{Binding SelectedLayer.Color, Mode=TwoWay, Converter={StaticResource ColorToBrushConverter}}"
-                                        Foreground="{Binding SelectedLayer.Color,Mode=OneWay}"/>
+                                        Height="Auto"
+                                        Color="{Binding SelectedLayer.Color, Mode=TwoWay, Converter={StaticResource ColorToColorConverter}}"
+                                        Foreground="{Binding SelectedLayer.Color,Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
+                                        IsColorPaletteVisible="True"
+                                        sfSkinManager:SfSkinManager.VisualStyle="Blend"/>
+                <!--<Syncfusion:ColorPickerPalette GenerateThemeVariants="True"
+                                               GenerateStandardVariants="True"
+                                               Name="LayerColorPicker"
+                                               HorizontalAlignment="Right"
+                                               ThemePanelVisibility="Visible"
+                                               Width="200"
+                                               Color="{Binding SelectedLayer.Color, Mode=TwoWay, Converter={StaticResource ColorToColorConverter}}"
+                                               sfSkinManager:SfSkinManager.VisualStyle="Blend"
+                                               />-->
+
             </DockPanel>
             
                 <Syncfusion:SfDataGrid Name="LayerManagerGrid"
@@ -69,7 +83,7 @@
                                                Syncfusion:FocusManagerHelper.WantsKeyInput="True">
                         <Syncfusion:GridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button  Content="{Binding Color}" Syncfusion:FocusManagerHelper.FocusedElement="True" 
+                                <Button  Content="{Binding Color, Converter={StaticResource ColorToStringConverter}}" Syncfusion:FocusManagerHelper.FocusedElement="True" 
                                      Command="{Binding Path=DataContext.ChangeLayerColorCommand, ElementName=LayerManagerGrid}"
                                      HorizontalContentAlignment="Center"
                                      VerticalContentAlignment="Center"

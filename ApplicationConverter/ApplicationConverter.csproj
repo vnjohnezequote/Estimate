@@ -83,6 +83,8 @@
     <Compile Include="Base\MultiValueConverterAdapter.cs" />
     <Compile Include="Base\SingleBindedParameterBinding.cs" />
     <Compile Include="ColorToBrushConverter.cs" />
+    <Compile Include="ColorToColorConverter.cs" />
+    <Compile Include="ColorToStringConverter.cs" />
     <Compile Include="IntToBooleanConverter.cs" />
     <Compile Include="PitchingHeightToWallHeightConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

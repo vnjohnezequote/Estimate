@@ -59,6 +59,10 @@ namespace DrawingModule.ViewModels
 
         #region Constructor
 
+        public LayerManagerViewModel()
+        {
+
+        }
         public LayerManagerViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
             : base(unityContainer, regionManager, eventAggregator)
         {
