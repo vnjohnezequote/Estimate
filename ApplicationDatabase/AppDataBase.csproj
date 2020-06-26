@@ -115,6 +115,7 @@
     <Compile Include="DataBase\ClientDataBase.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="DataBase\EntitiesManager.cs" />
     <Compile Include="DataBase\LayerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -59,6 +59,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IEntitiesManager.cs" />
     <Compile Include="ILayerManager.cs" />
     <Compile Include="IShellService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

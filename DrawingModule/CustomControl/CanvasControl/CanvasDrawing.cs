@@ -10,12 +10,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using ApplicationService;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -25,12 +23,10 @@ using DrawingModule.CommandClass;
 using DrawingModule.Control;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.EditingTools;
-using DrawingModule.Enums;
 using DrawingModule.EventArgs;
 using DrawingModule.Helper;
 using DrawingModule.Interface;
 using DrawingModule.Views;
-using Color = System.Drawing.Color;
 
 namespace DrawingModule.CustomControl.CanvasControl
 {
