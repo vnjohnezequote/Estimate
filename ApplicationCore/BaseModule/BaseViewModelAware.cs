@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using ApplicationInterfaceCore;
+using ApplicationService;
 using AppModels;
 
 namespace ApplicationCore.BaseModule
@@ -55,8 +57,8 @@ namespace ApplicationCore.BaseModule
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        protected BaseViewModelAware(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
-        : base(unityContainer, regionManager, eventAggregator)
+        protected BaseViewModelAware(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager)
+        : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             // this.RegionManager = regionManager.CreateRegionManager();
         }

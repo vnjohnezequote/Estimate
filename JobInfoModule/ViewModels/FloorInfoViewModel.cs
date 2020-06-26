@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using ApplicationCore.BaseModule;
+using ApplicationInterfaceCore;
 using AppModels;
 using Prism.Commands;
 using Prism.Events;
@@ -35,8 +36,8 @@ namespace JobInfoModule.ViewModels
         public FloorInfoViewModel(
            IUnityContainer unityContainer,
            IRegionManager regionManager,
-           IEventAggregator eventAggregator)
-           : base(unityContainer, regionManager, eventAggregator)
+           IEventAggregator eventAggregator,ILayerManager layerManager)
+           : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             
 

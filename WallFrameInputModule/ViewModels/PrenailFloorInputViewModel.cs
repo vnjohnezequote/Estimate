@@ -9,6 +9,7 @@
 
 
 using System.Globalization;
+using ApplicationInterfaceCore;
 using devDept.Eyeshot;
 
 namespace WallFrameInputModule.ViewModels
@@ -110,8 +111,8 @@ namespace WallFrameInputModule.ViewModels
         /// <param name="eventAggregator">
         /// The event aggregator.
         /// </param>
-        public PrenailFloorInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+        public PrenailFloorInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager )
+            : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             this.PropertyChanged += PrenailFloorInputViewModelPropertyChanged;
             this.WallThicknessList = new List<string> { "90", "70" };

@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using ApplicationInterfaceCore;
 using DrawingModule.CommandClass;
 using NewJobWizardModule.Views;
 
@@ -191,8 +192,9 @@ namespace Estimate.ViewModels
         public MainWindowViewModel(
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
-            [NotNull] IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+            [NotNull] IEventAggregator eventAggregator,
+            ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             commandClassList = new List<CommandClass>();
 
@@ -398,7 +400,7 @@ namespace Estimate.ViewModels
             var drawingWindow = this.UnityContainer.Resolve<BaseWindowService>();
             //shell.ShowShell<NewJobWizardView>();
             this.EventAggre.GetEvent<JobModelService>().Publish(this.Job);
-            drawingWindow.ShowShell<DrawingWindowView>();
+            drawingWindow.ShowShell<DrawingWindowView>(false);
             //drawingWindow.Show();
         }
 
@@ -454,7 +456,7 @@ namespace Estimate.ViewModels
         private void CreateJobWizard()
         {
             var shell = this.UnityContainer.Resolve<BaseWindowService>();
-            shell.ShowShell<NewJobWizardView>();
+            shell.ShowShell<NewJobWizardView>(true);
         }
 
         /// <summary>

@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using ApplicationInterfaceCore;
+
 namespace JobInfoModule.ViewModels
 {
     using System.Collections.ObjectModel;
@@ -74,8 +76,9 @@ namespace JobInfoModule.ViewModels
         public ChoosingCustomerViewModel(
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
-            [NotNull] IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+            [NotNull] IEventAggregator eventAggregator,
+            ILayerManager layermanager)
+            : base(unityContainer, regionManager, eventAggregator,layermanager)
         {
             this.dbBase = this.UnityContainer.Resolve<ClientDataBase>();
             this.Clients = new ObservableCollection<Client>(this.dbBase.GetClients());

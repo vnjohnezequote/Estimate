@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Runtime.InteropServices;
+using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
 
@@ -49,8 +50,8 @@ namespace ApplicationCore.BaseModule
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        protected BaseFloorViewModelAware(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
-        : base(unityContainer, regionManager, eventAggregator)
+        protected BaseFloorViewModelAware(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
+        : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             this.EventAggre.GetEvent<CustomerService>().Subscribe(OnSetCustomer);
         }

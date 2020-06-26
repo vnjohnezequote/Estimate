@@ -89,9 +89,9 @@ namespace AppModels.AppData
             LineWeight = 0.5f;
             Color = Color.Red;
             this.Layer = new Layer(Name, Color);
-            LineTypeName = String.Empty;
+            LineTypeName = (string)null;
             Locked = false;
-            Visible = false;
+            Visible = true;
             InitCompnent();
 
         }
@@ -102,9 +102,9 @@ namespace AppModels.AppData
             LineWeight = 0.5f;
             Color = Color.Red;
             this.Layer = new Layer(layerName,Color);
-            LineTypeName = String.Empty;
+            LineTypeName = (string)null;
             Locked = false;
-            Visible = false;
+            Visible = true;
             InitCompnent();
         }
 

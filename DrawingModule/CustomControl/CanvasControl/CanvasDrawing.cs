@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ApplicationService;
@@ -44,6 +45,9 @@ namespace DrawingModule.CustomControl.CanvasControl
         #endregion
         #region Field
 
+        public static readonly DependencyProperty ActiveLayerNameProperty =
+            DependencyProperty.Register("ActiveLayerName", typeof(string), typeof(CanvasDrawing),
+                new PropertyMetadata("Default"));
         private bool _cursorOutSide;
         private bool _isUserInteraction;
         private bool _isSnappingEnable;
@@ -74,6 +78,11 @@ namespace DrawingModule.CustomControl.CanvasControl
                 _isUserInteraction = value;
                 OnUserInteractionMessage();
             }
+        }
+        public string ActiveLayerName
+        {
+            get => (string)GetValue(ActiveLayerNameProperty);
+            set => SetValue(ActiveLayerNameProperty, value);
         }
         public bool IsDrawEntityUnderMouse { get; set; }
         public bool IsDrawingMode { get; private set; }
@@ -434,7 +443,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         {
             this.Dispatcher.Invoke((Action)(() =>
             {//this refer to form in WPF application 
-                Entities.Add(entity, Color.Blue);
+                Entities.Add(entity, ActiveLayerName);
                 Entities.Regen();
                 Invalidate();
             }));

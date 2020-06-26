@@ -8,12 +8,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using ApplicationInterfaceCore;
+using AppModels.AppData;
 using DrawingModule.Views;
 using CanvasDrawing = DrawingModule.CustomControl.CanvasControl.CanvasDrawing;
 
 namespace DrawingModule.ViewModels
 {
-    using System.Windows.Controls;
     using System.Windows.Input;
 
     using ApplicationCore.BaseModule;
@@ -41,7 +42,7 @@ namespace DrawingModule.ViewModels
 
         #endregion
         #region public Property
-        //public ObservableCollection<ListViewModelItem> Layers { get; set; }
+
         public bool IsOrthorMode
         {
             get => this._isOrthorMode;
@@ -60,7 +61,6 @@ namespace DrawingModule.ViewModels
         /// <summary>
         /// Gets the control loaded command.
         /// </summary>
-        public ICommand ControlLoadedCommand { get; private set; }
         public ICommand WindowLoadedCommand { get; private set; }
         public ICommand DrawLineCommand { get; private set; }
         public ICommand DrawRectangleCommand { get; private set; }
@@ -103,10 +103,9 @@ namespace DrawingModule.ViewModels
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        public DrawingWindowViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+        public DrawingWindowViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator, layerManager)
         {
-            this.ControlLoadedCommand = new DelegateCommand<Grid>(this.OnLoaded);
             this.WindowLoadedCommand = new DelegateCommand<DrawingWindowView>(this.WindowLoaded);
             //this.DrawLineCommand = new DelegateCommand(this.OnDrawLine);
             //this.DrawRectangleCommand = new DelegateCommand(this.OnDrawRectangle);
@@ -147,25 +146,74 @@ namespace DrawingModule.ViewModels
         /// <param name="rootGrid">
         /// The root grid.
         /// </param>
-        private void OnLoaded(Grid rootGrid)
-        {
-            /*var parrentWindow = WindowHelper.GetWindowParent(rootGrid);
-            if (parrentWindow == null) return;
-            if (parrentWindow is Window window)
-            {
-                var rawInputManager = new WPFRawInputManager(window,RawInputCaptureMode.Foreground);
-                rawInputManager.KeyPress += RawInputManager_KeyPress;
-                rawInputManager.MousePress += RawInputManager_MousePress;
-            }*/
+       
 
-            //this.RegionManager.RequestNavigate("CommandLineRegion",nameof(CommandLineView));
+        private void AddNewLayer(LayerItem newLayer)
+        {
+            //if (this.Layers == null)
+            //{
+            //    this.Layers = new ObservableCollection<LayerItem>();
+            //}
+
+            //if (Layers.Contains(newLayer))
+            //{
+            //    return;
+            //}
+            //else
+            //{
+            //    Layers.Add(newLayer);
+            //    if (this._drawingModel == null )
+            //    {
+            //        return;
+            //    }
+            //    var newCanvasLayer = new Layer(newLayer.Name,newLayer.Color,newLayer.LineTypeName,newLayer.LineWeight,newLayer.Visible,newLayer.Locked);
+            //    this._drawingModel.Layers.Add(newCanvasLayer);
+            //}
+        }
+
+        private void RemoveLayer(LayerItem removeLayer)
+        {
+            //if (this.Layers == null)
+            //{
+            //    return;
+
+            //}
+
+            //if (this.Layers.Contains(removeLayer))
+            //{
+            //    this.Layers.Remove(removeLayer);
+            //    foreach (var drawingModelLayer in _drawingModel.Layers)
+            //    {
+            //        if (drawingModelLayer.Name == removeLayer.Name)
+            //        {
+            //            _drawingModel.Layers.Remove(drawingModelLayer);
+            //            return;
+            //        }
+            //    }
+            //}
+
+            
+        }
+        private void InitsLayers()
+        {
+            
+            if (this._drawingModel == null )
+            {
+                return;
+            }
+            this.LayerManager.SetLayer(_drawingModel.Layers);
         }
         private void WindowLoaded(DrawingWindowView window)
         {
             if (window == null) throw new ArgumentNullException(nameof(window));
             this._window = window ?? throw new ArgumentNullException(nameof(window));
             this._drawingModel = window.CanvasDrawing.CanvasDrawing;
+            InitsLayers();
             this.SetRegionManager();
+            if (this._drawingModel != null && this.LayerManager!= null)
+            {
+                this.LayerManager.PropertyChanged += LayerManager_PropertyChanged;
+            }
             //this._drawingModel = window.FindName("CanvasDrawing") as CanvasDrawing;
             //var drawingModel = this._drawingModel;
             //if (drawingModel != null)
@@ -187,6 +235,15 @@ namespace DrawingModule.ViewModels
             //this._drawingModel.MouseMove += _drawingModel_MouseMove;
         }
 
+        private void LayerManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var layerManager = sender as ILayerManager;
+            if (e.PropertyName == "SelectedLayer")
+            {
+                this._drawingModel.ActiveLayerName = layerManager.SelectedLayer.Name;
+            }
+        }
+
         private void SetRegionManager()
         {
             this.RegionManager = this.RegionManager.CreateRegionManager();
@@ -199,10 +256,10 @@ namespace DrawingModule.ViewModels
 
         private void LoadLayerManger()
         {
-            var parameters = new NavigationParameters { { "Layers", _drawingModel.Layers } };
+            //var parameters = new NavigationParameters { { "Layers", Layers } };
             //if (this.Job.Info != null)
             //{
-                this.RegionManager.RequestNavigate("LayerManagerRegion", nameof(LayerManagerView),parameters);
+                this.RegionManager.RequestNavigate("LayerManagerRegion", nameof(LayerManagerView));
             //}
 
         }

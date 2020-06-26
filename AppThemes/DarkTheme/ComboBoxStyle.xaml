@@ -317,4 +317,7 @@
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    <Style x:Key="Custom.MahApps.Style.ComboboxStyle"
+           BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
+    </Style>
 </ResourceDictionary>

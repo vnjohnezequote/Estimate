@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using ApplicationInterfaceCore;
 using AppModels;
 using DataType.Enums;
 using NewJobWizardModule.Helper;
@@ -90,8 +91,8 @@ namespace NewJobWizardModule.ViewModels
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        public NewJobWizardViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+        public NewJobWizardViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManger)
+            : base(unityContainer, regionManager, eventAggregator,layerManger)
         {
             // delegate Loaded
             this.Job = this.UnityContainer.Resolve<JobModel>();

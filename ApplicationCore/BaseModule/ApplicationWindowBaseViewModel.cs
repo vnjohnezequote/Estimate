@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using ApplicationInterfaceCore;
+
 namespace ApplicationCore.BaseModule
 {
     using ApplicationService;
@@ -53,8 +55,8 @@ namespace ApplicationCore.BaseModule
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        public ApplicationWindowBaseViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+        public ApplicationWindowBaseViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             this.RegionManager = this.RegionManager.CreateRegionManager();
             this.EventAggre.GetEvent<JobModelService>().Subscribe(this.JobReceive);

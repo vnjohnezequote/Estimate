@@ -201,6 +201,10 @@
       <Project>{43e7a97c-8b89-4bc4-a3e2-8db47108afde}</Project>
       <Name>ApplicationCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ApplicationInterfaceCore\ApplicationInterfaceCore.csproj">
+      <Project>{ea2caab1-eb61-4436-b30a-7f8d993b3414}</Project>
+      <Name>ApplicationInterfaceCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />

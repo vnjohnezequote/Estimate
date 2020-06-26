@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using ApplicationCore.BaseModule;
+using ApplicationInterfaceCore;
 using ApplicationService;
 using devDept.Eyeshot;
 using devDept.Graphics;
@@ -65,8 +66,8 @@ namespace DrawingModule.ViewModels
         #region Constructor
         public CanvasDrawingViewModel() :base()
         {}
-        public CanvasDrawingViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+        public CanvasDrawingViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             //CanvasDrawingLoadedCommand = ReactiveCommand.Create<Grid,Grid >(canvasGrid =>this._canvasGrid = canvasGrid );
             //CanvasDrawingLoadedCommand = new DelegateCommand<CanvasDrawing>(OnCanvasDrawingLoaded);

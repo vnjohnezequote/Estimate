@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using ApplicationInterfaceCore;
+
 namespace JobInfoModule.ViewModels
 {
     using System.Collections.ObjectModel;
@@ -87,8 +89,9 @@ namespace JobInfoModule.ViewModels
         public LevelInfoViewModel(
             IUnityContainer unityContainer,
             IRegionManager regionManager,
-            IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+            IEventAggregator eventAggregator,
+            ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             this.RegionManager = this.RegionManager.CreateRegionManager();
 

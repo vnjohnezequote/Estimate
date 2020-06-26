@@ -24,7 +24,6 @@ namespace DrawingModule.Views
         public DrawingWindowView()
         {
             this.InitializeComponent();
-
             this.Loaded += DrawingWindowView_Loaded;
             this.CanvasDrawing.CanvasDrawing.WorkCompleted += CanvasDrawing_WorkCompleted;
             this.CanvasDrawing.TabControlDrawing.SelectionChanged += TabControl1_SelectionChanged;
@@ -116,7 +115,6 @@ namespace DrawingModule.Views
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            base.OnPreviewKeyDown(e);
             if (CanvasDrawing.TabDrawing.IsSelected)
             {
                 var handler = this.CanvasDrawing.CanvasDrawing.PreProcessKeyDownForCanvasView(e);
@@ -129,8 +127,9 @@ namespace DrawingModule.Views
                     }
 
                 }
-                
             }
+            e.Handled = false;
+            base.OnPreviewKeyDown(e);
         }
         
     }

@@ -9,6 +9,7 @@
 
 using System.Linq;
 using AppDataBase.DataBase;
+using ApplicationInterfaceCore;
 
 namespace JobInfoModule.ViewModels
 {
@@ -60,8 +61,8 @@ namespace JobInfoModule.ViewModels
         /// <param name="eventAggregator">
         /// The event aggregator.
         /// </param>
-        public HorizontalJobInfoViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+        public HorizontalJobInfoViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator, layerManager)
         {
             this.BuilderNameLostFocusCommand = new DelegateCommand<ComboBox>(this.OnAddBuilderNamesChanged, this.CanAddBuiderNameCanExcute);
             this.EventAggre.GetEvent<CustomerService>().Subscribe(this.SelectedClientReceive);

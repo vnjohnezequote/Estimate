@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ApplicationCore.BaseModule;
+using ApplicationInterfaceCore;
 using ApplicationService;
 using DrawingModule.CommandLine;
 using DrawingModule.Enums;
@@ -265,8 +266,8 @@ namespace DrawingModule.ViewModels
         #region Constructor
         public DynamicInputViewModel():base()
         {}
-        public DynamicInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
-        : base(unityContainer, regionManager, eventAggregator)
+        public DynamicInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager)
+        : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             this.EventAggre.GetEvent<DynamicInputViewEvent>().Subscribe(ShowOrHideDynamicInput);
             this.InitSuggestionHints();

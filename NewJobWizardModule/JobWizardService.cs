@@ -56,7 +56,7 @@ namespace NewJobWizardModule
         /// <summary>
         /// The show shell.
         /// </summary>
-        public override void ShowShell<T>()
+        public override void ShowShell<T>(bool isShowDialog)
         {
             var shell = this.UnityContainer.Resolve<T>();
             //var shell = ServiceLocator.Current.GetInstance<T>();
@@ -64,7 +64,13 @@ namespace NewJobWizardModule
             RegionManager.SetRegionManager(shell, scopedRegion);
 
             // RegionManager.UpdateRegions();
-            shell.ShowDialog();
+            if (isShowDialog)
+            {
+                shell.ShowDialog();
+                return;
+            }
+            shell.Show();
+            
         }
     }
 }

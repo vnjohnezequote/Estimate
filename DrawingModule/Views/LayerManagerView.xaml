@@ -42,10 +42,8 @@
                                         HorizontalAlignment="Right"
                                         Width="200"
                                         Height="Auto"
-                                        Color="{Binding SelectedLayer.Color, Mode=TwoWay, Converter={StaticResource ColorToColorConverter}}"
-                                        Foreground="{Binding SelectedLayer.Color,Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
-                                        IsColorPaletteVisible="True"
-                                        sfSkinManager:SfSkinManager.VisualStyle="Blend"/>
+                                        Color="{Binding LayerManager.SelectedLayer.Color, Mode=TwoWay, Converter={StaticResource ColorToColorConverter}}"
+                                        Foreground="{Binding LayerManager.SelectedLayer.Color,Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"/>
                 <!--<Syncfusion:ColorPickerPalette GenerateThemeVariants="True"
                                                GenerateStandardVariants="True"
                                                Name="LayerColorPicker"
@@ -59,18 +57,20 @@
             </DockPanel>
             
                 <Syncfusion:SfDataGrid Name="LayerManagerGrid"
-                                   AutoGenerateColumns="False"
+                                       EditTrigger="OnDoubleTap"
+                                       AutoGenerateColumns="False"
                                    AllowDeleting="True"
                                    AllowEditing="True"
                                    AllowResizingColumns="True"
                                    AllowResizingHiddenColumns ="True"
                                    ColumnSizer="Auto"
-                                   ItemsSource="{Binding Layers}"
+                                   ItemsSource="{Binding LayerManager.Layers}"
                                    RowStyle="{StaticResource LayerTextRowStyle}"
                                    AddNewRowPosition="Bottom"
                                    SelectionMode="Extended"
-                                   SelectedItem="{Binding SelectedLayer}"
-                                   SelectedItems="{Binding SelectedLayers}">
+                                   SelectedItem="{Binding LayerManager.SelectedLayer}"
+                                   SelectedItems="{Binding LayerManager.SelectedLayers}"
+                                       Background="{StaticResource MaterialDesignLightBackground}">
                 <Syncfusion:SfDataGrid.Resources>
                     <Style TargetType="TextBox" />
                     <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
@@ -99,6 +99,21 @@
                     <Syncfusion:GridCheckBoxColumn HeaderText="On" MappingName="Visible"/>
                     <Syncfusion:GridCheckBoxColumn HeaderText="Lock" MappingName="Locked"/>
                     <Syncfusion:GridCheckBoxColumn HeaderText="Plot" MappingName="PrintAble"/>
+                    <Syncfusion:GridTemplateColumn HeaderText="Delete Row"
+                                                   Syncfusion:FocusManagerHelper.WantsKeyInput="True">
+                        <Syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button  Content="Delete" Syncfusion:FocusManagerHelper.FocusedElement="True" 
+                                         Command="{Binding Path=DataContext.DeleteLayerCommand, ElementName=LayerManagerGrid}"
+                                         CommandParameter="{Binding ElementName=LayerManagerGrid}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Padding="5 0 5 0"/>
+                            </DataTemplate>
+                        </Syncfusion:GridTemplateColumn.CellTemplate>
+                    </Syncfusion:GridTemplateColumn>
                 </Syncfusion:SfDataGrid.Columns>
             </Syncfusion:SfDataGrid>
             

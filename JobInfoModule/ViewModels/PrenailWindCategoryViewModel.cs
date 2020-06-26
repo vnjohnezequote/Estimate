@@ -1,4 +1,6 @@
-﻿namespace JobInfoModule.ViewModels
+﻿using ApplicationInterfaceCore;
+
+namespace JobInfoModule.ViewModels
 {
     using System.Windows.Input;
 
@@ -113,8 +115,8 @@
         public PrenailWindCategoryViewModel(
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
-            [NotNull] IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+            [NotNull] IEventAggregator eventAggregator,ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator, layerManager)
         {
             this.WindCommand = new DelegateCommand<string>(OnSetWindCategory);
             this.WindLoadedCommand = new DelegateCommand(OnControlLoaded);

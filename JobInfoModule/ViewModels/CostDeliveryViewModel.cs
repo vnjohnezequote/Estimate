@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ApplicationCore.BaseModule;
+using ApplicationInterfaceCore;
 using AppModels;
 using Prism.Events;
 using Prism.Regions;
@@ -22,8 +23,8 @@ namespace JobInfoModule.ViewModels
         public CostDeliveryViewModel(
            IUnityContainer unityContainer,
            IRegionManager regionManager,
-           IEventAggregator eventAggregator)
-           : base(unityContainer, regionManager, eventAggregator)
+           IEventAggregator eventAggregator,ILayerManager layerManager)
+           : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
 
 

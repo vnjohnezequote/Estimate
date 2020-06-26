@@ -104,6 +104,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddNewLayerEventService.cs" />
     <Compile Include="BuilderService.cs" />
     <Compile Include="ClientService.cs" />
     <Compile Include="CommandExcuteStringEvent.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="JobModelService.cs" />
     <Compile Include="JobNumberService.cs" />
     <Compile Include="JobUnitService.cs" />
+    <Compile Include="LayerManagerService.cs" />
     <Compile Include="PromptStatus.cs" />
     <Compile Include="PromptStatusEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -130,6 +132,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="RegionService.cs" />
+    <Compile Include="RemoveLayerEventService.cs" />
     <Compile Include="TreatmentService.cs" />
     <Compile Include="WindCategoryService.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

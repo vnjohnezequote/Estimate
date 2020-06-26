@@ -266,7 +266,7 @@
                         </syncfusion:SfDataGrid.Columns>
                     </syncfusion:SfDataGrid>
                     <!-- Input Length -->
-                    <syncfusion:SfDataGrid ItemsSource="{Binding Level.TempLengths}"></syncfusion:SfDataGrid>
+                    <!--<syncfusion:SfDataGrid ItemsSource="{Binding Level.TempLengths}"></syncfusion:SfDataGrid>-->
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <!-- Beam Input -->

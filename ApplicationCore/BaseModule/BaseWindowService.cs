@@ -24,7 +24,7 @@ namespace ApplicationCore.BaseModule
 
         }
 
-        public virtual void ShowShell<T>() where T : Window
+        public virtual void ShowShell<T>(bool isShowDialog) where T : Window
         {
             var shell = this.UnityContainer.Resolve<T>();
             //var shell = ServiceLocator.Current.GetInstance<T>();
@@ -32,7 +32,12 @@ namespace ApplicationCore.BaseModule
             RegionManager.SetRegionManager(shell, scopedRegion);
 
             // RegionManager.UpdateRegions();
-            shell.ShowDialog();
+            if (isShowDialog)
+            {
+                shell.ShowDialog();
+                return;
+            }
+            shell.Show();
 
         }
 

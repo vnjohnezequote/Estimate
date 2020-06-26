@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using ApplicationInterfaceCore;
 using CustomControls.Controls;
 
 namespace ApplicationCore.BaseModule
@@ -45,11 +46,12 @@ namespace ApplicationCore.BaseModule
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        protected BaseViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
+        protected BaseViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
         {
             this.UnityContainer = unityContainer;
             this.RegionManager = regionManager;
             this.EventAggre = eventAggregator;
+            this.LayerManager = layerManager;
         }
 
         #endregion
@@ -60,6 +62,7 @@ namespace ApplicationCore.BaseModule
         /// Gets the unity container.
         /// </summary>
         protected IUnityContainer UnityContainer { get; private set; }
+        public ILayerManager LayerManager { get; private set; }
 
         /// <summary>
         /// Gets or sets the region manager.

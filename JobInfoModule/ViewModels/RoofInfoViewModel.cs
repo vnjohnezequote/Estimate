@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.ObjectModel;
+using ApplicationInterfaceCore;
 
 namespace JobInfoModule.ViewModels
 {
@@ -60,8 +61,9 @@ namespace JobInfoModule.ViewModels
         public RoofInfoViewModel(
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
-            [NotNull] IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+            [NotNull] IEventAggregator eventAggregator,
+            ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             this.RoofTypeCommand = new DelegateCommand<string>(OnSetRoofType);
         }

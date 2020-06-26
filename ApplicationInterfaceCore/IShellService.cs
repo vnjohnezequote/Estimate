@@ -19,6 +19,6 @@ namespace ApplicationInterfaceCore
         /// <summary>
         /// The show shell.
         /// </summary>
-        void ShowShell<T>() where T:Window;
+        void ShowShell<T>(bool isShowDialog) where T:Window;
     }
 }

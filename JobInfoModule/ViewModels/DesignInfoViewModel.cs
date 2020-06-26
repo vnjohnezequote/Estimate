@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using ApplicationInterfaceCore;
+
 namespace JobInfoModule.ViewModels
 {
     using System.Collections.ObjectModel;
@@ -55,8 +57,8 @@ namespace JobInfoModule.ViewModels
         public DesignInfoViewModel(
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
-            [NotNull] IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+            [NotNull] IEventAggregator eventAggregator,ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             using (var db = new LiteDatabase(@"DesignInfo.db"))
             // using (var db = new LiteDatabase(@"filename=DesignInfo.db;upgrade=true"))

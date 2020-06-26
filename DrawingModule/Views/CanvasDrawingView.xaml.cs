@@ -15,6 +15,7 @@ using Block = devDept.Eyeshot.Block;
 
 namespace DrawingModule.Views
 {
+
     public enum formatType
     {
         A0_ISO, A1_ISO, A2_ISO, A3_ISO, A4_ISO, A4_LANDSCAPE_ISO, A_ANSI, A_LANDSCAPE_ANSI, B_ANSI, C_ANSI, D_ANSI, E_ANSI
@@ -24,6 +25,15 @@ namespace DrawingModule.Views
     /// </summary>
     public partial class CanvasDrawingView : UserControl
     {
+        public static readonly DependencyProperty ActiveLayerNameProperty =
+            DependencyProperty.Register("ActiveLayerName", typeof(string), typeof(CanvasDrawingView),
+                new PropertyMetadata("Default"));
+
+        public string ActiveLayerName
+        {
+            get => (string)GetValue(ActiveLayerNameProperty);
+            set => SetValue(ActiveLayerNameProperty, value);
+        }
         #region Constructor
         public CanvasDrawingView()
         {

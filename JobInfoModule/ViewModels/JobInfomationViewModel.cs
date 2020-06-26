@@ -1,6 +1,7 @@
 ﻿
 using System.Windows;
 using ApplicationCore.BaseModule;
+using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
 using DataType.Class;
@@ -24,8 +25,8 @@ namespace JobInfoModule.ViewModels
 		public JobInfomationViewModel()
 		{}
 		
-		 public JobInfomationViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+		 public JobInfomationViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator, layerManager)
         {
 			this.EventAggre.GetEvent<CustomerService>().Subscribe(this.ChangeClient);
 		}

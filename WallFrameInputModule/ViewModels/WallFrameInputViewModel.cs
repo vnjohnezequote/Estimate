@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using ApplicationInterfaceCore;
+
 namespace WallFrameInputModule.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
@@ -65,8 +67,8 @@ namespace WallFrameInputModule.ViewModels
         public WallFrameInputViewModel(
             IUnityContainer unityContainer,
             IRegionManager regionManager,
-            IEventAggregator eventAggregator)
-            : base(unityContainer, regionManager, eventAggregator)
+            IEventAggregator eventAggregator,ILayerManager layerManager)
+            : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
         }
 

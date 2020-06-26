@@ -9,6 +9,8 @@
 
 
 using AppAddons;
+using ApplicationInterfaceCore;
+using AppModels;
 
 namespace Estimate
 {
@@ -42,6 +44,7 @@ namespace Estimate
         /// </param>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<ILayerManager,LayerManager>();
         }
 
         /// <summary>

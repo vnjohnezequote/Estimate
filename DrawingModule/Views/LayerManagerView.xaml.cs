@@ -12,7 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AppModels.AppData;
+using devDept.Eyeshot;
+using DrawingModule.ViewModels;
 using Syncfusion.SfSkinManager;
+using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.Windows.Tools.Controls;
 
 namespace DrawingModule.Views
@@ -22,10 +26,28 @@ namespace DrawingModule.Views
     /// </summary>
     public partial class LayerManagerView : UserControl
     {
+        private LayerManagerViewModel _viewModel;
         public LayerManagerView()
         {
             InitializeComponent();
+            _viewModel = DataContext as LayerManagerViewModel;
+            this.LayerManagerGrid.AddNewRowInitiating+=LayerManagerGridOnAddNewRowInitiating;
+        }
 
+        private void LayerManagerGridOnAddNewRowInitiating(object sender, AddNewRowInitiatingEventArgs e)
+        {
+            if (_viewModel.LayerManager.Layers == null || _viewModel.LayerManager.Layers.Count > 0)
+            {
+                var newData = e.NewObject as LayerItem;
+
+                var checkName = _viewModel.LayerManager.Layers.Any(layer => layer.Name == newData.Name);
+                if (checkName)
+                {
+                    newData.Name = newData.Name + _viewModel.LayerManager.Layers.Count.ToString();
+                }
+            }
+
+            //Layer layer;
         }
 
        
