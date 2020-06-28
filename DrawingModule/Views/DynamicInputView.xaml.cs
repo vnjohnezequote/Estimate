@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
+using ApplicationInterfaceCore;
 using DrawingModule.Enums;
 using DrawingModule.ViewModels;
 using MahApps.Metro.Converters;
@@ -17,7 +18,7 @@ namespace DrawingModule.Views
     /// <summary>
     /// Interaction logic for DynamicInputView
     /// </summary>
-    public partial class DynamicInputView : UserControl, INotifyPropertyChanged
+    public partial class DynamicInputView : UserControl, INotifyPropertyChanged, IDynamicInputView
     {
         #region Dependency Property
 

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
+using ApplicationInterfaceCore;
 using devDept.Eyeshot;
 using devDept.Geometry;
 using devDept.Graphics;
-using DrawingModule.Views;
 
 namespace DrawingModule.Interface
 {
@@ -21,7 +21,7 @@ namespace DrawingModule.Interface
         RenderContextBase renderContext { get; }
         double CurrentLengthDimension { get; }
         double CurrentAngleDimension { get; }
-        DynamicInputView DynamicInput { get; }
+        IDynamicInputView DynamicInput { get; }
 
         void UpdateCurrentPointByLengthAndAngle(double length, double angle);
         bool ScreenToPlane(System.Drawing.Point mousePosition,Plane sketchPlant, out Point3D point);

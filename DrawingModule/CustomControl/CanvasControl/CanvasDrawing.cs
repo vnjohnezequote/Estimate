@@ -14,7 +14,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using AppDataBase.DataBase;
+using ApplicationInterfaceCore;
 using ApplicationService;
+using AppModels;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -45,6 +48,13 @@ namespace DrawingModule.CustomControl.CanvasControl
         public static readonly DependencyProperty ActiveLayerNameProperty =
             DependencyProperty.Register("ActiveLayerName", typeof(string), typeof(CanvasDrawing),
                 new PropertyMetadata("Default"));
+        public static readonly DependencyProperty EntitiesManagerProperty =
+            DependencyProperty.Register("EntitiesManager",typeof(IEntitiesManager),typeof(CanvasDrawing),
+                new PropertyMetadata(new EntitiesManager(),EntitiesManagerChangedCallBack,EntitiesManagerCoerceCallback));
+        public static readonly DependencyProperty LayersManagerProperty =
+            DependencyProperty.Register("LayersManager", typeof(ILayerManager), typeof(CanvasDrawing),
+                new PropertyMetadata(new LayerManager(), LayersManagerChangedCallBack, LayersManagerCoerceCallback));
+
         private bool _cursorOutSide;
         private bool _isUserInteraction;
         private bool _isSnappingEnable;
@@ -502,6 +512,46 @@ namespace DrawingModule.CustomControl.CanvasControl
         {
             PropertyChanged?.Invoke(this, args);
         }
+        #endregion
+
+        #region Dependency Change Callback
+
+        private static void EntitiesManagerChangedCallBack(
+            DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var vp = (ICadDrawAble)d;
+            var oldValue = (IEntitiesManager)e.OldValue;
+            if (oldValue != null)
+                oldValue.CanvasDrawing = null;
+            var newValue = (IEntitiesManager)e.NewValue;
+            if (newValue != null)
+                newValue.CanvasDrawing = vp;
+
+
+            // do something
+        }
+        private static object EntitiesManagerCoerceCallback(DependencyObject d, object baseValue)
+        {
+            if (baseValue is IEntitiesManager entitiesManager)
+            {
+                return entitiesManager;
+            }
+            return new EntitiesManager() as IEntitiesManager;
+        }
+        private static void LayersManagerChangedCallBack(
+            DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            // do something
+        }
+        private static object LayersManagerCoerceCallback(DependencyObject d, object baseValue)
+        {
+            if (baseValue is ILayerManager layersManager)
+            {
+                return layersManager;
+            }
+            return new LayerManager() as LayerManager;
+        }
+
         #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI;
 using System.Windows.Input;
+using ApplicationInterfaceCore;
 using devDept.Geometry;
 using DrawingModule.Enums;
 using DrawingModule.EventArgs;
@@ -33,6 +34,6 @@ namespace DrawingModule.Interface
         void NotifyMouseUp(object sender, MouseButtonEventArgs e);
         void OnJigging(object sender, DrawInteractiveArgs e);
         void NotifyPreviewKeyDown(object sender, KeyEventArgs e);
-        void SetDynamicInput(DynamicInputView dynamicInput);
+        void SetDynamicInput(IDynamicInputView dynamicInput);
     }
 }

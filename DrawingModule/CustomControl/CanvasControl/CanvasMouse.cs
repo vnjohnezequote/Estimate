@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using ApplicationInterfaceCore;
 using ApplicationService;
 using devDept.Eyeshot;
 using devDept.Graphics;
@@ -22,8 +23,8 @@ namespace DrawingModule.CustomControl.CanvasControl
         public event DrawingToolChanged ToolChanged;
         internal event Action UserInteraction;
         private IDrawInteractive _currentTool;
-        private DynamicInputView _dynamicInput;
-        public DynamicInputView DynamicInput =>_dynamicInput;
+        private IDynamicInputView _dynamicInput;
+        public IDynamicInputView DynamicInput =>_dynamicInput;
         
         internal IDrawInteractive CurrentTool
         {
@@ -125,7 +126,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             CurrentTool = tool;
             if (this._dynamicInput!=null)
             {
-                CurrentTool.SetDynamicInput(DynamicInput);
+                CurrentTool.SetDynamicInput((IDynamicInputView)DynamicInput);
             }
             
             IsProcessingTool = true;
