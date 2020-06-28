@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
+using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using devDept.Geometry;
 using DrawingModule.Enums;
 using DrawingModule.EventArgs;
@@ -12,7 +14,7 @@ namespace DrawingModule.DrawToolBase
     public abstract class ToolBase :BindableBase, IDrawInteractive
     {
         private string _toolMessage;
-        private DynamicInputView _dynamicInput;
+        private IDynamicInputView _dynamicInput;
         public event EventHandler ToolMessageChanged;
         
         public virtual string ToolName { get; }
@@ -38,7 +40,7 @@ namespace DrawingModule.DrawToolBase
         public bool IsUsingLeaderSegmentTextBox { get; protected set; }
         public bool IsUsingArrowHeadSizeTextBox { get; protected set; }
         public FocusType DefaultDynamicInputTextBoxToFocus { get; protected set; }
-        public DynamicInputView DynamicInput => _dynamicInput;
+        public IDynamicInputView DynamicInput => _dynamicInput;
 
         protected ToolBase()
         {
@@ -85,7 +87,7 @@ namespace DrawingModule.DrawToolBase
             
         }
 
-        public void SetDynamicInput(DynamicInputView dynamicInput)
+        public void SetDynamicInput(IDynamicInputView dynamicInput)
         {
             this._dynamicInput = dynamicInput;
         }

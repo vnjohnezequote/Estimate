@@ -226,8 +226,7 @@
                                          Width="Auto"
                                          Height="Auto"
                                          VerticalAlignment="Stretch"
-                                         HorizontalAlignment="Stretch"
-                                         ActiveLayerName="{Binding LayerManager.ActiveLayer, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                                         HorizontalAlignment="Stretch"/>
 				<!--<Canvas Name="CanvasTextBox">
 					<TextBox Name="TestInput" Text="Test Zoom" Background="Red"
 							 Margin="100 100 0 0"

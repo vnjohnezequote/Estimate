@@ -30,12 +30,8 @@ namespace AppModels
                 return null;
 
             } 
-            set
-            {
-                SetProperty(ref _selectedLayer, value);
-                //RaisePropertyChanged(nameof(ActiveLayer));
-
-            } 
+            set => SetProperty(ref _selectedLayer, value);
+            //RaisePropertyChanged(nameof(ActiveLayer));
         }
         public ObservableCollection<LayerItem> Layers
         {
@@ -69,9 +65,18 @@ namespace AppModels
             Layers.CollectionChanged += Layers_CollectionChanged;
         }
 
-        public void SetLayer(LayerKeyedCollection layers)
+        public void SetLayerList(LayerKeyedCollection layers)
         {
-            CanvasLayers = layers;
+            if (CanvasLayers== null)
+            {
+                CanvasLayers = layers;
+            }
+            SyncLayerListAndLayers();
+            
+        }
+
+        private void SyncLayerListAndLayers()
+        {
             foreach (var layer in CanvasLayers)
             {
                 var checkName = Layers.Any(layerCheck => layerCheck.Name == layer.Name);

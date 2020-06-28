@@ -29,7 +29,9 @@
 										Units="Millimeters"
 										AntiAliasingSamples="x8"
 										AutoRefresh="True"
-                                        ActiveLayerName="{Binding ElementName=CanvasDrawingControl, Path=ActiveLayerName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                                        EntitiesManager="{Binding EntitiesManager}"
+                                        LayersManager="{Binding LayerManager}"
+                                        ActiveLayerName="{Binding LayerManager.SelectedLayer.Name}">
 						<b:Interaction.Triggers>
 							<b:EventTrigger EventName="MouseLeave">
 								<b:InvokeCommandAction Command="{Binding CanvasDrawingMouseLeave, Mode=OneWay}"/>

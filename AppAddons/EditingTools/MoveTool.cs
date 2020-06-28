@@ -1,4 +1,5 @@
 ﻿using System;
+using ApplicationInterfaceCore;
 using ApplicationService;
 using devDept.Geometry;
 using DrawingModule.CommandClass;

@@ -1,4 +1,5 @@
 ﻿using System;
+using ApplicationInterfaceCore;
 using DrawingModule.CommandLine;
 using DrawingModule.DrawToolBase;
 using DrawingModule.EventArgs;

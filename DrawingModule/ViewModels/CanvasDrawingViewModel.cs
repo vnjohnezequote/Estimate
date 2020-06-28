@@ -23,6 +23,7 @@ namespace DrawingModule.ViewModels
     {
         #region Field
 
+        private IEntitiesManager _entitiesManager;
         private Grid _canvasGrid;
         private bool _isCanvasMouseOn;
         private readonly ObservableAsPropertyHelper<Visibility> _dynamicInputVisibility;
@@ -45,6 +46,8 @@ namespace DrawingModule.ViewModels
             } 
         }
 
+        public IEntitiesManager EntitiesManager => _entitiesManager;
+
         //public Visibility DynamicInputVisibility => IsCanvasMouseOn ? Visibility.Visible : Visibility.Collapsed;
         //public Visibility DynamicInputVisibility => this.IsCanvasMouseOn ? Visibility.Visible : Visibility.Collapsed;
         
@@ -66,11 +69,14 @@ namespace DrawingModule.ViewModels
         #region Constructor
         public CanvasDrawingViewModel() :base()
         {}
-        public CanvasDrawingViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager)
+        public CanvasDrawingViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager, IEntitiesManager entitiesManager)
             : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
+            this._entitiesManager = entitiesManager;
+            this.RaisePropertyChanged(nameof(_entitiesManager));
             //CanvasDrawingLoadedCommand = ReactiveCommand.Create<Grid,Grid >(canvasGrid =>this._canvasGrid = canvasGrid );
             //CanvasDrawingLoadedCommand = new DelegateCommand<CanvasDrawing>(OnCanvasDrawingLoaded);
+
             CanvasDrawingLoadedCommand = new DelegateCommand<CanvasDrawingView>(OnCanvasDrawingLoaded);
             CanvasDrawingMouseLeave = new DelegateCommand(OnCanvasDrawingMouseLeave);
             CanvasDrawingMouseEnter = new DelegateCommand(OnCanvasDrawingMouseEnter);

@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -41,7 +42,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         
         #region Delegate
         private DrawInteractiveDelegate _drawInteractiveHandler;
-
+        
         #endregion
         #region Field
 
@@ -49,11 +50,11 @@ namespace DrawingModule.CustomControl.CanvasControl
             DependencyProperty.Register("ActiveLayerName", typeof(string), typeof(CanvasDrawing),
                 new PropertyMetadata("Default"));
         public static readonly DependencyProperty EntitiesManagerProperty =
-            DependencyProperty.Register("EntitiesManager",typeof(IEntitiesManager),typeof(CanvasDrawing),
-                new PropertyMetadata(new EntitiesManager(),EntitiesManagerChangedCallBack,EntitiesManagerCoerceCallback));
+            DependencyProperty.Register("EntitiesManager", typeof(IEntitiesManager), typeof(CanvasDrawing),
+                new PropertyMetadata(null, EntitiesManagerChangedCallBack));
         public static readonly DependencyProperty LayersManagerProperty =
             DependencyProperty.Register("LayersManager", typeof(ILayerManager), typeof(CanvasDrawing),
-                new PropertyMetadata(new LayerManager(), LayersManagerChangedCallBack, LayersManagerCoerceCallback));
+                new PropertyMetadata(null, LayersManagerChangedCallBack));
 
         private bool _cursorOutSide;
         private bool _isUserInteraction;
@@ -75,6 +76,16 @@ namespace DrawingModule.CustomControl.CanvasControl
         #endregion
 
         #region Properties
+        public IEntitiesManager EntitiesManager {
+            get => (IEntitiesManager) GetValue(EntitiesManagerProperty);
+            set => SetValue(EntitiesManagerProperty,value);
+        }
+
+        public ILayerManager LayersManager
+        {
+            get => (ILayerManager)GetValue(LayersManagerProperty);
+            set => SetValue(LayersManagerProperty, value);
+        }
         //public DrawEntitiesType DrawEntitiesType { get; set; }
         public int CurrentIndex { get; set; }
         public bool IsUserInteraction
@@ -88,8 +99,8 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         public string ActiveLayerName
         {
-            get => (string)GetValue(ActiveLayerNameProperty);
-            set => SetValue(ActiveLayerNameProperty, value);
+            get=>(string)GetValue(ActiveLayerNameProperty);
+            set=>SetValue(ActiveLayerNameProperty,value);
         }
         public bool IsDrawEntityUnderMouse { get; set; }
         public bool IsDrawingMode { get; private set; }
@@ -520,14 +531,9 @@ namespace DrawingModule.CustomControl.CanvasControl
             DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var vp = (ICadDrawAble)d;
-            var oldValue = (IEntitiesManager)e.OldValue;
-            if (oldValue != null)
-                oldValue.CanvasDrawing = null;
             var newValue = (IEntitiesManager)e.NewValue;
             if (newValue != null)
-                newValue.CanvasDrawing = vp;
-
-
+                newValue.SetEntitiesList(vp.Entities);
             // do something
         }
         private static object EntitiesManagerCoerceCallback(DependencyObject d, object baseValue)
@@ -541,6 +547,10 @@ namespace DrawingModule.CustomControl.CanvasControl
         private static void LayersManagerChangedCallBack(
             DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            var vp = (ICadDrawAble)d;
+            var newValue = (ILayerManager)e.NewValue;
+            if (newValue != null)
+                newValue.SetLayerList(vp.Layers);
             // do something
         }
         private static object LayersManagerCoerceCallback(DependencyObject d, object baseValue)

@@ -117,6 +117,10 @@
       <Project>{43e7a97c-8b89-4bc4-a3e2-8db47108afde}</Project>
       <Name>ApplicationCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ApplicationInterfaceCore\ApplicationInterfaceCore.csproj">
+      <Project>{EA2CAAB1-EB61-4436-B30A-7F8D993B3414}</Project>
+      <Name>ApplicationInterfaceCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ApplicationService\ApplicationService.csproj">
       <Project>{cc18caa3-e47b-4197-b088-276b0f84fcf0}</Project>
       <Name>ApplicationService</Name>

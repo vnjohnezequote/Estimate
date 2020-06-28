@@ -13,6 +13,7 @@ namespace AppDataBase.DataBase
         public EntityList Entities { get; set; }
         public Entity SelectedEntity { get=>_selectedEntity; set=>SetProperty(ref _selectedEntity,value); }
         public ObservableCollection<Entity> SelectedEntities { get=>_selectedEntities; set=>SetProperty(ref _selectedEntities,value); }
+        public ICadDrawAble CanvasDrawing { get; set; }
 
         public EntitiesManager()
         {
@@ -25,7 +26,7 @@ namespace AppDataBase.DataBase
 
         public void RemoveEntity(Entity entity)
         {
-            
+           
         }
 
         public void Invalidate()
@@ -45,7 +46,13 @@ namespace AppDataBase.DataBase
 
         public void SetEntitiesList(EntityList entities)
         {
-            Entities = entities;
+            if (Entities == null)
+            {
+                this.Entities=entities;
+            }
+
+
         }
+        
     }
 }

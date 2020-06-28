@@ -196,37 +196,37 @@ namespace DrawingModule.ViewModels
 
             
         }
-        private void InitsLayers()
-        {
+        //private void InitsLayers()
+        //{
             
-            if (this._drawingModel == null )
-            {
-                return;
-            }
-            this.LayerManager.SetLayer(_drawingModel.Layers);
-        }
+        //    if (this._drawingModel == null )
+        //    {
+        //        return;
+        //    }
+        //    this.LayerManager.SetLayer(_drawingModel.Layers);
+        //}
 
-        private void InitEntitiesManager()
-        {
-            if (this._drawingModel == null)
-            {
-                return;
-            }
+        //private void InitEntitiesManager()
+        //{
+        //    if (this._drawingModel == null)
+        //    {
+        //        return;
+        //    }
 
-            this._entitiesManager.SetEntitiesList(this._drawingModel.Entities);
+        //    this._entitiesManager.SetEntitiesList(this._drawingModel.Entities);
 
-        }
+        //}
         private void WindowLoaded(DrawingWindowView window)
         {
             if (window == null) throw new ArgumentNullException(nameof(window));
             this._window = window ?? throw new ArgumentNullException(nameof(window));
             this._drawingModel = window.CanvasDrawing.CanvasDrawing;
-            InitsLayers();
-            InitEntitiesManager();
+            //InitsLayers();
+            //InitEntitiesManager();
             this.SetRegionManager();
             if (this._drawingModel != null && this.LayerManager!= null)
             {
-                this.LayerManager.PropertyChanged += LayerManager_PropertyChanged;
+                //this.LayerManager.PropertyChanged += LayerManager_PropertyChanged;
             }
             //this._drawingModel = window.FindName("CanvasDrawing") as CanvasDrawing;
             //var drawingModel = this._drawingModel;
@@ -249,14 +249,14 @@ namespace DrawingModule.ViewModels
             //this._drawingModel.MouseMove += _drawingModel_MouseMove;
         }
 
-        private void LayerManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            var layerManager = sender as ILayerManager;
-            if (e.PropertyName == "SelectedLayer")
-            {
-                this._drawingModel.ActiveLayerName = layerManager.SelectedLayer.Name;
-            }
-        }
+        //private void LayerManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    var layerManager = sender as ILayerManager;
+        //    if (e.PropertyName == "SelectedLayer")
+        //    {
+        //        this._drawingModel.ActiveLayerName = layerManager.SelectedLayer.Name;
+        //    }
+        //}
 
         private void SetRegionManager()
         {

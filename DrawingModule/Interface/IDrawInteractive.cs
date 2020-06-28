@@ -2,6 +2,7 @@
 using System.Web.UI;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using devDept.Geometry;
 using DrawingModule.Enums;
 using DrawingModule.EventArgs;
@@ -28,7 +29,7 @@ namespace DrawingModule.Interface
         bool IsUsingLeaderSegmentTextBox { get; }
         bool IsUsingArrowHeadSizeTextBox { get; }
         FocusType DefaultDynamicInputTextBoxToFocus { get; }
-        DynamicInputView DynamicInput { get;}
+        IDynamicInputView DynamicInput { get;}
         void NotifyMouseMove(object sender, MouseEventArgs e);
         void NotifyMouseDown(object sender, MouseButtonEventArgs e);
         void NotifyMouseUp(object sender, MouseButtonEventArgs e);

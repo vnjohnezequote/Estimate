@@ -361,7 +361,6 @@
     <Compile Include="Enums\DrawingMode.cs" />
     <Compile Include="Enums\EInputType.cs" />
     <Compile Include="Enums\ETool.cs" />
-    <Compile Include="Enums\FocusType.cs" />
     <Compile Include="Enums\HintListMode.cs" />
     <Compile Include="Enums\InfinityPointType.cs" />
     <Compile Include="Enums\ObjectSnapType.cs" />

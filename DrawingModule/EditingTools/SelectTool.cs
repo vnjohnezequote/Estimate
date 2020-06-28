@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Windows.Input;
+using ApplicationInterfaceCore;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;

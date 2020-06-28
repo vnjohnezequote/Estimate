@@ -1,4 +1,4 @@
-﻿namespace DrawingModule.Enums
+﻿namespace ApplicationInterfaceCore.Enums
 {
     public enum FocusType
     {

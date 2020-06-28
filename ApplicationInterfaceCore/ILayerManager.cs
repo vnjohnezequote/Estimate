@@ -12,7 +12,7 @@ namespace ApplicationInterfaceCore
         LayerKeyedCollection CanvasLayers { get; }
         //string ActiveLayer { get; }
         ObservableCollection<LayerItem> SelectedLayers { get; }
-        void SetLayer(LayerKeyedCollection layers);
+        void SetLayerList(LayerKeyedCollection layers);
         
         void Add(LayerItem addLayerItem);
         void RemoveAt(int id);

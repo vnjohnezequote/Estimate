@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
+using ApplicationInterfaceCore;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CustomControl;

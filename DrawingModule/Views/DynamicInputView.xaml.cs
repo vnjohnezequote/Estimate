@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using DrawingModule.Enums;
 using DrawingModule.ViewModels;
 using MahApps.Metro.Converters;
@@ -347,7 +348,7 @@ namespace DrawingModule.Views
             return "";
         }
 
-        internal void FocusDynamicInputTextBox(FocusType focusType)
+        public void FocusDynamicInputTextBox(FocusType focusType)
         {
             if (focusType == FocusType.Previous)
             {

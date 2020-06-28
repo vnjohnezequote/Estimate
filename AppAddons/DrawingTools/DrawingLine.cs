@@ -10,7 +10,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Input;
-
+using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;

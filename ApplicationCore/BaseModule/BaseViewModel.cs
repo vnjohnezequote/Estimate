@@ -25,7 +25,14 @@ namespace ApplicationCore.BaseModule
     /// </summary>
     public abstract class BaseViewModel : BindableBase
     {
+        #region Field
+        private ILayerManager _layerManager;
+
+
+        #endregion
+
         #region Constructor
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseViewModel"/> class.
@@ -51,7 +58,8 @@ namespace ApplicationCore.BaseModule
             this.UnityContainer = unityContainer;
             this.RegionManager = regionManager;
             this.EventAggre = eventAggregator;
-            this.LayerManager = layerManager;
+            _layerManager = layerManager;
+            this.RaisePropertyChanged(nameof(LayerManager));
         }
 
         #endregion
@@ -62,7 +70,7 @@ namespace ApplicationCore.BaseModule
         /// Gets the unity container.
         /// </summary>
         protected IUnityContainer UnityContainer { get; private set; }
-        public ILayerManager LayerManager { get; private set; }
+        public ILayerManager LayerManager => _layerManager;
 
         /// <summary>
         /// Gets or sets the region manager.

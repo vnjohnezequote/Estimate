@@ -62,6 +62,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\FocusType.cs" />
     <Compile Include="ICadDrawAble.cs" />
     <Compile Include="IDynamicInputView.cs" />
     <Compile Include="IEntitiesManager.cs" />
@@ -101,5 +102,6 @@
       <Name>CustomControls</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

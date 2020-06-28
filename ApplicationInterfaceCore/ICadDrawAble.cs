@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
-using ApplicationInterfaceCore;
 using devDept.Eyeshot;
 using devDept.Geometry;
 using devDept.Graphics;
 
-namespace DrawingModule.Interface
+namespace ApplicationInterfaceCore
 {
     public interface ICadDrawAble : INotifyPropertyChanged
     {
@@ -22,6 +21,7 @@ namespace DrawingModule.Interface
         double CurrentLengthDimension { get; }
         double CurrentAngleDimension { get; }
         IDynamicInputView DynamicInput { get; }
+        LayerKeyedCollection Layers { get; }
 
         void UpdateCurrentPointByLengthAndAngle(double length, double angle);
         bool ScreenToPlane(System.Drawing.Point mousePosition,Plane sketchPlant, out Point3D point);
