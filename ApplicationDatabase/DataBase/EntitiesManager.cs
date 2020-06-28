@@ -22,7 +22,7 @@ namespace AppDataBase.DataBase
 
         public EntitiesManager()
         {
-
+            SelectedEntities = new ObservableCollection<Entity>();
         }
         public void AddAndRefresh(Entity entity, string layerName)
         {

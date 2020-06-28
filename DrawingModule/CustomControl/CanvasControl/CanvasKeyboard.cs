@@ -24,7 +24,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                     if (this.IsProcessingTool)
                     {
                         this.Focus();
-                        if (this._waitingForSelection && this._selectTool.SelectedEntities.Count > 0)
+                        if (this._waitingForSelection && this.EntitiesManager.SelectedEntities.Count > 0)
                         {
                             this.IsUserInteraction = true;
                             this._waitingForSelection = false;

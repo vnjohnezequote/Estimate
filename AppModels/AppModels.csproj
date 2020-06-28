@@ -137,6 +137,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="Comparer\WallTypeComparer.cs" />
     <Compile Include="DesignInfor.cs" />
+    <Compile Include="EventArg\DrawInteractiveArgs.cs" />
     <Compile Include="ExcelNote.cs" />
     <Compile Include="GenericBracing.cs" />
     <Compile Include="GenericBracingBase.cs" />

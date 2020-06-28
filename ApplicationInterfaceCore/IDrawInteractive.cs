@@ -1,16 +1,11 @@
-﻿using System;
-using System.Web.UI;
-using System.Windows.Input;
-using ApplicationInterfaceCore;
+﻿using System.Windows.Input;
 using ApplicationInterfaceCore.Enums;
+using AppModels.EventArg;
 using devDept.Geometry;
-using DrawingModule.Enums;
-using DrawingModule.EventArgs;
-using DrawingModule.Views;
 
-namespace DrawingModule.Interface
+namespace ApplicationInterfaceCore
 {
-    internal interface IDrawInteractive
+    public interface IDrawInteractive
     {
         //DrawInteractiveDelegate DrawInteractiveHandler { get; }
         //event EventHandler ToolMessageChanged;

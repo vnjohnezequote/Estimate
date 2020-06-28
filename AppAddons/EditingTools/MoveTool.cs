@@ -1,10 +1,10 @@
 ﻿using System;
 using ApplicationInterfaceCore;
 using ApplicationService;
+using AppModels.EventArg;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
 using DrawingModule.DrawToolBase;
-using DrawingModule.EventArgs;
 using DrawingModule.Interface;
 using DrawingModule.UserInteractive;
 
@@ -94,7 +94,7 @@ namespace DrawingModule.EditingTools
                 selEntity.Translate(movement);
                 selEntity.Selected = false;
             }
-            Application.Application.DocumentManager.MdiActiveDocument.Editor.CanvasDrawing.RefreshEntities();
+            EntitiesManager.Refresh();
         }
 
         //public void Dispose()

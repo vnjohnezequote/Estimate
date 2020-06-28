@@ -2,9 +2,9 @@
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
+using AppModels.EventArg;
 using devDept.Geometry;
 using DrawingModule.Enums;
-using DrawingModule.EventArgs;
 using DrawingModule.Interface;
 using DrawingModule.Views;
 using Prism.Mvvm;

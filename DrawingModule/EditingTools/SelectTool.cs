@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
+using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
@@ -11,23 +12,22 @@ using DrawingModule.Application;
 using DrawingModule.CustomControl.CanvasControl;
 using DrawingModule.DrawToolBase;
 using DrawingModule.Enums;
-using DrawingModule.EventArgs;
 using DrawingModule.Interface;
 
 namespace DrawingModule.EditingTools
 {
     public sealed class SelectTool: ToolBase
     {
-        private ObservableCollection<Entity> _selectedEntities;
+        //private ObservableCollection<Entity> _selectedEntities;
         public PickState CurrentPickState { get; set; }
         public Point3D StartPoint { get; set; }
         public Point3D EndPoint { get; set; }
-        public ObservableCollection<Entity> SelectedEntities => this._selectedEntities;
+        //public ObservableCollection<Entity> SelectedEntities => this._selectedEntities;
         public DrawInteractiveDelegate DrawInteractiveHandler { get; private set; }
         public SelectTool()
         {
             this.CurrentPickState = PickState.Pick;
-            this._selectedEntities = new ObservableCollection<Entity>();
+            //this._selectedEntities = new ObservableCollection<Entity>();
             IsSnapEnable = false;
             DrawInteractiveHandler += DrawInteractiveSelect;
         }
@@ -174,11 +174,11 @@ namespace DrawingModule.EditingTools
             if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
                 myEnts[ent].Selected = false;
-                this._selectedEntities.Remove(myEnts[ent]);
+                this.EntitiesManager.SelectedEntities.Remove(myEnts[ent]);
                 return;
             }
             myEnts[ent].Selected = true;
-            this._selectedEntities.Add(myEnts[ent]);
+            this.EntitiesManager.SelectedEntities.Add(myEnts[ent]);
         }
         public void DrawInteractiveSelect(ICadDrawAble drawTable, DrawInteractiveArgs drawInteractiveArgs)
         {

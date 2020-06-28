@@ -19,6 +19,7 @@ using AppDataBase.DataBase;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
+using AppModels.EventArg;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -27,7 +28,6 @@ using DrawingModule.CommandClass;
 using DrawingModule.Control;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.EditingTools;
-using DrawingModule.EventArgs;
 using DrawingModule.Helper;
 using DrawingModule.Interface;
 using DrawingModule.Views;
@@ -207,12 +207,19 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.IsDrawingMode = false;
             this._entityUnderMouse = null;
             this.CurrentIndex = -1;
+            Loaded += CanvasDrawing_Loaded;
+        }
+
+        private void CanvasDrawing_Loaded(object sender, RoutedEventArgs e)
+        {
+            _selectTool.SetEntitiesManager(EntitiesManager);
+            _selectTool.SetLayersManager(LayersManager);
         }
         #endregion
 
         #region Override Method
 
-        
+
         //protected override void OnKeyDown(KeyEventArgs e)
         //{
         //    base.OnKeyDown(e);
@@ -371,11 +378,12 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         public List<Entity> GetEntities()
         {
-            return this._selectTool.SelectedEntities.ToList();
+            //return this._selectTool.SelectedEntities.ToList();
+            return this.EntitiesManager.SelectedEntities.ToList();
         }
         public PromptStatus GetEntities(out string stringResult, out Point3D clickedPoint, List<Entity> entities)
         {
-            if (this._selectTool.SelectedEntities.Count <= 0)
+            if (this.EntitiesManager.SelectedEntities.Count <= 0)
             {
                 _waitingForSelection = true;
             }
@@ -390,19 +398,19 @@ namespace DrawingModule.CustomControl.CanvasControl
 
             }
             var promptStatus = PromptStatus.None;
-            if (this._selectTool.SelectedEntities != null && this._selectTool.SelectedEntities.Count != 0 && this.PromptStatus == PromptStatus.OK)
+            if (this.EntitiesManager.SelectedEntities != null && this.EntitiesManager.SelectedEntities.Count != 0 && this.PromptStatus == PromptStatus.OK)
             {
                 _waitingForSelection = false;
                 IsUserInteraction = false;
                 clickedPoint = LastClickPoint;
                 stringResult = "Select Entities Complete";
                 entities.Clear();
-                entities.AddRange(this._selectTool.SelectedEntities);
+                entities.AddRange(this.EntitiesManager.SelectedEntities);
                 promptStatus = PromptStatus.OK;
             }
             else
             {
-                var selectToolSelectedEntities = this._selectTool.SelectedEntities;
+                var selectToolSelectedEntities = this.EntitiesManager.SelectedEntities;
                 if (selectToolSelectedEntities != null && (selectToolSelectedEntities.Count == 0 && this.PromptStatus == PromptStatus.OK))
                 {
                     clickedPoint = CurrentPoint;
@@ -475,12 +483,17 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.PromptStatus = promptStatus;
             IsUserInteraction = true;
             this._waitingForSelection = false;
-            foreach (var selectToolSelectedEntity in this._selectTool.SelectedEntities)
-            {
-                selectToolSelectedEntity.Selected = false;
-            }
-            this._selectTool.SelectedEntities.Clear();
-            this.Invalidate();
+           
+
+            this.Dispatcher.Invoke((Action)(() =>
+            {//this refer to form in WPF application 
+                foreach (var selectToolSelectedEntity in this.EntitiesManager.SelectedEntities)
+                {
+                    selectToolSelectedEntity.Selected = false;
+                }
+                this.EntitiesManager.SelectedEntities.Clear();
+                Invalidate();
+            }));
         }
         public void RefreshEntities()
         {
@@ -538,6 +551,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             if (newValue != null)
                 newValue.SetEntitiesList(vp.Entities);
             newValue.SetCanvasDrawing(vp);
+            
             // do something
         }
         private static object EntitiesManagerCoerceCallback(DependencyObject d, object baseValue)
@@ -555,6 +569,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             var newValue = (ILayerManager)e.NewValue;
             if (newValue != null)
                 newValue.SetLayerList(vp.Layers);
+            
             // do something
         }
         private static object LayersManagerCoerceCallback(DependencyObject d, object baseValue)

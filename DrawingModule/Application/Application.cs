@@ -1,8 +1,8 @@
 ﻿using System;
 using ApplicationInterfaceCore;
+using AppModels.EventArg;
 using DrawingModule.CommandLine;
 using DrawingModule.DrawToolBase;
-using DrawingModule.EventArgs;
 using DrawingModule.Interface;
 
 namespace DrawingModule.Application

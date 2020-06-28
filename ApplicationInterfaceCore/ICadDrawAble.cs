@@ -13,6 +13,7 @@ namespace ApplicationInterfaceCore
         Size Size{ get; }
         Point3D LastClickPoint { get; }
         Plane DrawingPlane { get; }
+        //IDrawInteractive SelectTool { get; }
         int PickBoxSize { get; }
         int[] GetAllEntitiesUnderMouseCursor(System.Drawing.Point mousePosition, bool selectTableOnly = true);
         EntityList Entities { get; }

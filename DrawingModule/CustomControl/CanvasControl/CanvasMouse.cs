@@ -2,11 +2,11 @@
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationService;
+using AppModels.EventArg;
 using devDept.Eyeshot;
 using devDept.Graphics;
 using DrawingModule.Application;
 using DrawingModule.DrawToolBase;
-using DrawingModule.EventArgs;
 using DrawingModule.Helper;
 using DrawingModule.Interface;
 using DrawingModule.Views;

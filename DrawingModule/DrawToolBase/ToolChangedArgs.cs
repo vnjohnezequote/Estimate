@@ -1,4 +1,5 @@
-﻿using DrawingModule.Interface;
+﻿using ApplicationInterfaceCore;
+using DrawingModule.Interface;
 
 namespace DrawingModule.DrawToolBase
 {

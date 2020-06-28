@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Resources;
 using System.Runtime.Remoting.Messaging;
 using System.Windows.Input;
+using ApplicationInterfaceCore;
 using DrawingModule.Enums;
 using DrawingModule.Interface;
 

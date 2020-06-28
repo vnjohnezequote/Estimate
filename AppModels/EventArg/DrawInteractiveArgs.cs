@@ -2,7 +2,7 @@
 using devDept.Eyeshot;
 using devDept.Geometry;
 
-namespace DrawingModule.EventArgs
+namespace AppModels.EventArg
 {
     public class DrawInteractiveArgs
     {

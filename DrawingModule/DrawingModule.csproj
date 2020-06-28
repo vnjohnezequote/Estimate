@@ -366,14 +366,12 @@
     <Compile Include="Enums\ObjectSnapType.cs" />
     <Compile Include="Enums\PageLayout.cs" />
     <Compile Include="Enums\PickState.cs" />
-    <Compile Include="EventArgs\DrawInteractiveArgs.cs" />
     <Compile Include="Helper\AttachableForStyleBehavior.cs" />
     <Compile Include="Helper\DrawingHelper.cs" />
     <Compile Include="Helper\KeepSelectionBehavior.cs" />
     <Compile Include="Helper\Utils.cs" />
     <Compile Include="Interface\ICommandLine.cs" />
     <Compile Include="Interface\ICommandLineCallable.cs" />
-    <Compile Include="Interface\IDrawInteractive.cs" />
     <Compile Include="Interface\IHandleWindowPositionChanged.cs" />
     <Compile Include="Interface\IHintSearcher.cs" />
     <Compile Include="Interface\ILookup.cs" />
@@ -512,7 +510,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="EventArgs\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
