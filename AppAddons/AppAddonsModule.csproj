@@ -125,6 +125,10 @@
       <Project>{cc18caa3-e47b-4197-b088-276b0f84fcf0}</Project>
       <Name>ApplicationService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AppModels\AppModels.csproj">
+      <Project>{abf31598-a0e5-49b6-8479-d27bdfec8e64}</Project>
+      <Name>AppModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DrawingModule\DrawingModule.csproj">
       <Project>{de7f939d-8684-4e5e-9158-dcabe43c68c2}</Project>
       <Name>DrawingModule</Name>

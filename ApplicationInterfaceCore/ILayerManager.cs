@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using AppModels.AppData;
 using devDept.Eyeshot;
@@ -7,6 +8,7 @@ namespace ApplicationInterfaceCore
 {
     public interface ILayerManager: INotifyPropertyChanged
     {
+        event EventHandler SelectedPropertiesChanged;
         ObservableCollection<LayerItem> Layers { get; }
         LayerItem SelectedLayer { get; }
         LayerKeyedCollection CanvasLayers { get; }

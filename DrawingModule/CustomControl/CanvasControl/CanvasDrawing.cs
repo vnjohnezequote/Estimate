@@ -43,6 +43,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         #region Delegate
         private DrawInteractiveDelegate _drawInteractiveHandler;
         
+
         #endregion
         #region Field
 
@@ -326,6 +327,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         public void SetDynamicInput(DynamicInputView dynamicInput)
         {
             _dynamicInput = dynamicInput;
+            this.RefreshEntities();
         }
         //public void RegisterDrawInteractive(IDrawInteractive drawObject)
         //{
@@ -486,6 +488,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             {//this refer to form in WPF application 
                 Entities.Regen();
                 Invalidate();
+                Refresh();
             }));
         }
         private void ProcessCancelTool()
@@ -534,6 +537,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             var newValue = (IEntitiesManager)e.NewValue;
             if (newValue != null)
                 newValue.SetEntitiesList(vp.Entities);
+            newValue.SetCanvasDrawing(vp);
             // do something
         }
         private static object EntitiesManagerCoerceCallback(DependencyObject d, object baseValue)

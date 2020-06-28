@@ -16,7 +16,9 @@ namespace DrawingModule.DrawToolBase
         private string _toolMessage;
         private IDynamicInputView _dynamicInput;
         public event EventHandler ToolMessageChanged;
-        
+
+        public IEntitiesManager EntitiesManager { get; private set; }
+        public ILayerManager LayerManager { get; private set; }
         public virtual string ToolName { get; }
         public virtual string ToolMessage
         {
@@ -90,6 +92,16 @@ namespace DrawingModule.DrawToolBase
         public void SetDynamicInput(IDynamicInputView dynamicInput)
         {
             this._dynamicInput = dynamicInput;
+        }
+
+        public void SetLayersManager(ILayerManager layerManager)
+        {
+            this.LayerManager = layerManager;
+        }
+
+        public void SetEntitiesManager(IEntitiesManager entitiesManager)
+        {
+            this.EntitiesManager = entitiesManager;
         }
     }
 }

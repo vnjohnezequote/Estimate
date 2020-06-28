@@ -22,7 +22,9 @@ namespace ApplicationInterfaceCore
         double CurrentAngleDimension { get; }
         IDynamicInputView DynamicInput { get; }
         LayerKeyedCollection Layers { get; }
-
+        void RefreshEntities();
+        void Invalidate();
+        bool Focus();
         void UpdateCurrentPointByLengthAndAngle(double length, double angle);
         bool ScreenToPlane(System.Drawing.Point mousePosition,Plane sketchPlant, out Point3D point);
     }

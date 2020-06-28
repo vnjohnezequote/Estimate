@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using ApplicationInterfaceCore;
 using AppModels.AppData;
@@ -13,7 +14,7 @@ namespace AppModels
         private ObservableCollection<LayerItem> _layers;
         private ObservableCollection<LayerItem> _seletedLayers;
         private LayerItem _selectedLayer;
-
+        public event EventHandler SelectedPropertiesChanged;
         public LayerItem SelectedLayer
         {
             get
@@ -29,10 +30,35 @@ namespace AppModels
 
                 return null;
 
+            }
+            set
+            {
+                if (_selectedLayer == value)
+                {
+                    return;
+                }
+
+                if (_selectedLayer==null)
+                {
+                    SetProperty(ref _selectedLayer, value);
+                    _selectedLayer.PropertyChanged += SelectedLayer_PropertyChanged;
+                }
+                else
+                {
+                    _selectedLayer.PropertyChanged -= SelectedLayer_PropertyChanged;
+                    SetProperty(ref _selectedLayer, value);
+                    if (_selectedLayer!=null)
+                    {
+                        _selectedLayer.PropertyChanged += SelectedLayer_PropertyChanged;
+                    }
+                    
+                }
             } 
-            set => SetProperty(ref _selectedLayer, value);
             //RaisePropertyChanged(nameof(ActiveLayer));
         }
+
+       
+
         public ObservableCollection<LayerItem> Layers
         {
             get => _layers;
@@ -63,6 +89,11 @@ namespace AppModels
             Layers= new ObservableCollection<LayerItem>();
             SelectedLayers = new ObservableCollection<LayerItem>();
             Layers.CollectionChanged += Layers_CollectionChanged;
+        }
+
+        private void SelectedLayer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            SelectedPropertiesChanged?.Invoke(this,EventArgs.Empty);
         }
 
         public void SetLayerList(LayerKeyedCollection layers)

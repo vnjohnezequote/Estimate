@@ -77,7 +77,8 @@ namespace AppAddons.DrawingTools
                 var startPoint2 = (Point3D)_points[index2 - 1].Clone();
                 var endPoint = (Point3D) _points[index2].Clone();
                 var line = new Line(startPoint2,endPoint);
-                acDoc.Editor.CanvasDrawing.AddAndRefresh(line);
+                this.EntitiesManager.AddAndRefresh(line,this.LayerManager.SelectedLayer.Name);
+                //acDoc.Editor.CanvasDrawing.AddAndRefresh(line);
                 //DynamicInput?.FocusDynamicInputTextBox(this.DefaultDynamicInputTextBoxToFocus);
             }
         }
@@ -132,7 +133,8 @@ namespace AppAddons.DrawingTools
         }
         public void DrawInteractiveLine(ICadDrawAble drawTable, DrawInteractiveArgs e)
         {
-            drawTable.renderContext.SetColorWireframe(Color.Blue);
+            drawTable.renderContext.SetColorWireframe(LayerManager.SelectedLayer.Color);
+            drawTable.renderContext.SetLineSize(LayerManager.SelectedLayer.LineWeight);
             if (this._points.Count < 1) return;
             var index = this._points.Count - 1;
             var startPoint = drawTable.WorldToScreen(_points[index]);
@@ -142,7 +144,7 @@ namespace AppAddons.DrawingTools
             }
             var endPoint = drawTable.WorldToScreen(e.CurrentPoint);
             drawTable.renderContext.DrawLine(startPoint, endPoint);
-
+            drawTable.renderContext.SetLineSize(1);
         }
         #endregion
 

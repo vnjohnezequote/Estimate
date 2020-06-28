@@ -14,6 +14,8 @@ namespace DrawingModule.Interface
     {
         //DrawInteractiveDelegate DrawInteractiveHandler { get; }
         //event EventHandler ToolMessageChanged;
+        IEntitiesManager EntitiesManager { get; }
+        ILayerManager LayerManager { get; }
         string ToolName { get; }
         string ToolMessage { get; }
         bool IsSnapEnable { get; }
@@ -36,5 +38,7 @@ namespace DrawingModule.Interface
         void OnJigging(object sender, DrawInteractiveArgs e);
         void NotifyPreviewKeyDown(object sender, KeyEventArgs e);
         void SetDynamicInput(IDynamicInputView dynamicInput);
+        void SetLayersManager(ILayerManager layerManager);
+        void SetEntitiesManager(IEntitiesManager entitiesManager);
     }
 }

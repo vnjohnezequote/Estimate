@@ -10,11 +10,14 @@ namespace ApplicationInterfaceCore
         EntityList Entities { get; }
         Entity SelectedEntity { get; }
         ObservableCollection<Entity> SelectedEntities { get; }
-        void AddAndRefresh(Entity entity);
+        ICadDrawAble CanvasDrawing { get; }
+        void AddAndRefresh(Entity entity, string layerName);
         void RemoveEntity(Entity entity);
         void Invalidate();
         void EntitiesRegen();
+        void Refresh();
         void ChangeSelectedEntiesLayer(Layer layer);
         void SetEntitiesList(EntityList entities);
+        void SetCanvasDrawing(ICadDrawAble cadDraw);
     }
 }

@@ -128,6 +128,16 @@ namespace DrawingModule.CustomControl.CanvasControl
             {
                 CurrentTool.SetDynamicInput((IDynamicInputView)DynamicInput);
             }
+
+            if (this.EntitiesManager!=null)
+            {
+                CurrentTool.SetEntitiesManager((IEntitiesManager) EntitiesManager);
+            }
+
+            if (this.LayersManager!=null)
+            {
+                CurrentTool.SetLayersManager((ILayerManager) LayersManager);
+            }
             
             IsProcessingTool = true;
             _isUserInteraction = false;
@@ -148,6 +158,8 @@ namespace DrawingModule.CustomControl.CanvasControl
                 DrawOverlay_Jigging -= _currentTool.OnJigging;
                 PreviewKeybordDown_Drawing -= _currentTool.NotifyPreviewKeyDown;
                 CurrentTool.SetDynamicInput(null);
+                CurrentTool.SetEntitiesManager(null);
+                CurrentTool.SetLayersManager(null);
                 CurrentTool = null;
             }
             IsProcessingTool = false;

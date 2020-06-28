@@ -73,6 +73,7 @@ namespace DrawingModule.ViewModels
             : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             this._entitiesManager = entitiesManager;
+            this.LayerManager.SelectedPropertiesChanged += LayerManager_SelectedPropertiesChanged;
             this.RaisePropertyChanged(nameof(_entitiesManager));
             //CanvasDrawingLoadedCommand = ReactiveCommand.Create<Grid,Grid >(canvasGrid =>this._canvasGrid = canvasGrid );
             //CanvasDrawingLoadedCommand = new DelegateCommand<CanvasDrawing>(OnCanvasDrawingLoaded);
@@ -83,7 +84,12 @@ namespace DrawingModule.ViewModels
             this.EventAggre.GetEvent<CommandExcuteStringEvent>().Subscribe(ExcuteCommand);
         }
 
-        
+        private void LayerManager_SelectedPropertiesChanged(object sender, System.EventArgs e)
+        {
+            this.EntitiesManager.Refresh();
+        }
+
+
 
         #endregion
         #region Private Method
