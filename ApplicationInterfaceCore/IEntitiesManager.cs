@@ -14,6 +14,8 @@ namespace ApplicationInterfaceCore
         void RemoveEntity(Entity entity);
         void Invalidate();
         void EntitiesRegen();
+        void ChangeSelectedEntiesLayer(Layer layer);
+        void SetEntitiesList(EntityList entities);
 
     }
 }

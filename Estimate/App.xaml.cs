@@ -9,6 +9,7 @@
 
 
 using AppAddons;
+using AppDataBase.DataBase;
 using ApplicationInterfaceCore;
 using AppModels;
 
@@ -45,6 +46,7 @@ namespace Estimate
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<ILayerManager,LayerManager>();
+            containerRegistry.RegisterSingleton<IEntitiesManager, EntitiesManager>();
         }
 
         /// <summary>

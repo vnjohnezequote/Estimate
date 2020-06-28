@@ -31,6 +31,7 @@ namespace DrawingModule.ViewModels
     {
         #region private field
 
+        private IEntitiesManager _entitiesManager;
         /// <summary>
         /// The drawin model.
         /// </summary>
@@ -103,9 +104,10 @@ namespace DrawingModule.ViewModels
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        public DrawingWindowViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
+        public DrawingWindowViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IEntitiesManager entitiesManager)
             : base(unityContainer, regionManager, eventAggregator, layerManager)
         {
+            _entitiesManager = entitiesManager;
             this.WindowLoadedCommand = new DelegateCommand<DrawingWindowView>(this.WindowLoaded);
             //this.DrawLineCommand = new DelegateCommand(this.OnDrawLine);
             //this.DrawRectangleCommand = new DelegateCommand(this.OnDrawRectangle);
@@ -203,12 +205,24 @@ namespace DrawingModule.ViewModels
             }
             this.LayerManager.SetLayer(_drawingModel.Layers);
         }
+
+        private void InitEntitiesManager()
+        {
+            if (this._drawingModel == null)
+            {
+                return;
+            }
+
+            this._entitiesManager.SetEntitiesList(this._drawingModel.Entities);
+
+        }
         private void WindowLoaded(DrawingWindowView window)
         {
             if (window == null) throw new ArgumentNullException(nameof(window));
             this._window = window ?? throw new ArgumentNullException(nameof(window));
             this._drawingModel = window.CanvasDrawing.CanvasDrawing;
             InitsLayers();
+            InitEntitiesManager();
             this.SetRegionManager();
             if (this._drawingModel != null && this.LayerManager!= null)
             {

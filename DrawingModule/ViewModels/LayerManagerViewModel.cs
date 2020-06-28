@@ -13,7 +13,7 @@ namespace DrawingModule.ViewModels
     {
         #region Field
 
-
+        private IEntitiesManager _entitiesManger;
         #endregion
 
         #region Properties
@@ -26,9 +26,10 @@ namespace DrawingModule.ViewModels
         {
 
         }
-        public LayerManagerViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
+        public LayerManagerViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IEntitiesManager entitiesManager)
             : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
+            _entitiesManger = entitiesManager;
             DeleteLayerCommand = new DelegateCommand<SfDataGrid>(OnDeleteLayerRow);
         }
 

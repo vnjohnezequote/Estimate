@@ -35,6 +35,7 @@ namespace DrawingModule.CustomControl.CanvasControl
     /// </summary>
     public partial class CanvasDrawing : Model, ICadDrawAble
     {
+        
         #region Delegate
         private DrawInteractiveDelegate _drawInteractiveHandler;
 
@@ -184,7 +185,6 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.IsDrawingMode = false;
             this._entityUnderMouse = null;
             this.CurrentIndex = -1;
-
         }
         #endregion
 

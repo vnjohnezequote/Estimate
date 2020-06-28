@@ -13,9 +13,16 @@ namespace AppDataBase.DataBase
 {
     public class EntitiesManager: BindableBase, IEntitiesManager
     {
-        public EntityList Entities { get; }
-        public Entity SelectedEntity { get; }
-        public ObservableCollection<Entity> SelectedEntities { get; }
+        private Entity _selectedEntity;
+        private ObservableCollection<Entity> _selectedEntities;
+        public EntityList Entities { get; set; }
+        public Entity SelectedEntity { get=>_selectedEntity; set=>SetProperty(ref _selectedEntity,value); }
+        public ObservableCollection<Entity> SelectedEntities { get=>_selectedEntities; set=>SetProperty(ref _selectedEntities,value); }
+
+        public EntitiesManager()
+        {
+
+        }
         public void AddAndRefresh(Entity entity)
         {
             
@@ -34,6 +41,16 @@ namespace AppDataBase.DataBase
         public void EntitiesRegen()
         {
             
+        }
+
+        public void ChangeSelectedEntiesLayer(Layer layer)
+        {
+            
+        }
+
+        public void SetEntitiesList(EntityList entities)
+        {
+            Entities = entities;
         }
     }
 }

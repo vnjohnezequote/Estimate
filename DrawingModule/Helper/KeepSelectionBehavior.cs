@@ -74,7 +74,8 @@ namespace DrawingModule.Helper
                 key == Key.Back ||
                 (key >= Key.D0 && key <= Key.Z) ||
                 (key >= Key.Multiply && key <= Key.Divide) ||
-                (key >= Key.Oem1 && key <= Key.OemBackslash);
+                (key >= Key.Oem1 && key <= Key.OemBackslash)||
+                (key>=Key.NumPad0&& key<=Key.Divide);
         }
 
         private void CheckSelection()

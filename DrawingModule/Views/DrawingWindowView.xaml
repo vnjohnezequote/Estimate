@@ -108,7 +108,7 @@
 			<Button Content="{materialDesign:PackIcon ImageFilterNone}" Margin="5 0 0 0" Command="{Binding OffsetCommand}"/>
             <ComboBox VerticalAlignment="Center"
 					  HorizontalAlignment="Right"
-                      Margin="20 0 0 0"
+                      Margin="0 0 300 0"
 					  Width="150"
                       ItemsSource="{Binding LayerManager.Layers}"
                       SelectedItem="{Binding LayerManager.SelectedLayer}"
