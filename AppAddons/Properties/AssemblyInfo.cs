@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using AppAddons.DrawingTools;
+using AppAddons.EditingTools;
 using DrawingModule.CommandClass;
 using DrawingModule.EditingTools;
 
@@ -21,6 +22,7 @@ using DrawingModule.EditingTools;
 [assembly: CommandClass(typeof(DrawingLine))]
 [assembly: CommandClass(typeof(DrawingRectangle))]
 [assembly: CommandClass(typeof(MoveTool))]
+[assembly: CommandClass(typeof(CopyTool))]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from

@@ -93,6 +93,7 @@
     <Compile Include="DrawingTools\DrawText.cs" />
     <Compile Include="DrawingTools\LinearDim.cs" />
     <Compile Include="EditingTools\CopyTool.cs" />
+    <Compile Include="EditingTools\EditingToolBase.cs" />
     <Compile Include="EditingTools\ExtendTool.cs" />
     <Compile Include="EditingTools\FilletTool.cs" />
     <Compile Include="EditingTools\MirrorTool.cs" />

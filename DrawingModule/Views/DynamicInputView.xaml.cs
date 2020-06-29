@@ -357,7 +357,12 @@ namespace DrawingModule.Views
             switch (focusType)
             {
                 case FocusType.Length:
-                    FocusTextLength();
+                    //this.Dispatcher.Invoke((Action)(() =>
+                    //{//this refer to form in WPF application 
+                        FocusTextLength();
+                    //}));
+                   
+
                     break;
                 case FocusType.Width:
                     TextWidth.SelectAll();

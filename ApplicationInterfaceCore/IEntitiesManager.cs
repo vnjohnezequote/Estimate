@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Documents;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 
@@ -19,5 +21,6 @@ namespace ApplicationInterfaceCore
         void ChangeSelectedEntiesLayer(Layer layer);
         void SetEntitiesList(EntityList entities);
         void SetCanvasDrawing(ICadDrawAble cadDraw);
+        List<Entity> GetSelectedEntities();
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Threading;
 using ApplicationInterfaceCore;
 using devDept.Eyeshot;
@@ -35,6 +38,15 @@ namespace AppDataBase.DataBase
             }
 
             SelectedEntity = null;
+        }
+
+        public List<Entity> GetSelectedEntities()
+        {
+            return Application.Current.Dispatcher.Invoke((Func<List<Entity>>)(() =>
+            {//this refer to form in WPF application 
+                return this.SelectedEntities.ToList();
+            }));
+
         }
 
         public void AddAndRefresh(Entity entity, string layerName)

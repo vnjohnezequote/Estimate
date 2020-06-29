@@ -387,11 +387,17 @@ namespace DrawingModule.CustomControl.CanvasControl
         public List<Entity> GetEntities()
         {
             //return this._selectTool.SelectedEntities.ToList();
-            return this.EntitiesManager.SelectedEntities.ToList();
+
+            return Dispatcher.Invoke((Func<List<Entity>>)(() =>
+            {//this refer to form in WPF application 
+                return this.EntitiesManager.SelectedEntities.ToList();
+            }));
+            //return this.EntitiesManager.SelectedEntities.ToList();
         }
         public PromptStatus GetEntities(out string stringResult, out Point3D clickedPoint, List<Entity> entities)
         {
-            if (this.EntitiesManager.SelectedEntities.Count <= 0)
+            var seletedEntities = GetEntities();
+            if (seletedEntities.Count <= 0)
             {
                 _waitingForSelection = true;
             }
@@ -406,7 +412,7 @@ namespace DrawingModule.CustomControl.CanvasControl
 
             }
             var promptStatus = PromptStatus.None;
-            if (this.EntitiesManager.SelectedEntities != null && this.EntitiesManager.SelectedEntities.Count != 0 && this.PromptStatus == PromptStatus.OK)
+            if (seletedEntities.Count != 0 && this.PromptStatus == PromptStatus.OK)
             {
                 _waitingForSelection = false;
                 IsUserInteraction = false;

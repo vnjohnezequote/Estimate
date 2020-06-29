@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using ApplicationService;
 using DrawingModule.Application;
 
@@ -35,7 +36,11 @@ namespace DrawingModule.CustomControl.CanvasControl
                             this.PromptStatus = PromptStatus.OK;
                             this.IsUserInteraction = true;
                         }
-                        _dynamicInput?.FocusDynamicInputTextBox(CurrentTool.DefaultDynamicInputTextBoxToFocus);
+                        //this.Dispatcher.Invoke((Action)(() =>
+                        //{//this refer to form in WPF application 
+                            //_dynamicInput?.FocusDynamicInputTextBox(CurrentTool.DefaultDynamicInputTextBoxToFocus);
+                        //}));
+                        
                     }
                     return false;
                 case Key.Delete:

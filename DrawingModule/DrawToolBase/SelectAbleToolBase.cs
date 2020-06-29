@@ -4,7 +4,7 @@ using devDept.Geometry;
 
 namespace DrawingModule.DrawToolBase
 {
-    public class SelectAbleToolBase : ToolBase
+    public abstract class SelectAbleToolBase : ToolBase
     {
         public List<Entity> SelectedEntities { get; protected set; }
         public bool WaitingForSelection { get; protected set; }
