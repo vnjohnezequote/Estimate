@@ -52,6 +52,7 @@ namespace WallFrameInputModule.ViewModels
     {
         #region private Field
 
+        private IEntitiesManager _entitiesManager;
         /// <summary>
         /// The title.
         /// </summary>
@@ -111,12 +112,13 @@ namespace WallFrameInputModule.ViewModels
         /// <param name="eventAggregator">
         /// The event aggregator.
         /// </param>
-        public PrenailFloorInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager )
+        public PrenailFloorInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager, IEntitiesManager entitiesManager )
             : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
+            this.EntitiesManager = entitiesManager;
             this.PropertyChanged += PrenailFloorInputViewModelPropertyChanged;
             this.WallThicknessList = new List<string> { "90", "70" };
-            this.CreateLayers();
+            //this.CreateLayers();
             this.WallInputLoadedCommand = new DelegateCommand<FrameworkElement>(this.InputControlLoaded);
             this.NewWallRowInputCommand = new DelegateCommand(this.OnAddNewWallRow);
             this.DeleteWallRowCommand = new DelegateCommand<SfDataGrid>(this.OnDeleteWallRow);
@@ -131,7 +133,11 @@ namespace WallFrameInputModule.ViewModels
         #endregion
 
         #region public
-
+        public IEntitiesManager EntitiesManager
+        {
+            get => _entitiesManager;
+            set => SetProperty(ref _entitiesManager, value);
+        }
         /// <summary>
         /// Gets or sets the beam grade list.
         /// </summary>
@@ -203,7 +209,7 @@ namespace WallFrameInputModule.ViewModels
         /// <summary>
         /// Gets or sets the layers.
         /// </summary>
-        public List<Layer> Layers { get; set; }
+        //public List<Layer> Layers { get; set; }
 
         /// <summary>
         /// Gets the new wall row input command.
@@ -837,13 +843,13 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         private void CreateLayers()
         {
-            this.Layers = new List<Layer>();
-            var layer = new Layer("1", System.Drawing.Color.Red);
+            //this.Layers = new List<Layer>();
+            //var layer = new Layer("1", System.Drawing.Color.Red);
             
-            this.Layers.Add(layer);
-            var layer2 = new Layer("2", System.Drawing.Color.LawnGreen);
+            //this.Layers.Add(layer);
+            //var layer2 = new Layer("2", System.Drawing.Color.LawnGreen);
             
-            this.Layers.Add(layer2);
+            //this.Layers.Add(layer2);
         }
 
         #endregion

@@ -89,7 +89,7 @@ namespace AppModels.AppData
             LineWeight = 0.5f;
             Color = Color.Red;
             this.Layer = new Layer(Name, Color);
-            LineTypeName = (string)null;
+            LineTypeName = "Continues";
             Locked = false;
             Visible = true;
             InitCompnent();
@@ -102,7 +102,7 @@ namespace AppModels.AppData
             LineWeight = 0.5f;
             Color = Color.Red;
             this.Layer = new Layer(layerName,Color);
-            LineTypeName = (string)null;
+            LineTypeName = "Continues";
             Locked = false;
             Visible = true;
             InitCompnent();
@@ -112,7 +112,15 @@ namespace AppModels.AppData
         {
             this.Layer = layer;
             this.Name = layer.Name;
-            this.LineTypeName = layer.LineTypeName;
+            if (string.IsNullOrEmpty(layer.LineTypeName))
+            {
+                this.LineTypeName = "Continues";
+            }
+            else
+            {
+                this.LineTypeName = layer.LineTypeName;
+            }
+            
             LineWeight = layer.LineWeight;
             Locked = layer.Locked;
             Visible = layer.Visible;
@@ -143,7 +151,15 @@ namespace AppModels.AppData
 
             if (e.PropertyName== nameof(LineTypeName))
             {
-                Layer.LineTypeName = LineTypeName;
+                if (LineTypeName == "Continues")
+                {
+                    Layer.LineTypeName = (string) null;
+                }
+                else
+                {
+                    Layer.LineTypeName = LineTypeName;
+                }
+                
             }
 
             if (e.PropertyName == nameof(Visible))

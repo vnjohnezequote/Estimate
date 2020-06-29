@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.AppData;
+
 namespace AppModels
 {
     using Prism.Mvvm;
@@ -47,7 +49,7 @@ namespace AppModels
         /// <summary>
         /// The wall color layer.
         /// </summary>
-        private Layer wallColorLayer;
+        private LayerItem wallColorLayer;
 
         #endregion
 
@@ -62,7 +64,7 @@ namespace AppModels
         /// <summary>
         /// Gets or sets the wall color layer.
         /// </summary>
-        public Layer WallColorLayer
+        public LayerItem WallColorLayer
         {
             get => this.wallColorLayer;
             set => this.SetProperty(ref this.wallColorLayer, value);

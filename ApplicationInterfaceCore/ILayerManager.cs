@@ -10,7 +10,7 @@ namespace ApplicationInterfaceCore
     {
         event EventHandler SelectedPropertiesChanged;
         ObservableCollection<LayerItem> Layers { get; }
-        LayerItem SelectedLayer { get; }
+        LayerItem SelectedLayer { get; set; }
         LayerKeyedCollection CanvasLayers { get; }
         //string ActiveLayer { get; }
         ObservableCollection<LayerItem> SelectedLayers { get; }

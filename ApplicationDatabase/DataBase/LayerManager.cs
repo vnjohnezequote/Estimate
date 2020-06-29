@@ -25,7 +25,9 @@ namespace AppModels
                 }
                 if (this.Layers!= null & this.Layers.Count!=0)
                 {
-                    return Layers[0];
+                    //Layers[0].PropertyChanged += SelectedLayer_PropertyChanged;
+                    this.SelectedLayer = Layers[0];
+                    return _selectedLayer;
                 }
 
                 return null;
@@ -93,7 +95,7 @@ namespace AppModels
 
         private void SelectedLayer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            SelectedPropertiesChanged?.Invoke(this,EventArgs.Empty);
+            SelectedPropertiesChanged?.Invoke(this,e);
         }
 
         public void SetLayerList(LayerKeyedCollection layers)

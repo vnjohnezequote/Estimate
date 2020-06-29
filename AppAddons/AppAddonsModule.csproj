@@ -86,8 +86,21 @@
   <ItemGroup>
     <Compile Include="AppAddonsModuleControl.cs" />
     <Compile Include="DrawingTools\AngularDim.cs" />
+    <Compile Include="DrawingTools\DrawAllignDim.cs" />
     <Compile Include="DrawingTools\DrawingLine.cs" />
+    <Compile Include="DrawingTools\DrawingRectangle.cs" />
+    <Compile Include="DrawingTools\DrawLeader.cs" />
+    <Compile Include="DrawingTools\DrawText.cs" />
+    <Compile Include="DrawingTools\LinearDim.cs" />
+    <Compile Include="EditingTools\CopyTool.cs" />
+    <Compile Include="EditingTools\ExtendTool.cs" />
+    <Compile Include="EditingTools\FilletTool.cs" />
+    <Compile Include="EditingTools\MirrorTool.cs" />
     <Compile Include="EditingTools\MoveTool.cs" />
+    <Compile Include="EditingTools\OffsetTool.cs" />
+    <Compile Include="EditingTools\RotateTool.cs" />
+    <Compile Include="EditingTools\ScaleTool.cs" />
+    <Compile Include="EditingTools\TrimTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

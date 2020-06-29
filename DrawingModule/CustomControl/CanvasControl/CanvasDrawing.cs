@@ -208,12 +208,20 @@ namespace DrawingModule.CustomControl.CanvasControl
             this._entityUnderMouse = null;
             this.CurrentIndex = -1;
             Loaded += CanvasDrawing_Loaded;
+            this.PrepareLineTypes();
+
         }
 
+        private void PrepareLineTypes()
+        {
+            LineTypes.Add("Dash Dot", new float[] { 5f, -1f, 1f, -1f });
+            LineTypes.Add("Dash Space",new float[]{5f,-5f});
+        }
         private void CanvasDrawing_Loaded(object sender, RoutedEventArgs e)
         {
             _selectTool.SetEntitiesManager(EntitiesManager);
             _selectTool.SetLayersManager(LayersManager);
+            
         }
         #endregion
 
@@ -501,7 +509,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             {//this refer to form in WPF application 
                 Entities.Regen();
                 Invalidate();
-                Refresh();
+                //Refresh();
             }));
         }
         private void ProcessCancelTool()

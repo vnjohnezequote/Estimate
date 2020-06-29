@@ -19,6 +19,7 @@ using DrawingModule.EditingTools;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CommandClass(typeof(DrawingLine))]
+[assembly: CommandClass(typeof(DrawingRectangle))]
 [assembly: CommandClass(typeof(MoveTool))]
 
 // Setting ComVisible to false makes the types in this assembly not visible

@@ -70,7 +70,8 @@
                                    SelectionMode="Extended"
                                    SelectedItem="{Binding LayerManager.SelectedLayer}"
                                    SelectedItems="{Binding LayerManager.SelectedLayers}"
-                                       Background="{StaticResource MaterialDesignLightBackground}">
+                                       Background="{StaticResource MaterialDesignLightBackground}"
+                >
                 <Syncfusion:SfDataGrid.Resources>
                     <Style TargetType="TextBox" />
                     <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
@@ -94,7 +95,18 @@
                             </DataTemplate>
                         </Syncfusion:GridTemplateColumn.CellTemplate>
                     </Syncfusion:GridTemplateColumn>
-                    <Syncfusion:GridTextColumn HeaderText="Line Type" MappingName="LineTypeName"/>
+                    <!--<Syncfusion:GridTextColumn HeaderText="Line Type" MappingName="LineTypeName"/>-->
+                    <Syncfusion:GridComboBoxColumn
+                        ItemsSource="{Binding LineTypes}"
+                        HeaderText="Line Type"
+                        MappingName="LineTypeName"
+                        UseBindingValue="True"
+                        DisplayMemberPath="Description"
+                        SelectedValuePath="Name">
+                    </Syncfusion:GridComboBoxColumn>
+
+
+
                     <Syncfusion:GridTextColumn HeaderText="Line Weight" MappingName="LineWeight"/>
                     <Syncfusion:GridCheckBoxColumn HeaderText="On" MappingName="Visible"/>
                     <Syncfusion:GridCheckBoxColumn HeaderText="Lock" MappingName="Locked"/>

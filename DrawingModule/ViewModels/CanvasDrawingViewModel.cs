@@ -1,9 +1,14 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using ApplicationService;
+using AppModels;
 using devDept.Eyeshot;
+using devDept.Eyeshot.Entities;
 using devDept.Graphics;
 using DrawingModule.CustomControl.PaperSpaceControl;
 using DrawingModule.DrawToolBase;
@@ -74,7 +79,9 @@ namespace DrawingModule.ViewModels
         {
             this._entitiesManager = entitiesManager;
             this.LayerManager.SelectedPropertiesChanged += LayerManager_SelectedPropertiesChanged;
-            this.RaisePropertyChanged(nameof(_entitiesManager));
+            LayerManager.PropertyChanged += LayerManager_PropertyChanged;
+            EntitiesManager.PropertyChanged += EntitiesManager_PropertyChanged;
+            this.RaisePropertyChanged(nameof(EntitiesManager));
             //CanvasDrawingLoadedCommand = ReactiveCommand.Create<Grid,Grid >(canvasGrid =>this._canvasGrid = canvasGrid );
             //CanvasDrawingLoadedCommand = new DelegateCommand<CanvasDrawing>(OnCanvasDrawingLoaded);
 
@@ -84,11 +91,89 @@ namespace DrawingModule.ViewModels
             this.EventAggre.GetEvent<CommandExcuteStringEvent>().Subscribe(ExcuteCommand);
         }
 
+        private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (EntitiesManager.SelectedEntity ==null)
+            {
+               return;
+            }
+            else
+            {
+                var layerName = EntitiesManager.SelectedEntity.LayerName;
+                var selectedLayer = (from layerItem in LayerManager.Layers
+                    where layerItem.Name == layerName
+                    select layerItem).FirstOrDefault();
+                if (selectedLayer!=null)
+                {
+                    LayerManager.SelectedLayer = selectedLayer;
+                }
+            }
+        }
+
+        private void LayerManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "SelectedLayer") return;
+            ChangedLineTypeEntitiesByLayer();
+            EntitiesManager.Refresh();
+        }
+
         private void LayerManager_SelectedPropertiesChanged(object sender, System.EventArgs e)
         {
+            if (EntitiesManager==null)
+            {
+                return;
+            }
+            if (e is PropertyChangedEventArgs propertyChangedEventArgs)
+            {
+                if (propertyChangedEventArgs.PropertyName  == "LineTypeName")
+                {
+                    ChangedLineTypeEntities();
+                }
+            }
             this.EntitiesManager.Refresh();
         }
 
+        private void ChangedLineTypeEntitiesByLayer()
+        {
+            if (EntitiesManager?.SelectedEntities == null || EntitiesManager.SelectedEntities.Count <= 0) return;
+            if (LayerManager.SelectedLayer == null) return;
+            foreach (var selectedEntity in EntitiesManager.SelectedEntities)
+            {
+                selectedEntity.LayerName = LayerManager.SelectedLayer.Name;
+                if (selectedEntity.LineTypeMethod != colorMethodType.byLayer) continue;
+                if (LayerManager.SelectedLayer.LineTypeName=="Continues")
+                {
+                    selectedEntity.LineTypeName = (string)null;
+                }
+                else
+                {
+                    selectedEntity.LineTypeName = LayerManager.SelectedLayer.LineTypeName;
+                }
+                
+                selectedEntity.RegenMode = regenType.CompileOnly;
+            }
+        }
+
+        private void ChangedLineTypeEntities()
+        {
+            if (EntitiesManager?.Entities == null) return;
+            if (EntitiesManager.Entities.Count<=0) return;
+            foreach (var entity in EntitiesManager.Entities)
+            {
+                if (entity.LineTypeMethod != colorMethodType.byLayer) continue;
+                if (LayerManager.SelectedLayer.LineTypeName == "Continues")
+                {
+                    entity.LineTypeName = (string) null;
+                }
+                else
+                {
+                    entity.LineTypeName = LayerManager.SelectedLayer.LineTypeName;
+                }
+                    
+                entity.RegenMode = regenType.CompileOnly;
+            }
+
+        }
 
 
         #endregion

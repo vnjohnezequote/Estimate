@@ -165,7 +165,7 @@
                         MappingName="TimberWallType" 
                         UseBindingValue="True"/>
                             <syncfusion:GridComboBoxColumn
-                        ItemsSource="{Binding Layers}"
+                        ItemsSource="{Binding LayerManager.Layers}"
                         HeaderText="Layer"
                         MappingName="WallColorLayer"
                         UseBindingValue="True">

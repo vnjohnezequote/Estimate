@@ -77,6 +77,15 @@ namespace AppAddons.DrawingTools
                 var startPoint2 = (Point3D)_points[index2 - 1].Clone();
                 var endPoint = (Point3D) _points[index2].Clone();
                 var line = new Line(startPoint2,endPoint);
+                line.LineTypeMethod = colorMethodType.byLayer;
+                {
+                    if (LayerManager.SelectedLayer.LineTypeName!="Continues")
+                    {
+                        line.LineTypeName = LayerManager.SelectedLayer.LineTypeName;
+                    }
+                }
+                    
+                
                 this.EntitiesManager.AddAndRefresh(line,this.LayerManager.SelectedLayer.Name);
                 //acDoc.Editor.CanvasDrawing.AddAndRefresh(line);
                 //DynamicInput?.FocusDynamicInputTextBox(this.DefaultDynamicInputTextBoxToFocus);
@@ -135,6 +144,7 @@ namespace AppAddons.DrawingTools
         {
             drawTable.renderContext.SetColorWireframe(LayerManager.SelectedLayer.Color);
             drawTable.renderContext.SetLineSize(LayerManager.SelectedLayer.LineWeight);
+            //drawTable.renderContext.SetLineStipple();
             if (this._points.Count < 1) return;
             var index = this._points.Count - 1;
             var startPoint = drawTable.WorldToScreen(_points[index]);

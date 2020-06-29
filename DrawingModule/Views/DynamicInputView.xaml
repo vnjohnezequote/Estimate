@@ -117,7 +117,7 @@
                              Visibility="{Binding WidthVisibility, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBox Name="TextWidth"
                              Text="{Binding WidthDimension, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding ElementName=TheControl, Path=TextWidthVisible}"
+                             Visibility="{Binding WidthVisibility}"
                              Width="50"/>
                     <TextBlock Text="Height"
                              Visibility="{Binding HeightVisibility}"/>

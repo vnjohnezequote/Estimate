@@ -23,7 +23,20 @@ namespace AppDataBase.DataBase
         public EntitiesManager()
         {
             SelectedEntities = new ObservableCollection<Entity>();
+            SelectedEntities.CollectionChanged += SelectedEntities_CollectionChanged;
         }
+
+        private void SelectedEntities_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (SelectedEntities.Count>0)
+            {
+                SelectedEntity = SelectedEntities[0];
+                return;
+            }
+
+            SelectedEntity = null;
+        }
+
         public void AddAndRefresh(Entity entity, string layerName)
         {
             Application.Current.Dispatcher.Invoke((Action)(() =>
