@@ -47,6 +47,11 @@ namespace DrawingModule.Application
             return (PromptEntityResult) DoPrompt(options);
         }
 
+        public PromptSelectionResult GetSelection(PromptSelectionOptions options)
+        {
+            return (PromptSelectionResult) DoPrompt(options);
+        }
+
         public void ResetProcessTool()
         {
             this._dynamicInputViewModel.ResetProcesscingTool();

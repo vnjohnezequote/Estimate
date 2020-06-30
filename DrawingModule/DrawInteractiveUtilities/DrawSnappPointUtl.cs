@@ -136,26 +136,6 @@ namespace DrawingModule.DrawInteractiveUtilities
         /// <summary>
         /// Draw quad with renderContext to rapresent END snap point
         /// </summary>
-        private static void DrawPickBox(System.Drawing.Point onScreen, double pickBoxSize,RenderContextBase renderContext)
-        {
-            double dim1 = onScreen.X + (pickBoxSize / 2);
-            double dim2 = onScreen.Y + (pickBoxSize / 2);
-            double dim3 = onScreen.X - (pickBoxSize / 2);
-            double dim4 = onScreen.Y - (pickBoxSize / 2);
-
-            Point3D topLeftVertex = new Point3D(dim3, dim2);
-            Point3D topRightVertex = new Point3D(dim1, dim2);
-            Point3D bottomRightVertex = new Point3D(dim1, dim4);
-            Point3D bottomLeftVertex = new Point3D(dim3, dim4);
-
-            renderContext.DrawLineLoop(new Point3D[]
-            {
-                bottomLeftVertex,
-                bottomRightVertex,
-                topRightVertex,
-                topLeftVertex
-            });
-        }
         private static void DrawQuad(System.Drawing.Point onScreen, double snapSymbolSize, RenderContextBase renderContext)
         {
             double dim1 = onScreen.X + (snapSymbolSize);
@@ -235,10 +215,6 @@ namespace DrawingModule.DrawInteractiveUtilities
                 leftVertex,
             });
         }
-
-
-
-
 
     }
 }

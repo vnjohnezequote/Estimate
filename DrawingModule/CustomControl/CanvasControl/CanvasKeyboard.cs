@@ -38,7 +38,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                         }
                         //this.Dispatcher.Invoke((Action)(() =>
                         //{//this refer to form in WPF application 
-                            //_dynamicInput?.FocusDynamicInputTextBox(CurrentTool.DefaultDynamicInputTextBoxToFocus);
+                            DynamicInput?.FocusDynamicInputTextBox(CurrentTool.DefaultDynamicInputTextBoxToFocus);
                         //}));
                         
                     }

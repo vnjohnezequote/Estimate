@@ -29,8 +29,8 @@ using DrawingModule.Control;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.EditingTools;
 using DrawingModule.Helper;
-using DrawingModule.Interface;
 using DrawingModule.Views;
+using Size = System.Drawing.Size;
 
 namespace DrawingModule.CustomControl.CanvasControl
 {
@@ -64,6 +64,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         private readonly Plane _drawingPlane = Plane.XY;
         private SelectTool _selectTool;
         private bool _waitingForSelection;
+        private bool _waitingForPickSelection;
         private Entity _entityUnderMouse;
 
         private Point3D _currentPoint;
@@ -143,6 +144,13 @@ namespace DrawingModule.CustomControl.CanvasControl
             
         }
 
+       
+
+        public Size DrawTextString(int x, int y, string text, Font textFont, Color textColor, ContentAlignment textAlign)
+        {
+            return this.DrawText(x, y, text, textFont, textColor, textAlign);
+        }
+
         //private void UpdateFocusDynamicInput()
         //{
         //    if (this._dynamicInput!=null)
@@ -200,6 +208,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         {
             IsUserInteraction = false;
             _waitingForSelection = false;
+            _waitingForPickSelection = false;
             IsSnappingEnable = true;
             IsOrthoModeEnable = true;
             this._selectTool = new SelectTool();
@@ -246,7 +255,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         //}
         protected override void DrawOverlay(DrawSceneParams data)
         {
-            var drawInteractiveArgs = new DrawInteractiveArgs(this.CurrentPoint,this.LastClickPoint,data) ;
+            var drawInteractiveArgs = new DrawInteractiveArgs(this.CurrentPoint,this.LastClickPoint,data,_mousePosition) ;
             if (IsProcessingTool && this._currentTool !=null)
             {
                 //this._drawInteractiveHandler.Invoke(this, drawInteractiveArgs);
@@ -341,7 +350,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         #region Public Method
         public void SetDynamicInput(DynamicInputView dynamicInput)
         {
-            _dynamicInput = dynamicInput;
+            DynamicInput = dynamicInput;
             this.RefreshEntities();
         }
         //public void RegisterDrawInteractive(IDrawInteractive drawObject)
@@ -388,11 +397,57 @@ namespace DrawingModule.CustomControl.CanvasControl
         {
             //return this._selectTool.SelectedEntities.ToList();
 
-            return Dispatcher.Invoke((Func<List<Entity>>)(() =>
-            {//this refer to form in WPF application 
-                return this.EntitiesManager.SelectedEntities.ToList();
-            }));
+            return Dispatcher.Invoke((Func<List<Entity>>)(() => this.EntitiesManager.SelectedEntities.ToList()));
             //return this.EntitiesManager.SelectedEntities.ToList();
+            //return this._selectTool.SelectedEntities.ToList();
+        }
+
+        private Entity GetSelectionEntity()
+        {
+            return Dispatcher.Invoke((Func<Entity>)(() => this.EntitiesManager.SelectedEntity));
+        }
+
+        private void ClearSelectionEntity()
+        {
+            Dispatcher.Invoke((Action)(() =>
+            {//this refer to form in WPF application 
+                this.EntitiesManager.ClearSelectedEntities();
+            }));
+        }
+        public PromptStatus GetSelection(out string stringResult, out Point3D clickedPoint,out Entity entity, bool isClearAtTheEndSelecion = true)
+        {
+            ClearSelectionEntity();
+            _waitingForPickSelection = true;
+            _waitingForSelection = true;
+            while (_waitingForPickSelection)
+            {// no do any thing until _isClicked is true
+            }
+
+            var promptStatus = PromptStatus.None;
+            IsUserInteraction = false;
+            if (this.PromptStatus == PromptStatus.OK)
+            {
+                entity = GetSelectionEntity();
+                clickedPoint = this.LastClickPoint;
+                stringResult = "Get Point Complete";
+                promptStatus = PromptStatus.OK;
+            }
+            else
+            {
+                entity = null;
+                clickedPoint = null;
+                stringResult = "You canceled Tool";
+                promptStatus = PromptStatus.Cancel;
+            }
+            this.PromptStatus = PromptStatus.None;
+            _waitingForSelection = false;
+            _waitingForPickSelection = false;
+            if (isClearAtTheEndSelecion)
+            {
+                this.ClearSelectionEntity();
+            }
+            return promptStatus;
+
         }
         public PromptStatus GetEntities(out string stringResult, out Point3D clickedPoint, List<Entity> entities)
         {
@@ -412,6 +467,7 @@ namespace DrawingModule.CustomControl.CanvasControl
 
             }
             var promptStatus = PromptStatus.None;
+            seletedEntities = GetEntities();
             if (seletedEntities.Count != 0 && this.PromptStatus == PromptStatus.OK)
             {
                 _waitingForSelection = false;
@@ -419,13 +475,13 @@ namespace DrawingModule.CustomControl.CanvasControl
                 clickedPoint = LastClickPoint;
                 stringResult = "Select Entities Complete";
                 entities.Clear();
-                entities.AddRange(this.EntitiesManager.SelectedEntities);
+                entities.AddRange(seletedEntities);
                 promptStatus = PromptStatus.OK;
             }
             else
             {
-                var selectToolSelectedEntities = this.EntitiesManager.SelectedEntities;
-                if (selectToolSelectedEntities != null && (selectToolSelectedEntities.Count == 0 && this.PromptStatus == PromptStatus.OK))
+                var selectToolSelectedEntities = seletedEntities;
+                if ((selectToolSelectedEntities.Count == 0 && this.PromptStatus == PromptStatus.OK))
                 {
                     clickedPoint = CurrentPoint;
                     stringResult = "You have not yet select entities";
@@ -497,7 +553,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.PromptStatus = promptStatus;
             IsUserInteraction = true;
             this._waitingForSelection = false;
-           
+            this._waitingForPickSelection = false;
 
             this.Dispatcher.Invoke((Action)(() =>
             {//this refer to form in WPF application 

@@ -18,6 +18,7 @@ namespace ApplicationInterfaceCore
         int[] GetAllEntitiesUnderMouseCursor(System.Drawing.Point mousePosition, bool selectTableOnly = true);
         EntityList Entities { get; }
         Point3D WorldToScreen(Point3D point);
+        Point3D WorldToScreen(double x, double y, double z);
         RenderContextBase renderContext { get; }
         double CurrentLengthDimension { get; }
         double CurrentAngleDimension { get; }
@@ -25,8 +26,17 @@ namespace ApplicationInterfaceCore
         LayerKeyedCollection Layers { get; }
         void RefreshEntities();
         void Invalidate();
+        void HideCursor(bool isHide);
         bool Focus();
         void UpdateCurrentPointByLengthAndAngle(double length, double angle);
         bool ScreenToPlane(System.Drawing.Point mousePosition,Plane sketchPlant, out Point3D point);
+
+        //System.Drawing.Size DrawText(int x, int y, string text, Font textFont, System.Drawing.Color textColor, System.Drawing.Color fillColor, ContentAlignment textAlign, RotateFlipType rotateFlip);
+
+        //System.Drawing.Size DrawText(int x, int y, string text, Font textFont, System.Drawing.Color textColor, System.Drawing.Color fillColor, ContentAlignment textAlign);
+
+        System.Drawing.Size DrawTextString(int x, int y, string text, Font textFont, System.Drawing.Color textColor, ContentAlignment textAlign);
+
+
     }
 }

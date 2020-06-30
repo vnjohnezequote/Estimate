@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using devDept.Eyeshot;
+using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using devDept.Graphics;
@@ -118,11 +120,16 @@ namespace DrawingModule.Views
             if (CanvasDrawing.TabDrawing.IsSelected)
             {
                 var handler = this.CanvasDrawing.CanvasDrawing.PreProcessKeyDownForCanvasView(e);
+                    //Dispatcher.Invoke((Func<bool>)(() => this.CanvasDrawing.CanvasDrawing.PreProcessKeyDownForCanvasView(e)));
+
                 if (!handler)
                 {
-                    handler = this.CanvasDrawing.DynamicInput.PreProcessKeyboardInput(e);
+                    handler =
+                        //Dispatcher.Invoke((Func<bool>)(() => this.CanvasDrawing.DynamicInput.PreProcessKeyboardInput(e))); 
+                   this.CanvasDrawing.DynamicInput.PreProcessKeyboardInput(e);
                     if (!handler)
                     {
+                        //Dispatcher.Invoke((Action)(() => this.CanvasDrawing.FocusDynamicCommandLine()));
                         this.CanvasDrawing.FocusDynamicCommandLine();
                     }
 

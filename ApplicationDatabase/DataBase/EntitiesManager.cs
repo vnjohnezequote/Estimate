@@ -49,6 +49,23 @@ namespace AppDataBase.DataBase
 
         }
 
+        public void ClearSelectedEntities()
+        {
+            foreach (var entity in Entities)
+            {
+                entity.Selected = false;
+            }
+            this.SelectedEntities.Clear();
+        }
+        public Entity GetSelectionEntity()
+        {
+            return Application.Current.Dispatcher.Invoke((Func<Entity>) (() =>
+            {
+                //this refer to form in WPF application 
+                return this.SelectedEntity;
+            }));
+        }
+
         public void AddAndRefresh(Entity entity, string layerName)
         {
             Application.Current.Dispatcher.Invoke((Action)(() =>

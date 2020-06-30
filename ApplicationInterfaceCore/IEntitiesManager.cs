@@ -19,6 +19,7 @@ namespace ApplicationInterfaceCore
         void EntitiesRegen();
         void Refresh();
         void ChangeSelectedEntiesLayer(Layer layer);
+        void ClearSelectedEntities();
         void SetEntitiesList(EntityList entities);
         void SetCanvasDrawing(ICadDrawAble cadDraw);
         List<Entity> GetSelectedEntities();

@@ -1,12 +1,9 @@
 ﻿using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using AppAddons.DrawingTools;
 using AppAddons.EditingTools;
 using DrawingModule.CommandClass;
-using DrawingModule.EditingTools;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -21,6 +18,8 @@ using DrawingModule.EditingTools;
 [assembly: AssemblyCulture("")]
 [assembly: CommandClass(typeof(DrawingLine))]
 [assembly: CommandClass(typeof(DrawingRectangle))]
+[assembly: CommandClass(typeof(DrawLinearDim))]
+[assembly: CommandClass(typeof(DrawingAngularDim))]
 [assembly: CommandClass(typeof(MoveTool))]
 [assembly: CommandClass(typeof(CopyTool))]
 

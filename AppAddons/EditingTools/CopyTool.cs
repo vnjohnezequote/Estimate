@@ -37,6 +37,7 @@ namespace AppAddons.EditingTools
                 EntitiesManager.AddAndRefresh(cloneEntity,LayerManager.SelectedLayer.Name);
             }
             EntitiesManager.Refresh();
+            IsSnapEnable = false;
         }
     }
 }

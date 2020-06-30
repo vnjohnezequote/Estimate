@@ -1,22 +1,19 @@
 ﻿using System;
-using AppAddons.EditingTools;
-using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels.EventArg;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
 using DrawingModule.DrawToolBase;
-using DrawingModule.Interface;
 using DrawingModule.UserInteractive;
 
-namespace DrawingModule.EditingTools
+namespace AppAddons.EditingTools
 {
-    public sealed class MoveTool : SelectAbleToolBase
+    public sealed class MoveTool : EditingToolBase
     {
         public override string ToolName => "Move";
 
-        protected Point3D _startPoint;
-        protected Point3D _endPoint;
+        //protected Point3D _startPoint;
+        //protected Point3D _endPoint;
 
         public MoveTool() : base()
         {
@@ -32,66 +29,66 @@ namespace DrawingModule.EditingTools
 
         }
 
-        private void OnProcessCommand()
-        {
-            var acDoc = Application.Application.DocumentManager.MdiActiveDocument;
-            if (WaitingForSelection)
-            {
-                var promptEntityOptions = new PromptEntityOptions("Please Select Entity for move");
-                PromptEntityResult result = null;
-                while (WaitingForSelection)
-                {
-                    result = acDoc.Editor.GetEntities(promptEntityOptions);
-                    switch (result.Status)
-                    {
-                        case PromptStatus.Cancel:
-                            return;
-                        case PromptStatus.OK when result.Entities.Count > 0:
-                            WaitingForSelection = false;
-                            break;
-                        case PromptStatus.None:
-                            break;
-                        case PromptStatus.Error:
-                            break;
-                        case PromptStatus.Keyword:
-                            break;
-                        case PromptStatus.Modeless:
-                            break;
-                        case PromptStatus.Other:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
+        //private void OnProcessCommand()
+        //{
+        //    var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
+        //    if (WaitingForSelection)
+        //    {
+        //        var promptEntityOptions = new PromptEntityOptions("Please Select Entity for move");
+        //        PromptEntityResult result = null;
+        //        while (WaitingForSelection)
+        //        {
+        //            result = acDoc.Editor.GetEntities(promptEntityOptions);
+        //            switch (result.Status)
+        //            {
+        //                case PromptStatus.Cancel:
+        //                    return;
+        //                case PromptStatus.OK when result.Entities.Count > 0:
+        //                    WaitingForSelection = false;
+        //                    break;
+        //                case PromptStatus.None:
+        //                    break;
+        //                case PromptStatus.Error:
+        //                    break;
+        //                case PromptStatus.Keyword:
+        //                    break;
+        //                case PromptStatus.Modeless:
+        //                    break;
+        //                case PromptStatus.Other:
+        //                    break;
+        //                default:
+        //                    throw new ArgumentOutOfRangeException();
+        //            }
+        //        }
 
-                if (result != null)
-                {
-                    this.SelectedEntities.AddRange(result.Entities);
-                }
+        //        if (result != null)
+        //        {
+        //            this.SelectedEntities.AddRange(result.Entities);
+        //        }
 
 
-            }
-            ToolMessage = "Please enter BasePoint to" + ToolName.ToLower();
-            var promptPointOption = new PromptPointOptions("Please enter basePoint to " + ToolName.ToLower());
-            var promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
-            if (promptPointResult.Status == PromptStatus.OK)
-            {
-                this._startPoint = promptPointResult.Value;
-            }
-            ToolMessage = "Please enter next point to " + ToolName.ToLower();
-            promptPointOption.Message = "Please enter next point to " + ToolName.ToLower();
-            promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
-            if (promptPointResult.Status == PromptStatus.OK)
-            {
-                this._endPoint = promptPointResult.Value;
-            }
-            this.ProcessEntities();
-        }
+        //    }
+        //    ToolMessage = "Please enter BasePoint to" + ToolName.ToLower();
+        //    var promptPointOption = new PromptPointOptions("Please enter basePoint to " + ToolName.ToLower());
+        //    var promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
+        //    if (promptPointResult.Status == PromptStatus.OK)
+        //    {
+        //        this._startPoint = promptPointResult.Value;
+        //    }
+        //    ToolMessage = "Please enter next point to " + ToolName.ToLower();
+        //    promptPointOption.Message = "Please enter next point to " + ToolName.ToLower();
+        //    promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
+        //    if (promptPointResult.Status == PromptStatus.OK)
+        //    {
+        //        this._endPoint = promptPointResult.Value;
+        //    }
+        //    this.ProcessEntities();
+        //}
         public override void OnJigging(object sender, DrawInteractiveArgs e)
         {
             //this.DrawInteractiveCommand((ICadDrawAble)sender, e);
         }
-        private void ProcessEntities()
+        protected override void ProcessEntities()
         {
             var movement = new Vector3D(_startPoint, _endPoint);
             foreach (var selEntity in this.SelectedEntities)
@@ -100,6 +97,7 @@ namespace DrawingModule.EditingTools
                 selEntity.Selected = false;
             }
             EntitiesManager.Refresh();
+            this.SelectedEntities.Clear();
         }
 
         //public void Dispose()

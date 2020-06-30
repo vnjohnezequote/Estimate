@@ -385,6 +385,8 @@
     <Compile Include="UserInteractive\PromptPointOptions.cs" />
     <Compile Include="UserInteractive\PromptPointResult.cs" />
     <Compile Include="UserInteractive\PromptResult.cs" />
+    <Compile Include="UserInteractive\PromptSelectionOptions.cs" />
+    <Compile Include="UserInteractive\PromptSelectionResult.cs" />
     <Compile Include="UserInteractive\PromptStringOptions.cs" />
     <Compile Include="ViewModels\DynamicInputViewModel.cs" />
     <Compile Include="ViewModels\LayerManagerViewModel.cs" />

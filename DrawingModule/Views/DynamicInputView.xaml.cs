@@ -397,7 +397,7 @@ namespace DrawingModule.Views
         }
         public void FocusTextLength()
         {
-            this.Dispatcher.Invoke((Action)(() =>
+            Dispatcher.Invoke((Action)(() =>
             {//this refer to form in WPF application 
                 this.TextLength.Focus();
                 this.TextLength.SelectAll();

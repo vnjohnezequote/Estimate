@@ -22,10 +22,10 @@ namespace DrawingModule.CustomControl.CanvasControl
         private event DrawInteractiveDelegate DrawOverlay_Jigging;
         public event DrawingToolChanged ToolChanged;
         internal event Action UserInteraction;
+        private System.Drawing.Point _mousePosition;
         private IDrawInteractive _currentTool;
-        private IDynamicInputView _dynamicInput;
-        public IDynamicInputView DynamicInput =>_dynamicInput;
-        
+        public IDynamicInputView DynamicInput { get; private set; }
+
         internal IDrawInteractive CurrentTool
         {
             get => _currentTool;
@@ -39,9 +39,9 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            var mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
-            this.CurrentPoint = GetCurrentPoint(mousePosition);
-            CurrentIndex = this.GetEntityUnderMouseCursor(mousePosition, false);
+            _mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
+            this.CurrentPoint = GetCurrentPoint(_mousePosition);
+            CurrentIndex = this.GetEntityUnderMouseCursor(_mousePosition, false);
             _entityUnderMouse = CurrentIndex > -1 ? this.Entities[CurrentIndex] : null;
             if (!IsProcessingTool && this._selectTool.StartPoint != null)
             {
@@ -61,7 +61,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                             CurrentPoint = Utils.GetEndPoint(this.CurrentTool.BasePoint, CurrentPoint);
                         }
                     if (IsSnappingEnable)
-                        this.SetCurrentPoint(mousePosition);
+                        this.SetCurrentPoint(_mousePosition);
                 }
                 this.OnMouseMove_Drawing(e);
                
@@ -84,6 +84,14 @@ namespace DrawingModule.CustomControl.CanvasControl
                     if (_waitingForSelection)
                     {
                         this.ProcessMouseDownForSelectionTool(e, check);
+                        if (_waitingForPickSelection)
+                        {
+                            if (this.EntitiesManager.SelectedEntity!=null)
+                            {
+                                this.PromptStatus = PromptStatus.OK;
+                                _waitingForPickSelection = false;
+                            }
+                        }
                     }
                     else
                     {
@@ -124,7 +132,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         internal void SetDrawing(IDrawInteractive tool)
         {
             CurrentTool = tool;
-            if (this._dynamicInput!=null)
+            if (this.DynamicInput!=null)
             {
                 CurrentTool.SetDynamicInput((IDynamicInputView)DynamicInput);
             }

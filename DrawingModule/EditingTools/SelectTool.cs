@@ -174,11 +174,13 @@ namespace DrawingModule.EditingTools
             if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
                 myEnts[ent].Selected = false;
+                //this.SelectedEntities.Remove(myEnts[ent]);
                 this.EntitiesManager.SelectedEntities.Remove(myEnts[ent]);
                 return;
             }
             myEnts[ent].Selected = true;
             this.EntitiesManager.SelectedEntities.Add(myEnts[ent]);
+            //this.SelectedEntities.Add(myEnts[ent]);
         }
         public void DrawInteractiveSelect(ICadDrawAble drawTable, DrawInteractiveArgs drawInteractiveArgs)
         {

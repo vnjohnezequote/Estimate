@@ -15,8 +15,6 @@ namespace AppAddons.EditingTools
 {
     public abstract class EditingToolBase: SelectAbleToolBase
     {
-        public override string ToolName => "Move";
-
         protected Point3D _startPoint;
         protected Point3D _endPoint;
 
@@ -65,20 +63,30 @@ namespace AppAddons.EditingTools
 
             }
             ToolMessage = "Please enter BasePoint to" + ToolName.ToLower();
+            this.IsSnapEnable = true;
             var promptPointOption = new PromptPointOptions("Please enter basePoint to " + ToolName.ToLower());
             var promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
-            if (promptPointResult.Status == PromptStatus.OK)
+            switch (promptPointResult.Status)
             {
-                this._startPoint = promptPointResult.Value;
+                case PromptStatus.OK:
+                    this._startPoint = promptPointResult.Value;
+                    break;
+                case PromptStatus.Cancel:
+                    return;
             }
             ToolMessage = "Please enter next point to " + ToolName.ToLower();
             promptPointOption.Message = "Please enter next point to " + ToolName.ToLower();
             promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
-            if (promptPointResult.Status == PromptStatus.OK)
+            switch (promptPointResult.Status)
             {
-                this._endPoint = promptPointResult.Value;
+                case PromptStatus.OK:
+                    this._endPoint = promptPointResult.Value;
+                    break;
+                case PromptStatus.Cancel:
+                    return;
             }
             this.ProcessEntities();
+            IsSnapEnable = false;
         }
         public override void OnJigging(object sender, DrawInteractiveArgs e)
         {

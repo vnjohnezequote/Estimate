@@ -312,7 +312,6 @@ namespace DrawingModule.Helper
         {
             return snapPoints.Any(snapPoint => point.X == snapPoint.X && point.Y == snapPoint.Y);
         }
-
         public static HashSet<SnapPoint> GetSnapPoints(System.Drawing.Point mouseLocation, ICadDrawAble cadDraw)
         {
             var snapPoints = new HashSet<SnapPoint>();
@@ -472,5 +471,22 @@ namespace DrawingModule.Helper
 
             return snap;
         }
+        public static Point3D[] GetScreenVertices(IList<Point3D> vertices,ICadDrawAble canvas)
+        {
+            Point3D[] screenPoints = new Point3D[vertices.Count];
+            for (int i = 0; i < vertices.Count; i++)
+                screenPoints[i] = canvas.WorldToScreen(vertices[i]);
+            return screenPoints;
+        }
+        public static double GetAngleRadian(Point3D p1, Point3D p2)
+        {
+            var vector = new Vector2D(p1, p2);
+            //vector.Normalize();
+            var angle = -Vector2D.SignedAngleBetween(vector, Vector2D.AxisX);
+            return angle;
+        }
+
+
+
     }
 }

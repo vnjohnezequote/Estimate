@@ -8,7 +8,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
@@ -18,10 +17,7 @@ using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
 using DrawingModule.DrawToolBase;
-using DrawingModule.Enums;
-using DrawingModule.Interface;
 using DrawingModule.UserInteractive;
-using DrawingModule.Views;
 
 namespace AppAddons.DrawingTools
 {
