@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows.Input;
+using ApplicationInterfaceCore;
 using ApplicationService;
 using DrawingModule.Application;
+using DrawingModule.EditingTools;
 
 namespace DrawingModule.CustomControl.CanvasControl
 {
@@ -51,6 +53,13 @@ namespace DrawingModule.CustomControl.CanvasControl
                 case Key.LeftCtrl:
                 case Key.RightCtrl:
                     return true;
+                case Key.V:
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                    {
+                        this.ProcessCommand("Img");
+                        return true;
+                    }
+                    return false;
                 case Key.Escape:
                     this.Focus();
                     this.ProcessCancelTool();

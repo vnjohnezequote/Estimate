@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels.EventArg;
+using devDept.Eyeshot;
+using devDept.Eyeshot.Entities;
 using devDept.Geometry;
-using DrawingModule.CommandClass;
+using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.DrawToolBase;
 using DrawingModule.UserInteractive;
+using Environment = devDept.Eyeshot.Environment;
 
 namespace AppAddons.EditingTools
 {
@@ -70,6 +69,7 @@ namespace AppAddons.EditingTools
             {
                 case PromptStatus.OK:
                     this._startPoint = promptPointResult.Value;
+                    this.BasePoint = promptPointResult.Value;
                     break;
                 case PromptStatus.Cancel:
                     return;
@@ -100,52 +100,34 @@ namespace AppAddons.EditingTools
         //    Application.Application.DocumentManager.MdiActiveDocument.Editor.UnRegisterDrawInteractive(this);
         //}
 
-        protected virtual void DrawInteractiveCommand(ICadDrawAble canvas, DrawInteractiveArgs drawInteractiveArgs)
+        protected virtual void DrawInteractiveCommand(ICadDrawAble canvas, DrawInteractiveArgs e)
         {
-            //if (this._selectedEntities.Count == 0)
-            //{
-            //    if (this._dynamicInput == null) return;
-            //    if (this._waitingForSelection)
-            //    {
-            //        this.DynamicInputLabel = "Please select object to moving";
-            //        this.DrawInteractiveSelection();
-            //        return;
-            //    }
-            //}
-            //else
-            //{
-            //    if (_waitingForSelection)
-            //    {
-            //        this.DrawInteractiveSelection();
-            //        return;
-            //    }
+            if (WaitingForSelection)
+            {
+                return;
+            }
 
-            //    if (_clickPoints.Count == 0)
-            //    {
-            //        this.DynamicInputLabel = "Please select base point";
-            //    }
-            //    else
-            //    {
-            //        this.DynamicInputLabel = "Please select second point to move";
-            //        foreach (var selectedEntity in _selectedEntities)
-            //        {
-            //            Entity tempEntity = (Entity) selectedEntity.Clone();
-            //            Vector3D vectorMove = new Vector3D(LastClickPoint, CurrentPoint);
-            //            tempEntity.Translate(vectorMove);
-            //            if (tempEntity is Text)
-            //            {
-            //                tempEntity.Regen(new RegenParams(0.0, this));
-            //            }
+            if (BasePoint == null)
+            {
+                return;
+            }
+            foreach (var selectedEntity in SelectedEntities)
+            {
+                Entity tempEntity = (Entity)selectedEntity.Clone();
+                Vector3D vectorMove = new Vector3D(BasePoint, e.CurrentPoint);
+                tempEntity.Translate(vectorMove);
+                if (tempEntity is Text)
+                {
+                    tempEntity.Regen(new RegenParams(0.0, (Environment)canvas));
+                }
 
-            //            DrawCurveOrBlockRef(tempEntity);
+                DrawInteractiveUntilities.DrawCurveOrBlockRef(tempEntity,canvas);
 
 
-            //        }
+            }
 
-            //        DrawInteractiveSpotLine(this.LastClickPoint, this.CurrentPoint);
+            DrawInteractiveUntilities.DrawInteractiveSpotLine(BasePoint, e.CurrentPoint,canvas);
 
-            //    }
-            //}
         }
     }
 }

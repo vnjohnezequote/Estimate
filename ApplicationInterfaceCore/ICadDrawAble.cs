@@ -8,6 +8,7 @@ namespace ApplicationInterfaceCore
 {
     public interface ICadDrawAble : INotifyPropertyChanged
     {
+        int DimTextHeight { get; }
         ViewportList Viewports { get; }
         int ActiveViewport { get; }
         Size Size{ get; }
@@ -22,6 +23,9 @@ namespace ApplicationInterfaceCore
         RenderContextBase renderContext { get; }
         double CurrentLengthDimension { get; }
         double CurrentAngleDimension { get; }
+        string CurrentText { get; }
+        double CurrentTextHeight { get; }
+        double CurrentTextAngle { get; }
         IDynamicInputView DynamicInput { get; }
         LayerKeyedCollection Layers { get; }
         void RefreshEntities();

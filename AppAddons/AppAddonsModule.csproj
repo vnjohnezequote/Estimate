@@ -86,7 +86,7 @@
   <ItemGroup>
     <Compile Include="AppAddonsModuleControl.cs" />
     <Compile Include="DrawingTools\DrawingAngularDim.cs" />
-    <Compile Include="DrawingTools\DrawAllignDim.cs" />
+    <Compile Include="DrawingTools\DrawAlignDim.cs" />
     <Compile Include="DrawingTools\DrawingLine.cs" />
     <Compile Include="DrawingTools\DrawingRectangle.cs" />
     <Compile Include="DrawingTools\DrawLeader.cs" />

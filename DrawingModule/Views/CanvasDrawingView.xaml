@@ -45,7 +45,7 @@
 							</b:EventTrigger>
 						</b:Interaction.Triggers>
 						<canvasControl:CanvasDrawing.Viewports>
-							<ddes:Viewport DisplayMode="Wireframe">
+							<ddes:Viewport DisplayMode="Flat">
 								<!--<ddes:Viewport.OriginSymbol>
 								<ddes:OriginSymbol Lighting="True"/>
 							</ddes:Viewport.OriginSymbol>-->

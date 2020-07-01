@@ -1,10 +1,14 @@
-﻿using ApplicationInterfaceCore;
-using devDept.Eyeshot;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using ApplicationInterfaceCore;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Enums;
 using DrawingModule.Helper;
 using CanvasDrawing = DrawingModule.CustomControl.CanvasControl.CanvasDrawing;
+using Environment = devDept.Eyeshot.Environment;
+using Point = System.Drawing.Point;
 
 namespace DrawingModule.DrawInteractiveUtilities
 {
@@ -185,7 +189,90 @@ namespace DrawingModule.DrawInteractiveUtilities
             canvas.renderContext.DrawLineStrip(pts);
         }
 
+        public static void DrawInteractiveSpotLine(Point3D firstPoint, Point3D secondPoint, ICadDrawAble canvas)
+        {
 
+            if (firstPoint == null || secondPoint == null)
+                return;
+            var startPoint = canvas.WorldToScreen(firstPoint);
+            var endPoint = canvas.WorldToScreen( secondPoint);
+            canvas.renderContext.SetColorWireframe(Color.RoyalBlue);
+            canvas.renderContext.SetLineStipple(1, 0x0F0F, canvas.Viewports[0].Camera);
+            canvas.renderContext.EnableLineStipple(true);
+            canvas.renderContext.DrawLine(startPoint, endPoint);
+            canvas.renderContext.EnableLineStipple(false);
+
+        }
+
+        public static void DrawInteractiveLines(List<Point3D> clickPoints, ICadDrawAble canvas, Point3D currentPoint)
+        {
+            canvas.renderContext.EnableXOR(false);
+            if (clickPoints.Count == 0)
+                return;
+            Point3D[] screenvertices = Utils.GetScreenVertices(clickPoints,canvas);
+            canvas.renderContext.DrawLineStrip(screenvertices);
+            var index = clickPoints.Count-1;
+            var lastClickPoint = clickPoints[index];
+            var startPoint = canvas.WorldToScreen(lastClickPoint);
+            var endPoint = canvas.WorldToScreen(currentPoint);
+
+            canvas.renderContext.DrawLine(startPoint, endPoint);
+        }
+
+        public static void DrawInteractiveTextForLeader(ICadDrawAble canvas, Point3D currentPoint, Point3D startPoint)
+        {
+            var text = Utils.CreateNewTextLeader(startPoint, currentPoint,canvas);
+            var rad = Utility.DegToRad(canvas.CurrentTextAngle);
+            text.Rotate(rad, Vector3D.AxisZ, currentPoint);
+
+            var tempText = text.ConvertToCurves((Environment)canvas);
+            foreach (var curve in tempText)
+            {
+                Draw(curve,canvas);
+            }
+        }
+
+        public static void DrawInteractiveArc(ICadDrawAble canvas, List<Point3D> clickPoints, Point3D currentPoint, out double arcSpanAngle)
+        {
+            Point2D[] screenPts = Utils.GetScreenVertices(clickPoints,canvas);
+
+            canvas.renderContext.DrawLineStrip(screenPts);
+            arcSpanAngle = 0;
+           
+                // Draw elastic line
+                canvas.renderContext.DrawLine(canvas.WorldToScreen(clickPoints[0]), canvas.WorldToScreen(currentPoint));
+
+                //draw three point arc
+                if (clickPoints.Count == 2)
+                {
+
+                    var radius = clickPoints[0].DistanceTo(clickPoints[1]);
+
+                    if (radius > 1e-3)
+                    {
+                        var drawingPlane = Utils.GetPlane(clickPoints[1],clickPoints);
+
+                        Vector2D v1 = new Vector2D(clickPoints[0], clickPoints[1]);
+                        v1.Normalize();
+                        Vector2D v2 = new Vector2D(clickPoints[0], currentPoint);
+                        v2.Normalize();
+
+                        arcSpanAngle = Vector2D.SignedAngleBetween(v1, v2);
+
+                        if (Math.Abs(arcSpanAngle) > 1e-3)
+                        {
+
+                            Arc tempArc = new Arc(drawingPlane, drawingPlane.Origin, radius, 0, arcSpanAngle);
+
+                            Draw(tempArc,canvas);
+
+                        }
+
+                    }
+                }
+
+            
+        }
 
 
 

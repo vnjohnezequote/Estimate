@@ -23,6 +23,7 @@ using AppModels.EventArg;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
+using devDept.Graphics;
 using DrawingModule.Application;
 using DrawingModule.CommandClass;
 using DrawingModule.Control;
@@ -104,6 +105,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             get=>(string)GetValue(ActiveLayerNameProperty);
             set=>SetValue(ActiveLayerNameProperty,value);
         }
+        public int DimTextHeight { get; set; }
         public bool IsDrawEntityUnderMouse { get; set; }
         public bool IsDrawingMode { get; private set; }
         public Plane DrawingPlane => this._drawingPlane;
@@ -130,6 +132,10 @@ namespace DrawingModule.CustomControl.CanvasControl
                 return angle;
             }
         }
+
+        public string CurrentText => "Test";
+        public double CurrentTextHeight => 100;
+        public double CurrentTextAngle => 0;
 
         public void UpdateCurrentPointByLengthAndAngle(double length, double angle)
         {
@@ -206,6 +212,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         public CanvasDrawing()
 
         {
+            DimTextHeight = 10;
             IsUserInteraction = false;
             _waitingForSelection = false;
             _waitingForPickSelection = false;
@@ -253,8 +260,33 @@ namespace DrawingModule.CustomControl.CanvasControl
         //            break;
         //    }
         //}
+        //private bool _firstTime = false;
+        //private TextureBase texture = null;
         protected override void DrawOverlay(DrawSceneParams data)
         {
+            
+            //if (!_firstTime)
+            //{
+            //    _firstTime = true;
+
+            //    Font font = new Font("Tahoma", 50, System.Drawing.FontStyle.Italic);
+
+            //    Image image1 = GetTextImage("My Text", font, Color.Red, Color.Transparent, ContentAlignment.TopRight, RotateFlipType.RotateNoneFlipY);
+            //    texture = renderContext.CreateTexture2D(image1, textureFilteringFunctionType.Nearest, textureFilteringFunctionType.Nearest, true, true);
+            //    image1.Dispose();
+            //    font.Dispose();
+            //}
+
+            //if (texture !=null)
+            //{
+            //    DrawTexture(texture, 100, 100, ContentAlignment.BottomLeft);
+            //    Draw
+            //}
+            
+
+
+
+
             var drawInteractiveArgs = new DrawInteractiveArgs(this.CurrentPoint,this.LastClickPoint,data,_mousePosition) ;
             if (IsProcessingTool && this._currentTool !=null)
             {

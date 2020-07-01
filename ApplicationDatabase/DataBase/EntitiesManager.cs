@@ -93,12 +93,16 @@ namespace AppDataBase.DataBase
 
         public void EntitiesRegen()
         {
+            Application.Current.Dispatcher.Invoke((Action)(() =>
+            {//this refer to form in WPF application 
+                if (this.CanvasDrawing != null)
+                {
+                    this.CanvasDrawing.Entities.Regen();
+
+                }
+            }));
             //this.Entities.Regen();
-            if (this.CanvasDrawing!=null)
-            {
-                this.CanvasDrawing.Entities.Regen();
-                
-            }
+            
            
         }
 

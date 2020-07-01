@@ -19,9 +19,16 @@ using DrawingModule.CommandClass;
 [assembly: CommandClass(typeof(DrawingLine))]
 [assembly: CommandClass(typeof(DrawingRectangle))]
 [assembly: CommandClass(typeof(DrawLinearDim))]
+[assembly: CommandClass(typeof(DrawAlignDim))]
 [assembly: CommandClass(typeof(DrawingAngularDim))]
+[assembly: CommandClass(typeof(DrawText))]
+[assembly: CommandClass(typeof(DrawLeader))]
+[assembly: CommandClass(typeof(RotateTool))]
 [assembly: CommandClass(typeof(MoveTool))]
+[assembly: CommandClass(typeof(MirrorTool))]
 [assembly: CommandClass(typeof(CopyTool))]
+[assembly: CommandClass(typeof(ScaleTool))]
+[assembly: CommandClass(typeof(OffsetTool))]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from

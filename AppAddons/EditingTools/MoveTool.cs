@@ -84,10 +84,10 @@ namespace AppAddons.EditingTools
         //    }
         //    this.ProcessEntities();
         //}
-        public override void OnJigging(object sender, DrawInteractiveArgs e)
-        {
-            //this.DrawInteractiveCommand((ICadDrawAble)sender, e);
-        }
+        //public override void OnJigging(object sender, DrawInteractiveArgs e)
+        //{
+        //    //this.DrawInteractiveCommand((ICadDrawAble)sender, e);
+        //}
         protected override void ProcessEntities()
         {
             var movement = new Vector3D(_startPoint, _endPoint);

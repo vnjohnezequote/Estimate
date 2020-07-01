@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using DrawingModule.CommandClass;
+using DrawingModule.EditingTools;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -13,7 +15,7 @@ using System.Windows;
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-//[assembly: CommandClass(typeof(DrawingLine))]
+[assembly: CommandClass(typeof(ImportImageTool))]
 //[assembly: CommandClass(typeof(MoveTool))]
 
 
