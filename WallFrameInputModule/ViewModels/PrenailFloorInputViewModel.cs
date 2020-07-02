@@ -10,7 +10,6 @@
 
 using System.Globalization;
 using ApplicationInterfaceCore;
-using devDept.Eyeshot;
 
 namespace WallFrameInputModule.ViewModels
 {

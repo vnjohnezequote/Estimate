@@ -809,8 +809,24 @@ namespace DrawingModule.ViewModels
         #region public method
         internal void SetCurrentTool(IDrawInteractive currentTool)
         {
-           this.CurrentTool = currentTool;
-           NotifyToolChanged();
+            NotifyToolChanged();
+            if (this.CurrentTool!= null)
+            {
+                this.CurrentTool.PropertyChanged -= CurrentTool_PropertyChanged;
+                this.CurrentTool = currentTool;
+                if (this.CurrentTool == null) return;
+                this.CurrentTool.PropertyChanged += CurrentTool_PropertyChanged;
+                return;
+            }
+
+            this.CurrentTool = currentTool;
+            this.CurrentTool.PropertyChanged += CurrentTool_PropertyChanged;
+            //NotifyToolChanged();
+        }
+
+        private void CurrentTool_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.NotifyToolChanged();
         }
 
         internal void SetCurrentCanvas(ICadDrawAble cadDraw)

@@ -7,7 +7,6 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 using Syncfusion.UI.Xaml.Grid;
-using Syncfusion.XPS;
 using Unity;
 
 namespace DrawingModule.ViewModels

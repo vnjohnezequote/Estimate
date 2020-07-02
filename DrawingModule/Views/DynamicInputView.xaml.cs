@@ -12,7 +12,6 @@ using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using DrawingModule.Enums;
 using DrawingModule.ViewModels;
-using MahApps.Metro.Converters;
 
 namespace DrawingModule.Views
 {

@@ -225,6 +225,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.CurrentIndex = -1;
             Loaded += CanvasDrawing_Loaded;
             this.PrepareLineTypes();
+            
 
         }
 

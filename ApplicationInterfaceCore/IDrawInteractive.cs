@@ -1,11 +1,12 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel;
+using System.Windows.Input;
 using ApplicationInterfaceCore.Enums;
 using AppModels.EventArg;
 using devDept.Geometry;
 
 namespace ApplicationInterfaceCore
 {
-    public interface IDrawInteractive
+    public interface IDrawInteractive : INotifyPropertyChanged
     {
         //DrawInteractiveDelegate DrawInteractiveHandler { get; }
         //event EventHandler ToolMessageChanged;

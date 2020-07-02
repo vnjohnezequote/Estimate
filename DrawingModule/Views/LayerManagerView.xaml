@@ -6,11 +6,8 @@
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              xmlns:converter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:local="clr-namespace:DrawingModule.Views"
-             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              xmlns:viewModels="clr-namespace:DrawingModule.ViewModels"
-             xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
              d:DataContext="{d:DesignInstance viewModels:LayerManagerViewModel, IsDesignTimeCreatable=True}"
              Name="LayerManagerV"
              mc:Ignorable="d" 
@@ -29,7 +26,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.Resources>
-            <Style TargetType="Syncfusion:VirtualizingCellsControl" x:Key="LayerTextRowStyle">
+            <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="LayerTextRowStyle">
                 <Setter Property="Foreground" Value="{Binding Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
             </Style>
         </Grid.Resources>
@@ -37,7 +34,7 @@
             <DockPanel>
                 <Button Content="New Layer"/>
                 <Button Content="Delete Layer" Margin="10 0 0 0"/>
-                <Syncfusion:ColorPicker Name="LayerColorPicker"
+                <syncfusion:ColorPicker Name="LayerColorPicker"
                                         Margin="10 0 0 0"
                                         HorizontalAlignment="Right"
                                         Width="200"
@@ -56,7 +53,7 @@
 
             </DockPanel>
             
-                <Syncfusion:SfDataGrid Name="LayerManagerGrid"
+                <syncfusion:SfDataGrid Name="LayerManagerGrid"
                                        EditTrigger="OnDoubleTap"
                                        AutoGenerateColumns="False"
                                    AllowDeleting="True"
@@ -72,19 +69,19 @@
                                    SelectedItems="{Binding LayerManager.SelectedLayers}"
                                        Background="{StaticResource MaterialDesignLightBackground}"
                 >
-                <Syncfusion:SfDataGrid.Resources>
+                <syncfusion:SfDataGrid.Resources>
                     <Style TargetType="TextBox" />
                     <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-                </Syncfusion:SfDataGrid.Resources>
+                </syncfusion:SfDataGrid.Resources>
 
-                <Syncfusion:SfDataGrid.Columns>
-                    <Syncfusion:GridCheckBoxColumn HeaderText="Status" MappingName="IsSelected"/>
-                    <Syncfusion:GridTextColumn HeaderText="Layer Name" MappingName="Name"/>
-                    <Syncfusion:GridTemplateColumn MappingName="Color"
-                                               Syncfusion:FocusManagerHelper.WantsKeyInput="True">
-                        <Syncfusion:GridTemplateColumn.CellTemplate>
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridCheckBoxColumn HeaderText="Status" MappingName="IsSelected"/>
+                    <syncfusion:GridTextColumn HeaderText="Layer Name" MappingName="Name"/>
+                    <syncfusion:GridTemplateColumn MappingName="Color"
+                                               syncfusion:FocusManagerHelper.WantsKeyInput="True">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button  Content="{Binding Color, Converter={StaticResource ColorToStringConverter}}" Syncfusion:FocusManagerHelper.FocusedElement="True" 
+                                <Button  Content="{Binding Color, Converter={StaticResource ColorToStringConverter}}" syncfusion:FocusManagerHelper.FocusedElement="True" 
                                      Command="{Binding Path=DataContext.ChangeLayerColorCommand, ElementName=LayerManagerGrid}"
                                      HorizontalContentAlignment="Center"
                                      VerticalContentAlignment="Center"
@@ -93,29 +90,29 @@
                                      Padding="5 0 5 0"
                                      Foreground="{Binding Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
                             </DataTemplate>
-                        </Syncfusion:GridTemplateColumn.CellTemplate>
-                    </Syncfusion:GridTemplateColumn>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
                     <!--<Syncfusion:GridTextColumn HeaderText="Line Type" MappingName="LineTypeName"/>-->
-                    <Syncfusion:GridComboBoxColumn
+                    <syncfusion:GridComboBoxColumn
                         ItemsSource="{Binding LineTypes}"
                         HeaderText="Line Type"
                         MappingName="LineTypeName"
                         UseBindingValue="True"
                         DisplayMemberPath="Description"
                         SelectedValuePath="Name">
-                    </Syncfusion:GridComboBoxColumn>
+                    </syncfusion:GridComboBoxColumn>
 
 
 
-                    <Syncfusion:GridTextColumn HeaderText="Line Weight" MappingName="LineWeight"/>
-                    <Syncfusion:GridCheckBoxColumn HeaderText="On" MappingName="Visible"/>
-                    <Syncfusion:GridCheckBoxColumn HeaderText="Lock" MappingName="Locked"/>
-                    <Syncfusion:GridCheckBoxColumn HeaderText="Plot" MappingName="PrintAble"/>
-                    <Syncfusion:GridTemplateColumn HeaderText="Delete Row"
-                                                   Syncfusion:FocusManagerHelper.WantsKeyInput="True">
-                        <Syncfusion:GridTemplateColumn.CellTemplate>
+                    <syncfusion:GridTextColumn HeaderText="Line Weight" MappingName="LineWeight"/>
+                    <syncfusion:GridCheckBoxColumn HeaderText="On" MappingName="Visible"/>
+                    <syncfusion:GridCheckBoxColumn HeaderText="Lock" MappingName="Locked"/>
+                    <syncfusion:GridCheckBoxColumn HeaderText="Plot" MappingName="PrintAble"/>
+                    <syncfusion:GridTemplateColumn HeaderText="Delete Row"
+                                                   syncfusion:FocusManagerHelper.WantsKeyInput="True">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button  Content="Delete" Syncfusion:FocusManagerHelper.FocusedElement="True" 
+                                <Button  Content="Delete" syncfusion:FocusManagerHelper.FocusedElement="True" 
                                          Command="{Binding Path=DataContext.DeleteLayerCommand, ElementName=LayerManagerGrid}"
                                          CommandParameter="{Binding ElementName=LayerManagerGrid}"
                                          HorizontalContentAlignment="Center"
@@ -124,11 +121,10 @@
                                          HorizontalAlignment="Center"
                                          Padding="5 0 5 0"/>
                             </DataTemplate>
-                        </Syncfusion:GridTemplateColumn.CellTemplate>
-                    </Syncfusion:GridTemplateColumn>
-                </Syncfusion:SfDataGrid.Columns>
-            </Syncfusion:SfDataGrid>
-            
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
         </StackPanel>
     </Grid>
 </UserControl>

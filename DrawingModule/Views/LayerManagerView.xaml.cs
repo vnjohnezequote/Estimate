@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using AppModels.AppData;
 using devDept.Eyeshot;
 using DrawingModule.ViewModels;
-using Syncfusion.SfSkinManager;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.Windows.Tools.Controls;
 

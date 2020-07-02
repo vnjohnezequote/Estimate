@@ -81,6 +81,10 @@ namespace DrawingModule.CustomControl.CanvasControl
             {
                 if (IsProcessingTool)
                 {
+                    if (_currentTool != null)
+                    {
+                        this.OnMouseDown_Drawing(e);
+                    }
                     if (_waitingForSelection)
                     {
                         this.ProcessMouseDownForSelectionTool(e, check);
@@ -97,11 +101,6 @@ namespace DrawingModule.CustomControl.CanvasControl
                     {
                         this.PromptStatus = PromptStatus.OK;
                         this.IsUserInteraction = true;
-                    }
-
-                    if (_currentTool!=null)
-                    {
-                        this.OnMouseDown_Drawing(e);
                     }
                 }
                 else

@@ -8,7 +8,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using ApplicationInterfaceCore;
-using CustomControls.Controls;
 
 namespace ApplicationCore.BaseModule
 {

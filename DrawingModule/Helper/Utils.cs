@@ -514,5 +514,44 @@ namespace DrawingModule.Helper
 
             return plane;
         }
+
+
+        public static ICurve GetExtendedBoundary(ICurve boundary,double extensionLength = 10000)
+        {
+            if (boundary is Line)
+            {
+                Line tempLine = new Line(boundary.StartPoint, boundary.EndPoint);
+                Vector3D dir1 = new Vector3D(tempLine.StartPoint, tempLine.EndPoint);
+                dir1.Normalize();
+                tempLine.EndPoint = tempLine.EndPoint + dir1 * extensionLength;
+
+                Vector3D dir2 = new Vector3D(tempLine.EndPoint, tempLine.StartPoint);
+                dir2.Normalize();
+                tempLine.StartPoint = tempLine.StartPoint + dir2 * extensionLength;
+
+                boundary = tempLine;
+            }
+            return boundary;
+        }
+
+        public static Point3D GetClosestPoint(Point3D point3D, Point3D[] intersetionPoints)
+        {
+            double minsquaredDist = Double.MaxValue;
+            Point3D result = null;
+
+            foreach (Point3D pt in intersetionPoints)
+            {
+                double distSquared = Point3D.DistanceSquared(point3D, pt);
+                if (distSquared < minsquaredDist && !point3D.Equals(pt))
+                {
+                    minsquaredDist = distSquared;
+                    result = pt;
+                }
+            }
+            return result;
+        }
+
+
+
     }
 }

@@ -8,7 +8,6 @@
         xmlns:local="clr-namespace:NewJobWizardModule.Views"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
         xmlns:controls="clr-namespace:CustomControls.Controls;assembly=CustomControls"
         xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:viewModels="clr-namespace:NewJobWizardModule.ViewModels"

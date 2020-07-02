@@ -9,15 +9,14 @@
 		xmlns:local="clr-namespace:DrawingModule.Views"
 		xmlns:prism="http://prismlibrary.com/"
 		xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-		xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
-		xmlns:controls="clr-namespace:CustomControls.Controls;assembly=CustomControls"
+                     xmlns:controls="clr-namespace:CustomControls.Controls;assembly=CustomControls"
 		xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
 		xmlns:viewModels="clr-namespace:DrawingModule.ViewModels"
 		xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
 		xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics"
 		xmlns:control="clr-namespace:DrawingModule.Control"
 		xmlns:applicationConverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
-		mc:Ignorable="d"
+                     mc:Ignorable="d"
 		WindowStartupLocation="CenterScreen"
 		Style="{StaticResource MaterialDesignWindow}"
 		d:DataContext="{d:DesignInstance viewModels:DrawingWindowViewModel, IsDesignTimeCreatable=True}"
@@ -271,7 +270,8 @@
 						</interactions:EventTrigger>
 					</interactions:Interaction.Triggers>
 					<ContentControl prism:RegionManager.RegionName="RightContentRegiom" />
-				</Grid>
+
+                </Grid>
 			</ScrollViewer>
 			<Border Style="{StaticResource DarkBorder}"
 					Grid.Row="0"

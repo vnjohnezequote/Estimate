@@ -5,7 +5,6 @@ using DrawingModule.Interface;
 using DrawingModule.UserInteractive;
 using DrawingModule.ViewModels;
 using DrawingModule.Views;
-using Syncfusion.Windows.PdfViewer;
 using CanvasDrawing = DrawingModule.CustomControl.CanvasControl.CanvasDrawing;
 
 namespace DrawingModule.Application

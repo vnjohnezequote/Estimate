@@ -78,9 +78,17 @@ namespace AppDataBase.DataBase
 
         public void RemoveEntity(Entity entity)
         {
-           
+            Application.Current.Dispatcher.Invoke((Action)(() =>
+            {//this refer to form in WPF application 
+                this.Entities.Remove(entity);
+                this.Entities.Regen();
+            }));
         }
 
+        public Entity GetEntity(int index)
+        {
+            return Application.Current.Dispatcher.Invoke((Func<Entity>)(() => Entities[index]));
+        }
         public void Invalidate()
         {
             if (this.CanvasDrawing!=null)

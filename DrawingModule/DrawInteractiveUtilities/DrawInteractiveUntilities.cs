@@ -140,6 +140,30 @@ namespace DrawingModule.DrawInteractiveUtilities
             canvas.renderContext.SetLineSize(1);
 
         }
+        public static void DrawSelectionMark(ICadDrawAble canvas,System.Drawing.Point current)
+        {
+            double num = (double)canvas.PickBoxSize;
+            double x = (double)current.X + num / 2.0;
+            double y = (double)(canvas.Size.Height - current.Y) + num / 2.0;
+            double x2 = (double)current.X - num / 2.0;
+            double y2 = (double)(canvas.Size.Height - current.Y) - num / 2.0;
+            Point3D point3D = new Point3D(x2, y);
+            Point3D point3D2 = new Point3D(x, y);
+            Point3D point3D3 = new Point3D(x, y2);
+            Point3D point3D4 = new Point3D(x2, y2);
+            canvas.renderContext.DrawLines(new Point3D[]
+            {
+                point3D4,
+                point3D3,
+                point3D3,
+                point3D2,
+                point3D2,
+                point3D,
+                point3D,
+                point3D4
+            });
+            canvas.renderContext.SetLineSize(1f, true, false);
+        }
 
         public static void DrawPickBox(System.Drawing.Point onScreen,ICadDrawAble canvas)
         {
