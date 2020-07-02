@@ -20,6 +20,8 @@ namespace DrawingModule.DrawToolBase
         public IEntitiesManager EntitiesManager { get; private set; }
         public ILayerManager LayerManager { get; private set; }
         public virtual string ToolName { get; }
+        public virtual double CurrentWidth { get; set; }
+        public virtual double CurrentHeight { get; set; }
         public virtual string ToolMessage
         {
             get=>_toolMessage;

@@ -360,32 +360,30 @@ namespace DrawingModule.Views
                     //{//this refer to form in WPF application 
                         FocusTextLength();
                     //}));
-                   
-
                     break;
                 case FocusType.Width:
-                    TextWidth.SelectAll();
+                    FocusTextWidth();
                     break;
                 case FocusType.Height:
-                    TextHeight.SelectAll();
+                    FocusTextHeight();
                     break;
                 case FocusType.Angle:
                     FocusTextAngle();
                     break;
                 case FocusType.TextContent:
-                    this.TextInput.SelectAll();
+                    FocusTextContentInput();
                     break;
                 case FocusType.TextHeight:
-                    TextStringHeight.SelectAll();
+                    FocusTextHeightInput();
                     break;
                 case FocusType.TextAngle:
-                    TextStringAngle.SelectAll();
+                    FocusTextStringAngle();
                     break;
                 case FocusType.LeaderSegment:
-                    LeaderSegment.SelectAll();
+                    FocusLeaderSegment();
                     break;
                 case FocusType.ArrowSize:
-                    ArrowHeadSize.SelectAll();
+                    FocusTextArrowSize();
                     break;
                 case FocusType.CommandLine:
                     CommandLine.SelectAll();

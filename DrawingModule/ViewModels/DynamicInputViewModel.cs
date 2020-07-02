@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using DrawingModule.CommandLine;
 using DrawingModule.Enums;
@@ -199,18 +200,9 @@ namespace DrawingModule.ViewModels
         #region Drawing Properties Region
         public string LengthDimension
         {
-            get
-            {
-                if (CurrentCanvas == null)
-                {
-                    return "0";
-                }
-                else
-                {
-                    return CurrentCanvas.CurrentLengthDimension.ToString(CultureInfo.InvariantCulture);
-                }
-
-            }
+            get => CurrentCanvas == null
+                ? "0"
+                : CurrentCanvas.CurrentLengthDimension.ToString(CultureInfo.InvariantCulture);
             set
             {
                 var checkConvertDouble = Utils.ConvertStringToDouble(value, out var outputDouble);
@@ -222,15 +214,9 @@ namespace DrawingModule.ViewModels
         }
         public string AngleDimension
         {
-            get
-            {
-                if (CurrentCanvas == null)
-                {
-                    return "";
-                }
-                return CurrentCanvas.CurrentAngleDimension.ToString(CultureInfo.CurrentCulture);
-
-            }
+            get => CurrentCanvas == null
+                ? ""
+                : CurrentCanvas.CurrentAngleDimension.ToString(CultureInfo.CurrentCulture);
             set
             {
                 //var inputString = value.ToString(CultureInfo.CurrentCulture);
@@ -243,6 +229,43 @@ namespace DrawingModule.ViewModels
 
             }
         }
+        public string WidthDimension {
+            get => CurrentCanvas == null
+                ? "0"
+                : CurrentCanvas.CurrentWidthDimension.ToString(CultureInfo.InvariantCulture);
+            set
+            {
+                var checkConvertDouble = Utils.ConvertStringToDouble(value, out var outputDouble);
+                if (checkConvertDouble && Math.Abs(outputDouble) > 0.0001 & this.CurrentCanvas != null)
+                {
+                    this.CurrentCanvas.UpdateCurrentPointByWidthAndHeight(outputDouble, Convert.ToDouble(HeightDimension),SetDimensionType.Width);
+                }
+            }
+        } 
+
+
+        public string HeightDimension {
+            get => CurrentCanvas == null
+                ? "0"
+                : CurrentCanvas.CurrentHeightDimension.ToString(CultureInfo.InvariantCulture);
+            set
+            {
+                var checkConvertDouble = Utils.ConvertStringToDouble(value, out var outputDouble);
+                if (checkConvertDouble && Math.Abs(outputDouble) > 0.0001 & this.CurrentCanvas != null)
+                {
+                    this.CurrentCanvas.UpdateCurrentPointByWidthAndHeight(outputDouble, Convert.ToDouble(WidthDimension),SetDimensionType.Height);
+                }
+            }
+    } 
+
+
+
+        public string TextStringContent { get; set; }
+        public double TextStringHeight { get; set; }
+        public double TextStringAngle { get; set; }
+        public int LeaderSegmentNumber { get; set; }
+        public int ArrowSize { get; set; }
+
         #endregion
         #region Properties
         public bool IsBusyforTool => CurrentTool != null;
@@ -262,6 +285,7 @@ namespace DrawingModule.ViewModels
                 this.OnHintListCommand(value);
             }
         }
+
         #endregion
         #region Constructor
         public DynamicInputViewModel():base()
@@ -778,7 +802,7 @@ namespace DrawingModule.ViewModels
             }
             else if (string.IsNullOrEmpty(CommandTextInput) && !string.IsNullOrEmpty(_lastCommandString))
             {
-                //this.EventAggre.GetEvent<CommandExcuteStringEvent>().Publish(_lastCommandString);
+                this.EventAggre.GetEvent<CommandExcuteStringEvent>().Publish(_lastCommandString);
             }
             this.HintViewerVisible = false;
             this.CommandTextInput = string.Empty;
@@ -863,6 +887,8 @@ namespace DrawingModule.ViewModels
            
             RaisePropertyChanged(nameof(LengthDimension));
             RaisePropertyChanged(nameof(AngleDimension));
+            RaisePropertyChanged(nameof(WidthDimension));
+            RaisePropertyChanged(nameof(HeightDimension));
             //UpdateSelectAllTExtInTextBox();
             
         }

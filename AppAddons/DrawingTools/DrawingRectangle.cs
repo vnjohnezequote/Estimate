@@ -20,23 +20,26 @@ namespace AppAddons.DrawingTools
     public class DrawingRectangle : ToolBase
     {
         //public DrawInteractiveDelegate DrawInteractiveHandler { get; private set; }
+        private double _currentWidth;
+        private double _currentHeight;
         public override string ToolName => "Draw Rectangle";
         public sealed override string ToolMessage => BasePoint==null
             ? "Please enter start point. Escape to break tool"
             : "Please enter end point. Escape to break tool";
 
+        public override double CurrentWidth { get=>_currentWidth; set=>SetProperty(ref _currentWidth,value); }
+        public override double CurrentHeight { get=>_currentHeight; set=>SetProperty(ref _currentHeight,value); }
         public override Point3D BasePoint { get; protected set; }
         public Point3D EndPoint { get; protected set; }
-        private PromptPointOptions promptPointOp { get; set; }
+        
         #region Constructor
 
         public DrawingRectangle()
         {
-            this.promptPointOp = new PromptPointOptions(ToolMessage);
             IsUsingOrthorMode = false;
             IsUsingHeightTextBox = true;
             IsUsingWidthTextBox = true;
-            IsUsingAngleTextBox = true;
+            DefaultDynamicInputTextBoxToFocus = FocusType.Width;
 
         }
         #endregion
@@ -44,12 +47,12 @@ namespace AppAddons.DrawingTools
         public void DrawRectangle()
         {
             var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
+            var promptPointOp = new PromptPointOptions(ToolMessage);
             //acDoc.Editor.FocusToLengthTextBox();
             DynamicInput?.FocusTextWidth();
             while (true)
             {
-                this.promptPointOp.Message = ToolMessage;
-                var res = acDoc.Editor.GetPoint(this.promptPointOp);
+                var res = acDoc.Editor.GetPoint(promptPointOp);
                 if (res.Status == PromptStatus.Cancel)
                 {
                     //Application.DocumentManager.MdiActiveDocument.Editor.UnRegisterDrawInteractive(this);
@@ -93,6 +96,8 @@ namespace AppAddons.DrawingTools
 
                     this.EntitiesManager.AddAndRefresh(rectangle, this.LayerManager.SelectedLayer.Name);
                     BasePoint = EndPoint = null;
+                    CurrentWidth = 0;
+                    CurrentHeight = 0;
                 }
                 
                 //acDoc.Editor.CanvasDrawing.AddAndRefresh(line);
@@ -102,11 +107,7 @@ namespace AppAddons.DrawingTools
         #region Implement IDrawInteractive
         public override void NotifyMouseMove(object sender, MouseEventArgs e)
         {
-
-            base.NotifyMouseMove(sender, e);
-            if (DynamicInput == null) return;
-            DynamicInput.FocusDynamicInputTextBox(FocusType.Previous);
-
+            DynamicInput?.FocusDynamicInputTextBox(FocusType.Previous);
         }
         public override void NotifyPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -126,7 +127,7 @@ namespace AppAddons.DrawingTools
         protected virtual void OnMoveNextTab()
         {
             if (this.DynamicInput == null) return;
-            switch (DynamicInput.PreviusDynamicInputFocus)
+                switch (DynamicInput.PreviusDynamicInputFocus)
             {
                 case FocusType.Width:
                     DynamicInput.FocusTextHeight();

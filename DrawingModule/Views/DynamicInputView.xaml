@@ -114,15 +114,15 @@
                              Visibility="{Binding LengthVisibility}"
                              Width="50"/>
                     <TextBlock Text="Width"
-                             Visibility="{Binding WidthVisibility, UpdateSourceTrigger=PropertyChanged}"/>
+                             Visibility="{Binding WidthVisibility}"/>
                     <TextBox Name="TextWidth"
-                             Text="{Binding WidthDimension, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding WidthDimension}"
                              Visibility="{Binding WidthVisibility}"
                              Width="50"/>
                     <TextBlock Text="Height"
                              Visibility="{Binding HeightVisibility}"/>
                     <TextBox Name="TextHeight"
-                             Text="{Binding HeightDimension,UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding HeightDimension}"
                              Visibility="{Binding HeightVisibility}"
                              Width="50"/>
                     <TextBlock Text="Angle"

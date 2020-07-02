@@ -26,6 +26,8 @@ namespace ApplicationInterfaceCore
         bool IsUsingTextStringAngleTextBox { get; }
         bool IsUsingLeaderSegmentTextBox { get; }
         bool IsUsingArrowHeadSizeTextBox { get; }
+        double CurrentWidth { get; set; }
+        double CurrentHeight { get; set; }
         FocusType DefaultDynamicInputTextBoxToFocus { get; }
         IDynamicInputView DynamicInput { get;}
         void NotifyMouseMove(object sender, MouseEventArgs e);

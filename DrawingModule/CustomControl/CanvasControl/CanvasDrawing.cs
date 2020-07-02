@@ -17,18 +17,19 @@ using System.Windows;
 using System.Windows.Input;
 using AppDataBase.DataBase;
 using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels;
 using AppModels.EventArg;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
-using devDept.Graphics;
 using DrawingModule.Application;
 using DrawingModule.CommandClass;
 using DrawingModule.Control;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.EditingTools;
+using DrawingModule.Enums;
 using DrawingModule.Helper;
 using DrawingModule.Views;
 using Size = System.Drawing.Size;
@@ -67,7 +68,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         private bool _waitingForSelection;
         private bool _waitingForPickSelection;
         private Entity _entityUnderMouse;
-
+        private bool _isLockCurrentPointWhenMouseMove = false;
         private Point3D _currentPoint;
 
         private Point3D _lastClickPoint;
@@ -133,6 +134,48 @@ namespace DrawingModule.CustomControl.CanvasControl
             }
         }
 
+        public double CurrentHeightDimension
+        {
+            get
+            {
+                if (this.CurrentTool!=null && Math.Abs(this.CurrentTool.CurrentHeight) > 0.0001)
+                {
+
+                    return this.CurrentTool.CurrentHeight;
+                }
+                if (this.LastClickPoint == null || this.CurrentPoint == null) return 0;
+                var height = CurrentPoint.Y - LastClickPoint.Y;
+                if (height < 0)
+                {
+                    height = (-1) * height;
+                }
+
+                return height.Round();
+
+            }
+        }
+        public double CurrentWidthDimension
+        {
+            get
+            {
+                if (this.CurrentTool != null && Math.Abs(this.CurrentTool.CurrentWidth) > 0.0001)
+                {
+
+                    return this.CurrentTool.CurrentWidth;
+                }
+                if (this.LastClickPoint == null || this.CurrentPoint == null) return 0;
+                var width = CurrentPoint.X - LastClickPoint.X;
+                if (width < 0)
+                {
+                    width = (-1) * width;
+
+                }
+
+                return width.Round();
+
+            }
+        }
+
         public string CurrentText => "Test";
         public double CurrentTextHeight => 100;
         public double CurrentTextAngle => 0;
@@ -150,7 +193,38 @@ namespace DrawingModule.CustomControl.CanvasControl
             
         }
 
-       
+
+        public void UpdateCurrentPointByWidthAndHeight(double width, double height,SetDimensionType setDimensionType)
+        {
+            var xFactor = 1;
+            var yFactor = 1;
+            switch (setDimensionType)
+            {
+                case SetDimensionType.Width:
+                    if(this.CurrentTool !=null)
+                    this.CurrentTool.CurrentWidth = width;
+                    break;
+                case SetDimensionType.Height:
+                    if (this.CurrentTool != null)
+                        this.CurrentTool.CurrentHeight = height;
+                    break;
+            }
+
+            if (this.LastClickPoint.X > this.CurrentPoint.X)
+            {
+                xFactor = -1;
+            }
+
+            if (this.LastClickPoint.Y > this.CurrentPoint.Y)
+            {
+                yFactor = -1;
+            }
+
+            width *= xFactor;
+            height *= yFactor;
+            this.CurrentPoint = new Point3D(LastClickPoint.X + width, LastClickPoint.Y + height);
+            this.Invalidate();
+        }
 
         public Size DrawTextString(int x, int y, string text, Font textFont, Color textColor, ContentAlignment textAlign)
         {

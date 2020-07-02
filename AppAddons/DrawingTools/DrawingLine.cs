@@ -49,7 +49,6 @@ namespace AppAddons.DrawingTools
         public void DrawLine()
         {
             var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
-            //acDoc.Editor.FocusToLengthTextBox();
             DynamicInput?.FocusTextLength();
             while (true)
             {
@@ -57,7 +56,6 @@ namespace AppAddons.DrawingTools
                 var res = acDoc.Editor.GetPoint(this.promptPointOp);
                 if (res.Status == PromptStatus.Cancel)
                 {
-                    //Application.DocumentManager.MdiActiveDocument.Editor.UnRegisterDrawInteractive(this);
                     return;
                 }
 
@@ -83,29 +81,24 @@ namespace AppAddons.DrawingTools
                     
                 
                 this.EntitiesManager.AddAndRefresh(line,this.LayerManager.SelectedLayer.Name);
-                //acDoc.Editor.CanvasDrawing.AddAndRefresh(line);
-                //DynamicInput?.FocusDynamicInputTextBox(this.DefaultDynamicInputTextBoxToFocus);
             }
         }
         #region Implement IDrawInteractive
         public override void NotifyMouseMove(object sender, MouseEventArgs e)
         {
-            
-            base.NotifyMouseMove(sender, e);
-            if (DynamicInput == null) return;
-            if (DynamicInput.PreviusDynamicInputFocus==FocusType.Length)
-            {
-                DynamicInput.FocusTextLength();
-            }
-            else
-            {
-                DynamicInput.FocusTextAngle();
-            }
+            DynamicInput?.FocusDynamicInputTextBox(FocusType.Previous);
+            //if (DynamicInput.PreviusDynamicInputFocus==FocusType.Length)
+            //{
+            //    DynamicInput.FocusTextLength();
+            //}
+            //else
+            //{
+            //    DynamicInput.FocusTextAngle();
+            //}
 
         }
         public override void NotifyPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            base.NotifyPreviewKeyDown(sender, e);
             switch (e.Key)
             {
                 case Key.Tab:

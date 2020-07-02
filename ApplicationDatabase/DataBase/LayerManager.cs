@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using ApplicationInterfaceCore;
 using AppModels.AppData;
@@ -58,9 +59,6 @@ namespace AppModels
             } 
             //RaisePropertyChanged(nameof(ActiveLayer));
         }
-
-       
-
         public ObservableCollection<LayerItem> Layers
         {
             get => _layers;
@@ -124,6 +122,10 @@ namespace AppModels
                         PrintAble = true,
                     };
                 this.Layers.Add(layerItem);
+                if (layerItem.Name == "Default")
+                {
+                    layerItem.Color = Color.Red;
+                }
             }
         }
 

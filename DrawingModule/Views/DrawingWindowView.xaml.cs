@@ -135,7 +135,7 @@ namespace DrawingModule.Views
 
                 }
             }
-            e.Handled = false;
+            //e.Handled = false;
             base.OnPreviewKeyDown(e);
         }
         
