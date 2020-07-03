@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Windows.Input;
 using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.EventArg;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
+using DrawingModule.Application;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.DrawToolBase;
 using DrawingModule.UserInteractive;
@@ -19,52 +22,58 @@ namespace AppAddons.EditingTools
 
         public EditingToolBase() :base()
         {
-
+            DefaultDynamicInputTextBoxToFocus = FocusType.Length;
         }
 
         protected virtual void OnProcessCommand()
         {
-            var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
-            if (WaitingForSelection)
+            var acDocEditor = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument.Editor;
+            while (true)
             {
-                var promptEntityOptions = new PromptEntityOptions("Please Select Entity for " + ToolName.ToLower());
-                PromptEntityResult result = null;
-                while (WaitingForSelection)
-                {
-                    result = acDoc.Editor.GetEntities(promptEntityOptions);
-                    switch (result.Status)
-                    {
-                        case PromptStatus.Cancel:
-                            return;
-                        case PromptStatus.OK when result.Entities.Count > 0:
-                            WaitingForSelection = false;
-                            break;
-                        case PromptStatus.None:
-                            break;
-                        case PromptStatus.Error:
-                            break;
-                        case PromptStatus.Keyword:
-                            break;
-                        case PromptStatus.Modeless:
-                            break;
-                        case PromptStatus.Other:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (result != null)
-                {
-                    this.SelectedEntities.AddRange(result.Entities);
-                }
-
+                if(!PrepareSelectionSet(acDocEditor)) return;
+                if(!PrepairPoint(acDocEditor)) return;
+                    this.ProcessEntities();
+                    this.ResetTool();
 
             }
+        }
+        private bool PrepareSelectionSet(Editor editor)
+        {
+            if (!WaitingForSelection) return true;
+            ToolMessage = "Please Select Entity for" + ToolName.ToLower();
+            var promptEntityOptions = new PromptEntityOptions("Please Select Entity for " + ToolName.ToLower());
+            PromptEntityResult result = null;
+            while (WaitingForSelection)
+            {
+                result = editor.GetEntities(promptEntityOptions);
+                switch (result.Status)
+                {
+                    case PromptStatus.Cancel:
+                        return false;
+                    case PromptStatus.OK when result.Entities.Count > 0:
+                        WaitingForSelection = false;
+                        break;
+                    default:
+                        return false;
+                }
+            }
+
+            if (result != null)
+            {
+                this.SelectedEntities.AddRange(result.Entities);
+                return true;
+            }
+
+            return true;
+        }
+        protected virtual bool PrepairPoint(Editor editor)
+        {
+            IsSnapEnable = true;
+            IsUsingOrthorMode = true;
             ToolMessage = "Please enter BasePoint to" + ToolName.ToLower();
             this.IsSnapEnable = true;
             var promptPointOption = new PromptPointOptions("Please enter basePoint to " + ToolName.ToLower());
-            var promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
+            var promptPointResult = editor.GetPoint(promptPointOption);
             switch (promptPointResult.Status)
             {
                 case PromptStatus.OK:
@@ -72,34 +81,51 @@ namespace AppAddons.EditingTools
                     this.BasePoint = promptPointResult.Value;
                     break;
                 case PromptStatus.Cancel:
-                    return;
+                    return false;
             }
+            IsUsingLengthTextBox = true;
+            IsUsingAngleTextBox = true;
+            DynamicInput?.FocusDynamicInputTextBox(FocusType.Length);
             ToolMessage = "Please enter next point to " + ToolName.ToLower();
             promptPointOption.Message = "Please enter next point to " + ToolName.ToLower();
-            promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
+            promptPointResult = editor.GetPoint(promptPointOption);
             switch (promptPointResult.Status)
             {
                 case PromptStatus.OK:
                     this._endPoint = promptPointResult.Value;
                     break;
                 case PromptStatus.Cancel:
-                    return;
+                    return false;
             }
-            this.ProcessEntities();
-            IsSnapEnable = false;
+
+            return true;
         }
+
+        public override void NotifyMouseMove(object sender, MouseEventArgs e)
+        {
+            if (IsUsingAngleTextBox && IsUsingLengthTextBox)
+            {
+                DynamicInput?.FocusDynamicInputTextBox(FocusType.Previous);
+            }
+            
+        }
+
         public override void OnJigging(object sender, DrawInteractiveArgs e)
         {
             this.DrawInteractiveCommand((ICadDrawAble)sender, e);
         }
-
         protected abstract void ProcessEntities();
-
-        //public void Dispose()
-        //{
-        //    Application.Application.DocumentManager.MdiActiveDocument.Editor.UnRegisterDrawInteractive(this);
-        //}
-
+        protected virtual void ResetTool()
+        {
+            EntitiesManager.ResetSelection();
+            this.SelectedEntities.Clear();
+            this.WaitingForSelection = true;
+            this.BasePoint = null;
+            IsUsingLengthTextBox = false;
+            IsUsingAngleTextBox = false;
+            IsSnapEnable = false;
+            IsUsingOrthorMode = false;
+        }
         protected virtual void DrawInteractiveCommand(ICadDrawAble canvas, DrawInteractiveArgs e)
         {
             if (WaitingForSelection)

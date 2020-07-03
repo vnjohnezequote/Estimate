@@ -22,6 +22,7 @@ namespace ApplicationInterfaceCore
         void ClearSelectedEntities();
         void SetEntitiesList(EntityList entities);
         void SetCanvasDrawing(ICadDrawAble cadDraw);
+        void ResetSelection();
         Entity GetEntity(int index);
         List<Entity> GetSelectedEntities();
     }
