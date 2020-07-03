@@ -159,13 +159,11 @@ namespace DrawingModule.Views
             get=> (string)GetValue(HeightDimensionProperty);
             set=>SetValue(HeightDimensionProperty,value);
         }
-
         public string WidthDimension
         {
             get => (string)GetValue(WidthDimensionProperty);
             set => SetValue(WidthDimensionProperty, value);
         }
-
         public string LengthDimension
         {
             get => (string)GetValue(LengthDimensionProperty);
@@ -176,7 +174,6 @@ namespace DrawingModule.Views
             get => (string)GetValue(AngleDimensionProperty);
             set => SetValue(AngleDimensionProperty, value);
         }
-
         public Visibility TextInputAngleVisibility
         {
             get => (Visibility) GetValue(TextInputAngleVisibilityProperty);
@@ -388,6 +385,9 @@ namespace DrawingModule.Views
                 case FocusType.CommandLine:
                     CommandLine.SelectAll();
                     break;
+                case FocusType.ScaleFactor:
+                    FocusScaleFactor();
+                    break;
                 default:
                     break;
             }
@@ -401,6 +401,16 @@ namespace DrawingModule.Views
                 this.PreviusDynamicInputFocus = FocusType.Length;
             }));
             
+        }
+
+        public void FocusScaleFactor()
+        {
+            Dispatcher.Invoke((Action)(() =>
+            {//this refer to form in WPF application 
+                this.ScaleFactor.Focus();
+                this.ScaleFactor.SelectAll();
+                this.PreviusDynamicInputFocus = FocusType.ScaleFactor;
+            }));
         }
         public void FocusCommandTextbox()
         {

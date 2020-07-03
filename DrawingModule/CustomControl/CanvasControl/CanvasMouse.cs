@@ -33,7 +33,6 @@ namespace DrawingModule.CustomControl.CanvasControl
             {
                 SetProperty(ref _currentTool, value);
                 ToolChanged?.Invoke(this,new ToolChangedArgs(value));
-                
 
             }
         }
@@ -41,7 +40,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         {
             _mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
             this.CurrentPoint = GetCurrentPoint(_mousePosition);
-            CurrentIndex = this.GetEntityUnderMouseCursor(_mousePosition, false);
+                CurrentIndex = this.GetEntityUnderMouseCursor(_mousePosition, false);
             _entityUnderMouse = CurrentIndex > -1 ? this.Entities[CurrentIndex] : null;
             if (!IsProcessingTool && this._selectTool.StartPoint != null)
             {

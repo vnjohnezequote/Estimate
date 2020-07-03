@@ -109,22 +109,7 @@ namespace AppAddons.DrawingTools
         {
             DynamicInput?.FocusDynamicInputTextBox(FocusType.Previous);
         }
-        public override void NotifyPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            base.NotifyPreviewKeyDown(sender, e);
-            switch (e.Key)
-            {
-                case Key.Tab:
-                    OnMoveNextTab();
-                    e.Handled = true;
-                    break;
-                default:
-                    e.Handled = false;
-                    break;
-            }
-
-        }
-        protected virtual void OnMoveNextTab()
+        protected override void OnMoveNextTab()
         {
             if (this.DynamicInput == null) return;
                 switch (DynamicInput.PreviusDynamicInputFocus)
@@ -133,10 +118,7 @@ namespace AppAddons.DrawingTools
                     DynamicInput.FocusTextHeight();
                     break;
                 case FocusType.Height:
-                    DynamicInput.FocusTextAngle();
-                    break;
-                case FocusType.Angle:
-                    DynamicInput.FocusTextWidth(); 
+                    DynamicInput.FocusTextWidth();
                     break;
             }
         }

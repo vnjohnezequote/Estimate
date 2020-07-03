@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.EventArg;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
+using DrawingModule.Application;
 using DrawingModule.CommandClass;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.DrawToolBase;
@@ -17,20 +20,18 @@ using Environment = devDept.Eyeshot.Environment;
 
 namespace AppAddons.EditingTools
 {
-    public class ScaleTool : SelectAbleToolBase
+    public class ScaleTool : EditingToolBase
     {
         public override string ToolName => "Scale";
-        public override Point3D BasePoint { get; protected set; }
-
-        private Point3D _startPoint;
-        private Point3D _refPoint2;
-        private Point3D _endPoint;
-        private List<Point3D> _clickPoints;
+        //private List<Point3D> _clickPoints;
         private double _scaleFactor;
+        public override double ScaleFactor { get=>_scaleFactor; set=>SetProperty(ref _scaleFactor,value); }
+        public double ReferenceScaleFactor { get; private set; }
 
         public ScaleTool()
         {
-            _clickPoints = new List<Point3D>();
+            DefaultDynamicInputTextBoxToFocus = FocusType.ScaleFactor;
+            //_clickPoints = new List<Point3D>();
         }
         [CommandMethod("Scale")]
         public void Scale()
@@ -38,94 +39,53 @@ namespace AppAddons.EditingTools
             OnProcessCommand();
         }
 
-        protected virtual void OnProcessCommand()
+        protected override bool PrepairPoint(Editor editor)
         {
-            var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
-            if (WaitingForSelection)
-            {
-                var promptEntityOptions = new PromptEntityOptions("Please Select Entity for " + ToolName.ToLower());
-                PromptEntityResult result = null;
-                while (WaitingForSelection)
-                {
-                    result = acDoc.Editor.GetEntities(promptEntityOptions);
-                    switch (result.Status)
-                    {
-                        case PromptStatus.Cancel:
-                            return;
-                        case PromptStatus.OK when result.Entities.Count > 0:
-                            WaitingForSelection = false;
-                            break;
-                        case PromptStatus.None:
-                            break;
-                        case PromptStatus.Error:
-                            break;
-                        case PromptStatus.Keyword:
-                            break;
-                        case PromptStatus.Modeless:
-                            break;
-                        case PromptStatus.Other:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (result != null)
-                {
-                    this.SelectedEntities.AddRange(result.Entities);
-                }
-
-
-            }
             ToolMessage = "Please enter origin point to " + ToolName.ToLower();
             this.IsSnapEnable = true;
             var promptPointOption = new PromptPointOptions("Please enter origin point to " + ToolName.ToLower());
-            var promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
+            var promptPointResult = editor.GetPoint(promptPointOption);
             switch (promptPointResult.Status)
             {
                 case PromptStatus.OK:
-                    this._startPoint = promptPointResult.Value;
-                    this._clickPoints.Add(_startPoint);
+                    BasePoint = promptPointResult.Value;
                     //this.BasePoint = promptPointResult.Value;
                     break;
                 case PromptStatus.Cancel:
-                    return;
-            }
-            ToolMessage = "Select first reference point to " + ToolName.ToLower();
-            promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
-            switch (promptPointResult.Status)
-            {
-                case PromptStatus.OK:
-                    this._refPoint2 = promptPointResult.Value;
-                    this._clickPoints.Add(_refPoint2);
-                    break;
-                case PromptStatus.Cancel:
-                    return;
+                    return false;
             }
 
-            ToolMessage = "Select second reference point to " + ToolName.ToLower();
-            promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
+            IsUsingScaleFactorTextBox = true;
+            this.DynamicInput?.FocusDynamicInputTextBox(FocusType.ScaleFactor);
+            ToolMessage = "Select enter Scale Factor " + ToolName.ToLower();
+            promptPointResult = editor.GetPoint(promptPointOption);
             switch (promptPointResult.Status)
             {
                 case PromptStatus.OK:
                     this._endPoint = promptPointResult.Value;
-                    this._clickPoints.Add(_endPoint);
                     break;
                 case PromptStatus.Cancel:
-                    return;
+                    return false;
             }
 
-            this.ProcessEntities();
-            IsSnapEnable = false;
+            
+            return true;
+
         }
-
-        private void ProcessEntities()
+        protected override void OnMoveNextTab()
         {
-            foreach (var selEntity in this.SelectedEntities)
+            if (IsUsingScaleFactorTextBox)
             {
-                selEntity.Scale(_clickPoints[0], _scaleFactor);
+                this.DynamicInput?.FocusDynamicInputTextBox(FocusType.ScaleFactor);
             }
-            this.EntitiesManager.EntitiesRegen();
+            
+        }
+        public override void NotifyMouseMove(object sender, MouseEventArgs e)
+        {
+            if (IsUsingScaleFactorTextBox)
+            {
+                this.DynamicInput?.FocusDynamicInputTextBox(FocusType.ScaleFactor);
+            }
         }
         public override void OnJigging(object sender, DrawInteractiveArgs e)
         {
@@ -134,28 +94,34 @@ namespace AppAddons.EditingTools
 
         private void DrawInteractiveScale(ICadDrawAble canvas, DrawInteractiveArgs e)
         {
-            if (_clickPoints.Count == 0)
+            if (BasePoint== null)
             {
                 return;
             }
             
-            var worldToScreenVertices = _clickPoints.Select(point3D => canvas.WorldToScreen(point3D)).ToList();
+            //var worldToScreenVertices = _clickPoints.Select(point3D => canvas.WorldToScreen(point3D)).ToList();
             //renderContext.DrawLineStrip(worldToScreenVertices.ToArray());
 
 
-            if (worldToScreenVertices.Count > 0)
+            //if (worldToScreenVertices.Count > 0)
+            //{
+            //    canvas.renderContext.DrawLineStrip(new Point3D[]
+            //    {
+            //        canvas.WorldToScreen(_clickPoints.First()),canvas.WorldToScreen(e.CurrentPoint)
+            //    });
+            //}
+            if (e.CurrentPoint == null) return;
+            //_scaleFactor = BasePoint.DistanceTo(e.CurrentPoint) / _clickPoints[0].DistanceTo(_clickPoints[1]);
+            if (this.SelectedEntities.Count==0)
             {
-                canvas.renderContext.DrawLineStrip(new Point3D[]
-                {
-                    canvas.WorldToScreen(_clickPoints.First()),canvas.WorldToScreen(e.CurrentPoint)
-                });
+                return;
             }
-            if (_clickPoints.Count < 2) return;
-            _scaleFactor = _clickPoints[0].DistanceTo(e.CurrentPoint) / _clickPoints[0].DistanceTo(_clickPoints[1]);
-            foreach (var selEntity in this.SelectedEntities)
+
+            CalculatorScaleFactor(e.CurrentPoint);
+
+            foreach (var tempEntity in this.SelectedEntities.Select(selEntity => (Entity)selEntity.Clone()))
             {
-                Entity tempEntity = (Entity)selEntity.Clone();
-                tempEntity.Scale(_clickPoints[0], _scaleFactor == 0 ? 1 : _scaleFactor);
+                tempEntity.Scale(BasePoint, ScaleFactor);
                 if (tempEntity is Text)
                 {
                     tempEntity.Regen(new RegenParams(0, (Environment)canvas));
@@ -164,11 +130,40 @@ namespace AppAddons.EditingTools
                 DrawInteractiveUntilities.DrawCurveOrBlockRef(tempEntity, canvas);
             }
 
-
-
-
-
         }
 
+        protected override void ProcessEntities()
+        {
+            CalculatorScaleFactor(_endPoint);
+
+            foreach (var selEntity in this.SelectedEntities)
+            {
+                selEntity.Scale(BasePoint, ScaleFactor);
+            }
+            this.EntitiesManager.Refresh();
+        }
+
+        private void CalculatorScaleFactor(Point3D currentPoint)
+        {
+            var maxlength = 0.0;
+            foreach (var selectedEntity in SelectedEntities)
+            {
+                if (selectedEntity.BoxSize.Max > maxlength)
+                    maxlength = selectedEntity.BoxSize.Max;
+            }
+
+            var d1 = BasePoint.DistanceTo(currentPoint);
+            if (Math.Abs(maxlength) < 0.0001)
+            {
+                maxlength = 1;
+            }
+
+            _scaleFactor = d1 / maxlength;
+            if (Math.Abs(_scaleFactor) < 0.0001)
+            {
+                _scaleFactor = 1;
+            }
+            //this.RaisePropertyChanged(nameof(ScaleFactor));
+        }
     }
 }

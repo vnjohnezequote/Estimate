@@ -22,6 +22,9 @@ namespace DrawingModule.DrawToolBase
         public virtual string ToolName { get; }
         public virtual double CurrentWidth { get; set; }
         public virtual double CurrentHeight { get; set; }
+        public virtual double CurrentAngle { get; set; }
+        public virtual double ScaleFactor { get; set; }
+
         public virtual string ToolMessage
         {
             get=>_toolMessage;
@@ -33,6 +36,7 @@ namespace DrawingModule.DrawToolBase
         }
         public virtual bool IsSnapEnable { get; protected set; }
         public abstract Point3D BasePoint { get; protected set; }
+        public Point3D ReferencePoint { get; protected set; }
         public bool IsUsingOrthorMode { get; protected set; }
         public bool IsUsingLengthTextBox { get; protected set; }
         public bool IsUsingWidthTextBox { get; protected set; }
@@ -43,6 +47,7 @@ namespace DrawingModule.DrawToolBase
         public bool IsUsingTextStringAngleTextBox { get; protected set; }
         public bool IsUsingLeaderSegmentTextBox { get; protected set; }
         public bool IsUsingArrowHeadSizeTextBox { get; protected set; }
+        public bool IsUsingScaleFactorTextBox { get; protected set; }
         public FocusType DefaultDynamicInputTextBoxToFocus { get; protected set; }
         public IDynamicInputView DynamicInput => _dynamicInput;
 
@@ -64,7 +69,9 @@ namespace DrawingModule.DrawToolBase
             IsUsingTextStringAngleTextBox = false;
             IsUsingLeaderSegmentTextBox = false;
             IsUsingArrowHeadSizeTextBox = false;
+            IsUsingScaleFactorTextBox = false;
             DefaultDynamicInputTextBoxToFocus = FocusType.Length;
+            ScaleFactor = 1;
         }
         public virtual void NotifyMouseMove(object sender, MouseEventArgs e)
         {
@@ -88,7 +95,21 @@ namespace DrawingModule.DrawToolBase
 
         public virtual void NotifyPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            
+            switch (e.Key)
+            {
+                case Key.Tab:
+                    OnMoveNextTab();
+                    e.Handled = true;
+                    break;
+                default:
+                    e.Handled = false;
+                    break;
+            }
+        }
+
+        protected virtual void OnMoveNextTab()
+        {
+
         }
 
         public void SetDynamicInput(IDynamicInputView dynamicInput)

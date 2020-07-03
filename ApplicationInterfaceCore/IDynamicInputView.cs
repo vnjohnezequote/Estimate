@@ -46,6 +46,7 @@ namespace ApplicationInterfaceCore
         void FocusTextStringAngle();
         void FocusLeaderSegment();
         void FocusTextHeight();
+        void FocusScaleFactor();
 
         #endregion
 

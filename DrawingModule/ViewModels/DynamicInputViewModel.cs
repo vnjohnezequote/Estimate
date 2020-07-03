@@ -27,14 +27,14 @@ namespace DrawingModule.ViewModels
 
         private readonly Dispatcher _dispatcher;
         public bool _hintViewerVisible;
-        private string _commandTextInput=string.Empty;
+        private string _commandTextInput = string.Empty;
         private IDrawInteractive _curentTool;
-        private string _lastCommandString=string.Empty;
+        private string _lastCommandString = string.Empty;
         public ICadDrawAble CurrentCanvas { get; private set; }
         private bool IsValid => mInputBuffer != null;
-        
+
         private InputBuffer mInputBuffer;
-        
+
         private HintViewerViewModel HintViewerVM
         {
             get
@@ -48,7 +48,7 @@ namespace DrawingModule.ViewModels
             set;
         }
         private CommandLineSearcher Searcher { get; set; }
-        
+
         private CommandEditor mCommandEditor;
         private PromptAndInput mPromptAndInput;
         #endregion
@@ -195,6 +195,20 @@ namespace DrawingModule.ViewModels
             }
         }
 
+        public Visibility ScaleFactorVisibility
+        {
+            get
+            {
+                if (this._curentTool == null)
+                {
+                    return Visibility.Collapsed;
+                }
+                else
+                {
+                    return this._curentTool.IsUsingScaleFactorTextBox ? Visibility.Visible : Visibility.Collapsed;
+                }
+            }
+        }
 
         #endregion
         #region Drawing Properties Region
@@ -206,11 +220,11 @@ namespace DrawingModule.ViewModels
             set
             {
                 var checkConvertDouble = Utils.ConvertStringToDouble(value, out var outputDouble);
-                if (checkConvertDouble && Math.Abs(outputDouble) > 0.0001 & this.CurrentCanvas!=null)
+                if (checkConvertDouble && Math.Abs(outputDouble) > 0.0001 & this.CurrentCanvas != null)
                 {
-                    this.CurrentCanvas.UpdateCurrentPointByLengthAndAngle(outputDouble, Convert.ToDouble(AngleDimension));
+                    this.CurrentCanvas.UpdateCurrentPointByLengthAndAngle(outputDouble, Convert.ToDouble(AngleDimension), Convert.ToDouble(this.ScaleFactor));
                 }
-            } 
+            }
         }
         public string AngleDimension
         {
@@ -223,13 +237,31 @@ namespace DrawingModule.ViewModels
                 var angle = Utils.ConvertAngleStringToDouble(value);
                 if (this.CurrentCanvas != null)
                 {
-                    this.CurrentCanvas.UpdateCurrentPointByLengthAndAngle(Convert.ToDouble(this.LengthDimension), angle);
+                    this.CurrentCanvas.UpdateCurrentPointByLengthAndAngle(Convert.ToDouble(this.LengthDimension), angle, Convert.ToDouble(this.ScaleFactor));
                 }
-                
+
 
             }
         }
-        public string WidthDimension {
+
+        public string ScaleFactor
+        {
+            get => CurrentCanvas == null
+                ? ""
+                : CurrentCanvas.ScaleFactor.ToString(CultureInfo.CurrentCulture);
+            set
+            {
+                var checkConvertDouble = Utils.ConvertStringToDouble(value, out var outputDouble);
+                if (checkConvertDouble && Math.Abs(outputDouble) > 0.0001 & this.CurrentCanvas != null)
+                {
+                    // Cho nay truyen vao khong phai la LengthDimension
+                    // Need to write PromptAngleOptions and PrompScaleOptions and PromptTextOptions.
+                    this.CurrentCanvas.UpdateCurrentPointByLengthAndAngle(Convert.ToDouble(LengthDimension), Convert.ToDouble(AngleDimension),outputDouble );
+                }
+            }
+        }
+        public string WidthDimension
+        {
             get => CurrentCanvas == null
                 ? "0"
                 : CurrentCanvas.CurrentWidthDimension.ToString(CultureInfo.InvariantCulture);
@@ -238,13 +270,14 @@ namespace DrawingModule.ViewModels
                 var checkConvertDouble = Utils.ConvertStringToDouble(value, out var outputDouble);
                 if (checkConvertDouble && Math.Abs(outputDouble) > 0.0001 & this.CurrentCanvas != null)
                 {
-                    this.CurrentCanvas.UpdateCurrentPointByWidthAndHeight(outputDouble, Convert.ToDouble(HeightDimension),SetDimensionType.Width);
+                    this.CurrentCanvas.UpdateCurrentPointByWidthAndHeight(outputDouble, Convert.ToDouble(HeightDimension), SetDimensionType.Width);
                 }
             }
-        } 
+        }
 
 
-        public string HeightDimension {
+        public string HeightDimension
+        {
             get => CurrentCanvas == null
                 ? "0"
                 : CurrentCanvas.CurrentHeightDimension.ToString(CultureInfo.InvariantCulture);
@@ -253,10 +286,10 @@ namespace DrawingModule.ViewModels
                 var checkConvertDouble = Utils.ConvertStringToDouble(value, out var outputDouble);
                 if (checkConvertDouble && Math.Abs(outputDouble) > 0.0001 & this.CurrentCanvas != null)
                 {
-                    this.CurrentCanvas.UpdateCurrentPointByWidthAndHeight(outputDouble, Convert.ToDouble(WidthDimension),SetDimensionType.Height);
+                    this.CurrentCanvas.UpdateCurrentPointByWidthAndHeight(outputDouble, Convert.ToDouble(WidthDimension), SetDimensionType.Height);
                 }
             }
-    } 
+        }
 
 
 
@@ -278,7 +311,7 @@ namespace DrawingModule.ViewModels
         }
         public string CommandTextInput
         {
-            get=>_commandTextInput;
+            get => _commandTextInput;
             set
             {
                 this.SetProperty(ref _commandTextInput, value);
@@ -288,10 +321,10 @@ namespace DrawingModule.ViewModels
 
         #endregion
         #region Constructor
-        public DynamicInputViewModel():base()
-        {}
-        public DynamicInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager)
-        : base(unityContainer, regionManager, eventAggregator,layerManager)
+        public DynamicInputViewModel() : base()
+        { }
+        public DynamicInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
+        : base(unityContainer, regionManager, eventAggregator, layerManager)
         {
             this.EventAggre.GetEvent<DynamicInputViewEvent>().Subscribe(ShowOrHideDynamicInput);
             this.InitSuggestionHints();
@@ -362,7 +395,7 @@ namespace DrawingModule.ViewModels
         }
         private void UpdateInputBoxText()
         {
-            
+
         }
         private void OnHintListCommand(string commandText)
         {
@@ -460,7 +493,7 @@ namespace DrawingModule.ViewModels
             {
                 this.HintViewerVM.SelectFirstCategory();
             }
-            
+
         }
         //public bool ProcessMessages(ref MSG msg, ref bool handled)
         //{
@@ -557,6 +590,7 @@ namespace DrawingModule.ViewModels
             }
             this.HintViewerVM.SelectHintInCurrentCategoryByOffset(offset);
         }
+
         //private void ChangeHintCategorySelection(bool bMoveForward)
         //{
         //    if (bMoveForward)
@@ -722,13 +756,13 @@ namespace DrawingModule.ViewModels
 
         //            if (this.CurrentHintListMode == HintListMode.AutoCorrect)
         //            {
-                        
+
         //                if (commandSysvarHintItem != null)
         //                {
         //                    //AutoCorrectorService.UpdateErrInputCount(this.mInputBuffer.Text, commandSysvarHintItem.GlobalName, commandSysvarHintItem.LocalName);
         //                }
         //                //this.mInputBuffer.ReplaceInputQueue(commandSysvarHintItem.Value+'\n',commandSysvarHintItem.UnderlyingCommand);
-                        
+
         //            }
         //            this.mInputBuffer.ReplaceInputQueue(currentHint.Value + '\n', currentHint.Name);
         //            this.EventAggre.GetEvent<CommandExcuteStringEvent>().Publish(commandSysvarHintItem.GlobalName);
@@ -741,7 +775,7 @@ namespace DrawingModule.ViewModels
         //            this.mInputBuffer.ReplaceInputQueue(currentHint.Value + '\n', currentHint.Name);
         //            this.mPromptAndInput.Prompt = this.mPromptAndInput.Text;
         //            //currentHint.Command.Execute(currentHint);
-                    
+
         //            handled = true;
         //        }
         //    }
@@ -772,7 +806,7 @@ namespace DrawingModule.ViewModels
         //            }
         //        }
 
-                
+
         //    }
         //    //AutoCorrectorService.IsInputCommand(true);
         //    this.HintViewerVisible = false;
@@ -822,6 +856,7 @@ namespace DrawingModule.ViewModels
             RaisePropertyChanged(nameof(WidthVisibility));
             RaisePropertyChanged(nameof(HeightVisibility));
             RaisePropertyChanged(nameof(AngleVisibility));
+            RaisePropertyChanged(nameof(ScaleFactorVisibility));
             RaisePropertyChanged(nameof(ArrowHeadSizeVisibility));
         }
 
@@ -834,7 +869,7 @@ namespace DrawingModule.ViewModels
         internal void SetCurrentTool(IDrawInteractive currentTool)
         {
             NotifyToolChanged();
-            if (this.CurrentTool!= null)
+            if (this.CurrentTool != null)
             {
                 this.CurrentTool.PropertyChanged -= CurrentTool_PropertyChanged;
                 this.CurrentTool = currentTool;
@@ -857,43 +892,44 @@ namespace DrawingModule.ViewModels
         {
             switch (CurrentCanvas)
             {
-                case null when cadDraw ==null:
+                case null when cadDraw == null:
                     return;
                 case null when true:
                     CurrentCanvas = cadDraw;
                     CurrentCanvas.PropertyChanged += CurrentCanvasOnPropertyChanged;
                     break;
                 default:
-                {
-                    if (CurrentCanvas != null && cadDraw == null)
                     {
-                        CurrentCanvas.PropertyChanged -= CurrentCanvasOnPropertyChanged;
-                        CurrentCanvas = null;
-                    }
-                    else if(CurrentCanvas!=null && cadDraw!=null)
-                    {
-                        CurrentCanvas.PropertyChanged -= CurrentCanvasOnPropertyChanged;
-                        CurrentCanvas = cadDraw;
-                        CurrentCanvas.PropertyChanged += CurrentCanvasOnPropertyChanged;
-                    }
+                        if (CurrentCanvas != null && cadDraw == null)
+                        {
+                            CurrentCanvas.PropertyChanged -= CurrentCanvasOnPropertyChanged;
+                            CurrentCanvas = null;
+                        }
+                        else if (CurrentCanvas != null && cadDraw != null)
+                        {
+                            CurrentCanvas.PropertyChanged -= CurrentCanvasOnPropertyChanged;
+                            CurrentCanvas = cadDraw;
+                            CurrentCanvas.PropertyChanged += CurrentCanvasOnPropertyChanged;
+                        }
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
 
         private void CurrentCanvasOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-           
+
             RaisePropertyChanged(nameof(LengthDimension));
             RaisePropertyChanged(nameof(AngleDimension));
             RaisePropertyChanged(nameof(WidthDimension));
             RaisePropertyChanged(nameof(HeightDimension));
+            RaisePropertyChanged(nameof(ScaleFactor));
             //UpdateSelectAllTExtInTextBox();
-            
+
         }
 
-       
+
         public bool ProcessKeyDown(KeyEventArgs e)
         {
             e.Handled = false;

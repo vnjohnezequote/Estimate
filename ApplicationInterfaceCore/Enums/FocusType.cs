@@ -2,6 +2,7 @@
 {
     public enum FocusType
     {
+        ScaleFactor,
         Length,
         Width,
         Height,

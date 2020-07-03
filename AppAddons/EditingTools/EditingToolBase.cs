@@ -110,6 +110,20 @@ namespace AppAddons.EditingTools
             
         }
 
+        protected override void OnMoveNextTab()
+        {
+            if (this.DynamicInput == null) return;
+            switch (DynamicInput.PreviusDynamicInputFocus)
+            {
+                case FocusType.Length:
+                    DynamicInput.FocusTextAngle();
+                    break;
+                case FocusType.Angle:
+                    DynamicInput.FocusTextLength();
+                    break;
+            }
+        }
+
         public override void OnJigging(object sender, DrawInteractiveArgs e)
         {
             this.DrawInteractiveCommand((ICadDrawAble)sender, e);

@@ -68,7 +68,6 @@ namespace DrawingModule.CustomControl.CanvasControl
         private bool _waitingForSelection;
         private bool _waitingForPickSelection;
         private Entity _entityUnderMouse;
-        private bool _isLockCurrentPointWhenMouseMove = false;
         private Point3D _currentPoint;
 
         private Point3D _lastClickPoint;
@@ -107,9 +106,26 @@ namespace DrawingModule.CustomControl.CanvasControl
             set=>SetValue(ActiveLayerNameProperty,value);
         }
         public int DimTextHeight { get; set; }
+        public bool IsAbsotuleInput { get; set; }
         public bool IsDrawEntityUnderMouse { get; set; }
         public bool IsDrawingMode { get; private set; }
         public Plane DrawingPlane => this._drawingPlane;
+
+        public double ScaleFactor
+        {
+            get
+            {
+                if (this.CurrentTool == null)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return this.CurrentTool.ScaleFactor.Round();
+                }
+            }
+        }
+
         public double CurrentLengthDimension
         {
             get
@@ -128,7 +144,16 @@ namespace DrawingModule.CustomControl.CanvasControl
             {
                 if (this.BasePoint3D == null || this.CurrentPoint == null) return 0;
                 var vector = new Vector2D(this.BasePoint3D, this.CurrentPoint);
-                var angle = -Vector2D.SignedAngleBetween(vector, Vector2D.AxisX) * (180 / Math.PI);
+                var angle = 0.0;
+                if (this.CurrentTool !=null && this.CurrentTool.ReferencePoint!=null)
+                {
+                    angle = this.CurrentTool.CurrentAngle;
+                }
+                else
+                {
+                    angle = -Vector2D.SignedAngleBetween(vector, Vector2D.AxisX) * (180 / Math.PI);
+                }
+                
                 angle = angle.Round();
                 return angle;
             }
@@ -180,14 +205,23 @@ namespace DrawingModule.CustomControl.CanvasControl
         public double CurrentTextHeight => 100;
         public double CurrentTextAngle => 0;
 
-        public void UpdateCurrentPointByLengthAndAngle(double length, double angle)
+        public void UpdateCurrentPointByLengthAndAngle(double length, double angle,double scaleFactor)
         {
             if (this.BasePoint3D ==null& this.CurrentPoint == null)
             {
                 return;
             }
 
-            this.CurrentPoint = Utils.CalculatorPointWithLengthAndAngle(this.BasePoint3D,length, angle);
+            length = length * scaleFactor;
+            if (this.CurrentTool !=null && this.CurrentTool.ReferencePoint !=null)
+            {
+                this.CurrentPoint = Utils.CalculatorPointWithLengthAndAngle(this.BasePoint3D, this.CurrentTool.ReferencePoint, length, angle);
+            }
+            else
+            {
+                this.CurrentPoint = Utils.CalculatorPointWithLengthAndAngle(this.BasePoint3D, null, length, angle);
+            }
+           
             this.Invalidate();
             //UpdateFocusDynamicInput();
             
@@ -292,6 +326,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             _waitingForPickSelection = false;
             IsSnappingEnable = true;
             IsOrthoModeEnable = true;
+            IsAbsotuleInput = false;
             this._selectTool = new SelectTool();
             this.PromptStatus = PromptStatus.None;
             this.IsDrawingMode = false;

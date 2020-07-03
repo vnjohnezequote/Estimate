@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.EventArg;
 using devDept.Eyeshot;
@@ -12,6 +14,7 @@ using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
 using DrawingModule.CommandClass;
+using DrawingModule.Control;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.DrawToolBase;
 using DrawingModule.UserInteractive;
@@ -19,18 +22,23 @@ using Environment = devDept.Eyeshot.Environment;
 
 namespace AppAddons.EditingTools
 {
-    public class RotateTool : SelectAbleToolBase
+    public class RotateTool : EditingToolBase
     {
-        public override Point3D BasePoint { get; protected set; }
         public override string ToolName => "Rotate";
         private Point3D _startPoint;
         private Point3D _refPoint2;
+        private Point3D _currentPoint;
         private Point3D _endPoint;
-        private double _arcSpanAngle;
+        private double _currentAngle;
         private List<Point3D> _clickPoints;
+        public override double CurrentAngle { 
+            get => Utility.RadToDeg(_currentAngle).Round();
+            set => SetProperty(ref _currentAngle, Utility.RadToDeg(value));
+        }
         public RotateTool() : base()
         {
             _clickPoints = new List<Point3D>();
+            DefaultDynamicInputTextBoxToFocus = FocusType.Angle;
         }
         [CommandMethod("Rotate")]
         public void Rotate()
@@ -38,75 +46,41 @@ namespace AppAddons.EditingTools
             OnProcessCommand();
         }
 
-        protected virtual void OnProcessCommand()
+        protected override bool PrepairPoint(Editor editor)
         {
-            var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
-            if (WaitingForSelection)
-            {
-                var promptEntityOptions = new PromptEntityOptions("Please Select Entity for " + ToolName.ToLower());
-                PromptEntityResult result = null;
-                while (WaitingForSelection)
-                {
-                    result = acDoc.Editor.GetEntities(promptEntityOptions);
-                    switch (result.Status)
-                    {
-                        case PromptStatus.Cancel:
-                            return;
-                        case PromptStatus.OK when result.Entities.Count > 0:
-                            WaitingForSelection = false;
-                            break;
-                        case PromptStatus.None:
-                            break;
-                        case PromptStatus.Error:
-                            break;
-                        case PromptStatus.Keyword:
-                            break;
-                        case PromptStatus.Modeless:
-                            break;
-                        case PromptStatus.Other:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (result != null)
-                {
-                    this.SelectedEntities.AddRange(result.Entities);
-                }
-
-
-            }
-            ToolMessage = "Please enter startRefPoint to" + ToolName.ToLower();
+            ToolMessage = "Please enter basePoint to" + ToolName.ToLower();
             this.IsSnapEnable = true;
+            IsUsingOrthorMode = false;
             var promptPointOption = new PromptPointOptions("Please enter basePoint to " + ToolName.ToLower());
-            var promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
+            var promptPointResult = editor.GetPoint(promptPointOption);
             switch (promptPointResult.Status)
             {
                 case PromptStatus.OK:
                     this._startPoint = promptPointResult.Value;
                     this._clickPoints.Add(_startPoint);
-                    //this.BasePoint = promptPointResult.Value;
+                    this.BasePoint = promptPointResult.Value;
                     break;
                 case PromptStatus.Cancel:
-                    return;
+                    return false;
             }
-            ToolMessage = "Please enter next point to " + ToolName.ToLower();
-            promptPointOption.Message = "Please enter next point to " + ToolName.ToLower();
-            promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
+            ToolMessage = "Please enter first referent point to " + ToolName.ToLower();
+            promptPointResult = editor.GetPoint(promptPointOption);
             switch (promptPointResult.Status)
             {
                 case PromptStatus.OK:
                     this._refPoint2 = promptPointResult.Value;
                     this._clickPoints.Add(_refPoint2);
+                    this.ReferencePoint = _refPoint2;
                     break;
                 case PromptStatus.Cancel:
-                    return;
+                    return false;
             }
 
-            ToolMessage = "Please enter next point to " + ToolName.ToLower();
-            promptPointOption.Message = "Please enter next point to " + ToolName.ToLower();
-            promptPointResult = acDoc.Editor.GetPoint(promptPointOption);
+            IsUsingAngleTextBox = true;
+            //IsUsingLengthTextBox = true;
+            this.DynamicInput?.FocusDynamicInputTextBox(FocusType.Angle);
+            ToolMessage = "Please enter second reference point to " + ToolName.ToLower();
+            promptPointResult = editor.GetPoint(promptPointOption);
             switch (promptPointResult.Status)
             {
                 case PromptStatus.OK:
@@ -114,27 +88,43 @@ namespace AppAddons.EditingTools
                     this._clickPoints.Add(_endPoint);
                     break;
                 case PromptStatus.Cancel:
-                    return;
+                    return false;
             }
-
-
-            this.ProcessEntities();
-            IsSnapEnable = false;
+            return true;
         }
 
-        private void ProcessEntities()
+        public override void NotifyMouseMove(object sender, MouseEventArgs e)
         {
+            if (IsUsingAngleTextBox)
+            {
+                this.DynamicInput?.FocusDynamicInputTextBox(FocusType.Angle);
+            }
+        }
+
+        protected override void OnMoveNextTab()
+        {
+            DynamicInput?.FocusTextAngle();
+        }
+
+        protected override void ProcessEntities()
+        {
+            var vector1 = new Vector2D(BasePoint,_refPoint2);
+            vector1.Normalize();
+            var vector2 = new Vector2D(BasePoint, _endPoint);
+            vector2.Normalize();
+            var angle = Vector2D.SignedAngleBetween(vector1, vector2);
+            this._currentAngle = angle;
             foreach (var selEntity in this.SelectedEntities)
             {
-                selEntity.Rotate(_arcSpanAngle, Vector3D.AxisZ, _clickPoints[0]);
+                selEntity.Rotate(_currentAngle, Vector3D.AxisZ, _clickPoints[0]);
             }
-            EntitiesManager.EntitiesRegen();
+            EntitiesManager.Refresh();
+            CurrentAngle = 0;
         }
         public override void OnJigging(object sender, DrawInteractiveArgs e)
         {
             DrawInteractiveRotate((ICadDrawAble)sender, e);
         }
-
         private void DrawInteractiveRotate(ICadDrawAble canvas, DrawInteractiveArgs e)
         {
             if (WaitingForSelection)
@@ -143,13 +133,15 @@ namespace AppAddons.EditingTools
             }
 
             if (_clickPoints.Count ==0) return;
-            
-            DrawInteractiveUntilities.DrawInteractiveArc(canvas,_clickPoints,e.CurrentPoint, out _arcSpanAngle);
+            if(this._endPoint !=null ) return;
+
+            DrawInteractiveUntilities.DrawInteractiveArc(canvas,_clickPoints,e.CurrentPoint, out _currentAngle);
+            //this.RaisePropertyChanged(nameof(CurrentAngle));
             // Show temp entities for current rotation state
             foreach (var ent in this.SelectedEntities)
             {
                 Entity tempEntity = (Entity)ent.Clone();
-                tempEntity.Rotate(_arcSpanAngle, Vector3D.AxisZ, _startPoint);
+                tempEntity.Rotate(_currentAngle, Vector3D.AxisZ, _startPoint);
 
                 if (tempEntity is Text)
                     tempEntity.Regen(new RegenParams(0, (Environment)canvas));
@@ -158,10 +150,17 @@ namespace AppAddons.EditingTools
                 canvas.renderContext.EnableXOR(false);
                 //this.Draw((ICurve)tempEntity); 
             }
+        }
 
-            
-                    
-
+        protected override void ResetTool()
+        {
+            base.ResetTool();
+            this._clickPoints.Clear();
+            this._refPoint2 = null;
+            this._startPoint = null;
+            this._endPoint = null;
+            this.ReferencePoint = null;
+            IsUsingAngleTextBox = false;
         }
     }
 }

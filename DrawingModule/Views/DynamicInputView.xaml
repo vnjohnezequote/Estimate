@@ -107,8 +107,14 @@
                 <StackPanel Orientation="Horizontal"
                             Width="Auto"
                             HorizontalAlignment="Left" Grid.Row="0">
+                    <TextBox Text="Scale Factor"
+                             Visibility="{Binding ScaleFactorVisibility}"/>
+                    <TextBox Name="ScaleFactor"
+                             Text="{Binding ScaleFactor}"
+                             Visibility="{Binding ScaleFactorVisibility}"
+                             Width="50"/>
                     <TextBlock Text="Length"
-                             Visibility="{Binding LengthVisibility}"/>
+                               Visibility="{Binding LengthVisibility}"/>
                     <TextBox Name="TextLength"
                              Text="{Binding LengthDimension}"
                              Visibility="{Binding LengthVisibility}"

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Input;
 using ApplicationInterfaceCore.Enums;
 using AppModels.EventArg;
@@ -16,6 +17,7 @@ namespace ApplicationInterfaceCore
         string ToolMessage { get; }
         bool IsSnapEnable { get; }
         Point3D BasePoint { get; }
+        Point3D ReferencePoint { get; }
         bool IsUsingOrthorMode { get; }
         bool IsUsingLengthTextBox { get; }
         bool IsUsingWidthTextBox { get; }
@@ -26,8 +28,11 @@ namespace ApplicationInterfaceCore
         bool IsUsingTextStringAngleTextBox { get; }
         bool IsUsingLeaderSegmentTextBox { get; }
         bool IsUsingArrowHeadSizeTextBox { get; }
+        bool IsUsingScaleFactorTextBox { get; }
         double CurrentWidth { get; set; }
         double CurrentHeight { get; set; }
+        double CurrentAngle { get; set; }
+        double ScaleFactor { get; set; }
         FocusType DefaultDynamicInputTextBoxToFocus { get; }
         IDynamicInputView DynamicInput { get;}
         void NotifyMouseMove(object sender, MouseEventArgs e);

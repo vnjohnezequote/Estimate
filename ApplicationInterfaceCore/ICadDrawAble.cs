@@ -27,13 +27,14 @@ namespace ApplicationInterfaceCore
         string CurrentText { get; }
         double CurrentTextHeight { get; }
         double CurrentTextAngle { get; }
+        double ScaleFactor { get; }
         IDynamicInputView DynamicInput { get; }
         LayerKeyedCollection Layers { get; }
         void RefreshEntities();
         void Invalidate();
         void HideCursor(bool isHide);
         bool Focus();
-        void UpdateCurrentPointByLengthAndAngle(double length, double angle);
+        void UpdateCurrentPointByLengthAndAngle(double length, double angle,double scaleFactor);
         bool ScreenToPlane(System.Drawing.Point mousePosition,Plane sketchPlant, out Point3D point);
         System.Windows.Point GetMousePosition(MouseEventArgs e);
         int[] GetAllEntitiesUnderMouseCursor(System.Drawing.Point mousePosition, bool selectTableOnly = true);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
@@ -120,12 +121,19 @@ namespace DrawingModule.Helper
             return resultString;
         }
 
-        public static Point3D CalculatorPointWithLengthAndAngle(Point3D basePoint, double length, double angle)
+        public static Point3D CalculatorPointWithLengthAndAngle(Point3D basePoint,Point3D refPoint, double length, double angle)
         {
             if (basePoint == null)
             {
                 return null;
             }
+
+            //if (refPoint !=null)
+            //{
+            //    var vector = new Vector2D(basePoint,refPoint);
+            //    var angleBetwenXaxist = -Vector2D.SignedAngleBetween(vector, Vector2D.AxisX) * (180 / Math.PI);
+            //    angle += angleBetwenXaxist;
+            //}
             var startPoint = basePoint;
             var endPoint = new Point3D(basePoint.X + length, basePoint.Y);
             var tempLine = new Line(startPoint, endPoint);
@@ -133,6 +141,7 @@ namespace DrawingModule.Helper
             tempLine.Rotate(angleRadians, Vector3D.AxisZ, startPoint);
             return new Point3D(tempLine.EndPoint.X, tempLine.EndPoint.Y);
         }
+        
         public static Point3D GetEndPoint(Point3D basePoint, Point3D currentPoint)
         {
             var endPoint = currentPoint;
@@ -180,7 +189,8 @@ namespace DrawingModule.Helper
             //{
             //    angle = (-1) * angle;
             //}
-            endPoint = CalculatorPointWithLengthAndAngle(basePoint, length, angle);
+
+            endPoint = CalculatorPointWithLengthAndAngle(basePoint,null, length, angle);
 
             return endPoint;
         }

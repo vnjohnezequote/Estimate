@@ -97,21 +97,7 @@ namespace AppAddons.DrawingTools
             //}
 
         }
-        public override void NotifyPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.Tab:
-                    OnMoveNextTab();
-                    e.Handled = true;
-                    break;
-                default:
-                    e.Handled = false;
-                    break;
-            }
-            
-        }
-        protected virtual void OnMoveNextTab()
+        protected override void OnMoveNextTab()
         {
             if (this.DynamicInput == null) return;
             switch (DynamicInput.PreviusDynamicInputFocus)
