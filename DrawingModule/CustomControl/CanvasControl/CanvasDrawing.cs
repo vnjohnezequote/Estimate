@@ -197,68 +197,154 @@ namespace DrawingModule.CustomControl.CanvasControl
 
             }
         }
-        public string CurrentText => "Test";
-        public double CurrentTextHeight => 100;
-        public double CurrentTextAngle => 0;
+        //public string CurrentText => "Test";
+        //public double CurrentTextHeight => 100;
+        //public double CurrentTextAngle => 0;
 
-        public void UpdateCurrentPointByLengthAndAngle(double length, double angle, double scaleFactor)
+        public string CurrentText
         {
-            if (this.BasePoint3D == null & this.CurrentPoint == null)
+            get
             {
-                return;
+                switch (CurrentTool)
+                {
+                    case null:
+                        return "";
+                    case ITextTool textTool:
+                        return textTool.TextInput;
+                    default:
+                        return "";
+                }
             }
-
-            length = length * scaleFactor;
-            if (this.CurrentTool != null && this.CurrentTool.ReferencePoint != null)
+            set
             {
-                this.CurrentPoint = Utils.CalculatorPointWithLengthAndAngle(this.BasePoint3D, this.CurrentTool.ReferencePoint, length, angle);
+                switch (CurrentTool)
+                {
+                    case null:
+                        return;
+                    case ITextTool textTool:
+                        textTool.TextInput = value;
+                        break;
+                    default:
+                        break;
+                }
             }
-            else
-            {
-                this.CurrentPoint = Utils.CalculatorPointWithLengthAndAngle(this.BasePoint3D, null, length, angle);
-            }
-
-            this.Invalidate();
-            //UpdateFocusDynamicInput();
-
         }
 
-
-        public void UpdateCurrentPointByWidthAndHeight(double width, double height, SetDimensionType setDimensionType)
+        public double CurrentTextHeight
         {
-            var xFactor = 1;
-            var yFactor = 1;
-            switch (setDimensionType)
+
+            get
             {
-                case SetDimensionType.Width:
-                    if (this.CurrentTool != null)
-                        this.CurrentTool.CurrentWidth = width;
-                    break;
-                case SetDimensionType.Height:
-                    if (this.CurrentTool != null)
-                        this.CurrentTool.CurrentHeight = height;
-                    break;
+                switch (CurrentTool)
+                {
+                    case null:
+                        return 0;
+                    case ITextTool textTool:
+                        return textTool.TextHeight;
+                    default:
+                        return 0;
+                }
+            }
+            set
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return;
+                    case ITextTool textTool:
+                        textTool.TextHeight = value;
+                        break;
+                    default:
+                        break;
+                }
             }
 
-            if (this.LastClickPoint.X > this.CurrentPoint.X)
+        }
+        public double CurrentTextAngle
+        {
+            get
             {
-                xFactor = -1;
+                switch (CurrentTool)
+                {
+                    case null:
+                        return 0;
+                    case ITextTool textTool:
+                        return textTool.TextAngle;
+                    default:
+                        return 0;
+                }
             }
-
-            if (this.LastClickPoint.Y > this.CurrentPoint.Y)
+            set
             {
-                yFactor = -1;
+                switch (CurrentTool)
+                {
+                    case null:
+                        return;
+                    case ITextTool textTool:
+                        textTool.TextAngle = value;
+                        break;
+                    default:
+                        break;
+                }
             }
-
-            width *= xFactor;
-            height *= yFactor;
-            this.CurrentPoint = new Point3D(LastClickPoint.X + width, LastClickPoint.Y + height);
-            this.Invalidate();
         }
 
-        public Size DrawTextString(int x, int y, string text, Font textFont, Color textColor, ContentAlignment textAlign)
+        public int LeaderSegmentNumber
         {
-            return this.DrawText(x, y, text, textFont, textColor, textAlign);
+            get
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return 0;
+                    case ILeaderTool leaderTool:
+                        return leaderTool.LeaderSegment;
+                    default:
+                        return 0;
+                }
+            }
+            set
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return;
+                    case ILeaderTool leaderTool:
+                        leaderTool.LeaderSegment = value;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public int ArrowSize
+        {
+            get
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return 0;
+                    case ILeaderTool leaderTool:
+                        return leaderTool.ArrowSize;
+                    default:
+                        return 0;
+                }
+            }
+            set
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return;
+                    case ILeaderTool leaderTool:
+                        leaderTool.ArrowSize = value;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         //private void UpdateFocusDynamicInput()
@@ -407,14 +493,18 @@ namespace DrawingModule.CustomControl.CanvasControl
                 }
                 else if (IsSnappingEnable)
                 {
-                    if (this._currentTool.IsSnapEnable)
+                    if (this._currentTool != null)
                     {
-                        if (SnapPoint != null)
+                        if (this._currentTool.IsSnapEnable)
                         {
-                            DrawSnappPointUtl.DisplaySnappedVertex(this, SnapPoint, renderContext);
-                        }
+                            if (SnapPoint != null)
+                            {
+                                DrawSnappPointUtl.DisplaySnappedVertex(this, SnapPoint, renderContext);
+                            }
 
+                        }
                     }
+                    
                 }
             }
             else
@@ -530,6 +620,66 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         #endregion
         #region Public Method
+
+        public void UpdateCurrentPointByLengthAndAngle(double length, double angle, double scaleFactor)
+        {
+            if (this.BasePoint3D == null & this.CurrentPoint == null)
+            {
+                return;
+            }
+
+            length = length * scaleFactor;
+            if (this.CurrentTool != null && this.CurrentTool.ReferencePoint != null)
+            {
+                this.CurrentPoint = Utils.CalculatorPointWithLengthAndAngle(this.BasePoint3D, this.CurrentTool.ReferencePoint, length, angle);
+            }
+            else
+            {
+                this.CurrentPoint = Utils.CalculatorPointWithLengthAndAngle(this.BasePoint3D, null, length, angle);
+            }
+
+            this.Invalidate();
+            //UpdateFocusDynamicInput();
+
+        }
+
+
+        public void UpdateCurrentPointByWidthAndHeight(double width, double height, SetDimensionType setDimensionType)
+        {
+            var xFactor = 1;
+            var yFactor = 1;
+            switch (setDimensionType)
+            {
+                case SetDimensionType.Width:
+                    if (this.CurrentTool != null)
+                        this.CurrentTool.CurrentWidth = width;
+                    break;
+                case SetDimensionType.Height:
+                    if (this.CurrentTool != null)
+                        this.CurrentTool.CurrentHeight = height;
+                    break;
+            }
+
+            if (this.LastClickPoint.X > this.CurrentPoint.X)
+            {
+                xFactor = -1;
+            }
+
+            if (this.LastClickPoint.Y > this.CurrentPoint.Y)
+            {
+                yFactor = -1;
+            }
+
+            width *= xFactor;
+            height *= yFactor;
+            this.CurrentPoint = new Point3D(LastClickPoint.X + width, LastClickPoint.Y + height);
+            this.Invalidate();
+        }
+
+        public Size DrawTextString(int x, int y, string text, Font textFont, Color textColor, ContentAlignment textAlign)
+        {
+            return this.DrawText(x, y, text, textFont, textColor, textAlign);
+        }
         public void SetDynamicInput(DynamicInputView dynamicInput)
         {
             DynamicInput = dynamicInput;

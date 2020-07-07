@@ -103,7 +103,7 @@ namespace AppAddons.EditingTools
 
         protected override void OnMoveNextTab()
         {
-            DynamicInput?.FocusTextAngle();
+            DynamicInput?.FocusAngle();
         }
 
         protected override void ProcessEntities()

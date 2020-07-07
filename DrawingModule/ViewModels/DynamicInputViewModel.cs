@@ -194,7 +194,6 @@ namespace DrawingModule.ViewModels
                 }
             }
         }
-
         public Visibility ScaleFactorVisibility
         {
             get
@@ -243,7 +242,6 @@ namespace DrawingModule.ViewModels
 
             }
         }
-
         public string ScaleFactor
         {
             get => CurrentCanvas == null
@@ -278,8 +276,6 @@ namespace DrawingModule.ViewModels
                 }
             }
         }
-
-
         public string HeightDimension
         {
             get => CurrentCanvas == null
@@ -295,14 +291,165 @@ namespace DrawingModule.ViewModels
             }
         }
 
+        public string TextStringContent
+        {
+            get
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return "";
+                    case ITextTool textTool:
+                        return textTool.TextInput;
+                    default:
+                        return "";
+                }
+            }
+            set
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return;
+                    case ITextTool textTool:
+                        textTool.TextInput = value;
+                        if (CurrentCanvas!=null)
+                        {
+                            CurrentCanvas.Invalidate();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public double TextStringHeight
+        {
+        
+            get
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return 0;
+                    case ITextTool textTool:
+                        return textTool.TextHeight;
+                    
+                    default:
+                        return 0;
+                }
+            }
+            set
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return;
+                    case ITextTool textTool:
+                        textTool.TextHeight = value;
+                        if (CurrentCanvas != null)
+                        {
+                            CurrentCanvas.Invalidate();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        
+        }
+        public double TextStringAngle {
+            get
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return 0;
+                    case ITextTool textTool:
+                        return textTool.TextAngle;
+                    default:
+                        return 0;
+                }
+            }
+            set
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return;
+                    case ITextTool textTool:
+                        textTool.TextAngle = value;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public int LeaderSegmentNumber
+        {
+            get
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return 0;
+                    case ILeaderTool leaderTool:
+                        return leaderTool.LeaderSegment;
+                    default:
+                        return 0;
+                }
+            }
+            set
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return;
+                    case ILeaderTool leaderTool:
+                        leaderTool.LeaderSegment= value;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public int ArrowSize
+        {
+            get
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return 0;
+                    case ILeaderTool leaderTool:
+                        return leaderTool.ArrowSize;
+                    default:
+                        return 0;
+                }
+            }
+            set
+            {
+                switch (CurrentTool)
+                {
+                    case null:
+                        return;
+                    case ILeaderTool leaderTool:
+                        leaderTool.ArrowSize = value;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 
 
-        public string TextStringContent { get; set; }
-        public double TextStringHeight { get; set; }
-        public double TextStringAngle { get; set; }
-        public int LeaderSegmentNumber { get; set; }
-        public int ArrowSize { get; set; }
 
+
+        //public int LeaderSegmentNumber { get; set; }
+        //public int ArrowSize { get; set; }
         #endregion
         #region Properties
         public bool IsBusyforTool => CurrentTool != null;
@@ -862,11 +1009,11 @@ namespace DrawingModule.ViewModels
             RaisePropertyChanged(nameof(AngleVisibility));
             RaisePropertyChanged(nameof(ScaleFactorVisibility));
             RaisePropertyChanged(nameof(ArrowHeadSizeVisibility));
-        }
-
-        private void OnToolTabEvent()
-        {
-
+            RaisePropertyChanged(nameof(TextStringHeight));
+            RaisePropertyChanged(nameof(TextStringAngle));
+            RaisePropertyChanged(nameof(TextStringContent));
+            RaisePropertyChanged(nameof(LeaderSegmentNumber));
+            RaisePropertyChanged(nameof(ArrowSize));
         }
         #endregion
         #region public method
@@ -932,8 +1079,6 @@ namespace DrawingModule.ViewModels
             //UpdateSelectAllTExtInTextBox();
 
         }
-
-
         public bool ProcessKeyDown(KeyEventArgs e)
         {
             e.Handled = false;

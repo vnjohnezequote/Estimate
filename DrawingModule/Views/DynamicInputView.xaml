@@ -138,9 +138,9 @@
                              Visibility="{Binding AngleVisibility}"
                              Width="50"/>
                     <TextBox Name="TextInput"
-                             Text="{Binding TextStringContent, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding TextStringContent,UpdateSourceTrigger=PropertyChanged,Delay=300}"
                              Visibility="{Binding TextContentVisibility}"
-                             Width="Auto"/>
+                             Width="auto"/>
 
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
@@ -149,7 +149,7 @@
                     <TextBlock Text="Text Height"
                                Visibility="{Binding TextStringHeightVisibility}"/>
                     <TextBox Name="TextStringHeight"
-                             Text="{Binding TextStringHeight, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding TextStringHeight,UpdateSourceTrigger=PropertyChanged}"
                              Visibility="{Binding TextStringHeightVisibility}"
                              Width="50"/>
                     <TextBlock Text="Angle"

@@ -49,7 +49,7 @@ namespace AppAddons.DrawingTools
         public void DrawLine()
         {
             var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
-            DynamicInput?.FocusTextLength();
+            DynamicInput?.FocusLength();
             while (true)
             {
                 this.promptPointOp.Message = ToolMessage;
@@ -89,11 +89,11 @@ namespace AppAddons.DrawingTools
             DynamicInput?.FocusDynamicInputTextBox(FocusType.Previous);
             //if (DynamicInput.PreviusDynamicInputFocus==FocusType.Length)
             //{
-            //    DynamicInput.FocusTextLength();
+            //    DynamicInput.FocusLength();
             //}
             //else
             //{
-            //    DynamicInput.FocusTextAngle();
+            //    DynamicInput.FocusAngle();
             //}
 
         }
@@ -103,10 +103,10 @@ namespace AppAddons.DrawingTools
             switch (DynamicInput.PreviusDynamicInputFocus)
             {
                 case FocusType.Length:
-                    DynamicInput.FocusTextAngle();
+                    DynamicInput.FocusAngle();
                     break;
                 case FocusType.Angle:
-                    DynamicInput.FocusTextLength();
+                    DynamicInput.FocusLength();
                     break;
             }
         }

@@ -201,6 +201,8 @@ namespace DrawingModule.DrawInteractiveUtilities
         }
         public static void DrawScreenCurve(ICurve curve,ICadDrawAble canvas)
         {
+
+           canvas.renderContext.SetColorWireframe(Color.Red);
             const int subd = 100;
 
             Point3D[] pts = new Point3D[subd + 1];
@@ -243,13 +245,32 @@ namespace DrawingModule.DrawInteractiveUtilities
             canvas.renderContext.DrawLine(startPoint, endPoint);
         }
 
-        public static void DrawInteractiveTextForLeader(ICadDrawAble canvas, Point3D currentPoint, Point3D startPoint)
+        public static void DrawInteractiveTextForLeader(ICadDrawAble canvas, Point3D currentPoint, Point3D startPoint,string textString,double textHeight)
         {
-            var text = Utils.CreateNewTextLeader(startPoint, currentPoint,canvas);
-            var rad = Utility.DegToRad(canvas.CurrentTextAngle);
-            text.Rotate(rad, Vector3D.AxisZ, currentPoint);
+            if (string.IsNullOrEmpty(canvas.CurrentText))
+            {
+                
+                return;
+            }
+            //if (string.IsNullOrEmpty(text) || this.CurrentPoint == null)
+            //{
+            //    return;
+            //}
+            //if (this.LastClickPoint == null || this.CurrentPoint == null)
+            //{
+            //    return;
+            //}
+            //if (this.LastClickPoint == this.CurrentPoint)
+            //{
+            //    return;
+            //}
 
-            var tempText = text.ConvertToCurves((Environment)canvas);
+
+            var textOutput = Utils.CreateNewTextLeader(startPoint, currentPoint,textString,textHeight);
+            var rad = Utility.DegToRad(canvas.CurrentTextAngle);
+            textOutput.Rotate(rad, Vector3D.AxisZ, currentPoint);
+
+            var tempText = textOutput.ConvertToCurves((Environment)canvas);
             foreach (var curve in tempText)
             {
                 Draw(curve,canvas);
@@ -298,7 +319,21 @@ namespace DrawingModule.DrawInteractiveUtilities
             
         }
 
+        public static void DrawInteractiveArrowHeader(ICadDrawAble canvas,Point3D p1, Point3D p2, double arrowSize)
+        {
+            var basePoint = p1;
+            var midPoint = new Point3D(p1.X + arrowSize, p1.Y);
+            var topPoint = new Point3D(midPoint.X, midPoint.Y + arrowSize / 4);
+            var bottomPoint = new Point3D(midPoint.X, midPoint.Y - arrowSize / 4);
+            var points = new[] { basePoint, topPoint, bottomPoint, (Point3D)basePoint.Clone() };
 
+            var arrowShape = new LinearPath(points);
+            arrowShape.Rotate(Utils.GetAngleRadian(p1, p2), Vector3D.AxisZ, basePoint);
+            var screenVertices = Utils.GetScreenVertices(arrowShape.Vertices,canvas);
+            //renderContext.DrawTriangles(screenVertices,Vector3D.AxisZ);
+            canvas.renderContext.DrawLineStrip(screenVertices);
+
+        }
 
     }
 }

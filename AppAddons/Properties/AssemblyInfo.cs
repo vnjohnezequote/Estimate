@@ -31,6 +31,7 @@ using DrawingModule.CommandClass;
 [assembly: CommandClass(typeof(OffsetTool))]
 [assembly: CommandClass(typeof(TrimTool))]
 [assembly: CommandClass(typeof(ExtendTool))]
+[assembly: CommandClass(typeof(MTextTool))]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from

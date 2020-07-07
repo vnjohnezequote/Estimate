@@ -355,26 +355,26 @@ namespace DrawingModule.Views
                 case FocusType.Length:
                     //this.Dispatcher.Invoke((Action)(() =>
                     //{//this refer to form in WPF application 
-                        FocusTextLength();
+                        FocusLength();
                     //}));
                     break;
                 case FocusType.Width:
-                    FocusTextWidth();
+                    FocusWidth();
                     break;
                 case FocusType.Height:
-                    FocusTextHeight();
+                    FocusHeight();
                     break;
                 case FocusType.Angle:
-                    FocusTextAngle();
+                    FocusAngle();
                     break;
                 case FocusType.TextContent:
-                    FocusTextContentInput();
+                    FocusTextContent();
                     break;
                 case FocusType.TextHeight:
-                    FocusTextHeightInput();
+                    FocusTextHeight();
                     break;
                 case FocusType.TextAngle:
-                    FocusTextStringAngle();
+                    FocusTextAngle();
                     break;
                 case FocusType.LeaderSegment:
                     FocusLeaderSegment();
@@ -392,7 +392,7 @@ namespace DrawingModule.Views
                     break;
             }
         }
-        public void FocusTextLength()
+        public void FocusLength()
         {
             Dispatcher.Invoke((Action)(() =>
             {//this refer to form in WPF application 
@@ -421,7 +421,7 @@ namespace DrawingModule.Views
             this.CommandLine.Focus();
             this.PreviusDynamicInputFocus = FocusType.CommandLine;
         }
-        public void FocusTextContentInput()
+        public void FocusTextContent()
         {
             this.Dispatcher.Invoke((Action)(() =>
             {//this refer to form in WPF application 
@@ -432,7 +432,7 @@ namespace DrawingModule.Views
             
         }
 
-        public void FocusTextHeightInput()
+        public void FocusTextHeight()
         {
             this.Dispatcher.Invoke((Action) (() =>
             {
@@ -457,7 +457,7 @@ namespace DrawingModule.Views
 
         }
 
-        public void FocusTextAngle()
+        public void FocusAngle()
         {
             this.Dispatcher.Invoke((Action)(() =>
             {
@@ -469,7 +469,7 @@ namespace DrawingModule.Views
             
         }
 
-        public void FocusTextWidth()
+        public void FocusWidth()
         {
             this.Dispatcher.Invoke((Action)(() =>
             {
@@ -480,7 +480,7 @@ namespace DrawingModule.Views
             }));
         }
 
-        public void FocusTextStringAngle()
+        public void FocusTextAngle()
         {
             this.Dispatcher.Invoke((Action)(() =>
             {
@@ -502,7 +502,7 @@ namespace DrawingModule.Views
             }));
             
         }
-        public void FocusTextHeight()
+        public void FocusHeight()
         {
             this.Dispatcher.Invoke((Action)(() =>
             {

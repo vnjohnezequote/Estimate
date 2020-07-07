@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -20,16 +19,15 @@ using Environment = devDept.Eyeshot.Environment;
 
 namespace AppAddons.DrawingTools
 {
-    public class DrawText : DrawTextBase
+    public class MTextTool: DrawTextBase
     {
-        public override string ToolName => "Draw Text";
-
-        public DrawText(): base()
+        public override string ToolName => "Draw MText";
+        public MTextTool (): base()
         {
+            IsUsingMultilineTextBox = true;
         }
-
-        [CommandMethod("Text")]
-        public void DrawingText()
+        [CommandMethod("MText")]
+        public void DrawingMText()
         {
             while (true)
             {
@@ -46,10 +44,7 @@ namespace AppAddons.DrawingTools
                     ProcessDrawEntities(insertPoint);
                 }
             }
-            
-
         }
-
         protected override void OnMoveNextTab()
         {
             if (this.DynamicInput == null) return;
@@ -68,15 +63,29 @@ namespace AppAddons.DrawingTools
         }
         protected virtual void ProcessDrawEntities(Point3D insertPoint)
         {
-            var text = new Text(insertPoint, TextInput, TextHeight);
+            var text = new MultilineText(Plane.XY, insertPoint,TextInput, 1000, TextHeight,5);
             var rad = Utility.DegToRad(TextAngle);
             text.Rotate(rad, Vector3D.AxisZ, insertPoint);
-            EntitiesManager.AddAndRefresh(text,LayerManager.SelectedLayer.Name);
+            EntitiesManager.AddAndRefresh(text, LayerManager.SelectedLayer.Name);
         }
+
+        //public override void NotifyPreviewKeyDown(object sender, KeyEventArgs e)
+        //{
+        //    switch (e.Key)
+        //    {
+        //        case Key.Tab:
+        //            OnMoveNextTab();
+        //            e.Handled = true;
+        //            break;
+        //        default:
+        //            e.Handled = false;
+        //            break;
+        //    }
+        //}
 
         public override void OnJigging(object sender, DrawInteractiveArgs e)
         {
-            DrawInteractiveText((ICadDrawAble) sender, e);
+            DrawInteractiveText((ICadDrawAble)sender, e);
         }
 
         public void DrawInteractiveText(ICadDrawAble canvas, DrawInteractiveArgs e)
@@ -86,7 +95,6 @@ namespace AppAddons.DrawingTools
                 return;
             }
             var currentPoint = e.CurrentPoint;
-
             var text = new Text(currentPoint, TextInput, TextHeight);
             var rad = Utility.DegToRad(TextAngle);
             text.Rotate(rad, Vector3D.AxisZ, e.CurrentPoint);
@@ -94,12 +102,12 @@ namespace AppAddons.DrawingTools
             var tempText = text.ConvertToCurves((Environment)canvas);
             foreach (var curve in tempText)
             {
-                DrawInteractiveUntilities.Draw(curve,canvas);
+                DrawInteractiveUntilities.Draw(curve, canvas);
             }
 
-            if (BasePoint!=null && e.CurrentPoint!=null)
+            if (BasePoint != null && e.CurrentPoint != null)
             {
-                DrawInteractiveUntilities.DrawInteractiveSpotLine(BasePoint,e.CurrentPoint,canvas);
+                DrawInteractiveUntilities.DrawInteractiveSpotLine(BasePoint, e.CurrentPoint, canvas);
             }
         }
     }

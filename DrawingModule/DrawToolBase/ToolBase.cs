@@ -48,11 +48,11 @@ namespace DrawingModule.DrawToolBase
         public bool IsUsingLeaderSegmentTextBox { get; protected set; }
         public bool IsUsingArrowHeadSizeTextBox { get; protected set; }
         public bool IsUsingScaleFactorTextBox { get; protected set; }
+        public bool IsUsingMultilineTextBox { get; protected set; }
         public bool IsUsingSwitchMode { get; protected set; }
         public UnderMouseDrawingType EntityUnderMouseDrawingType { get; protected set; }
         public FocusType DefaultDynamicInputTextBoxToFocus { get; protected set; }
         public IDynamicInputView DynamicInput => _dynamicInput;
-
         protected ToolBase()
         {
             InitForToolBase();
@@ -116,7 +116,7 @@ namespace DrawingModule.DrawToolBase
 
         }
 
-        public void SetDynamicInput(IDynamicInputView dynamicInput)
+        public virtual void SetDynamicInput(IDynamicInputView dynamicInput)
         {
             this._dynamicInput = dynamicInput;
         }

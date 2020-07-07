@@ -49,7 +49,7 @@ namespace AppAddons.DrawingTools
             var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
             var promptPointOp = new PromptPointOptions(ToolMessage);
             //acDoc.Editor.FocusToLengthTextBox();
-            DynamicInput?.FocusTextWidth();
+            DynamicInput?.FocusWidth();
             while (true)
             {
                 var res = acDoc.Editor.GetPoint(promptPointOp);
@@ -115,10 +115,10 @@ namespace AppAddons.DrawingTools
                 switch (DynamicInput.PreviusDynamicInputFocus)
             {
                 case FocusType.Width:
-                    DynamicInput.FocusTextHeight();
+                    DynamicInput.FocusHeight();
                     break;
                 case FocusType.Height:
-                    DynamicInput.FocusTextWidth();
+                    DynamicInput.FocusWidth();
                     break;
             }
         }

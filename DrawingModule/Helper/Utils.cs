@@ -505,7 +505,7 @@ namespace DrawingModule.Helper
             var angle = -Vector2D.SignedAngleBetween(vector, Vector2D.AxisX);
             return angle;
         }
-        public static Text CreateNewTextLeader(Point3D p1, Point3D p2, ICadDrawAble canvas)
+        public static Text CreateNewTextLeader(Point3D p1, Point3D p2, string textString,double textHeight )
         {
             var textLeaderAlliment = Text.alignmentType.BaselineCenter;
             if (p2.X > p1.X)
@@ -521,7 +521,7 @@ namespace DrawingModule.Helper
             {
                 textLeaderAlliment = p2.Y > p1.Y ? Text.alignmentType.BaselineCenter : Text.alignmentType.TopCenter;
             }
-            return new Text((Point3D)p2.Clone(), canvas.CurrentText, canvas.CurrentTextHeight, textLeaderAlliment);
+            return new Text((Point3D)p2.Clone(), textString, textHeight, textLeaderAlliment);
         }
         public static Plane GetPlane(Point3D next, List<Point3D> clickPoints)
         {

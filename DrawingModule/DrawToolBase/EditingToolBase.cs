@@ -114,10 +114,10 @@ namespace DrawingModule.DrawToolBase
             switch (DynamicInput.PreviusDynamicInputFocus)
             {
                 case FocusType.Length:
-                    DynamicInput.FocusTextAngle();
+                    DynamicInput.FocusAngle();
                     break;
                 case FocusType.Angle:
-                    DynamicInput.FocusTextLength();
+                    DynamicInput.FocusLength();
                     break;
             }
         }

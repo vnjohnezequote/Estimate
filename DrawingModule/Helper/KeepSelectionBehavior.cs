@@ -18,7 +18,6 @@ namespace DrawingModule.Helper
         protected override void OnAttached()
         {
             base.OnAttached();
-
             CheckSelection();
             AssociatedObject.TextChanged += TextBox_TextChanged;
             AssociatedObject.SelectionChanged += TextBox_SelectionChanged;

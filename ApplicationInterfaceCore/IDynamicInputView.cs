@@ -36,16 +36,16 @@ namespace ApplicationInterfaceCore
 
         bool PreProcessKeyboardInput(KeyEventArgs e);
         void FocusDynamicInputTextBox(FocusType focusType);
-        void FocusTextLength();
+        void FocusLength();
         void FocusCommandTextbox();
-        void FocusTextContentInput();
-        void FocusTextHeightInput();
-        void FocusTextArrowSize();
-        void FocusTextAngle();
-        void FocusTextWidth();
-        void FocusTextStringAngle();
-        void FocusLeaderSegment();
+        void FocusTextContent();
         void FocusTextHeight();
+        void FocusTextArrowSize();
+        void FocusAngle();
+        void FocusWidth();
+        void FocusTextAngle();
+        void FocusLeaderSegment();
+        void FocusHeight();
         void FocusScaleFactor();
 
         #endregion

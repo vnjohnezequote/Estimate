@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using DrawingModule.Application;
 using DrawingModule.EditingTools;
@@ -26,24 +27,39 @@ namespace DrawingModule.CustomControl.CanvasControl
                 case Key.Enter:
                     if (this.IsProcessingTool)
                     {
-                        this.Focus();
-                        if (this._waitingForSelection && this.EntitiesManager.SelectedEntities.Count > 0)
+                        if (this.CurrentTool!= null && this.CurrentTool.IsUsingMultilineTextBox)
                         {
-                            this.IsUserInteraction = true;
-                            this._waitingForSelection = false;
-                            this.PromptStatus = PromptStatus.OK;
+                            if (DynamicInput !=null && DynamicInput.PreviusDynamicInputFocus == FocusType.TextContent)
+                            {
+                                if (this.CurrentTool is ITextTool textTool)
+                                {
+                                    textTool.TextInput += Environment.NewLine;
+                                    return true;
+                                }
+                            }
                         }
-                        else if (!this._waitingForSelection)
+                        else
                         {
-                            this.PromptStatus = PromptStatus.OK;
-                            this.IsUserInteraction = true;
-                        }
-                        //this.Dispatcher.Invoke((Action)(() =>
-                        //{//this refer to form in WPF application 
-                        
+                            this.Focus();
+                            if (this._waitingForSelection && this.EntitiesManager.SelectedEntities.Count > 0)
+                            {
+                                this.IsUserInteraction = true;
+                                this._waitingForSelection = false;
+                                this.PromptStatus = PromptStatus.OK;
+                            }
+                            else if (!this._waitingForSelection)
+                            {
+                                this.PromptStatus = PromptStatus.OK;
+                                this.IsUserInteraction = true;
+                            }
+                            //this.Dispatcher.Invoke((Action)(() =>
+                            //{//this refer to form in WPF application 
+
                             DynamicInput?.FocusDynamicInputTextBox(CurrentTool.DefaultDynamicInputTextBoxToFocus);
-                        //}));
-                        
+                            //}));
+                        }
+
+
                     }
                     return false;
                 case Key.Space:

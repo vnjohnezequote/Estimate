@@ -30,6 +30,7 @@ namespace ApplicationInterfaceCore
         bool IsUsingLeaderSegmentTextBox { get; }
         bool IsUsingArrowHeadSizeTextBox { get; }
         bool IsUsingScaleFactorTextBox { get; }
+        bool IsUsingMultilineTextBox { get; }
         bool IsUsingSwitchMode { get; }
         double CurrentWidth { get; set; }
         double CurrentHeight { get; set; }

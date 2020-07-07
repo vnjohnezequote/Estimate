@@ -33,7 +33,7 @@ namespace DrawingModule.Application
             if (this._dynamicInput == null) return;
             if (_dynamicInput.TextLength.Visibility == Visibility.Visible)
             {
-               // _dynamicInput.FocusTextLength();
+               // _dynamicInput.FocusLength();
             }
         }
         public PromptPointResult GetPoint(PromptPointOptions options)
