@@ -141,7 +141,11 @@ namespace DrawingModule.Helper
             tempLine.Rotate(angleRadians, Vector3D.AxisZ, startPoint);
             return new Point3D(tempLine.EndPoint.X, tempLine.EndPoint.Y);
         }
-        
+
+        public static bool IsEntityContainPoint3D(Entity entity, Point3D point)
+        {
+            return entity.Vertices.Any(entVertex => Math.Abs(entVertex.X - point.X) < 0.0001 && Math.Abs(entVertex.Y - point.Y) < 0.0001) || false;
+        }
         public static Point3D GetEndPoint(Point3D basePoint, Point3D currentPoint)
         {
             var endPoint = currentPoint;
@@ -268,7 +272,13 @@ namespace DrawingModule.Helper
         public static Line GetClosestSegment(LinearPath linearPath, System.Drawing.Point mousePosition, Plane sketchPlant, ICadDrawAble cadDraw)
         {
             var lines = linearPath.ConvertToLines();
-            cadDraw.ScreenToPlane(mousePosition, sketchPlant, out var point);
+            var point =
+            System.Windows.Application.Current.Dispatcher.Invoke((Func<Point3D>)(() =>
+            {//this refer to form in WPF application 
+                cadDraw.ScreenToPlane(mousePosition, sketchPlant, out var tempPoint);
+                return tempPoint;
+            }));
+
             var minDist = Double.MaxValue;
             Line tempLine = null;
             foreach (var line in lines)

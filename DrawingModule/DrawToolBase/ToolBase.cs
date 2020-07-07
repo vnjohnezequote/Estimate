@@ -48,6 +48,8 @@ namespace DrawingModule.DrawToolBase
         public bool IsUsingLeaderSegmentTextBox { get; protected set; }
         public bool IsUsingArrowHeadSizeTextBox { get; protected set; }
         public bool IsUsingScaleFactorTextBox { get; protected set; }
+        public bool IsUsingSwitchMode { get; protected set; }
+        public UnderMouseDrawingType EntityUnderMouseDrawingType { get; protected set; }
         public FocusType DefaultDynamicInputTextBoxToFocus { get; protected set; }
         public IDynamicInputView DynamicInput => _dynamicInput;
 
@@ -70,8 +72,10 @@ namespace DrawingModule.DrawToolBase
             IsUsingLeaderSegmentTextBox = false;
             IsUsingArrowHeadSizeTextBox = false;
             IsUsingScaleFactorTextBox = false;
+            IsUsingSwitchMode = false;
             DefaultDynamicInputTextBoxToFocus = FocusType.Length;
             ScaleFactor = 1;
+            EntityUnderMouseDrawingType = UnderMouseDrawingType.ByObject;
         }
         public virtual void NotifyMouseMove(object sender, MouseEventArgs e)
         {

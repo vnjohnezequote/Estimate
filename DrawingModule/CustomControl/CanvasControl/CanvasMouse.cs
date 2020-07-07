@@ -40,7 +40,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         {
             _mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
             this.CurrentPoint = GetCurrentPoint(_mousePosition);
-                CurrentIndex = this.GetEntityUnderMouseCursor(_mousePosition, false);
+            CurrentIndex = this.GetEntityUnderMouseCursor(_mousePosition, false);
             _entityUnderMouse = CurrentIndex > -1 ? this.Entities[CurrentIndex] : null;
             if (!IsProcessingTool && this._selectTool.StartPoint != null)
             {
@@ -70,12 +70,29 @@ namespace DrawingModule.CustomControl.CanvasControl
             base.OnMouseMove(e);
 
         }
+
+        private bool GetEntitiesUnderMouse(System.Drawing.Point mousePosition)
+        {
+            var entIndex = GetEntityUnderMouseCursor(mousePosition);
+            if (entIndex > -1)
+            {
+                _entityUnderMouse = this.Entities[entIndex];
+                return true;
+            }
+            else
+            {
+                _entityUnderMouse = null;
+                return false;
+            }
+        }
+
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             var mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
-            var ent = GetEntityUnderMouseCursor(mousePosition);
+            var check = GetEntitiesUnderMouse(mousePosition);
+            _isUserClicked = true;
             this.LastClickPoint = CurrentPoint;
-            var check = ent != -1;
+
             if (this.ActionMode == actionType.None && e.ChangedButton == MouseButton.Left)
             {
                 if (IsProcessingTool)
@@ -91,7 +108,33 @@ namespace DrawingModule.CustomControl.CanvasControl
                         {
                             if (this.EntitiesManager.SelectedEntity!=null)
                             {
-                                this.PromptStatus = PromptStatus.OK;
+                                if (this.CurrentTool.IsUsingSwitchMode)
+                                {
+                                    if (Utils.IsEntityContainPoint3D(EntitiesManager.SelectedEntity, LastClickPoint))
+                                    {
+                                        this.PromptStatus = PromptStatus.SwitchMode;
+                                        _waitingForPickSelection = false;
+                                    }
+                                    else
+                                    {
+                                        this.PromptStatus = PromptStatus.OK;
+                                        _waitingForPickSelection = false;
+                                    }
+                                }
+                                else
+                                {
+                                    this.PromptStatus = PromptStatus.OK;
+                                    _waitingForPickSelection = false;
+                                }
+                                
+                            }
+                            else if(this.CurrentTool.IsUsingSwitchMode)
+                            {
+                                if (this._selectTool.StartPoint!= null)
+                                {
+                                    this._selectTool.StartPoint = null;
+                                }
+                                this.PromptStatus = PromptStatus.SwitchMode;
                                 _waitingForPickSelection = false;
                             }
                         }

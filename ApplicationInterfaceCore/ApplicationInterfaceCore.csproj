@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Enums\FocusType.cs" />
     <Compile Include="Enums\SetDimensionType.cs" />
+    <Compile Include="Enums\UnderMouseDrawingType.cs" />
     <Compile Include="ICadDrawAble.cs" />
     <Compile Include="IDrawInteractive.cs" />
     <Compile Include="IDynamicInputView.cs" />

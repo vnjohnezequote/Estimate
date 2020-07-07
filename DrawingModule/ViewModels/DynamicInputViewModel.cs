@@ -257,6 +257,10 @@ namespace DrawingModule.ViewModels
                     // Cho nay truyen vao khong phai la LengthDimension
                     // Need to write PromptAngleOptions and PrompScaleOptions and PromptTextOptions.
                     this.CurrentCanvas.UpdateCurrentPointByLengthAndAngle(Convert.ToDouble(LengthDimension), Convert.ToDouble(AngleDimension),outputDouble );
+                    if (this.CurrentTool != null)
+                    {
+                        this.CurrentTool.ScaleFactor = outputDouble;
+                    }
                 }
             }
         }

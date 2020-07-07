@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
+using System.Dynamic;
 using System.Windows.Input;
 using ApplicationInterfaceCore.Enums;
 using AppModels.EventArg;
@@ -29,10 +30,12 @@ namespace ApplicationInterfaceCore
         bool IsUsingLeaderSegmentTextBox { get; }
         bool IsUsingArrowHeadSizeTextBox { get; }
         bool IsUsingScaleFactorTextBox { get; }
+        bool IsUsingSwitchMode { get; }
         double CurrentWidth { get; set; }
         double CurrentHeight { get; set; }
         double CurrentAngle { get; set; }
         double ScaleFactor { get; set; }
+        UnderMouseDrawingType EntityUnderMouseDrawingType { get; }
         FocusType DefaultDynamicInputTextBoxToFocus { get; }
         IDynamicInputView DynamicInput { get;}
         void NotifyMouseMove(object sender, MouseEventArgs e);

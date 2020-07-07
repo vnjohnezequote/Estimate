@@ -134,13 +134,20 @@ namespace AppAddons.EditingTools
 
         protected override void ProcessEntities()
         {
-            CalculatorScaleFactor(_endPoint);
+            //CalculatorScaleFactor(_endPoint);
 
             foreach (var selEntity in this.SelectedEntities)
             {
                 selEntity.Scale(BasePoint, ScaleFactor);
             }
             this.EntitiesManager.Refresh();
+        }
+
+        protected override void ResetTool()
+        {
+            base.ResetTool();
+            IsUsingScaleFactorTextBox = false;
+            ScaleFactor = 0;
         }
 
         private void CalculatorScaleFactor(Point3D currentPoint)

@@ -46,6 +46,14 @@ namespace DrawingModule.CustomControl.CanvasControl
                         
                     }
                     return false;
+                case Key.Space:
+                    if (!this.IsProcessingTool) return true;
+                    var drawInteractive = this.CurrentTool;
+                    if (drawInteractive == null || !drawInteractive.IsUsingSwitchMode) return true;
+                    this.PromptStatus = PromptStatus.SwitchMode;
+                    IsUserInteraction = true;
+                    this._waitingForPickSelection = false;
+                    return true;
                 case Key.Delete:
                 case Key.LeftShift:
                 case Key.RightShift:

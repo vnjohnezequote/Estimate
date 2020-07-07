@@ -41,10 +41,10 @@ namespace DrawingModule.CustomControl.CanvasControl
     /// </summary>
     public partial class CanvasDrawing : Model, ICadDrawAble
     {
-        
+
         #region Delegate
         private DrawInteractiveDelegate _drawInteractiveHandler;
-        
+
 
         #endregion
         #region Field
@@ -69,7 +69,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         private bool _waitingForPickSelection;
         private Entity _entityUnderMouse;
         private Point3D _currentPoint;
-
+        private bool _isUserClicked = false;
         private Point3D _lastClickPoint;
 
         private Point3D _basePoint;
@@ -79,9 +79,10 @@ namespace DrawingModule.CustomControl.CanvasControl
         #endregion
 
         #region Properties
-        public IEntitiesManager EntitiesManager {
-            get => (IEntitiesManager) GetValue(EntitiesManagerProperty);
-            set => SetValue(EntitiesManagerProperty,value);
+        public IEntitiesManager EntitiesManager
+        {
+            get => (IEntitiesManager)GetValue(EntitiesManagerProperty);
+            set => SetValue(EntitiesManagerProperty, value);
         }
 
         public ILayerManager LayersManager
@@ -102,15 +103,14 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         public string ActiveLayerName
         {
-            get=>(string)GetValue(ActiveLayerNameProperty);
-            set=>SetValue(ActiveLayerNameProperty,value);
+            get => (string)GetValue(ActiveLayerNameProperty);
+            set => SetValue(ActiveLayerNameProperty, value);
         }
         public int DimTextHeight { get; set; }
         public bool IsAbsotuleInput { get; set; }
         public bool IsDrawEntityUnderMouse { get; set; }
         public bool IsDrawingMode { get; private set; }
         public Plane DrawingPlane => this._drawingPlane;
-
         public double ScaleFactor
         {
             get
@@ -125,19 +125,17 @@ namespace DrawingModule.CustomControl.CanvasControl
                 }
             }
         }
-
         public double CurrentLengthDimension
         {
             get
             {
-                if (BasePoint3D==null|| CurrentPoint==null)
+                if (BasePoint3D == null || CurrentPoint == null)
                 {
                     return 0;
                 }
                 return BasePoint3D.DistanceTo(CurrentPoint).Round();
             }
         }
-
         public double CurrentAngleDimension
         {
             get
@@ -145,7 +143,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                 if (this.BasePoint3D == null || this.CurrentPoint == null) return 0;
                 var vector = new Vector2D(this.BasePoint3D, this.CurrentPoint);
                 var angle = 0.0;
-                if (this.CurrentTool !=null && this.CurrentTool.ReferencePoint!=null)
+                if (this.CurrentTool != null && this.CurrentTool.ReferencePoint != null)
                 {
                     angle = this.CurrentTool.CurrentAngle;
                 }
@@ -153,17 +151,16 @@ namespace DrawingModule.CustomControl.CanvasControl
                 {
                     angle = -Vector2D.SignedAngleBetween(vector, Vector2D.AxisX) * (180 / Math.PI);
                 }
-                
+
                 angle = angle.Round();
                 return angle;
             }
         }
-
         public double CurrentHeightDimension
         {
             get
             {
-                if (this.CurrentTool!=null && Math.Abs(this.CurrentTool.CurrentHeight) > 0.0001)
+                if (this.CurrentTool != null && Math.Abs(this.CurrentTool.CurrentHeight) > 0.0001)
                 {
 
                     return this.CurrentTool.CurrentHeight;
@@ -200,20 +197,19 @@ namespace DrawingModule.CustomControl.CanvasControl
 
             }
         }
-
         public string CurrentText => "Test";
         public double CurrentTextHeight => 100;
         public double CurrentTextAngle => 0;
 
-        public void UpdateCurrentPointByLengthAndAngle(double length, double angle,double scaleFactor)
+        public void UpdateCurrentPointByLengthAndAngle(double length, double angle, double scaleFactor)
         {
-            if (this.BasePoint3D ==null& this.CurrentPoint == null)
+            if (this.BasePoint3D == null & this.CurrentPoint == null)
             {
                 return;
             }
 
             length = length * scaleFactor;
-            if (this.CurrentTool !=null && this.CurrentTool.ReferencePoint !=null)
+            if (this.CurrentTool != null && this.CurrentTool.ReferencePoint != null)
             {
                 this.CurrentPoint = Utils.CalculatorPointWithLengthAndAngle(this.BasePoint3D, this.CurrentTool.ReferencePoint, length, angle);
             }
@@ -221,22 +217,22 @@ namespace DrawingModule.CustomControl.CanvasControl
             {
                 this.CurrentPoint = Utils.CalculatorPointWithLengthAndAngle(this.BasePoint3D, null, length, angle);
             }
-           
+
             this.Invalidate();
             //UpdateFocusDynamicInput();
-            
+
         }
 
 
-        public void UpdateCurrentPointByWidthAndHeight(double width, double height,SetDimensionType setDimensionType)
+        public void UpdateCurrentPointByWidthAndHeight(double width, double height, SetDimensionType setDimensionType)
         {
             var xFactor = 1;
             var yFactor = 1;
             switch (setDimensionType)
             {
                 case SetDimensionType.Width:
-                    if(this.CurrentTool !=null)
-                    this.CurrentTool.CurrentWidth = width;
+                    if (this.CurrentTool != null)
+                        this.CurrentTool.CurrentWidth = width;
                     break;
                 case SetDimensionType.Height:
                     if (this.CurrentTool != null)
@@ -288,7 +284,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         public PromptStatus PromptStatus { get; set; }
         public Point3D CurrentPoint
         {
-            get=>_currentPoint;
+            get => _currentPoint;
             set
             {
                 SetProperty(ref _currentPoint, value);
@@ -306,7 +302,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         public Point3D BasePoint3D
         {
-            get=>_basePoint;
+            get => _basePoint;
             set
             {
                 SetProperty(ref _basePoint, value);
@@ -334,20 +330,20 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.CurrentIndex = -1;
             Loaded += CanvasDrawing_Loaded;
             this.PrepareLineTypes();
-            
+
 
         }
 
         private void PrepareLineTypes()
         {
             LineTypes.Add("Dash Dot", new float[] { 5f, -1f, 1f, -1f });
-            LineTypes.Add("Dash Space",new float[]{5f,-5f});
+            LineTypes.Add("Dash Space", new float[] { 5f, -5f });
         }
         private void CanvasDrawing_Loaded(object sender, RoutedEventArgs e)
         {
             _selectTool.SetEntitiesManager(EntitiesManager);
             _selectTool.SetLayersManager(LayersManager);
-            
+
         }
         #endregion
 
@@ -374,7 +370,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         //private TextureBase texture = null;
         protected override void DrawOverlay(DrawSceneParams data)
         {
-            
+
             //if (!_firstTime)
             //{
             //    _firstTime = true;
@@ -392,19 +388,22 @@ namespace DrawingModule.CustomControl.CanvasControl
             //    DrawTexture(texture, 100, 100, ContentAlignment.BottomLeft);
             //    Draw
             //}
-            
 
-
-
-
-            var drawInteractiveArgs = new DrawInteractiveArgs(this.CurrentPoint,this.LastClickPoint,data,_mousePosition) ;
-            if (IsProcessingTool && this._currentTool !=null)
+            var drawInteractiveArgs = new DrawInteractiveArgs(this.CurrentPoint, this.LastClickPoint, data, _mousePosition);
+            if (IsProcessingTool && this._currentTool != null)
             {
                 //this._drawInteractiveHandler.Invoke(this, drawInteractiveArgs);
                 DrawOverlay_Drawing(drawInteractiveArgs);
                 if (this._waitingForSelection)
                 {
                     this._selectTool.DrawInteractiveHandler.Invoke(this, drawInteractiveArgs);
+                    if (this.CurrentTool != null && this.CurrentTool.IsSnapEnable && this.IsSnappingEnable)
+                    {
+                        if (SnapPoint != null)
+                        {
+                            DrawSnappPointUtl.DisplaySnappedVertex(this, SnapPoint, renderContext);
+                        }
+                    }
                 }
                 else if (IsSnappingEnable)
                 {
@@ -414,17 +413,58 @@ namespace DrawingModule.CustomControl.CanvasControl
                         {
                             DrawSnappPointUtl.DisplaySnappedVertex(this, SnapPoint, renderContext);
                         }
-                        
+
                     }
                 }
             }
             else
             {
-                this._selectTool.DrawInteractiveHandler.Invoke(this,drawInteractiveArgs);   
+                this._selectTool.DrawInteractiveHandler.Invoke(this, drawInteractiveArgs);
+            }
+            if (_entityUnderMouse != null)
+            {
+                this.DrawInteractiveEntityUnderMouse(_entityUnderMouse);
             }
             base.DrawOverlay(data);
         }
-        
+
+        private void DrawInteractiveEntityUnderMouse(Entity entity)
+        {
+            renderContext.SetLineSize(1.5f);
+            renderContext.SetColorWireframe(Color.CornflowerBlue);
+            List<Point3D> points = new List<Point3D>();
+
+            if (entity is Line line)
+            {
+                DrawInteractiveUntilities.DrawCurveOrBlockRef(line,this);
+            }
+            else if (entity is LinearPath linearPath)
+            {
+                if (this.CurrentTool!= null && this.CurrentTool.EntityUnderMouseDrawingType == UnderMouseDrawingType.BySegment)
+                {
+                    var tempLine = Utils.GetClosestSegment(linearPath,_mousePosition,DrawingPlane,this);
+                    points.AddRange(tempLine.Vertices);
+                }
+                else
+                {
+                    points.AddRange(linearPath.Vertices);
+                }
+                var screenVertex = Utils.GetScreenVertices(points,this);
+                renderContext.DrawLineStrip(screenVertex);
+
+            }
+            else
+            {
+                DrawInteractiveUntilities.DrawCurveOrBlockRef(entity,this);
+                return;
+            }
+
+        }
+
+
+
+
+
         #endregion
         #region Private Method
 
@@ -434,7 +474,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         private void ProcessMouseDownForSelectionTool(MouseButtonEventArgs e, bool isSelected)
         {
-            this._selectTool.ProcessMouseDownForSelection(e,isSelected,this);
+            this._selectTool.ProcessMouseDownForSelection(e, isSelected, this);
         }
 
         private Point3D GetCurrentPoint(System.Drawing.Point mouseLocations)
@@ -442,7 +482,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.ScreenToPlane(mouseLocations, this._drawingPlane, out var currentPoint);
             return currentPoint;
         }
-        
+
         //private void RegisterDrawInteractiveHandler(IDrawInteractive subscriber)
         //{
         //    this._drawInteractiveHandler += subscriber.DrawInteractiveHandler;
@@ -546,7 +586,7 @@ namespace DrawingModule.CustomControl.CanvasControl
 
         private Entity GetSelectionEntity()
         {
-            return Dispatcher.Invoke((Func<Entity>)(() => this.EntitiesManager.SelectedEntity));
+            return Dispatcher.Invoke((Func<Entity>)(() => this.EntitiesManager.SelectedEntity ?? null));
         }
 
         private void ClearSelectionEntity()
@@ -556,7 +596,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                 this.EntitiesManager.ClearSelectedEntities();
             }));
         }
-        public PromptStatus GetSelection(out string stringResult, out Point3D clickedPoint,out Entity entity, bool isClearAtTheEndSelecion = true)
+        public PromptStatus GetSelection(out string stringResult, out Point3D clickedPoint, out Entity entity, bool isClearAtTheEndSelecion = true)
         {
             ClearSelectionEntity();
             _waitingForPickSelection = true;
@@ -566,13 +606,44 @@ namespace DrawingModule.CustomControl.CanvasControl
             }
 
             var promptStatus = PromptStatus.None;
-            IsUserInteraction = false;
             if (this.PromptStatus == PromptStatus.OK)
             {
                 entity = GetSelectionEntity();
+                if (entity is LinearPath linearPath)
+                {
+                    if (this.CurrentTool.EntityUnderMouseDrawingType == UnderMouseDrawingType.BySegment)
+                    {
+                        entity = Utils.GetClosestSegment(linearPath, _mousePosition, DrawingPlane, this);
+                    }
+                }
+
                 clickedPoint = this.LastClickPoint;
                 stringResult = "Get Point Complete";
                 promptStatus = PromptStatus.OK;
+            }
+            else if (this.PromptStatus == PromptStatus.SwitchMode)
+            {
+                entity = GetSelectionEntity();
+                if (entity != null && entity is LinearPath linearPath)
+                {
+                    if (this.CurrentTool.EntityUnderMouseDrawingType == UnderMouseDrawingType.BySegment)
+                    {
+                        entity = Utils.GetClosestSegment(linearPath, _mousePosition, DrawingPlane, this);
+                    }
+                }
+                else entity = null;
+
+                if (_isUserClicked)
+                {
+                    clickedPoint = this.LastClickPoint;
+                }
+                else
+                {
+                    clickedPoint = null;
+                }
+                stringResult = "You have changed SelectionMode";
+                promptStatus = PromptStatus.SwitchMode;
+
             }
             else
             {
@@ -582,6 +653,8 @@ namespace DrawingModule.CustomControl.CanvasControl
                 promptStatus = PromptStatus.Cancel;
             }
             this.PromptStatus = PromptStatus.None;
+            IsUserInteraction = false;
+            _isUserClicked = false;
             _waitingForSelection = false;
             _waitingForPickSelection = false;
             if (isClearAtTheEndSelecion)
@@ -645,15 +718,15 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         public PromptStatus GetPoint(Point3D basePoint, out string stringResult, out Point3D resultPoint)
         {
-            if (basePoint!=null)
+            if (basePoint != null)
             {
                 this.BasePoint3D = basePoint;
             }
-            else if (this.CurrentTool!=null && this.CurrentTool.BasePoint!=null)
+            else if (this.CurrentTool != null && this.CurrentTool.BasePoint != null)
             {
                 this.BasePoint3D = this.CurrentTool.BasePoint;
             }
-            else if (this.LastClickPoint!=null)
+            else if (this.LastClickPoint != null)
             {
                 this.BasePoint3D = this.LastClickPoint;
             }
@@ -663,11 +736,18 @@ namespace DrawingModule.CustomControl.CanvasControl
 
             var promptStatus = PromptStatus.None;
             IsUserInteraction = false;
+            _isUserClicked = false;
             if (this.PromptStatus == PromptStatus.OK)
             {
                 resultPoint = CurrentPoint;
                 stringResult = "Get Point Complete";
                 promptStatus = PromptStatus.OK;
+            }
+            else if (this.PromptStatus == PromptStatus.SwitchMode)
+            {
+                resultPoint = null;
+                stringResult = "You Have Changed Tool Mode";
+                promptStatus = PromptStatus.SwitchMode;
             }
             else
             {
@@ -694,6 +774,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         {
             this.PromptStatus = promptStatus;
             IsUserInteraction = true;
+            _isUserClicked=false;
             this._waitingForSelection = false;
             this._waitingForPickSelection = false;
 
@@ -719,7 +800,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         private void ProcessCancelTool()
         {
             this.ResetProcessingTool(PromptStatus.Cancel);
-            
+
         }
         #endregion
         #region Implement INotifyPropertyChanged
@@ -763,7 +844,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             if (newValue != null)
                 newValue.SetEntitiesList(vp.Entities);
             newValue.SetCanvasDrawing(vp);
-            
+
             // do something
         }
         private static object EntitiesManagerCoerceCallback(DependencyObject d, object baseValue)
@@ -781,7 +862,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             var newValue = (ILayerManager)e.NewValue;
             if (newValue != null)
                 newValue.SetLayerList(vp.Layers);
-            
+
             // do something
         }
         private static object LayersManagerCoerceCallback(DependencyObject d, object baseValue)

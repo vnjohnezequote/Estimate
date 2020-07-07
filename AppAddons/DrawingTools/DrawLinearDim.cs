@@ -16,21 +16,10 @@ using DrawingModule.UserInteractive;
 
 namespace AppAddons.DrawingTools
 {
-    public class DrawLinearDim : ToolBase
+    public class DrawLinearDim : DimToolBase
     {
-        public override Point3D BasePoint { get; protected set; }
-        private Point3D _startPoint;
-        private Point3D _endPoint;
-        private Point3D _dimPoint;
-        private Point3D _extPt1;
-        private Point3D _extPt2;
-        private Plane _storePlane;
-        private Point3D _currentPoint;
-        private double _dimTextHeight;
-        public sealed override string ToolMessage { get; set; }
-
-
-        public DrawLinearDim()
+        public override string ToolName => "Linear Dim";
+        public DrawLinearDim():base()
         {
 
         }
@@ -38,59 +27,10 @@ namespace AppAddons.DrawingTools
         [CommandMethod("DLI")]
         public void LinearDim()
         {
-            var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
-            ToolMessage = "Please enter first Point for Dim";
-            var promptPointOp = new PromptPointOptions(ToolMessage);
-            var res = acDoc.Editor.GetPoint(promptPointOp);
-            if (res.Status == PromptStatus.Cancel)
-            {
-                //Application.DocumentManager.MdiActiveDocument.Editor.UnRegisterDrawInteractive(this);
-                return;
-            }
-            _startPoint = res.Value;
-
-            ToolMessage = "Please enter Second Point for Dim";
-            res = acDoc.Editor.GetPoint(promptPointOp);
-            if (res.Status == PromptStatus.Cancel)
-            {
-                //Application.DocumentManager.MdiActiveDocument.Editor.UnRegisterDrawInteractive(this);
-                return;
-            }
-
-            _endPoint = res.Value;
-            ToolMessage = "Please ender Dim Point Location";
-
-            res = acDoc.Editor.GetPoint(promptPointOp);
-            if (res.Status == PromptStatus.Cancel)
-            {
-                //Application.DocumentManager.MdiActiveDocument.Editor.UnRegisterDrawInteractive(this);
-                return;
-            }
-
-            _dimPoint = res.Value;
-
-            if (_extPt1 != null && _extPt2 !=null && _storePlane !=null)
-            {
-                ProcessDim(_extPt1, _extPt2, _dimPoint, _storePlane);
-            }
-
-            
-
+            OnProcessCommand();
         }
 
-        private void ProcessDim(Point3D p1, Point3D p2, Point3D p3, Plane storePlane, double dimTextHeight = 10.0)
-        {
-            var linearEntity = new LinearDim(storePlane, p1, p2, p3, dimTextHeight);
-            EntitiesManager.AddAndRefresh(linearEntity, this.LayerManager.SelectedLayer.Name);
-        }
-
-        public override void OnJigging(object sender, DrawInteractiveArgs e)
-        {
-
-            DrawInteractiveLinearDim((ICadDrawAble)sender, e);
-        }
-
-        private void DrawInteractiveLinearDim(ICadDrawAble canvas, DrawInteractiveArgs e)
+        protected override void DrawInteractiveDim(ICadDrawAble canvas, DrawInteractiveArgs e)
         {
             if(_startPoint == null ) return;
             if (e.CurrentPoint ==null) return;

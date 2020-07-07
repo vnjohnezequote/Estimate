@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
@@ -9,11 +8,10 @@ using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
 using DrawingModule.DrawInteractiveUtilities;
-using DrawingModule.DrawToolBase;
 using DrawingModule.UserInteractive;
 using Environment = devDept.Eyeshot.Environment;
 
-namespace AppAddons.EditingTools
+namespace DrawingModule.DrawToolBase
 {
     public abstract class EditingToolBase: SelectAbleToolBase
     {

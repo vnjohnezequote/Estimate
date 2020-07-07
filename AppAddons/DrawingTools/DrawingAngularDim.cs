@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using ApplicationInterfaceCore;
+using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
@@ -26,49 +27,86 @@ namespace AppAddons.DrawingTools
         public DrawingAngularDim()
         {
             _waitingForSelection = true;
+            EntityUnderMouseDrawingType = UnderMouseDrawingType.BySegment;
+            IsUsingOrthorMode = false;
+            IsSnapEnable = false;
         }
         [CommandMethod("AngleDim")]
         public void DrawAngularDim()
         {
-            var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
-            ToolMessage = "Please Select first line";
-            var promptLineOption = new PromptSelectionOptions();
-            var result = acDoc.Editor.GetSelection(promptLineOption);
-            if (result.Status == PromptStatus.OK)
+            while (true)
             {
-                this._firstLineForAngularDim = result.Value as Line;
-            }
-            else
-            {
-                return;
-            }
+                var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
+                ToolMessage = "Please Select first line";
+                var promptLineOption = new PromptSelectionOptions();
+                var result = acDoc.Editor.GetSelection(promptLineOption);
+                if (result.Status == PromptStatus.OK)
+                {
+                    this._firstLineForAngularDim = result.Value as Line;
+                }
+                else
+                {
+                    return;
+                }
 
-            ToolMessage = "Please Select Second line";
-            result = acDoc.Editor.GetSelection(promptLineOption);
-            if (result.Status == PromptStatus.OK)
-            {
-                this._secondLineForAngularDim = result.Value as Line;
-            }
-            else
-            {
-                return;
-            }
+                ToolMessage = "Please Select Second line";
+                result = acDoc.Editor.GetSelection(promptLineOption);
+                if (result.Status == PromptStatus.OK)
+                {
+                    this._secondLineForAngularDim = result.Value as Line;
+                }
+                else
+                {
+                    return;
+                }
 
-            _waitingForSelection = false;
-            //ToolMessage = "Please enter dim point";
-            var promptPointOption = new PromptPointOptions(ToolMessage);
-            Point3D dimPoint3D=null;
-            var resultPoint = acDoc.Editor.GetPoint(promptPointOption);
-            if (resultPoint.Status == PromptStatus.OK)
-            {
-                dimPoint3D = resultPoint.Value;
-            }
-            else
-            {
-                return;
-            }
-            this.ProcessAngularDim(Plane.XY, _firstLineForAngularDim, _secondLineForAngularDim, dimPoint3D );
+                if (!CheckIntersctionOfTwoLine(_firstLineForAngularDim,_secondLineForAngularDim))
+                {
+                    ResetTool();
+                    continue;
+                }
+                
 
+                _waitingForSelection = false;
+                //ToolMessage = "Please enter dim point";
+                var promptPointOption = new PromptPointOptions(ToolMessage);
+                Point3D dimPoint3D = null;
+                var resultPoint = acDoc.Editor.GetPoint(promptPointOption);
+                if (resultPoint.Status == PromptStatus.OK)
+                {
+                    dimPoint3D = resultPoint.Value;
+                }
+                else
+                {
+                    return;
+                }
+
+                if (_firstLineForAngularDim!= null && _secondLineForAngularDim!=null)
+                {
+                    this.ProcessAngularDim(Plane.XY, _firstLineForAngularDim, _secondLineForAngularDim, dimPoint3D);
+                }
+                
+                this.ResetTool();
+            }
+            
+
+        }
+
+        private bool CheckIntersctionOfTwoLine(Line l1,Line l2)
+        {
+            Point3D p1 = this._firstLineForAngularDim.StartPoint;
+            Point3D p2 = this._firstLineForAngularDim.EndPoint;
+            Point3D p3 = this._secondLineForAngularDim.StartPoint;
+            Point3D p4 = this._secondLineForAngularDim.EndPoint;
+            Segment2D seg1 = new Segment2D(this._firstLineForAngularDim.StartPoint, this._firstLineForAngularDim.EndPoint);
+            Segment2D seg2 = new Segment2D(this._secondLineForAngularDim.StartPoint, this._secondLineForAngularDim.EndPoint);
+            return Segment2D.IntersectionLine(seg1, seg2, out var centerPoint);
+        }
+        private void ResetTool()
+        {
+            this._waitingForSelection = true;
+            this._firstLineForAngularDim = null;
+            this._secondLineForAngularDim = null;
         }
 
         private void ProcessAngularDim(Plane drawingPlane,Line firstLine, Line secondLine,Point3D dimPosition, double dimTextHeight = 10)
@@ -204,9 +242,7 @@ namespace AppAddons.DrawingTools
                 else
                 {
                     ToolMessage = "Two Line is Paralell";
-                    this._waitingForSelection = true;
-                    this._firstLineForAngularDim = null;
-                    this._secondLineForAngularDim = null;
+                    ResetTool();
 
                 }
             }

@@ -14,7 +14,7 @@ namespace DrawingModule.UserInteractive
         }
         internal PromptSelectionResult(PromptStatus promptStatus, string stringResult,Point3D clickedPoint ,Entity entity) : base(promptStatus, stringResult)
         {
-            if (promptStatus != PromptStatus.OK) return;
+            if (promptStatus == PromptStatus.Cancel) return;
             this.Value= entity;
             ClickedPoint = clickedPoint;
         }
