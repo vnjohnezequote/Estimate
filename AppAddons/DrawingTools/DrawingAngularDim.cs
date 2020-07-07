@@ -126,6 +126,10 @@ namespace AppAddons.DrawingTools
 
         private void DrawInteractiveAngularLine(ICadDrawAble canvas,DrawInteractiveArgs e)
         {
+            if (e.CurrentPoint == null)
+            {
+                return;
+            }
             if (this._firstLineForAngularDim != null)
             {
                 DrawInteractiveUntilities.DrawCurveOrBlockRef((Entity)_firstLineForAngularDim, canvas);

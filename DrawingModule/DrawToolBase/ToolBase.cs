@@ -49,6 +49,7 @@ namespace DrawingModule.DrawToolBase
         public bool IsUsingArrowHeadSizeTextBox { get; protected set; }
         public bool IsUsingScaleFactorTextBox { get; protected set; }
         public bool IsUsingMultilineTextBox { get; protected set; }
+        public bool IsUsingOffsetDistance { get; protected set; }
         public bool IsUsingSwitchMode { get; protected set; }
         public UnderMouseDrawingType EntityUnderMouseDrawingType { get; protected set; }
         public FocusType DefaultDynamicInputTextBoxToFocus { get; protected set; }
@@ -73,6 +74,7 @@ namespace DrawingModule.DrawToolBase
             IsUsingArrowHeadSizeTextBox = false;
             IsUsingScaleFactorTextBox = false;
             IsUsingSwitchMode = false;
+            IsUsingOffsetDistance = false;
             DefaultDynamicInputTextBoxToFocus = FocusType.Length;
             ScaleFactor = 1;
             EntityUnderMouseDrawingType = UnderMouseDrawingType.ByObject;

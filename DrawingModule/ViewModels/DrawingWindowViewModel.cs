@@ -50,12 +50,6 @@ namespace DrawingModule.ViewModels
             set => this.SetProperty(ref this._isOrthorMode, value);
         }
 
-        public bool IsDimByObject
-        {
-            get => this._isDimByObject;
-            set => this.SetProperty(ref this._isDimByObject, value);
-        }
-
         #endregion
         #region Command
 
@@ -130,8 +124,7 @@ namespace DrawingModule.ViewModels
             //this.FilletCommand = new DelegateCommand(this.OnFilletCommand);
             this.RegionManager = RegionManager.CreateRegionManager();
             this.IsOrthorMode = true;
-            this.IsDimByObject = true;
-           
+
         }
 
         #endregion

@@ -22,94 +22,94 @@
 								d:DataContext="{d:DesignInstance viewModels:CanvasDrawingViewModel, IsDesignTimeCreatable=True}"
 								Name="CanvasDrawingControl"
 >
-	<Grid Name="RootCanvasDrawingGrid">
-		<TabControl Name="TabControlDrawing">
-			<TabItem Header="Canvas DrawingLine" Name="TabDrawing">
-				<Grid>
-					<canvasControl:CanvasDrawing x:Name="CanvasDrawing"
+    <Grid Name="RootCanvasDrawingGrid">
+        <TabControl Name="TabControlDrawing" Grid.Row="0">
+                <TabItem Header="Canvas DrawingLine" Name="TabDrawing">
+                    <Grid>
+                        <canvasControl:CanvasDrawing x:Name="CanvasDrawing"
 										Units="Millimeters"
 										AntiAliasingSamples="x8"
 										AutoRefresh="True"
                                         EntitiesManager="{Binding EntitiesManager}"
                                         LayersManager="{Binding LayerManager}"
-                                        ActiveLayerName="{Binding LayerManager.SelectedLayer.Name}">
-						<b:Interaction.Triggers>
-							<b:EventTrigger EventName="MouseLeave">
-								<b:InvokeCommandAction Command="{Binding CanvasDrawingMouseLeave, Mode=OneWay}"/>
-							</b:EventTrigger>
-							<b:EventTrigger EventName="MouseEnter">
-								<b:InvokeCommandAction Command="{Binding CanvasDrawingMouseEnter, Mode=OneWay}"/>
-							</b:EventTrigger>
-							<b:EventTrigger EventName="Loaded">
-								<b:InvokeCommandAction Command="{Binding CanvasDrawingLoadedCommand, Mode=OneWay}"
+                                        ActiveLayerName="{Binding LayerManager.SelectedLayer.Name}" SelectionFilterMode="Entity">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="MouseLeave">
+                                    <b:InvokeCommandAction Command="{Binding CanvasDrawingMouseLeave, Mode=OneWay}"/>
+                                </b:EventTrigger>
+                                <b:EventTrigger EventName="MouseEnter">
+                                    <b:InvokeCommandAction Command="{Binding CanvasDrawingMouseEnter, Mode=OneWay}"/>
+                                </b:EventTrigger>
+                                <b:EventTrigger EventName="Loaded">
+                                    <b:InvokeCommandAction Command="{Binding CanvasDrawingLoadedCommand, Mode=OneWay}"
 										   CommandParameter="{Binding ElementName=CanvasDrawingControl}"/>
-							</b:EventTrigger>
-						</b:Interaction.Triggers>
-						<canvasControl:CanvasDrawing.Viewports>
-							<ddes:Viewport DisplayMode="Flat">
-								<!--<ddes:Viewport.OriginSymbol>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <canvasControl:CanvasDrawing.Viewports>
+                                <ddes:Viewport DisplayMode="Flat">
+                                    <!--<ddes:Viewport.OriginSymbol>
 								<ddes:OriginSymbol Lighting="True"/>
 							</ddes:Viewport.OriginSymbol>-->
-								<ddes:Viewport.Pan>
-									<ddes:PanSettings MouseButton="Middle, None"/>
-								</ddes:Viewport.Pan>
-								<ddes:Viewport.Rotate>
-									<ddes:RotateSettings Enabled="False"/>
-								</ddes:Viewport.Rotate>
-								<!--<ddes:Viewport.OriginSymbols>
+                                    <ddes:Viewport.Pan>
+                                        <ddes:PanSettings MouseButton="Middle, None"/>
+                                    </ddes:Viewport.Pan>
+                                    <ddes:Viewport.Rotate>
+                                        <ddes:RotateSettings Enabled="False"/>
+                                    </ddes:Viewport.Rotate>
+                                    <!--<ddes:Viewport.OriginSymbols>
 								<ddes:OriginSymbol Lighting="True"/>
 							</ddes:Viewport.OriginSymbols>-->
-								<ddes:Viewport.CoordinateSystemIcon>
-									<ddes:CoordinateSystemIcon Lighting="True"/>
-								</ddes:Viewport.CoordinateSystemIcon>
-								<ddes:Viewport.ViewCubeIcon >
-									<ddes:ViewCubeIcon Lighting="True"/>
-								</ddes:Viewport.ViewCubeIcon>
-								<ddes:Viewport.Background >
-									<ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF0C151D"/>
-								</ddes:Viewport.Background>
-								<!--<ddes:Viewport.Grids>
+                                    <ddes:Viewport.CoordinateSystemIcon>
+                                        <ddes:CoordinateSystemIcon Lighting="True"/>
+                                    </ddes:Viewport.CoordinateSystemIcon>
+                                    <ddes:Viewport.ViewCubeIcon >
+                                        <ddes:ViewCubeIcon Lighting="True"/>
+                                    </ddes:Viewport.ViewCubeIcon>
+                                    <ddes:Viewport.Background >
+                                        <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF0C151D"/>
+                                    </ddes:Viewport.Background>
+                                    <!--<ddes:Viewport.Grids>
 								<ddes:Grid Step="1" Lighting="True" AutoSize="True" AutoStep="True" MaxNumberOfLines="100" MinNumberOfLines="9" OverridesDefaultStyle="True"/>
 							</ddes:Viewport.Grids>-->
-								<ddes:Viewport.ToolBars>
-									<ddes:ToolBar Visibility="Hidden">
-										<ddes:ToolBar.Buttons>
-											<ddes:HomeToolBarButton/>
-											<ddes:MagnifyingGlassToolBarButton/>
-											<ddes:ZoomWindowToolBarButton/>
-											<ddes:ZoomToolBarButton/>
-											<ddes:PanToolBarButton/>
-											<ddes:RotateToolBarButton/>
-											<ddes:ZoomFitToolBarButton/>
-										</ddes:ToolBar.Buttons>
-									</ddes:ToolBar>
-								</ddes:Viewport.ToolBars>
-							</ddes:Viewport>
-						</canvasControl:CanvasDrawing.Viewports>
-					</canvasControl:CanvasDrawing>
-                </Grid>
-            </TabItem>
-			<TabItem Header="Layout" Name="TabPaperSpace">
-				<paperSpaceControl:PaperSpaceDrawing x:Name="PaperSpace"/>
-			</TabItem>
-        </TabControl>
-		<Grid>
-            <local:DynamicInputView x:Name="DynamicInput"
+                                    <ddes:Viewport.ToolBars>
+                                        <ddes:ToolBar Visibility="Hidden">
+                                            <ddes:ToolBar.Buttons>
+                                                <ddes:HomeToolBarButton/>
+                                                <ddes:MagnifyingGlassToolBarButton/>
+                                                <ddes:ZoomWindowToolBarButton/>
+                                                <ddes:ZoomToolBarButton/>
+                                                <ddes:PanToolBarButton/>
+                                                <ddes:RotateToolBarButton/>
+                                                <ddes:ZoomFitToolBarButton/>
+                                            </ddes:ToolBar.Buttons>
+                                        </ddes:ToolBar>
+                                    </ddes:Viewport.ToolBars>
+                                </ddes:Viewport>
+                            </canvasControl:CanvasDrawing.Viewports>
+                        </canvasControl:CanvasDrawing>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Layout" Name="TabPaperSpace">
+                    <paperSpaceControl:PaperSpaceDrawing x:Name="PaperSpace"/>
+                </TabItem>
+            </TabControl>
+            <Grid Row="0">
+                <local:DynamicInputView x:Name="DynamicInput"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"/>
-            <commandLine:NonTopmostPopup x:Name="YesNoPopUp"
+                <commandLine:NonTopmostPopup x:Name="YesNoPopUp"
                                          PlacementTarget="{Binding ElementName=DynamicInput}"
                                          StaysOpen="True"
                                          IsOpen="False"
                                          PopupAnimation="Slide"
                                          AllowsTransparency="True"
                                          VerticalOffset="5">
-				<ListBox Width="100" Margin="100 100 0 0">
-					<ListBoxItem Content="Yes"/>
-					<ListBoxItem Content="No"/>
-                </ListBox>
-            </commandLine:NonTopmostPopup>
-            <!--<TextBlock Name="LengthDimension" Text="{Binding ElementName=CursorEntry, Path=LengthDimension,UpdateSourceTrigger=PropertyChanged}"
+                    <ListBox Width="100" Margin="100 100 0 0">
+                        <ListBoxItem Content="Yes"/>
+                        <ListBoxItem Content="No"/>
+                    </ListBox>
+                </commandLine:NonTopmostPopup>
+                <!--<TextBlock Name="LengthDimension" Text="{Binding ElementName=CursorEntry, Path=LengthDimension,UpdateSourceTrigger=PropertyChanged}"
 						   Background="#FF4F4F4F"
 						   Foreground="Black"
 						   HorizontalAlignment="Left"
@@ -148,13 +148,13 @@
 						   VerticalAlignment="Top"
 						   Visibility="{Binding ElementName=CanvasDrawing,Path=VDimVisibility}"
 						   />-->
-            <!--<TextBox Name="TextDim" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100 180 0 0" Text="{Binding ElementName=CanvasDrawing, Path=DimTextHeight}"/>-->
-            <!--<TextBox Name="TextInput"
+                <!--<TextBox Name="TextDim" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100 180 0 0" Text="{Binding ElementName=CanvasDrawing, Path=DimTextHeight}"/>-->
+                <!--<TextBox Name="TextInput"
 						 Text="{Binding ElementName=CanvasDrawing, Path=TextInput}"
 						 Width="Auto"
 						 Height="{Binding ElementName=CanvasDrawing,Path= TextInputHeight}"
 						 Visibility="{Binding ElementName=CanvasDrawing, Path=TextInputVisibility}"/>-->
-            <!--<local:CommandLineView x:Name="CommandLine" Visibility="{Binding DynamicInputVisibility}"/>-->
-        </Grid>
+                <!--<local:CommandLineView x:Name="CommandLine" Visibility="{Binding DynamicInputVisibility}"/>-->
+            </Grid>
     </Grid>
 </UserControl>

@@ -6,6 +6,7 @@ using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using devDept.Graphics;
+using DrawingModule.ViewModels;
 
 namespace DrawingModule.Views
 {
@@ -14,6 +15,7 @@ namespace DrawingModule.Views
     {
         #region Field
 
+        private DrawingWindowViewModel _drawingWindowViewModel;
         #endregion
 
         #region Properties
@@ -26,9 +28,22 @@ namespace DrawingModule.Views
         public DrawingWindowView()
         {
             this.InitializeComponent();
+            if (this.DataContext!=null)
+            {
+                _drawingWindowViewModel = this.DataContext as DrawingWindowViewModel;
+                _drawingWindowViewModel.PropertyChanged += _drawingWindowViewModel_PropertyChanged;
+            }
             this.Loaded += DrawingWindowView_Loaded;
             this.CanvasDrawing.CanvasDrawing.WorkCompleted += CanvasDrawing_WorkCompleted;
             this.CanvasDrawing.TabControlDrawing.SelectionChanged += TabControl1_SelectionChanged;
+        }
+
+        private void _drawingWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName=="IsOrthorMode")
+            {
+                this.CanvasDrawing.CanvasDrawing.IsOrthoModeEnable = _drawingWindowViewModel.IsOrthorMode;
+            }
         }
 
         private void TabControl1_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -119,6 +134,16 @@ namespace DrawingModule.Views
         {
             if (CanvasDrawing.TabDrawing.IsSelected)
             {
+                if (e.Key == Key.F8)
+                {
+                    this.CanvasDrawing.CanvasDrawing.IsOrthoModeEnable =
+                        !this.CanvasDrawing.CanvasDrawing.IsOrthoModeEnable;
+                    if (this._drawingWindowViewModel!= null)
+                    {
+                        this._drawingWindowViewModel.IsOrthorMode = this.CanvasDrawing.CanvasDrawing.IsOrthoModeEnable;
+                    }
+                    return;
+                }
                 var handler = this.CanvasDrawing.CanvasDrawing.PreProcessKeyDownForCanvasView(e);
                     //Dispatcher.Invoke((Func<bool>)(() => this.CanvasDrawing.CanvasDrawing.PreProcessKeyDownForCanvasView(e)));
 

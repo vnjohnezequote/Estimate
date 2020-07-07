@@ -71,6 +71,7 @@
     <Compile Include="IEntitiesManager.cs" />
     <Compile Include="ILayerManager.cs" />
     <Compile Include="ILeaderTool.cs" />
+    <Compile Include="IOffsetDisance.cs" />
     <Compile Include="IShellService.cs" />
     <Compile Include="ITextTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

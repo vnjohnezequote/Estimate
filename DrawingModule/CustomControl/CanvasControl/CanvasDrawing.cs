@@ -23,7 +23,9 @@ using AppModels;
 using AppModels.EventArg;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
+using devDept.Eyeshot.Translators;
 using devDept.Geometry;
+using devDept.Graphics;
 using DrawingModule.Application;
 using DrawingModule.CommandClass;
 using DrawingModule.Control;
@@ -71,6 +73,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         private Point3D _currentPoint;
         private bool _isUserClicked = false;
         private Point3D _lastClickPoint;
+        //private System.Drawing.Point _currentMouseLocation;
 
         private Point3D _basePoint;
         //private 
@@ -364,7 +367,10 @@ namespace DrawingModule.CustomControl.CanvasControl
         public bool IsOrthoModeEnable
         {
             get => this._isOrthoModeEnable;
-            set => this.SetProperty(ref _isOrthoModeEnable, value);
+            set
+            {
+                this.SetProperty(ref _isOrthoModeEnable, value);
+            } 
         }
         public bool IsProcessingTool { get; private set; }
         public PromptStatus PromptStatus { get; set; }

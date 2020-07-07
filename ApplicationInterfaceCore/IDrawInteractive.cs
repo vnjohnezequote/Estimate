@@ -31,6 +31,7 @@ namespace ApplicationInterfaceCore
         bool IsUsingArrowHeadSizeTextBox { get; }
         bool IsUsingScaleFactorTextBox { get; }
         bool IsUsingMultilineTextBox { get; }
+        bool IsUsingOffsetDistance { get; }
         bool IsUsingSwitchMode { get; }
         double CurrentWidth { get; set; }
         double CurrentHeight { get; set; }

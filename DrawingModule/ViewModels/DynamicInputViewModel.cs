@@ -213,18 +213,39 @@ namespace DrawingModule.ViewModels
         #region Drawing Properties Region
         public string LengthDimension
         {
-            get => CurrentCanvas == null
-                ? "0"
-                : CurrentCanvas.CurrentLengthDimension.ToString(CultureInfo.InvariantCulture);
+            get
+            {
+                if (this.CurrentTool!=null && this.CurrentTool.IsUsingOffsetDistance && this.CurrentTool is IOffsetDisance offsetTool)
+                {
+                    if (offsetTool.OffsetDistance >0)
+                    {
+                        return offsetTool.OffsetDistance.ToString();
+                    }
+                    else
+                    {
+                        return CurrentCanvas == null
+                            ? "0"
+                            : CurrentCanvas.CurrentLengthDimension.ToString(CultureInfo.InvariantCulture);
+                    }
+                }
+                return CurrentCanvas == null
+                    ? "0"
+                    : CurrentCanvas.CurrentLengthDimension.ToString(CultureInfo.InvariantCulture);
+            }
             set
             {
                 var checkConvertDouble = Utils.ConvertStringToDouble(value, out var outputDouble);
                 if (checkConvertDouble && Math.Abs(outputDouble) > 0.0001 & this.CurrentCanvas != null)
                 {
                     this.CurrentCanvas.UpdateCurrentPointByLengthAndAngle(outputDouble, Convert.ToDouble(AngleDimension), Convert.ToDouble(this.ScaleFactor));
+                    if (this.CurrentTool != null && this.CurrentTool.IsUsingOffsetDistance && this.CurrentTool is IOffsetDisance offsetTool)
+                    {
+                        offsetTool.OffsetDistance = (int)outputDouble;
+                    }
                 }
             }
         }
+
         public string AngleDimension
         {
             get => CurrentCanvas == null
