@@ -112,9 +112,9 @@
                       ItemsSource="{Binding LayerManager.Layers}"
                       SelectedItem="{Binding LayerManager.SelectedLayer}"
 					  DisplayMemberPath="Name"
-					  Style="{StaticResource Custom.MahApps.Style.ComboboxStyle}"
                       Foreground="{Binding LayerManager.SelectedLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"
                       Background="{StaticResource MaterialDesignLightBackground}">
+                <!--Style="{StaticResource Custom.MahApps.Style.ComboboxStyle}"-->
                 <ComboBox.ItemContainerStyle>
                     <!-- In custom style, bind Forground color -->
                     <Style TargetType="{x:Type ComboBoxItem}">

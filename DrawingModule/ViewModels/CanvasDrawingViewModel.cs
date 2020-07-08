@@ -93,17 +93,17 @@ namespace DrawingModule.ViewModels
 
         private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (EntitiesManager.SelectedEntity ==null)
+            if (EntitiesManager.SelectedEntity == null)
             {
-               return;
+                return;
             }
             else
             {
                 var layerName = EntitiesManager.SelectedEntity.LayerName;
                 var selectedLayer = (from layerItem in LayerManager.Layers
-                    where layerItem.Name == layerName
-                    select layerItem).FirstOrDefault();
-                if (selectedLayer!=null)
+                                     where layerItem.Name == layerName
+                                     select layerItem).FirstOrDefault();
+                if (selectedLayer != null)
                 {
                     LayerManager.SelectedLayer = selectedLayer;
                 }
@@ -113,7 +113,7 @@ namespace DrawingModule.ViewModels
         private void LayerManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "SelectedLayer") return;
-            ChangedLineTypeEntitiesByLayer();
+            ChangedLayerForSelectedEntities();
             EntitiesManager.Refresh();
         }
 
@@ -133,7 +133,7 @@ namespace DrawingModule.ViewModels
             this.EntitiesManager.Refresh();
         }
 
-        private void ChangedLineTypeEntitiesByLayer()
+        private void ChangedLayerForSelectedEntities()
         {
             if (EntitiesManager?.SelectedEntities == null || EntitiesManager.SelectedEntities.Count <= 0) return;
             if (LayerManager.SelectedLayer == null) return;
@@ -152,6 +152,7 @@ namespace DrawingModule.ViewModels
                 
                 selectedEntity.RegenMode = regenType.CompileOnly;
             }
+            EntitiesManager.NotifyEntitiesListChanged();
         }
 
         private void ChangedLineTypeEntities()

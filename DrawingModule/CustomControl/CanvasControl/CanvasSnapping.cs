@@ -20,7 +20,11 @@ namespace DrawingModule.CustomControl.CanvasControl
                 return;
             }
             SnapPoint = GetClosestPoint(_snapPoints, mouseLocation);
-            CurrentPoint = SnapPoint;
+            if (SnapPoint != null)
+            {
+                CurrentPoint = SnapPoint;
+            }
+           
 
         }
         private SnapPoint GetClosestPoint(HashSet<SnapPoint> snapPoints, System.Drawing.Point mousePosition)

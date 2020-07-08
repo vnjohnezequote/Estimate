@@ -4,8 +4,10 @@ using System.Drawing;
 using ApplicationInterfaceCore;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
+using DrawingModule.Entities;
 using DrawingModule.Enums;
 using DrawingModule.Helper;
+using Syncfusion.UI.Xaml.Grid;
 using CanvasDrawing = DrawingModule.CustomControl.CanvasControl.CanvasDrawing;
 using Environment = devDept.Eyeshot.Environment;
 using Point = System.Drawing.Point;
@@ -17,6 +19,25 @@ namespace DrawingModule.DrawInteractiveUtilities
         public static void DrawInteractiveEntityUnderMouse(Entity ent, DrawEntitiesType drawType, ICadDrawAble canvas)
         {
 
+        }
+
+        public static void DrawRectangle(Point3D basePoint,double width,double height, ICadDrawAble canvas)
+        {
+            var top = basePoint.Y + height;
+            var right = basePoint.X + width;
+            var topleft = new Point3D(basePoint.X,top);
+            var bottomRight = new Point3D(right,basePoint.Y);
+            var topRight = new Point3D(right,top);
+            var verticies = new Point3D[]
+            {
+                basePoint,
+                bottomRight,
+                topRight,
+                topleft
+            };
+            var scrVertices = Utils.GetScreenVertices(verticies, canvas);
+
+            canvas.renderContext.DrawLineLoop(scrVertices);
         }
 
         public static void DrawCurveOrBlockRef(Entity entity, ICadDrawAble canvas)
@@ -52,7 +73,6 @@ namespace DrawingModule.DrawInteractiveUtilities
                         Draw(new Line(dim.Vertices[0], dim.Vertices[1]),canvas);
                         Draw(new Line(dim.Vertices[2], dim.Vertices[3]),canvas);
                         Draw(new Line(dim.Vertices[4], dim.Vertices[5]),canvas);
-
                         //Draw(new Line(dim.Vertices[6], dim.Vertices[7]));
 
 
@@ -83,6 +103,15 @@ namespace DrawingModule.DrawInteractiveUtilities
                         //canvas.DrawInteractiveArrowHeader(leader.Vertices[0], leader.Vertices[1], leader.ArrowheadSize);
                         break;
                     }
+                case Picture picture:
+                {
+                    var vertices = new List<Point3D>();
+                    vertices.AddRange(picture.Vertices);
+                    vertices.Add(picture.Vertices[0]);
+                    var screenpts = Utils.GetScreenVertices(vertices, canvas);
+                        canvas.renderContext.DrawLineStrip(screenpts);
+                }
+                    break;
             }
         }
 

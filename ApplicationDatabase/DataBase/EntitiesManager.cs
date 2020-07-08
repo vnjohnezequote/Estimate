@@ -14,6 +14,7 @@ namespace AppDataBase.DataBase
 {
     public class EntitiesManager: BindableBase, IEntitiesManager
     {
+        public event EventHandler EntitiesCollectionChanged ;
         private Entity _selectedEntity;
         private ObservableCollection<Entity> _selectedEntities;
         public EntityList Entities { get; private set; }
@@ -47,6 +48,14 @@ namespace AppDataBase.DataBase
                 return this.SelectedEntities.ToList();
             }));
 
+        }
+
+        public void NotifyEntitiesListChanged()
+        {
+            if (this.EntitiesCollectionChanged!=null)
+            {
+                this.EntitiesCollectionChanged.Invoke(this,null);
+            }
         }
 
         public void ResetSelection()
@@ -85,6 +94,7 @@ namespace AppDataBase.DataBase
                 Entities.Add(entity, layerName);
                 Entities.Regen();
                 Invalidate();
+                this.NotifyEntitiesListChanged();
             }));
         }
 
@@ -94,6 +104,7 @@ namespace AppDataBase.DataBase
             {//this refer to form in WPF application 
                 this.Entities.Remove(entity);
                 this.Entities.Regen();
+                this.NotifyEntitiesListChanged();
             }));
         }
 

@@ -125,9 +125,9 @@ namespace AppAddons.DrawingTools
         public override void OnJigging(object sender, DrawInteractiveArgs e)
         {
 
-            DrawInteractiveLine((ICadDrawAble)sender, e);
+            DrawInteractiveRectangle((ICadDrawAble)sender, e);
         }
-        public void DrawInteractiveLine(ICadDrawAble drawTable, DrawInteractiveArgs e)
+        public void DrawInteractiveRectangle(ICadDrawAble drawTable, DrawInteractiveArgs e)
         {
             if (e.CurrentPoint == null || BasePoint == null)
             {
@@ -137,7 +137,7 @@ namespace AppAddons.DrawingTools
             drawTable.renderContext.SetColorWireframe(LayerManager.SelectedLayer.Color);
             drawTable.renderContext.SetLineSize(LayerManager.SelectedLayer.LineWeight);
 
-            drawTable.renderContext.EnableXOR(true);
+            //drawTable.renderContext.EnableXOR(true);
 
             var startPoint = drawTable.WorldToScreen(BasePoint);
             //var endPoint = WorldToScreen(this.GetEndPoint(_clickPoints[0], CurrentPoint));

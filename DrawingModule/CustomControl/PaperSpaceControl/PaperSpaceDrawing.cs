@@ -7,8 +7,6 @@ using devDept.Eyeshot;
 using devDept.Geometry;
 using DrawingModule.Application;
 using DrawingModule.CommandClass;
-using DrawingModule.DrawToolBase;
-using DrawingModule.Interface;
 
 namespace DrawingModule.CustomControl.PaperSpaceControl
 {

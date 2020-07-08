@@ -149,6 +149,11 @@ namespace DrawingModule.DrawToolBase
             {
                 return;
             }
+
+            if (e.CurrentPoint == null)
+            {
+                return;
+            }
             foreach (var selectedEntity in SelectedEntities)
             {
                 Entity tempEntity = (Entity)selectedEntity.Clone();

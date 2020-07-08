@@ -35,14 +35,6 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
         {
         }
 
-        protected CustomSheet(Sheet another) : base(another)
-        {
-        }
-
-        public CustomSheet(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
         #endregion
 
         #region Build Page
@@ -235,7 +227,6 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             IList<Entity> ents = this.BuildBlockEntities(pageSize, color);
             return this.BuildFormatBlock(this.GetBlockNameString("A3", blockName), ents, out block);
             
-
         }
         
 

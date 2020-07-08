@@ -93,5 +93,14 @@ namespace DrawingModule.CustomControl.CanvasControl
                     return this.IsProcessingTool;
             }
         }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (this.EntitiesManager!=null)
+            {
+                this.EntitiesManager.NotifyEntitiesListChanged();
+            }
+        }
     }
 }

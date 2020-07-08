@@ -299,6 +299,7 @@
     <Compile Include="DrawToolBase\EditingToolBase.cs" />
     <Compile Include="DrawToolBase\DrawTextBase.cs" />
     <Compile Include="EditingTools\ImportImageTool.cs" />
+    <Compile Include="Entities\PictureEntity.cs" />
     <Compile Include="Enums\CommandLoopType.cs" />
     <Compile Include="Enums\HintCategoryType.cs" />
     <Compile Include="CommandLine\HintItem.cs" />

@@ -1,5 +1,6 @@
 ﻿
 
+using System.Drawing;
 using System.Windows.Forms;
 using ApplicationInterfaceCore;
 using ApplicationService;
@@ -7,7 +8,9 @@ using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
+using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.DrawToolBase;
+using DrawingModule.Entities;
 using DrawingModule.UserInteractive;
 
 namespace DrawingModule.EditingTools
@@ -17,12 +20,18 @@ namespace DrawingModule.EditingTools
         public override string ToolName => "Import Image";
         public override Point3D BasePoint { get; protected set; }
         private System.Drawing.Image _insertImage;
+        private double _imgWidth;
+        private double _imgHeight;
+
+        //private PictureEntity _insertPick;
         //private Picture _importPicture;
 
         public ImportImageTool()
         {
             if (!Clipboard.ContainsImage()) return;
             _insertImage = Clipboard.GetImage();
+            _imgWidth = _insertImage.Width;
+            _imgHeight = _insertImage.Height;
             //_importPicture = new Picture(Plane.XY,100,100,img);
             //_importPicture = new Picture();
         }
@@ -41,9 +50,9 @@ namespace DrawingModule.EditingTools
             if (resutl.Status == PromptStatus.OK)
             {
                 var inserPoint = resutl.Value;
-                var insertPic = new Picture(Plane.XY, inserPoint,100,100,_insertImage);
+                var insertPick = new PictureEntity(Plane.XY, inserPoint, _imgWidth, _imgHeight, _insertImage);
                 
-                EntitiesManager.AddAndRefresh(insertPic,LayerManager.SelectedLayer.Name);
+                EntitiesManager.AddAndRefresh(insertPick, LayerManager.SelectedLayer.Name);
             }
             else
             {
@@ -58,7 +67,13 @@ namespace DrawingModule.EditingTools
 
         private void DrawInteractiveImportImage(ICadDrawAble canvas,DrawInteractiveArgs e)
         {
+            if (e.CurrentPoint!= null && this._insertImage!=null)
+            {
 
+                DrawInteractiveUntilities.DrawRectangle(e.CurrentPoint,_imgWidth,_imgHeight,canvas);
+                //_insertPick = new PictureEntity(Plane.XY,e.CurrentPoint,100,100,_insertImage);
+                //DrawInteractiveUntilities.DrawCurveOrBlockRef(_insertPick,canvas);
+            }
         }
     }
 }

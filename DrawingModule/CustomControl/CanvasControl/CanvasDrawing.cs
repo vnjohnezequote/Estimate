@@ -370,7 +370,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             set
             {
                 this.SetProperty(ref _isOrthoModeEnable, value);
-            } 
+            }
         }
         public bool IsProcessingTool { get; private set; }
         public PromptStatus PromptStatus { get; set; }
@@ -422,6 +422,8 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.CurrentIndex = -1;
             Loaded += CanvasDrawing_Loaded;
             this.PrepareLineTypes();
+            //SelectionColor = null;
+            //SelectionColor = Color.FromArgb(50,Color.Chocolate);
 
 
         }
@@ -510,7 +512,7 @@ namespace DrawingModule.CustomControl.CanvasControl
 
                         }
                     }
-                    
+
                 }
             }
             else
@@ -532,42 +534,34 @@ namespace DrawingModule.CustomControl.CanvasControl
 
             if (entity is Line line)
             {
-                DrawInteractiveUntilities.DrawCurveOrBlockRef(line,this);
+                DrawInteractiveUntilities.DrawCurveOrBlockRef(line, this);
             }
             else if (entity is LinearPath linearPath)
             {
-                if (this.CurrentTool!= null && this.CurrentTool.EntityUnderMouseDrawingType == UnderMouseDrawingType.BySegment)
+                if (this.CurrentTool != null && this.CurrentTool.EntityUnderMouseDrawingType == UnderMouseDrawingType.BySegment)
                 {
-                    var tempLine = Utils.GetClosestSegment(linearPath,_mousePosition,DrawingPlane,this);
+                    var tempLine = Utils.GetClosestSegment(linearPath, _mousePosition, DrawingPlane, this);
                     points.AddRange(tempLine.Vertices);
                 }
                 else
                 {
                     points.AddRange(linearPath.Vertices);
                 }
-                var screenVertex = Utils.GetScreenVertices(points,this);
+                var screenVertex = Utils.GetScreenVertices(points, this);
                 renderContext.DrawLineStrip(screenVertex);
 
             }
             else
             {
-                DrawInteractiveUntilities.DrawCurveOrBlockRef(entity,this);
+                DrawInteractiveUntilities.DrawCurveOrBlockRef(entity, this);
                 return;
             }
 
         }
 
-
-
-
-
         #endregion
         #region Private Method
 
-        private void OnUserInteraction()
-        {
-
-        }
         private void ProcessMouseDownForSelectionTool(MouseButtonEventArgs e, bool isSelected)
         {
             this._selectTool.ProcessMouseDownForSelection(e, isSelected, this);
@@ -930,7 +924,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         {
             this.PromptStatus = promptStatus;
             IsUserInteraction = true;
-            _isUserClicked=false;
+            _isUserClicked = false;
             this._waitingForSelection = false;
             this._waitingForPickSelection = false;
 
@@ -956,6 +950,12 @@ namespace DrawingModule.CustomControl.CanvasControl
         private void ProcessCancelTool()
         {
             this.ResetProcessingTool(PromptStatus.Cancel);
+
+            if (this._selectTool != null && this._selectTool.StartPoint != null)
+            {
+                this._selectTool.ProcessEscapeTool();
+                this.Invalidate();
+            }
 
         }
         #endregion

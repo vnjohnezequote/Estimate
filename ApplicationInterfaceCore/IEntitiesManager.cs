@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Documents;
@@ -9,6 +10,7 @@ namespace ApplicationInterfaceCore
 {
     public interface IEntitiesManager: INotifyPropertyChanged
     {
+        event EventHandler EntitiesCollectionChanged;
         EntityList Entities { get; }
         Entity SelectedEntity { get; }
         ObservableCollection<Entity> SelectedEntities { get; }
@@ -22,6 +24,7 @@ namespace ApplicationInterfaceCore
         void ClearSelectedEntities();
         void SetEntitiesList(EntityList entities);
         void SetCanvasDrawing(ICadDrawAble cadDraw);
+        void NotifyEntitiesListChanged();
         void ResetSelection();
         Entity GetEntity(int index);
         List<Entity> GetSelectedEntities();

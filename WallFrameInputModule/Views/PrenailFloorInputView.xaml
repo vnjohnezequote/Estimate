@@ -79,6 +79,7 @@
                         <Button Content="Check" />
                         <Button Content="Add" Command= "{Binding NewWallRowInputCommand}"/>
                         <Button Content="Delete" Command = "{Binding DeleteWallRowCommand}" CommandParameter = "{Binding ElementName = WallInput}"/>
+                        <Button Content="Refresh Wall" Command="{Binding ReFreshWallCommand}"/>
                     </StackPanel>
                     <!-- Report Button -->
                     <StackPanel>

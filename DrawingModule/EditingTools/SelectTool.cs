@@ -69,6 +69,13 @@ namespace DrawingModule.EditingTools
                 this.CurrentPickState = PickState.Pick;
             }
         }
+
+        public void ProcessEscapeTool()
+        {
+            this.BasePoint = null;
+            this.CurrentPickState = PickState.Enclose;
+            this.StartPoint = null;
+        }
         public void ProcessSelection(MouseButtonEventArgs e,bool isSelected, CanvasDrawing canvas)
         {
             var currentLocation = RenderContextUtility.ConvertPoint(canvas.GetMousePosition(e));

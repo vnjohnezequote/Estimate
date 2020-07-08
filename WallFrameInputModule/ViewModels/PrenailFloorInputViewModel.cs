@@ -10,6 +10,7 @@
 
 using System.Globalization;
 using ApplicationInterfaceCore;
+using devDept.Eyeshot.Entities;
 
 namespace WallFrameInputModule.ViewModels
 {
@@ -115,6 +116,7 @@ namespace WallFrameInputModule.ViewModels
             : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
             this.EntitiesManager = entitiesManager;
+            EntitiesManager.EntitiesCollectionChanged += EntitiesManager_EntitiesCollectionChanged;
             this.PropertyChanged += PrenailFloorInputViewModelPropertyChanged;
             this.WallThicknessList = new List<string> { "90", "70" };
             //this.CreateLayers();
@@ -125,6 +127,7 @@ namespace WallFrameInputModule.ViewModels
             this.WallInputSortCommand = new DelegateCommand(this.OnWallInputSort);
             this.LoadCSVFileCommand = new DelegateCommand(this.OnLoadCSVFile);
             this.AddBeamCommand = new DelegateCommand(this.OnAddNewBeam);
+            this.ReFreshWallCommand = new DelegateCommand(this.CalculatorWallLength);
         }
 
 
@@ -244,6 +247,9 @@ namespace WallFrameInputModule.ViewModels
         /// Gets the add beam command.
         /// </summary>
         public ICommand AddBeamCommand { get; private set; }
+
+        public ICommand ReFreshWallCommand { get; private set; }
+
         #endregion
 
         #region Public Method
@@ -279,6 +285,45 @@ namespace WallFrameInputModule.ViewModels
         #endregion
 
         #region Private method
+
+        private void EntitiesManager_EntitiesCollectionChanged(object sender, System.EventArgs e)
+        {
+            CalculatorWallLength();
+        }
+
+        public void CalculatorWallLength()
+        {
+            if (EntitiesManager.Entities != null && this.Level != null && this.Level.WallLayers != null && this.Level.WallLayers.Count != 0)
+            {
+                var wallayers = this.Level.WallLayers;
+                var entities = EntitiesManager.Entities;
+                foreach (var levelWallLayer in wallayers)
+                {
+                    var tempLength = 0.0;
+                    if (levelWallLayer.WallColorLayer==null)
+                    {
+                        continue;
+                    }
+                    foreach (var entity in entities)
+                    {
+                        if (entity.LayerName == levelWallLayer.WallColorLayer.Name && (entity is Line || entity is LinearPath))
+                        {
+                            if (entity is Line line)
+                            {
+                                tempLength += line.Length();
+                            } else if (entity is LinearPath linearPath)
+                            {
+                                tempLength += linearPath.Length();
+                            }
+                            
+                        }
+                    }
+
+                    levelWallLayer.TempLength = tempLength / 1000;
+                }
+
+            }
+        }
         private void PrenailFloorInputViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
