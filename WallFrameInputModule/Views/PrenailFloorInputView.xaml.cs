@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Syncfusion.UI.Xaml.Grid;
+using WallFrameInputModule.ViewModels;
 
 //using Syncfusion.UI.Xaml;
 
@@ -29,6 +30,7 @@ namespace WallFrameInputModule.Views
     /// </summary>
     public partial class PrenailFloorInputView : UserControl
     {
+        private PrenailFloorInputViewModel _viewModel;
         /// <summary>
         /// Initializes a new instance of the <see cref="PrenailFloorInputView"/> class.
         /// </summary>
@@ -37,9 +39,19 @@ namespace WallFrameInputModule.Views
             
             this.InitializeComponent();
 
-
+            if (this.DataContext!=null)
+            {
+                _viewModel = this.DataContext as PrenailFloorInputViewModel;
+            }
         }
 
 
+        private void WallInput_OnCurrentCellDropDownSelectionChanged(object sender, CurrentCellDropDownSelectionChangedEventArgs e)
+        {
+            if (this._viewModel!=null)
+            {
+                this._viewModel.CalculatorWallLength();
+            }
+        }
     }
 }

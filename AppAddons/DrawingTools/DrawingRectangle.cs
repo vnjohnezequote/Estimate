@@ -92,8 +92,6 @@ namespace AppAddons.DrawingTools
                             rectangle.LineTypeName = LayerManager.SelectedLayer.LineTypeName;
                         }
                     }
-
-
                     this.EntitiesManager.AddAndRefresh(rectangle, this.LayerManager.SelectedLayer.Name);
                     BasePoint = EndPoint = null;
                     CurrentWidth = 0;

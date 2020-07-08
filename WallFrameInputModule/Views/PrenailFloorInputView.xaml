@@ -115,7 +115,8 @@
                 NavigationMode="Cell"
                 SelectionMode="Extended"
                 SelectionUnit="Any"
-                RowStyle="{StaticResource TextRowStyle}">
+                RowStyle="{StaticResource TextRowStyle}"
+                CurrentCellDropDownSelectionChanged="WallInput_OnCurrentCellDropDownSelectionChanged">
                         <syncfusion:SfDataGrid.Resources>
                             <Style TargetType="TextBox" />
                             <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
