@@ -767,6 +767,10 @@ namespace WallFrameInputModule.ViewModels
             WallMemberBase currentWallMember,
             Dictionary<string, List<TimberBase>> listTimbers)
         {
+            if (listTimbers==null)
+            {
+                return null;
+            }
             var filterTimbers = listTimbers.SelectMany(x => x.Value).Where(x => x.Thickness == currentLayer.WallThickness.Size);
             if (memberNameChange == "RibbonPlate")
             {

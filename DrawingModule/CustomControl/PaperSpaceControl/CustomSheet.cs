@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization;
+using AppModels.CustomEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
-using DrawingModule.Entities;
 using DrawingModule.Enums;
 using DrawingModule.Views;
 

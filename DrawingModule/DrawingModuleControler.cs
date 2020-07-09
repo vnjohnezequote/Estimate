@@ -51,6 +51,7 @@ namespace DrawingModule
         {
             base.RegisterTypes(containerRegistry);
             containerRegistry.RegisterForNavigation<LayerManagerView>();
+            containerRegistry.RegisterForNavigation<SelectedEntityPropertiesView>();
 
             //containerRegistry.RegisterForNavigation<CommandLineView>();
 

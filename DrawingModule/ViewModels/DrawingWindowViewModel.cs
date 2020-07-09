@@ -258,7 +258,12 @@ namespace DrawingModule.ViewModels
             Prism.Regions.RegionManager.SetRegionManager(this._window, drawingWindowRegionManager);
             this.RegionManager = drawingWindowRegionManager;
             this.LoadLayerManger();
+            this.LoadEntityPropertiesManager();
+        }
 
+        private void LoadEntityPropertiesManager()
+        {
+            this.RegionManager.RequestNavigate("RightContentRegiom", nameof(SelectedEntityPropertiesView));
         }
 
         private void LoadLayerManger()

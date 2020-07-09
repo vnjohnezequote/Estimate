@@ -1,18 +1,15 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using ApplicationService;
-using AppModels;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Graphics;
 using DrawingModule.CustomControl.PaperSpaceControl;
 using DrawingModule.DrawToolBase;
-using DrawingModule.Interface;
 using DrawingModule.Views;
 using Prism.Commands;
 using Prism.Events;
@@ -135,24 +132,7 @@ namespace DrawingModule.ViewModels
 
         private void ChangedLayerForSelectedEntities()
         {
-            if (EntitiesManager?.SelectedEntities == null || EntitiesManager.SelectedEntities.Count <= 0) return;
-            if (LayerManager.SelectedLayer == null) return;
-            foreach (var selectedEntity in EntitiesManager.SelectedEntities)
-            {
-                selectedEntity.LayerName = LayerManager.SelectedLayer.Name;
-                if (selectedEntity.LineTypeMethod != colorMethodType.byLayer) continue;
-                if (LayerManager.SelectedLayer.LineTypeName=="Continues")
-                {
-                    selectedEntity.LineTypeName = (string)null;
-                }
-                else
-                {
-                    selectedEntity.LineTypeName = LayerManager.SelectedLayer.LineTypeName;
-                }
-                
-                selectedEntity.RegenMode = regenType.CompileOnly;
-            }
-            EntitiesManager.NotifyEntitiesListChanged();
+            EntitiesManager?.ChangLayerForSelectedEntities(this.LayerManager.SelectedLayer);
         }
 
         private void ChangedLineTypeEntities()

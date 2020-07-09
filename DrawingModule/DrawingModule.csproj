@@ -190,6 +190,7 @@
     <Reference Include="Syncfusion.Data.WPF, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89" />
     <Reference Include="Syncfusion.Pdf.Base, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.PdfViewer.WPF, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.PropertyGrid.Wpf, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89" />
     <Reference Include="Syncfusion.SfGrid.WPF, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89" />
     <Reference Include="Syncfusion.SfInput.WPF, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfShared.Wpf, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
@@ -197,6 +198,7 @@
     <Reference Include="Syncfusion.Shared.Wpf, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.Themes.Blend.Wpf, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89" />
     <Reference Include="Syncfusion.Themes.Metro.Wpf, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89" />
+    <Reference Include="Syncfusion.Tools.Wpf, Version=18.1460.0.52, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -299,7 +301,6 @@
     <Compile Include="DrawToolBase\EditingToolBase.cs" />
     <Compile Include="DrawToolBase\DrawTextBase.cs" />
     <Compile Include="EditingTools\ImportImageTool.cs" />
-    <Compile Include="Entities\PictureEntity.cs" />
     <Compile Include="Enums\CommandLoopType.cs" />
     <Compile Include="Enums\HintCategoryType.cs" />
     <Compile Include="CommandLine\HintItem.cs" />
@@ -361,7 +362,6 @@
     <Compile Include="DrawToolBase\ToolBase.cs" />
     <Compile Include="DrawToolBase\ToolChangedArgs.cs" />
     <Compile Include="EditingTools\SelectTool.cs" />
-    <Compile Include="Entities\CustomTable.cs" />
     <Compile Include="Enums\CommandFlags.cs" />
     <Compile Include="Enums\DrawEntitiesType.cs" />
     <Compile Include="Enums\DrawingMode.cs" />
@@ -396,6 +396,8 @@
     <Compile Include="UserInteractive\PromptStringOptions.cs" />
     <Compile Include="ViewModels\DynamicInputViewModel.cs" />
     <Compile Include="ViewModels\LayerManagerViewModel.cs" />
+    <Compile Include="ViewModels\SelectedEntityPropertiesViewModel.cs" />
+    <Compile Include="ViewModels\WallPropertiesManagerViewModel.cs" />
     <Compile Include="Views\DynamicInputView.xaml.cs">
       <DependentUpon>DynamicInputView.xaml</DependentUpon>
     </Compile>
@@ -434,6 +436,12 @@
     </Compile>
     <Compile Include="Views\LayerManagerView.xaml.cs">
       <DependentUpon>LayerManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectedEntityPropertiesView.xaml.cs">
+      <DependentUpon>SelectedEntityPropertiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WallPropertiesManagerView.xaml.cs">
+      <DependentUpon>WallPropertiesManagerView.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -517,8 +525,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SelectedEntityPropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WallPropertiesManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Entities\" />
     <Folder Include="EventArgs\" />
   </ItemGroup>
   <ItemGroup>

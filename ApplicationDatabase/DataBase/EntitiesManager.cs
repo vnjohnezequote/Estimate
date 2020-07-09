@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Threading;
 using ApplicationInterfaceCore;
+using AppModels.AppData;
+using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using Prism.Mvvm;
@@ -15,10 +17,10 @@ namespace AppDataBase.DataBase
     public class EntitiesManager: BindableBase, IEntitiesManager
     {
         public event EventHandler EntitiesCollectionChanged ;
-        private Entity _selectedEntity;
+        private EntityVm _selectedEntity;
         private ObservableCollection<Entity> _selectedEntities;
         public EntityList Entities { get; private set; }
-        public Entity SelectedEntity { get=>_selectedEntity; set=>SetProperty(ref _selectedEntity,value); }
+        public EntityVm SelectedEntity { get=>_selectedEntity; set=>SetProperty(ref _selectedEntity,value); }
         public ObservableCollection<Entity> SelectedEntities { get=>_selectedEntities; set=>SetProperty(ref _selectedEntities,value); }
 
         public ICadDrawAble CanvasDrawing { get;private set; }
@@ -34,7 +36,7 @@ namespace AppDataBase.DataBase
         {
             if (SelectedEntities.Count>0)
             {
-                SelectedEntity = SelectedEntities[0];
+                SelectedEntity = new EntityVm(SelectedEntities[0]);
                 return;
             }
 
@@ -43,19 +45,37 @@ namespace AppDataBase.DataBase
 
         public List<Entity> GetSelectedEntities()
         {
-            return Application.Current.Dispatcher.Invoke((Func<List<Entity>>)(() =>
-            {//this refer to form in WPF application 
-                return this.SelectedEntities.ToList();
-            }));
+            return Application.Current.Dispatcher.Invoke((Func<List<Entity>>)(() => this.SelectedEntities.ToList()));
 
+        }
+
+        public void ChangLayerForSelectedEntities(LayerItem selectedLayer)
+        {
+            if (SelectedEntities == null || SelectedEntities.Count <= 0) return;
+            if (selectedLayer == null) return;
+            foreach (var selectedEntity in SelectedEntities)
+            {
+                selectedEntity.LayerName = selectedLayer.Name;
+                if (selectedEntity.LineTypeMethod != colorMethodType.byLayer) continue;
+                if (selectedLayer.LineTypeName == "Continues")
+                {
+                    selectedEntity.LineTypeName = (string)null;
+                }
+                else
+                {
+                    selectedEntity.LineTypeName = selectedLayer.LineTypeName;
+                }
+
+                selectedEntity.RegenMode = regenType.CompileOnly;
+            }
+
+            SelectedEntity?.NotifyPropertiesChanged();
+            NotifyEntitiesListChanged();
         }
 
         public void NotifyEntitiesListChanged()
         {
-            if (this.EntitiesCollectionChanged!=null)
-            {
-                this.EntitiesCollectionChanged.Invoke(this,null);
-            }
+            EntitiesCollectionChanged?.Invoke(this,null);
         }
 
         public void ResetSelection()
@@ -80,11 +100,7 @@ namespace AppDataBase.DataBase
         }
         public Entity GetSelectionEntity()
         {
-            return Application.Current.Dispatcher.Invoke((Func<Entity>) (() =>
-            {
-                //this refer to form in WPF application 
-                return this.SelectedEntity;
-            }));
+            return Application.Current.Dispatcher.Invoke((Func<Entity>) (() => SelectedEntity?.GetEntity()));
         }
 
         public void AddAndRefresh(Entity entity, string layerName)
@@ -125,12 +141,9 @@ namespace AppDataBase.DataBase
         public void EntitiesRegen()
         {
             Application.Current.Dispatcher.Invoke((Action)(() =>
-            {//this refer to form in WPF application 
-                if (this.CanvasDrawing != null)
-                {
-                    this.CanvasDrawing.Entities.Regen();
-
-                }
+            {
+                //this refer to form in WPF application 
+                CanvasDrawing?.Entities.Regen();
             }));
             //this.Entities.Regen();
             
@@ -139,15 +152,7 @@ namespace AppDataBase.DataBase
 
         public void Refresh()
         {
-            if (this.CanvasDrawing!=null)
-            {
-                this.CanvasDrawing.RefreshEntities();
-            }
-        }
-
-        public void ChangeSelectedEntiesLayer(Layer layer)
-        {
-            
+            CanvasDrawing?.RefreshEntities();
         }
 
         public void SetEntitiesList(EntityList entities)

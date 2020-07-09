@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
 
-namespace DrawingModule.Entities
+namespace AppModels.CustomEntity
 {
+    [Serializable]
     public class PictureEntity : Picture
     {
         public PictureEntity(Plane pln, Point3D basePoint, double width, double height, Image image) : base(pln, basePoint, width, height, image)

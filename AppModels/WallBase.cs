@@ -24,32 +24,32 @@ namespace AppModels
         /// <summary>
         /// The id.
         /// </summary>
-        private int id;
+        private int _id;
         
         /// <summary>
         /// The roof pitch.
         /// </summary>
-        private DoubleDimension roofPitch;
+        private DoubleDimension _roofPitch;
 
         /// <summary>
         /// The pitching height.
         /// </summary>
-        private IntegerDimension pitchingHeight;
+        private IntegerDimension _pitchingHeight;
 
         /// <summary>
         /// The step down.
         /// </summary>
-        private IntegerDimension stepDown;
+        private IntegerDimension _stepDown;
 
         /// <summary>
         /// The is sub stud.
         /// </summary>
-        private int isSubStud;
+        private int _isSubStud;
 
         /// <summary>
         /// The wall color layer.
         /// </summary>
-        private LayerItem wallColorLayer;
+        private LayerItem _wallColorLayer;
 
         #endregion
 
@@ -66,8 +66,8 @@ namespace AppModels
         /// </summary>
         public LayerItem WallColorLayer
         {
-            get => this.wallColorLayer;
-            set => this.SetProperty(ref this.wallColorLayer, value);
+            get => this._wallColorLayer;
+            set => this.SetProperty(ref this._wallColorLayer, value);
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace AppModels
         /// </summary>
         public int Id
         {
-            get => this.id;
-            set => this.SetProperty(ref this.id, value);
+            get => this._id;
+            set => this.SetProperty(ref this._id, value);
         }
 
         /// <summary>
@@ -84,8 +84,8 @@ namespace AppModels
         /// </summary>
         public IntegerDimension PitchingHeight
         {
-            get => this.pitchingHeight;
-            set => this.SetProperty(ref this.pitchingHeight, value);
+            get => this._pitchingHeight;
+            set => this.SetProperty(ref this._pitchingHeight, value);
         }
 
         /// <summary>
@@ -115,8 +115,8 @@ namespace AppModels
         /// </summary>
         public DoubleDimension RoofPitch
         {
-            get => this.roofPitch;
-            set => this.SetProperty(ref this.roofPitch, value);
+            get => this._roofPitch;
+            set => this.SetProperty(ref this._roofPitch, value);
         }
 
         /// <summary>
@@ -140,8 +140,8 @@ namespace AppModels
         /// </summary>
         public IntegerDimension StepDown
         {
-            get => this.stepDown;
-            set => this.SetProperty(ref this.stepDown, value);
+            get => this._stepDown;
+            set => this.SetProperty(ref this._stepDown, value);
         }
 
         /// <summary>
@@ -159,8 +159,8 @@ namespace AppModels
         /// </summary>
         public int IsSubStud
         {
-            get => this.isSubStud;
-            set => this.SetProperty(ref this.isSubStud, value);
+            get => this._isSubStud;
+            set => this.SetProperty(ref this._isSubStud, value);
         }
 
         /// <summary>

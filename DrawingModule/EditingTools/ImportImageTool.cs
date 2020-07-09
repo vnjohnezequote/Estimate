@@ -4,13 +4,13 @@ using System.Drawing;
 using System.Windows.Forms;
 using ApplicationInterfaceCore;
 using ApplicationService;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.DrawToolBase;
-using DrawingModule.Entities;
 using DrawingModule.UserInteractive;
 
 namespace DrawingModule.EditingTools

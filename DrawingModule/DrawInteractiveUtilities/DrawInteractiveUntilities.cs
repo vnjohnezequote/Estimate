@@ -4,7 +4,6 @@ using System.Drawing;
 using ApplicationInterfaceCore;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
-using DrawingModule.Entities;
 using DrawingModule.Enums;
 using DrawingModule.Helper;
 using Syncfusion.UI.Xaml.Grid;

@@ -62,16 +62,16 @@
                                     <ddes:Viewport.CoordinateSystemIcon>
                                         <ddes:CoordinateSystemIcon Lighting="True"/>
                                     </ddes:Viewport.CoordinateSystemIcon>
-                                    <ddes:Viewport.ViewCubeIcon >
+                                    <!--<ddes:Viewport.ViewCubeIcon >
                                         <ddes:ViewCubeIcon Lighting="True"/>
-                                    </ddes:Viewport.ViewCubeIcon>
+                                    </ddes:Viewport.ViewCubeIcon>-->
                                     <ddes:Viewport.Background >
                                         <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF0C151D"/>
                                     </ddes:Viewport.Background>
                                     <!--<ddes:Viewport.Grids>
 								<ddes:Grid Step="1" Lighting="True" AutoSize="True" AutoStep="True" MaxNumberOfLines="100" MinNumberOfLines="9" OverridesDefaultStyle="True"/>
 							</ddes:Viewport.Grids>-->
-                                    <ddes:Viewport.ToolBars>
+                                    <!--<ddes:Viewport.ToolBars>
                                         <ddes:ToolBar Visibility="Hidden">
                                             <ddes:ToolBar.Buttons>
                                                 <ddes:HomeToolBarButton/>
@@ -83,7 +83,7 @@
                                                 <ddes:ZoomFitToolBarButton/>
                                             </ddes:ToolBar.Buttons>
                                         </ddes:ToolBar>
-                                    </ddes:Viewport.ToolBars>
+                                    </ddes:Viewport.ToolBars>-->
                                 </ddes:Viewport>
                             </canvasControl:CanvasDrawing.Viewports>
                         </canvasControl:CanvasDrawing>

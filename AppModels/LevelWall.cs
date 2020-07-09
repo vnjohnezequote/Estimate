@@ -26,55 +26,55 @@ namespace AppModels
         /// <summary>
         /// The _level name.
         /// </summary>
-        private string levelName;
+        private string _levelName;
 
         /// <summary>
         /// The lintel lm.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-        private double? lintelLm;
+        private double? _lintelLm;
 
         /// <summary>
         /// The _total wall length.
         /// </summary>
-        private int totalWallLength;
+        private int _totalWallLength;
 
         /// <summary>
         /// The _cost delivery.
         /// </summary>
-        private int? costDelivery;
+        private int? _costDelivery;
 
         /// <summary>
         /// The _roof beams.
         /// </summary>
-        private ObservableCollection<Beam> roofBeams;
+        private ObservableCollection<Beam> _roofBeams;
 
         /// <summary>
         /// The wall layers.
         /// </summary>
-        private ObservableCollection<WallLayer> wallLayers;
+        private ObservableCollection<WallLayer> _wallLayers;
 
         /// <summary>
         /// The _wall bracings.
         /// </summary>
-        private ObservableCollection<Bracing> timberBracings;
+        private ObservableCollection<Bracing> _timberBracings;
 
         /// <summary>
         /// The openings.
         /// </summary>
-        private ObservableCollection<Opening> openings;
+        private ObservableCollection<Opening> _openings;
 
         /// <summary>
         /// The level info.
         /// </summary>
-        private LevelWallDefaultInfo levelInfo;
+        private LevelWallDefaultInfo _levelInfo;
 
         /// <summary>
         /// The wall temp length.
         /// </summary>
-        private ObservableCollection<WallTempLength> tempLength;
+        private ObservableCollection<WallTempLength> _tempLength;
         
-		private ObservableCollection<GenericBracing> generalBracing;
+		private ObservableCollection<GenericBracing> _generalBracing;
 
         #endregion
 
@@ -106,8 +106,8 @@ namespace AppModels
         /// </summary>
         public string LevelName
         {
-            get => this.levelName;
-            set => this.SetProperty(ref this.levelName, value);
+            get => this._levelName;
+            set => this.SetProperty(ref this._levelName, value);
         }
 
         /// <summary>
@@ -115,8 +115,8 @@ namespace AppModels
         /// </summary>
         public int TotalWallLength
         {
-            get => this.totalWallLength;
-            set => this.SetProperty(ref this.totalWallLength, value);
+            get => this._totalWallLength;
+            set => this.SetProperty(ref this._totalWallLength, value);
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace AppModels
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         public double? LintelLm
         {
-            get => this.lintelLm;
-            set => this.SetProperty(ref this.lintelLm, value);
+            get => this._lintelLm;
+            set => this.SetProperty(ref this._lintelLm, value);
         }
 
         /// <summary>
@@ -134,8 +134,8 @@ namespace AppModels
         /// </summary>
         public ObservableCollection<WallLayer> WallLayers
         {
-            get => this.wallLayers;
-            set => this.SetProperty(ref this.wallLayers, value);
+            get => this._wallLayers;
+            set => this.SetProperty(ref this._wallLayers, value);
         }
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace AppModels
         /// </summary>
         public ObservableCollection<WallTempLength> TempLengths
         {
-            get => this.tempLength;
-            set => this.SetProperty(ref this.tempLength, value);
+            get => this._tempLength;
+            set => this.SetProperty(ref this._tempLength, value);
         }
 
         /// <summary>
@@ -152,14 +152,14 @@ namespace AppModels
         /// </summary>
         public ObservableCollection<Bracing> TimberWallBracings
         {
-            get => this.timberBracings;
-            set => this.SetProperty(ref this.timberBracings, value);
+            get => this._timberBracings;
+            set => this.SetProperty(ref this._timberBracings, value);
         }
 		
 		public ObservableCollection<GenericBracing> GeneralBracings 
 		{
-			get => this.generalBracing;
-			set=>this.SetProperty(ref this.generalBracing,value);
+			get => this._generalBracing;
+			set=>this.SetProperty(ref this._generalBracing,value);
 		}
 
         /// <summary>
@@ -167,8 +167,8 @@ namespace AppModels
         /// </summary>
         public int? CostDelivery
         {
-            get => this.costDelivery;
-            set => this.SetProperty(ref this.costDelivery, value);
+            get => this._costDelivery;
+            set => this.SetProperty(ref this._costDelivery, value);
         }
 
         /// <summary>
@@ -176,8 +176,8 @@ namespace AppModels
         /// </summary>
         public ObservableCollection<Beam> RoofBeams
         {
-            get => this.roofBeams;
-            set => this.SetProperty(ref this.roofBeams, value);
+            get => this._roofBeams;
+            set => this.SetProperty(ref this._roofBeams, value);
         }
 
         /// <summary>
@@ -185,8 +185,8 @@ namespace AppModels
         /// </summary>
         public ObservableCollection<Opening> Openings
         {
-            get => this.openings;
-            set => this.SetProperty(ref this.openings, value);
+            get => this._openings;
+            set => this.SetProperty(ref this._openings, value);
         }
 
         /// <summary>
@@ -194,8 +194,8 @@ namespace AppModels
         /// </summary>
         public LevelWallDefaultInfo LevelInfo
         {
-            get => this.levelInfo;
-            set => this.SetProperty(ref this.levelInfo, value);
+            get => this._levelInfo;
+            set => this.SetProperty(ref this._levelInfo, value);
         }
 
         #endregion

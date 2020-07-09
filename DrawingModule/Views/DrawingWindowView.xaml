@@ -112,8 +112,11 @@
                       ItemsSource="{Binding LayerManager.Layers}"
                       SelectedItem="{Binding LayerManager.SelectedLayer}"
 					  DisplayMemberPath="Name"
+					  Style="{StaticResource MaterialDesignComboBox}"
+					  materialDesign:ComboBoxAssist.ClassicMode="true"
                       Foreground="{Binding LayerManager.SelectedLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"
-                      Background="{StaticResource MaterialDesignLightBackground}">
+                      Background="{StaticResource MaterialDesignLightBackground}"
+                      Padding="10 5 10 5">
                 <!--Style="{StaticResource Custom.MahApps.Style.ComboboxStyle}"-->
                 <ComboBox.ItemContainerStyle>
                     <!-- In custom style, bind Forground color -->
@@ -270,7 +273,6 @@
 						</interactions:EventTrigger>
 					</interactions:Interaction.Triggers>
 					<ContentControl prism:RegionManager.RegionName="RightContentRegiom" />
-
                 </Grid>
 			</ScrollViewer>
 			<Border Style="{StaticResource DarkBorder}"

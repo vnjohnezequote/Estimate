@@ -13,7 +13,7 @@ namespace AppModels
     public class LayerManager : BindableBase, ILayerManager
     {
         private ObservableCollection<LayerItem> _layers;
-        private ObservableCollection<LayerItem> _seletedLayers;
+        private ObservableCollection<LayerItem> _selectedLayers;
         private LayerItem _selectedLayer;
         public event EventHandler SelectedPropertiesChanged;
         public LayerItem SelectedLayer
@@ -66,8 +66,8 @@ namespace AppModels
         }
         public ObservableCollection<LayerItem> SelectedLayers
         {
-            get => _seletedLayers;
-            set => SetProperty(ref _seletedLayers, value);
+            get => _selectedLayers;
+            set => SetProperty(ref _selectedLayers, value);
         }
         public LayerKeyedCollection CanvasLayers { get; private set; }
         //public string ActiveLayer {

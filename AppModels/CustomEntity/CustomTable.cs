@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
-using devDept.Graphics;
-using devDept.Serialization;
-using Environment = System.Environment;
 
-namespace DrawingModule.Entities
+namespace AppModels.CustomEntity
 {
 	[Serializable]
 	public class CustomTable : Table

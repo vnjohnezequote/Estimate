@@ -163,6 +163,6 @@ namespace DrawingModule.Views
             //e.Handled = false;
             base.OnPreviewKeyDown(e);
         }
-        
+
     }
 }

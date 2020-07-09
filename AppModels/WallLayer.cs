@@ -24,62 +24,62 @@ namespace AppModels
         /// <summary>
         /// The wall heights.
         /// </summary>
-        private List<IntegerDimension> wallHeights;
+        private List<IntegerDimension> _wallHeights;
 
         /// <summary>
         /// The wall type.
         /// </summary>
-        private WallType timberWallType;
+        private WallType _timberWallType;
 
         /// <summary>
         /// The wall thickness.
         /// </summary>
-        private IntegerDimension wallThickness;
+        private IntegerDimension _wallThickness;
 
         /// <summary>
         /// The default info.
         /// </summary>
-        private LevelWallDefaultInfo defaultInfo;
+        private LevelWallDefaultInfo _defaultInfo;
 
         /// <summary>
         /// The stud spacing.
         /// </summary>
-        private IntegerDimension studSpacing;
+        private IntegerDimension _studSpacing;
 
         /// <summary>
         /// The is step down.
         /// </summary>
-        private int isStepDown;
+        private int _isStepDown;
 
         /// <summary>
         /// The run length.
         /// </summary>
-        private int runLength;
+        private int _runLength;
 
         /// <summary>
         /// The is raised ceiling.
         /// </summary>
-        private int isRaisedCeiling;
+        private int _isRaisedCeiling;
 
         /// <summary>
         /// The extra length.
         /// </summary>
-        private double extraLength;
+        private double _extraLength;
 
         /// <summary>
         /// The temp length.
         /// </summary>
-        private double tempLength;
+        private double _tempLength;
 
         /// <summary>
         /// The ceiling raised.
         /// </summary>
-        private int ceilingRaised;
+        private int _ceilingRaised;
 
         /// <summary>
         /// The wall height.
         /// </summary>
-        private IntegerDimension lastWallHeight;
+        private IntegerDimension _lastWallHeight;
 
 
         #endregion
@@ -128,8 +128,8 @@ namespace AppModels
         /// </summary>
         public List<IntegerDimension> WallHeights
         {
-            get => this.wallHeights;
-            set => this.SetProperty(ref this.wallHeights, value);
+            get => this._wallHeights;
+            set => this.SetProperty(ref this._wallHeights, value);
         }
 
         /// <summary>
@@ -142,10 +142,10 @@ namespace AppModels
         /// </summary>
         public WallType TimberWallType
         {
-            get => this.timberWallType;
+            get => this._timberWallType;
             set
             {
-                this.SetProperty(ref this.timberWallType, value);
+                this.SetProperty(ref this._timberWallType, value);
                 this.OnWallTypeChanged();
                 this.RaisePropertyChanged(nameof(this.IsRakedArea));
                 this.RaisePropertyChanged(nameof(this.SubStud));
@@ -157,10 +157,10 @@ namespace AppModels
         /// </summary>
         public new int CeilingRaised
         {
-            get => this.ceilingRaised;
+            get => this._ceilingRaised;
             set
             {
-                this.SetProperty(ref this.ceilingRaised, value);
+                this.SetProperty(ref this._ceilingRaised, value);
                 this.RaisePropertyChanged(nameof(this.LastWallHeight));
                 this.RaisePropertyChanged(nameof(this.WallRaiseHeight));
             }
@@ -171,8 +171,8 @@ namespace AppModels
         /// </summary>
         public IntegerDimension WallThickness
         {
-            get => this.wallThickness;
-            set => this.SetProperty(ref this.wallThickness, value);
+            get => this._wallThickness;
+            set => this.SetProperty(ref this._wallThickness, value);
         }
 
         /// <summary>
@@ -180,8 +180,8 @@ namespace AppModels
         /// </summary>
         public LevelWallDefaultInfo DefaultInfo
         {
-            get => this.defaultInfo;
-            set => this.SetProperty(ref this.defaultInfo, value);
+            get => this._defaultInfo;
+            set => this.SetProperty(ref this._defaultInfo, value);
         }
 
         /// <summary>
@@ -189,8 +189,8 @@ namespace AppModels
         /// </summary>
         public IntegerDimension StudSpacing
         {
-            get => this.studSpacing;
-            set => this.SetProperty(ref this.studSpacing, value);
+            get => this._studSpacing;
+            set => this.SetProperty(ref this._studSpacing, value);
         }
 
         /// <summary>
@@ -198,10 +198,10 @@ namespace AppModels
         /// </summary>
         public new int RunLength
         {
-            get => this.runLength;
+            get => this._runLength;
             set
             {
-                this.runLength = value;
+                this._runLength = value;
                 this.RaisePropertyChanged(nameof(this.IsRakedArea));
                 this.RaisePropertyChanged(nameof(this.SubStud));
                 this.RaisePropertyChanged(nameof(this.HPitching));
@@ -223,10 +223,10 @@ namespace AppModels
         /// </summary>
         public int IsStepDown
         {
-            get => this.isStepDown;
+            get => this._isStepDown;
             set
             {
-                this.SetProperty(ref this.isStepDown, value);
+                this.SetProperty(ref this._isStepDown, value);
                 this.RaisePropertyChanged(nameof(this.LastWallHeight));
                 this.RaisePropertyChanged(nameof(this.WallRaiseHeight));
             }
@@ -237,10 +237,10 @@ namespace AppModels
         /// </summary>
         public int IsRaisedCeiling
         {
-            get => this.isRaisedCeiling;
+            get => this._isRaisedCeiling;
             set
             {
-                this.SetProperty(ref this.isRaisedCeiling, value);
+                this.SetProperty(ref this._isRaisedCeiling, value);
                 this.RaisePropertyChanged(nameof(this.LastWallHeight));
                 this.RaisePropertyChanged(nameof(this.WallRaiseHeight));
             }
@@ -275,8 +275,8 @@ namespace AppModels
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1407:ArithmeticExpressionsMustDeclarePrecedence", Justification = "Reviewed. Suppression is OK here.")]
         public IntegerDimension LastWallHeight
         {
-            get => this.lastWallHeight;
-            set => this.SetProperty(ref this.lastWallHeight, value);
+            get => this._lastWallHeight;
+            set => this.SetProperty(ref this._lastWallHeight, value);
         }
 
         /// <summary>
@@ -300,10 +300,10 @@ namespace AppModels
         /// </summary>
         public double ExtraLength
         {
-            get => this.extraLength;
+            get => this._extraLength;
             set
             {
-                this.SetProperty(ref this.extraLength, value);
+                this.SetProperty(ref this._extraLength, value);
                 this.RaisePropertyChanged(nameof(this.WallLength));
             }
         }
@@ -313,10 +313,10 @@ namespace AppModels
         /// </summary>
         public double TempLength
         {
-            get => this.tempLength;
+            get => this._tempLength;
             set
             {
-                this.SetProperty(ref this.tempLength, value);
+                this.SetProperty(ref this._tempLength, value);
                 this.RaisePropertyChanged(nameof(this.WallLength));
             }
         }

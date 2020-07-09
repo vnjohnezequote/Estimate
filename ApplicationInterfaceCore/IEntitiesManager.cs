@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Documents;
+using AppModels.AppData;
+using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 
@@ -12,7 +14,7 @@ namespace ApplicationInterfaceCore
     {
         event EventHandler EntitiesCollectionChanged;
         EntityList Entities { get; }
-        Entity SelectedEntity { get; }
+        EntityVm SelectedEntity { get; }
         ObservableCollection<Entity> SelectedEntities { get; }
         ICadDrawAble CanvasDrawing { get; }
         void AddAndRefresh(Entity entity, string layerName);
@@ -20,7 +22,7 @@ namespace ApplicationInterfaceCore
         void Invalidate();
         void EntitiesRegen();
         void Refresh();
-        void ChangeSelectedEntiesLayer(Layer layer);
+        //void ChangeSelectedEntiesLayer(Layer layer);
         void ClearSelectedEntities();
         void SetEntitiesList(EntityList entities);
         void SetCanvasDrawing(ICadDrawAble cadDraw);
@@ -28,5 +30,6 @@ namespace ApplicationInterfaceCore
         void ResetSelection();
         Entity GetEntity(int index);
         List<Entity> GetSelectedEntities();
+        void ChangLayerForSelectedEntities(LayerItem layer);
     }
 }

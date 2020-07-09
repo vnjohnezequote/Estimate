@@ -136,6 +136,7 @@
     <Compile Include="Bracing.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Comparer\WallTypeComparer.cs" />
+    <Compile Include="CustomEntity\Wall2D.cs" />
     <Compile Include="DesignInfor.cs" />
     <Compile Include="EventArg\DrawInteractiveArgs.cs" />
     <Compile Include="ExcelNote.cs" />
@@ -152,6 +153,10 @@
     <Compile Include="RlwCalc.cs" />
     <Compile Include="Shape.cs" />
     <Compile Include="BracingBase.cs" />
+    <Compile Include="CustomEntity\CustomTable.cs" />
+    <Compile Include="CustomEntity\PictureEntity.cs" />
+    <Compile Include="ViewModelEntity\EntityVm.cs" />
+    <Compile Include="ViewModelEntity\Wall2DVm.cs" />
     <Compile Include="WallStud.cs" />
     <Compile Include="TimberBase.cs" />
     <Compile Include="WallBase.cs" />
@@ -171,6 +176,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Enums\" />
     <Folder Include="Interaface\" />
   </ItemGroup>
   <ItemGroup>

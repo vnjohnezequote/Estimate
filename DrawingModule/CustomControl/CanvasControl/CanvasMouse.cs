@@ -110,7 +110,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                             {
                                 if (this.CurrentTool.IsUsingSwitchMode)
                                 {
-                                    if (Utils.IsEntityContainPoint3D(EntitiesManager.SelectedEntity, LastClickPoint))
+                                    if (Utils.IsEntityContainPoint3D(EntitiesManager.SelectedEntity.GetEntity(), LastClickPoint))
                                     {
                                         this.PromptStatus = PromptStatus.SwitchMode;
                                         _waitingForPickSelection = false;
