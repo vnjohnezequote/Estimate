@@ -11,11 +11,14 @@
              xmlns:local="clr-namespace:DrawingModule.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:pt="http://propertytools.org/wpf"
+
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <!--<ContentControl prism:RegionManager.RegionName="EntitiesProperTiesManagerProperties"/>-->
-        <syncfusion:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>
-
+        <!--<syncfusion:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>-->
+        <pt:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>
     </Grid>      
 </UserControl>
