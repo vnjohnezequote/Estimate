@@ -10,6 +10,7 @@ using Prism.Mvvm;
 
 namespace AppModels.ViewModelEntity
 {
+    [Serializable]
     public class EntityVm: BindableBase
     {
         protected readonly Entity _entity;

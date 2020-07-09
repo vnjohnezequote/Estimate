@@ -8,13 +8,14 @@ using devDept.Eyeshot.Entities;
 
 namespace AppModels.ViewModelEntity
 {
+    [Serializable]
     public class Wall2DVm : EntityVm
     {
         public string WallLevelName
         {
             get
             {
-                if (_entity is Wall2D wall2D)
+                if (_entity!=null &&_entity is Wall2D wall2D)
                 {
                     return wall2D.WallLevelName;
                 }

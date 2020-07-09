@@ -22,14 +22,14 @@ namespace DrawingModule.ViewModels
         #region Private Field
 
         private IEntitiesManager _entitiesManger;
-        private EntityVm _selectedEntity;
+        private Wall2DVm _selectedEntity;
 
         public IEntitiesManager EntitiesManager
         {
             get => _entitiesManger;
         }
 
-        public EntityVm SelectedEntity
+        public Wall2DVm SelectedEntity
         {
             get => _selectedEntity;
             set=> SetProperty( ref _selectedEntity , value);
@@ -53,7 +53,13 @@ namespace DrawingModule.ViewModels
             {
                 if (EntitiesManager.SelectedEntity != null)
                 {
-                    this.SelectedEntity = EntitiesManager.SelectedEntity;
+                    var objectEntity = EntitiesManager.SelectedEntity;
+                    if (objectEntity is Wall2DVm wall2DVm)
+                    {
+                        this.SelectedEntity = wall2DVm;
+                        return;
+                    }
+                    this.SelectedEntity = null;
                 }
                 else
                 {

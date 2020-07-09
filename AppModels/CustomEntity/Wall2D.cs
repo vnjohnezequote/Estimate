@@ -8,6 +8,7 @@ using devDept.Eyeshot.Entities;
 
 namespace AppModels.CustomEntity
 {
+    [Serializable]
     public class Wall2D: Line
     {
         #region Field
@@ -21,7 +22,7 @@ namespace AppModels.CustomEntity
         public string WallLevelName { get; set; }
         #endregion
 
-        protected Wall2D(Line another) : base(another)
+        public Wall2D(Line another) : base(another)
         {
             
         }

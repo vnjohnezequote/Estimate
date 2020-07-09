@@ -14,7 +14,8 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="EntitiesProperTiesManagerProperties"/>
+        <!--<ContentControl prism:RegionManager.RegionName="EntitiesProperTiesManagerProperties"/>-->
+        <syncfusion:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>
 
     </Grid>      
 </UserControl>

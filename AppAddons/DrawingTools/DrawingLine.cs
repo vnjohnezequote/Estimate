@@ -8,10 +8,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -78,9 +80,10 @@ namespace AppAddons.DrawingTools
                         line.LineTypeName = LayerManager.SelectedLayer.LineTypeName;
                     }
                 }
-                    
-                
-                this.EntitiesManager.AddAndRefresh(line,this.LayerManager.SelectedLayer.Name);
+                line.Color = LayerManager.SelectedLayer.Color;
+                var wall2D = new Wall2D(line);
+                wall2D.WallLevelName = "Level 1";
+                this.EntitiesManager.AddAndRefresh(wall2D,this.LayerManager.SelectedLayer.Name);
             }
         }
         #region Implement IDrawInteractive
