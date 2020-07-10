@@ -161,6 +161,8 @@
     <Compile Include="DynamicObject\AutoNotifyProxy.cs" />
     <Compile Include="EventArg\DrawInteractiveArgs.cs" />
     <Compile Include="ExcelNote.cs" />
+    <Compile Include="Factories\EntitiyVmFactory.cs" />
+    <Compile Include="Factories\Wall2DVmFactory.cs" />
     <Compile Include="GenericBracing.cs" />
     <Compile Include="GenericBracingBase.cs" />
     <Compile Include="Geometry.cs" />

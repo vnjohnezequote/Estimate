@@ -13,6 +13,7 @@ using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using Prism.Mvvm;
+using AppModels.Factories;
 
 namespace AppDataBase.DataBase
 {
@@ -40,7 +41,7 @@ namespace AppDataBase.DataBase
             {
                 if (SelectedEntities[0] is Wall2D wall2D)
                 {
-                    SelectedEntity = new Wall2DVm(SelectedEntities[0]);
+                    SelectedEntity =wall2D.GetEntityVm();
                     return;
                 }
                 SelectedEntity = new EntityVm(SelectedEntities[0]) ;

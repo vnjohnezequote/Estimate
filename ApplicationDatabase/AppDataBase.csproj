@@ -136,7 +136,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="DataBase\EntitiesManager.cs" />
-    <Compile Include="DataBase\EntityVmFactory.cs" />
     <Compile Include="DataBase\LayerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
