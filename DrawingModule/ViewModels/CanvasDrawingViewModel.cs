@@ -5,6 +5,7 @@ using System.Windows.Input;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using ApplicationService;
+using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Graphics;
@@ -96,14 +97,18 @@ namespace DrawingModule.ViewModels
             }
             else
             {
-                var layerName = EntitiesManager.SelectedEntity.LayerName;
-                var selectedLayer = (from layerItem in LayerManager.Layers
-                                     where layerItem.Name == layerName
-                                     select layerItem).FirstOrDefault();
-                if (selectedLayer != null)
+                if (EntitiesManager.SelectedEntity is EntityVm entity)
                 {
-                    LayerManager.SelectedLayer = selectedLayer;
+                    var layerName = entity.LayerName;
+                    var selectedLayer = (from layerItem in LayerManager.Layers
+                        where layerItem.Name == layerName
+                        select layerItem).FirstOrDefault();
+                    if (selectedLayer != null)
+                    {
+                        LayerManager.SelectedLayer = selectedLayer;
+                    }
                 }
+                
             }
         }
 

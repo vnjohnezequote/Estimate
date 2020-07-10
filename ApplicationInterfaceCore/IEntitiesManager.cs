@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Documents;
 using AppModels.AppData;
+using AppModels.DynamicObject;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;

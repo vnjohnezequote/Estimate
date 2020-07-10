@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using ApplicationInterfaceCore;
 using AppModels.AppData;
 using AppModels.CustomEntity;
+using AppModels.DynamicObject;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -37,11 +38,12 @@ namespace AppDataBase.DataBase
         {
             if (SelectedEntities.Count>0)
             {
-                if (SelectedEntities[0] is Wall2D)
+                if (SelectedEntities[0] is Wall2D wall2D)
                 {
                     SelectedEntity = new Wall2DVm(SelectedEntities[0]);
+                    return;
                 }
-                SelectedEntity = new EntityVm(SelectedEntities[0]);
+                SelectedEntity = new EntityVm(SelectedEntities[0]) ;
                 return;
             }
 

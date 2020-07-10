@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
+using AppModels.CustomEntity;
+using AppModels.DynamicObject;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -34,6 +36,7 @@ namespace DrawingModule.ViewModels
             get => _selectedEntity;
             set=> SetProperty( ref _selectedEntity , value);
         }
+
         #endregion
         public SelectedEntityPropertiesViewModel()
         {
@@ -53,13 +56,7 @@ namespace DrawingModule.ViewModels
             {
                 if (EntitiesManager.SelectedEntity != null)
                 {
-                    //this.SelectedEntity = EntitiesManager.SelectedEntity;
                     var objectEntity = EntitiesManager.SelectedEntity;
-                    if (objectEntity is Wall2DVm wall2DVm)
-                    {
-                        this.SelectedEntity = wall2DVm;
-                        return;
-                    }
                     this.SelectedEntity = objectEntity;
                 }
                 else

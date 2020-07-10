@@ -13,12 +13,28 @@
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:pt="http://propertytools.org/wpf"
-
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
+                <!--<ResourceDictionary>
+                    <converter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+                    <converter:ColorToColorConverter x:Key="ColorToColorConverter"/>
+                    <converter:ColorToStringConverter x:Key="ColorToStringConverter"/>
+                </ResourceDictionary>-->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <!--<ContentControl prism:RegionManager.RegionName="EntitiesProperTiesManagerProperties"/>-->
         <!--<syncfusion:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>-->
-        <pt:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>
+        <!--<TextBlock Text="{Binding SelectedTypeName}"/>-->
+        <!--<syncfusion:PropertyGrid SelectedObject="{Binding SelectedEntity}"
+                                 PropertyExpandMode="NestedMode"
+                                 Background="{StaticResource MaterialDesignDarkBackground}"/>-->
+        <xctk:PropertyGrid SelectedObject="{Binding SelectedEntity}" Background="{StaticResource MaterialDesignDarkBackground}"/>
+        <!--<pt:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>-->
     </Grid>      
 </UserControl>
