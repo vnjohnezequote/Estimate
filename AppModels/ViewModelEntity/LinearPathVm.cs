@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
-using Prism.Mvvm;
 
 namespace AppModels.ViewModelEntity
 {
-    [Serializable]
-    public class EntityVm: EntityVmBase
+    public class LinearPathVm: EntityVmBase
     {
-        public EntityVm(Entity entity): base(entity)
+        public LinearPathVm(Entity entity) : base(entity)
         {
         }
-
     }
 }

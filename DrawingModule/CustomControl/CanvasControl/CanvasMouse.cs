@@ -4,6 +4,7 @@ using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels.EventArg;
 using devDept.Eyeshot;
+using devDept.Eyeshot.Entities;
 using devDept.Graphics;
 using DrawingModule.Application;
 using DrawingModule.DrawToolBase;
@@ -110,7 +111,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                             {
                                 if (this.CurrentTool.IsUsingSwitchMode)
                                 {
-                                    if (Utils.IsEntityContainPoint3D(EntitiesManager.SelectedEntity.GetEntity(), LastClickPoint))
+                                    if (Utils.IsEntityContainPoint3D(EntitiesManager.SelectedEntity.Entity as Entity, LastClickPoint))
                                     {
                                         this.PromptStatus = PromptStatus.SwitchMode;
                                         _waitingForPickSelection = false;

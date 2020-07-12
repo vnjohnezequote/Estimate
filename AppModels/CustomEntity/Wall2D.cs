@@ -4,12 +4,14 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppModels.Interaface;
+using AppModels.ViewModelEntity;
 using devDept.Eyeshot.Entities;
 
 namespace AppModels.CustomEntity
 {
     [Serializable]
-    public class Wall2D: Line
+    public class Wall2D: Line,IEntityVmCreateAble
     {
         #region Field
         //private string _wallLevelName;
@@ -27,6 +29,10 @@ namespace AppModels.CustomEntity
             
         }
 
-        
+
+        public IEntityVm CreateEntityVm()
+        {
+            return new Wall2DVm(this);
+        }
     }
 }

@@ -736,7 +736,7 @@ namespace DrawingModule.CustomControl.CanvasControl
 
         private Entity GetSelectionEntity()
         {
-            return Dispatcher.Invoke((Func<Entity>)(() => this.EntitiesManager.SelectedEntity?.GetEntity()));
+            return Dispatcher.Invoke((Func<Entity>)(() => this.EntitiesManager.SelectedEntity?.Entity as Entity));
         }
 
         private void ClearSelectionEntity()

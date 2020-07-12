@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="devDept.Eyeshot.Drawings" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="devDept.Eyeshot.Environment">
+    <Position X="3.5" Y="1.5" Width="4" />
+    <NestedTypes>
+      <Delegate Name="devDept.Eyeshot.Environment.ViewChangedEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="devDept.Eyeshot.Environment.SelectedEdge" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.DrawSceneParams" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="devDept.Eyeshot.Environment.DrawTransparentEntityRenderedDelegate" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="devDept.Eyeshot.Environment.GfxAttributesRendered" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="devDept.Eyeshot.Environment.WorkCancelledEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Enum Name="devDept.Eyeshot.Environment.CameraEyePosType" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+      <Class Name="devDept.Eyeshot.Environment.CameraMoveEventArgs" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.DrawEntitiesRenderedParams" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.SelectionInfoItemBase" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="devDept.Eyeshot.Environment.DesignTimeFuncHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="devDept.Eyeshot.Environment.DrawBaseParams&lt;S&gt;" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.DrawForSelectionParams&lt;T&gt;" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.SelectedVertex" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.ComputeEntitiesVisibilityParams&lt;T&gt;" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.GfxAttributesMaterialFlat" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="devDept.Eyeshot.Environment.ProgressChangedEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="devDept.Eyeshot.Environment.drawForSelectionCallback&lt;T&gt;" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="devDept.Eyeshot.Environment.DrawForSelectionEntityDelegate" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="devDept.Eyeshot.Environment.ErrorOccurredEventArgs" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.SelectedItem" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="devDept.Eyeshot.Environment.CameraMoveEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="devDept.Eyeshot.Environment.SelectedFace" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Struct Name="devDept.Eyeshot.Environment.CursorContainer" Collapsed="true">
+        <TypeIdentifier />
+      </Struct>
+      <Delegate Name="devDept.Eyeshot.Environment.BoundingBoxChangedHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="devDept.Eyeshot.Environment.GfxAttributesColor" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="devDept.Eyeshot.Environment.ErrorEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="devDept.Eyeshot.Environment.WorkCompletedEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Delegate Name="devDept.Eyeshot.Environment.drawCallback&lt;T&gt;" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="devDept.Eyeshot.Environment.SelectionChangedEventArgs" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.SelectionInfoSubItemsArray" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="devDept.Eyeshot.Environment.SelectionChangedEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="devDept.Eyeshot.Environment.SelectionInfoItem" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.DrawEntitiesParams" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.GfxAttributesWire" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.ViewChangedEventArgs" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="devDept.Eyeshot.Environment.NavigationTimerHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="devDept.Eyeshot.Environment.SelectionInfoSubItems" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="devDept.Eyeshot.Environment.SelectedSubItem" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Enum Name="devDept.Eyeshot.Environment.assemblySelectionType" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+      <Class Name="devDept.Eyeshot.Environment.SelectedItemBase" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Delegate Name="devDept.Eyeshot.Environment.WorkFailedEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="devDept.Eyeshot.Environment.GfxAttributes" Collapsed="true">
+        <TypeIdentifier />
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="devDept.Eyeshot.EnvironmentBase">
+    <Position X="10.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="devDept.Graphics.RenderContextBase">
+    <Position X="14.25" Y="2.5" Width="3" />
+    <NestedTypes>
+      <Delegate Name="devDept.Graphics.RenderContextBase.drawSceneFuncDelegate" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Enum Name="devDept.Graphics.RenderContextBase.matrixType" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="devDept.Eyeshot.Entities.Entity" Collapsed="true">
+    <Position X="11.25" Y="1" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="devDept.Eyeshot.EntityList">
+    <Position X="8" Y="5.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="devDept.Eyeshot.EyeshotDisposableCollection&lt;T&gt;" Collapsed="true">
+    <Position X="7.75" Y="4" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="devDept.Eyeshot.EyeshotCollection&lt;T&gt;" Collapsed="true">
+    <Position X="8.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

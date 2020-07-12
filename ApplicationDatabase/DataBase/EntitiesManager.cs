@@ -14,16 +14,17 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using Prism.Mvvm;
 using AppModels.Factories;
+using AppModels.Interaface;
 
 namespace AppDataBase.DataBase
 {
     public class EntitiesManager: BindableBase, IEntitiesManager
     {
         public event EventHandler EntitiesCollectionChanged ;
-        private EntityVm _selectedEntity;
+        private IEntityVm _selectedEntity;
         private ObservableCollection<Entity> _selectedEntities;
         public EntityList Entities { get; private set; }
-        public EntityVm SelectedEntity { get=>_selectedEntity; set=>SetProperty(ref _selectedEntity,value); }
+        public IEntityVm SelectedEntity { get=>_selectedEntity; set=>SetProperty(ref _selectedEntity,value); }
         public ObservableCollection<Entity> SelectedEntities { get=>_selectedEntities; set=>SetProperty(ref _selectedEntities,value); }
 
         public ICadDrawAble CanvasDrawing { get;private set; }
@@ -39,12 +40,14 @@ namespace AppDataBase.DataBase
         {
             if (SelectedEntities.Count>0)
             {
-                if (SelectedEntities[0] is Wall2D wall2D)
-                {
-                    SelectedEntity =wall2D.GetEntityVm();
-                    return;
-                }
-                SelectedEntity = new EntityVm(SelectedEntities[0]) ;
+                //if (SelectedEntities[0] is Wall2D wall2D)
+                //{
+                //    SelectedEntity =wall2D.GetEntityVm();
+                //    return;
+                //}
+                //SelectedEntity = new EntityVm(SelectedEntities[0]) ;
+                var entityFactory = new EntitiyVmFactory();
+                SelectedEntity = entityFactory.creatEntityVm(SelectedEntities[0]);
                 return;
             }
 
@@ -108,7 +111,7 @@ namespace AppDataBase.DataBase
         }
         public Entity GetSelectionEntity()
         {
-            return Application.Current.Dispatcher.Invoke((Func<Entity>) (() => SelectedEntity?.GetEntity()));
+            return Application.Current.Dispatcher.Invoke((Func<Entity>) (() => SelectedEntity?.Entity as Entity));
         }
 
         public void AddAndRefresh(Entity entity, string layerName)

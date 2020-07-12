@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows.Documents;
 using AppModels.AppData;
 using AppModels.DynamicObject;
+using AppModels.Interaface;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -15,7 +16,7 @@ namespace ApplicationInterfaceCore
     {
         event EventHandler EntitiesCollectionChanged;
         EntityList Entities { get; }
-        EntityVm SelectedEntity { get; }
+        IEntityVm SelectedEntity { get; }
         ObservableCollection<Entity> SelectedEntities { get; }
         ICadDrawAble CanvasDrawing { get; }
         void AddAndRefresh(Entity entity, string layerName);

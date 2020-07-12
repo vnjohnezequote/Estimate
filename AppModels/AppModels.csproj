@@ -162,12 +162,14 @@
     <Compile Include="EventArg\DrawInteractiveArgs.cs" />
     <Compile Include="ExcelNote.cs" />
     <Compile Include="Factories\EntitiyVmFactory.cs" />
-    <Compile Include="Factories\Wall2DVmFactory.cs" />
+    <Compile Include="Factories\EyeshotEntityVMFactory.cs" />
     <Compile Include="GenericBracing.cs" />
     <Compile Include="GenericBracingBase.cs" />
     <Compile Include="Geometry.cs" />
     <Compile Include="IntegerDimension.cs" />
     <Compile Include="DoubleDimension.cs" />
+    <Compile Include="Interaface\IEntityVm.cs" />
+    <Compile Include="Interaface\IEntityVmCreateAble.cs" />
     <Compile Include="JobInfo.cs" />
     <Compile Include="JobModel.cs" />
     <Compile Include="JobWallDefaultInfo.cs" />
@@ -179,6 +181,9 @@
     <Compile Include="CustomEntity\CustomTable.cs" />
     <Compile Include="CustomEntity\PictureEntity.cs" />
     <Compile Include="ViewModelEntity\EntityVm.cs" />
+    <Compile Include="ViewModelEntity\EntityVmBase.cs" />
+    <Compile Include="ViewModelEntity\LinearPathVm.cs" />
+    <Compile Include="ViewModelEntity\LineVm.cs" />
     <Compile Include="ViewModelEntity\Wall2DVm.cs" />
     <Compile Include="WallStud.cs" />
     <Compile Include="TimberBase.cs" />
@@ -194,13 +199,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="AppModelDiagram.cd" />
-    <None Include="AppModel.dgml" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Enums\" />
-    <Folder Include="Interaface\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

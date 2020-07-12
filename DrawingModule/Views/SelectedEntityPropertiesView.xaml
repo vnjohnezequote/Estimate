@@ -1,18 +1,19 @@
-﻿<UserControl x:Class="DrawingModule.Views.SelectedEntityPropertiesView"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="True"
              xmlns:viewModels="clr-namespace:DrawingModule.ViewModels"
-             d:DataContext="{d:DesignInstance viewModels:SelectedEntityPropertiesViewModel, IsDesignTimeCreatable=True}"
-             Name="EntityProperty"
              xmlns:local="clr-namespace:DrawingModule.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:pt="http://propertytools.org/wpf"
+             xmlns:Themes="clr-namespace:Xceed.Wpf.Toolkit.Themes;assembly=Xceed.Wpf.Toolkit" x:Class="DrawingModule.Views.SelectedEntityPropertiesView"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance {x:Type viewModels:SelectedEntityPropertiesViewModel}, IsDesignTimeCreatable=True}"
+             x:Name="EntityProperty"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -31,10 +32,8 @@
         <!--<ContentControl prism:RegionManager.RegionName="EntitiesProperTiesManagerProperties"/>-->
         <!--<syncfusion:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>-->
         <!--<TextBlock Text="{Binding SelectedTypeName}"/>-->
-        <!--<syncfusion:PropertyGrid SelectedObject="{Binding SelectedEntity}"
-                                 PropertyExpandMode="NestedMode"
-                                 Background="{StaticResource MaterialDesignDarkBackground}"/>-->
-        <xctk:PropertyGrid SelectedObject="{Binding SelectedEntity}" Background="{StaticResource MaterialDesignDarkBackground}"/>
-        <!--<pt:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>-->
-    </Grid>      
+        <!--<xctk:PropertyGrid SelectedObject="{Binding SelectedEntity}" Background="Transparent">
+        </xctk:PropertyGrid>-->
+        <pt:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>
+    </Grid>
 </UserControl>

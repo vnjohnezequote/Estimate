@@ -9,13 +9,13 @@ using devDept.Eyeshot.Entities;
 namespace AppModels.ViewModelEntity
 {
     [Serializable]
-    public class Wall2DVm : EntityVm
+    public class Wall2DVm : EntityVmBase
     {
         public string WallLevelName
         {
             get
             {
-                if (_entity!=null &&_entity is Wall2D wall2D)
+                if (Entity!=null &&Entity is Wall2D wall2D)
                 {
                     return wall2D.WallLevelName;
                 }
@@ -24,7 +24,7 @@ namespace AppModels.ViewModelEntity
             }
             set
             {
-                if (_entity != null && _entity is Wall2D wall2D)
+                if (Entity != null && Entity is Wall2D wall2D)
                 {
                     wall2D.LayerName = value;
                     RaisePropertyChanged(nameof(WallLevelName));

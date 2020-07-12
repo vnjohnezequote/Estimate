@@ -8,6 +8,7 @@ using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using AppModels.CustomEntity;
 using AppModels.DynamicObject;
+using AppModels.Interaface;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -24,14 +25,14 @@ namespace DrawingModule.ViewModels
         #region Private Field
 
         private IEntitiesManager _entitiesManger;
-        private EntityVm _selectedEntity;
+        private IEntityVm _selectedEntity;
 
         public IEntitiesManager EntitiesManager
         {
             get => _entitiesManger;
         }
 
-        public EntityVm SelectedEntity
+        public IEntityVm SelectedEntity
         {
             get => _selectedEntity;
             set=> SetProperty( ref _selectedEntity , value);
