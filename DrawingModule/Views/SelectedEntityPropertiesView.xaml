@@ -8,9 +8,9 @@
              xmlns:local="clr-namespace:DrawingModule.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:pt="http://propertytools.org/wpf"
-             xmlns:Themes="clr-namespace:Xceed.Wpf.Toolkit.Themes;assembly=Xceed.Wpf.Toolkit" x:Class="DrawingModule.Views.SelectedEntityPropertiesView"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             x:Class="DrawingModule.Views.SelectedEntityPropertiesView"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance {x:Type viewModels:SelectedEntityPropertiesViewModel}, IsDesignTimeCreatable=True}"
              x:Name="EntityProperty"
@@ -29,11 +29,36 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
+        <!--<sf:PropertyGrid SelectedObject="{Binding SelectedEntity}" Width="200"/>-->
         <!--<ContentControl prism:RegionManager.RegionName="EntitiesProperTiesManagerProperties"/>-->
-        <!--<syncfusion:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>-->
+        <!--<syncfusion:PropertyGrid SelectedObject="{Binding SelectedEntity}"
+                                 PropertyExpandMode="NestedMode"
+                                 ViewBackgroundColor="Transparent"
+                                 LineColor="Transparent"
+                                 SearchBoxVisibility="Collapsed"
+                                 Foreground="{StaticResource MahApps.Brushes.IdealForeground}"
+                                 ButtonPanelVisibility="Collapsed"/>-->
+
         <!--<TextBlock Text="{Binding SelectedTypeName}"/>-->
-        <!--<xctk:PropertyGrid SelectedObject="{Binding SelectedEntity}" Background="Transparent">
-        </xctk:PropertyGrid>-->
-        <pt:PropertyGrid SelectedObject="{Binding SelectedEntity}"/>
+        <xctk:PropertyGrid SelectedObject="{Binding SelectedEntity}" Background="Transparent"
+                           AutoGenerateProperties="False">
+            <xctk:PropertyGrid.PropertyDefinitions>
+                <xctk:PropertyDefinition Name="LayerName"/>
+                <xctk:PropertyDefinition Name="Color" />
+                <xctk:PropertyDefinition Name="WallLevelName"/>
+            </xctk:PropertyGrid.PropertyDefinitions>
+            <xctk:PropertyGrid.EditorDefinitions>
+                <xctk:EditorDefinition.EditorTemplate>
+                    <DataTemplate>
+                        <ComboBox ItemsSource="{Binding Value}" 
+                                  DisplayMemberPath="Country_Name" 
+                                  SelectedValuePath="Country_GUID"
+                                  SelectedValue="ef6c3f62-3fa8-45fe-84ab-f0d898e072c3"
+                        />
+                    </DataTemplate>
+                </xctk:EditorDefinition.EditorTemplate>
+            </xctk:PropertyGrid.EditorDefinitions>
+               
+        </xctk:PropertyGrid>
     </Grid>
 </UserControl>

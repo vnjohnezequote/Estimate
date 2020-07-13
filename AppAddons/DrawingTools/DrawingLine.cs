@@ -82,7 +82,7 @@ namespace AppAddons.DrawingTools
                 }
                 line.Color = LayerManager.SelectedLayer.Color;
                 var wall2D = new Wall2D(line);
-                wall2D.WallLevelName = "Level 1";
+                //wall2D.WallLevelName = "Level 1";
                 this.EntitiesManager.AddAndRefresh(wall2D,this.LayerManager.SelectedLayer.Name);
             }
         }

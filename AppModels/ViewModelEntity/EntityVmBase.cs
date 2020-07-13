@@ -1,30 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using Prism.Mvvm;
+using Syncfusion.Windows.PropertyGrid;
+using Color = System.Drawing.Color;
 
 namespace AppModels.ViewModelEntity
 {
     [Serializable]
     public abstract class EntityVmBase: BindableBase, IEntityVm
     {
+        //[Browsable(false)]
+        [Display(AutoGenerateField = false)]
         public IEntity Entity { get; }
-        public Color? Color
+        [PropertyGrid(NestedPropertyDisplayMode = NestedPropertyDisplayMode.None)]
+        public System.Windows.Media.Color Color
         {
-            get => Entity?.Color;
+            get
+            {
+                if (this.Entity != null)
+                {
+                    System.Windows.Media.Color newColor = System.Windows.Media.Color.FromArgb(
+                        this.Entity.Color.A,
+                        this.Entity.Color.R,
+                        this.Entity.Color.G,
+                        this.Entity.Color.B);
+                    
+                    return newColor;
+                }
+                return Colors.White;
+            }
             set
             {
-                if (Entity == null) return;
-                if (value != null) Entity.Color = (Color)value;
-                this.RaisePropertyChanged(nameof(Color));
+                if(this.Entity!= null)
+                {
+                    this.Entity.Color = System.Drawing.Color.FromArgb(value.A, value.R, value.G, value.B);
+                }
             }
         }
-
         public string LayerName
         {
             get => Entity == null ? "" : Entity.LayerName;

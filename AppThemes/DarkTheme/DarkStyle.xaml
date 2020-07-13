@@ -2,13 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:hc="https://handyorg.github.io/handycontrol">
+                    xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:Custom="http://schemas.xceed.com/wpf/xaml/toolkit">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="DarkColor.xaml"/>
+        <ResourceDictionary Source="XceedPropertyGridTheme.xaml"/>
         <!-- MahApps Source -->
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-        
+
 
         <!-- Material Design Source -->
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
@@ -36,10 +37,10 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Set Default Material Design For Control -->
-    
-    <Style TargetType="TextBox" BasedOn="{StaticResource ClearButtonTextBox}"/>
-    <Style TargetType="Button" BasedOn="{StaticResource FlatButtonNoPadding}"/>
-    <Style TargetType="ComboBox"
+
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource ClearButtonTextBox}"/>
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource FlatButtonNoPadding}"/>
+    <Style TargetType="{x:Type ComboBox}"
            BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -57,11 +58,11 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style TargetType="ListBoxItem"
+    <Style TargetType="{x:Type ListBoxItem}"
            BasedOn="{StaticResource MaterialDesignListBoxItem}">
         <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}"/>
     </Style>
-    <Style TargetType="TextBlock">
+    <Style TargetType="{x:Type TextBlock}">
         <Setter Property="VerticalAlignment"
                 Value="Center"/>
     </Style>
@@ -78,4 +79,5 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
 </ResourceDictionary>

@@ -26,7 +26,7 @@ namespace AppModels.ViewModelEntity
             {
                 if (Entity != null && Entity is Wall2D wall2D)
                 {
-                    wall2D.LayerName = value;
+                    wall2D.WallLevelName = value;
                     RaisePropertyChanged(nameof(WallLevelName));
                 }
                 

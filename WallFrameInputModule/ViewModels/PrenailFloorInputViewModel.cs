@@ -10,6 +10,7 @@
 
 using System.Globalization;
 using ApplicationInterfaceCore;
+using AppModels.CustomEntity;
 using devDept.Eyeshot.Entities;
 
 namespace WallFrameInputModule.ViewModels
@@ -314,6 +315,10 @@ namespace WallFrameInputModule.ViewModels
                             } else if (entity is LinearPath linearPath)
                             {
                                 tempLength += linearPath.Length();
+                            }
+                            else if (entity is Wall2D wall2D)
+                            {
+                                tempLength += wall2D.Length();
                             }
                             
                         }

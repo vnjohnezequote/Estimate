@@ -15,7 +15,6 @@ using devDept.Eyeshot.Entities;
 using GeometryGym.Ifc;
 using Prism.Events;
 using Prism.Regions;
-using Syncfusion.UI.Xaml.Grid;
 using Unity;
 
 namespace DrawingModule.ViewModels
@@ -23,10 +22,14 @@ namespace DrawingModule.ViewModels
     public class SelectedEntityPropertiesViewModel : BaseViewModel
     {
         #region Private Field
-
+        //private ObservableCollection<string> hidePropertyItems = new ObservableCollection<string>();
         private IEntitiesManager _entitiesManger;
         private IEntityVm _selectedEntity;
-
+        //public ObservableCollection<string> HidePropertyItems
+        //{
+        //    get { return hidePropertyItems; }
+        //    set { hidePropertyItems = value; }
+        //}
         public IEntitiesManager EntitiesManager
         {
             get => _entitiesManger;
@@ -46,6 +49,7 @@ namespace DrawingModule.ViewModels
         public SelectedEntityPropertiesViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IEntitiesManager entitiesManager)
             : base(unityContainer, regionManager, eventAggregator, layerManager)
         {
+            //HidePropertyItems.Add("Entity");
             _entitiesManger = entitiesManager;
             this.RaisePropertyChanged(nameof(EntitiesManager));
             EntitiesManager.PropertyChanged += EntitiesManager_PropertyChanged;
