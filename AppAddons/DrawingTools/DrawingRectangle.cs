@@ -8,6 +8,7 @@ using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -92,7 +93,11 @@ namespace AppAddons.DrawingTools
                             rectangle.LineTypeName = LayerManager.SelectedLayer.LineTypeName;
                         }
                     }
-                    this.EntitiesManager.AddAndRefresh(rectangle, this.LayerManager.SelectedLayer.Name);
+
+                    rectangle.Color = LayerManager.SelectedLayer.Color;
+                    var wall2D = new LinearPathWall2D(rectangle);
+                    wall2D.WallLevelName = this.ActiveLevel;
+                    this.EntitiesManager.AddAndRefresh(wall2D, this.LayerManager.SelectedLayer.Name);
                     BasePoint = EndPoint = null;
                     CurrentWidth = 0;
                     CurrentHeight = 0;

@@ -136,6 +136,7 @@
     <Compile Include="JobNumberService.cs" />
     <Compile Include="JobUnitService.cs" />
     <Compile Include="LayerManagerService.cs" />
+    <Compile Include="LevelNameService.cs" />
     <Compile Include="PromptStatus.cs" />
     <Compile Include="PromptStatusEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

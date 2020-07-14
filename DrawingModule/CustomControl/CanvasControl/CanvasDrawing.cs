@@ -620,7 +620,16 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         #endregion
         #region Public Method
+        public string ActiveLevel { get; set; }
 
+        public void SetActivelevel(string activeLevel)
+        {
+            this.ActiveLevel = activeLevel;
+            if (this.CurrentTool!=null)
+            {
+                this.CurrentTool.ActiveLevel = activeLevel;
+            }
+        }
         public void UpdateCurrentPointByLengthAndAngle(double length, double angle, double scaleFactor)
         {
             if (this.BasePoint3D == null & this.CurrentPoint == null)

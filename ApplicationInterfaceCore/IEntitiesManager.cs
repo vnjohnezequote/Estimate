@@ -33,5 +33,6 @@ namespace ApplicationInterfaceCore
         Entity GetEntity(int index);
         List<Entity> GetSelectedEntities();
         void ChangLayerForSelectedEntities(LayerItem layer);
+        void SyncLevelSelectedsEntityPropertyChanged(string selectedLevel);
     }
 }

@@ -9,7 +9,7 @@ namespace AppModels.ViewModelEntity
 {
     public class LinearPathVm: EntityVmBase
     {
-        public LinearPathVm(Entity entity) : base(entity)
+        public LinearPathVm(IEntity entity) : base(entity)
         {
         }
     }

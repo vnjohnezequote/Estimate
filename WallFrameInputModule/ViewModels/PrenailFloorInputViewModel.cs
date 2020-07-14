@@ -11,6 +11,7 @@
 using System.Globalization;
 using ApplicationInterfaceCore;
 using AppModels.CustomEntity;
+using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 
 namespace WallFrameInputModule.ViewModels
@@ -52,42 +53,42 @@ namespace WallFrameInputModule.ViewModels
     public class PrenailFloorInputViewModel : BaseFloorViewModelAware
     {
         #region private Field
-
         private IEntitiesManager _entitiesManager;
         /// <summary>
         /// The title.
         /// </summary>
-        private string title;
+        private string _title;
 
+        //private string _levelName;
         /// <summary>
         /// The start item id.
         /// </summary>
-        private int startItemID;
+        private int _startItemId;
 
         /// <summary>
         /// The studs.
         /// </summary>
-        private Dictionary<string, List<TimberBase>> studs;
+        private Dictionary<string, List<TimberBase>> _studs;
 
         /// <summary>
         /// The bottomPlates.
         /// </summary>
-        private Dictionary<string, List<TimberBase>> ribbonPlates;
+        private Dictionary<string, List<TimberBase>> _ribbonPlates;
 
         /// <summary>
         /// The topPlates.
         /// </summary>
-        private Dictionary<string, List<TimberBase>> topPlates;
+        private Dictionary<string, List<TimberBase>> _topPlates;
 
         /// <summary>
         /// The topPlates.
         /// </summary>
-        private Dictionary<string, List<TimberBase>> bottomPlates;
+        private Dictionary<string, List<TimberBase>> _bottomPlates;
 
         /// <summary>
         /// The csv file path.
         /// </summary>
-        private string csvFilePath;
+        private string _csvFilePath;
 
         #endregion
 
@@ -136,6 +137,11 @@ namespace WallFrameInputModule.ViewModels
         #endregion
 
         #region public
+        //public string LevelName
+        //{
+        //    get => _levelName;
+        //    set => SetProperty(ref _levelName, value);
+        //}
         public IEntitiesManager EntitiesManager
         {
             get => _entitiesManager;
@@ -164,8 +170,8 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         public Dictionary<string, List<TimberBase>> Studs
         {
-            get => this.studs;
-            set => this.SetProperty(ref this.studs, value);
+            get => this._studs;
+            set => this.SetProperty(ref this._studs, value);
         }
 
         /// <summary>
@@ -173,8 +179,8 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         public Dictionary<string, List<TimberBase>> RibbonPlates
         {
-            get => this.ribbonPlates;
-            set => this.SetProperty(ref this.ribbonPlates, value);
+            get => this._ribbonPlates;
+            set => this.SetProperty(ref this._ribbonPlates, value);
         }
 
         /// <summary>
@@ -182,8 +188,8 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         public Dictionary<string, List<TimberBase>> TopPlates
         {
-            get => this.topPlates;
-            set => this.SetProperty(ref this.topPlates, value);
+            get => this._topPlates;
+            set => this.SetProperty(ref this._topPlates, value);
         }
 
         /// <summary>
@@ -191,8 +197,8 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         public Dictionary<string, List<TimberBase>> BottomPlates
         {
-            get => this.bottomPlates;
-            set => this.SetProperty(ref this.bottomPlates, value);
+            get => this._bottomPlates;
+            set => this.SetProperty(ref this._bottomPlates, value);
         }
 
         /// <summary>
@@ -205,8 +211,8 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         public string Title
         {
-            get => this.title;
-            set => this.SetProperty(ref this.title, value);
+            get => this._title;
+            set => this.SetProperty(ref this._title, value);
         }
 
         /// <summary>
@@ -265,6 +271,7 @@ namespace WallFrameInputModule.ViewModels
         {
             base.OnNavigatedTo(navigationContext);
             this.Title = "Prenai - " + this.Level.LevelName;
+            //this.LevelName = this.Level.LevelName;
             // this.Studs = this.SelectedClient.Studs;
             // this.RibbonPlates = this.SelectedClient.RibbonPlates;
             // this.TopPlates = this.SelectedClient.TopPlates;
@@ -307,21 +314,14 @@ namespace WallFrameInputModule.ViewModels
                     }
                     foreach (var entity in entities)
                     {
-                        if (entity.LayerName == levelWallLayer.WallColorLayer.Name && (entity is Line || entity is LinearPath))
+                        if (entity is IWall2D iWall2D && iWall2D.WallLevelName == this.Level.LevelName)
                         {
-                            if (entity is Line line)
+                            if (entity.LayerName == levelWallLayer.WallColorLayer.Name)
                             {
-                                tempLength += line.Length();
-                            } else if (entity is LinearPath linearPath)
-                            {
-                                tempLength += linearPath.Length();
+                                tempLength += iWall2D.Length();
                             }
-                            else if (entity is Wall2D wall2D)
-                            {
-                                tempLength += wall2D.Length();
-                            }
-                            
                         }
+                       
                     }
 
                     levelWallLayer.TempLength = tempLength / 1000;
@@ -370,7 +370,7 @@ namespace WallFrameInputModule.ViewModels
             {
                 return;
             }
-            this.csvFilePath = result.File;
+            this._csvFilePath = result.File;
 
             this.LoadCSVLength();
             this.LoadDataLength();
@@ -381,7 +381,7 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         private void LoadCSVLength()
         {
-            using (var reader = new StreamReader(this.csvFilePath))
+            using (var reader = new StreamReader(this._csvFilePath))
             using (var csvFile = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 var records = csvFile.GetRecords<WallTempLength>().ToList();
@@ -482,9 +482,9 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         private void OnAddNewWallRow()
         {
-            this.startItemID = this.Level.WallLayers.Count + 1;
+            this._startItemId = this.Level.WallLayers.Count + 1;
 
-            var data = new WallLayer(this.startItemID, this.SelectedClient.WallTypes[0], this.Level.LevelInfo);
+            var data = new WallLayer(this._startItemId, this.SelectedClient.WallTypes[0], this.Level.LevelInfo);
             this.Level.WallLayers.Add(data);
         }
 

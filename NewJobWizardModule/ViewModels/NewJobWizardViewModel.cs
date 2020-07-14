@@ -10,6 +10,7 @@
 using System.Collections.Generic;
 using ApplicationInterfaceCore;
 using AppModels;
+using AppModels.Interaface;
 using DataType.Enums;
 using NewJobWizardModule.Helper;
 
@@ -62,7 +63,7 @@ namespace NewJobWizardModule.ViewModels
         /// <summary>
         /// The is design visibility.
         /// </summary>
-        private Visibility isDesignVisibility = Visibility.Collapsed;
+        private Visibility _isDesignVisibility = Visibility.Collapsed;
 
         /// <summary>
         /// The job.
@@ -96,7 +97,7 @@ namespace NewJobWizardModule.ViewModels
         {
             // delegate Loaded
             this.Job = this.UnityContainer.Resolve<JobModel>();
-            
+            this.UnityContainer.RegisterInstance<IJob>("GlobalJob", Job);
             /* create data test */
             this.Job.Info.JobNumber = "2220";
             this.Job.Info.JobLocation = "test";
@@ -201,8 +202,8 @@ namespace NewJobWizardModule.ViewModels
         /// </summary>
         public Visibility IsDesignVisibility
         {
-            get => this.isDesignVisibility;
-            set => this.SetProperty(ref this.isDesignVisibility, value);
+            get => this._isDesignVisibility;
+            set => this.SetProperty(ref this._isDesignVisibility, value);
 
         }
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
+using AppModels;
 using AppModels.CustomEntity;
 using AppModels.DynamicObject;
 using AppModels.Interaface;
@@ -26,6 +27,7 @@ namespace DrawingModule.ViewModels
         //private ObservableCollection<string> hidePropertyItems = new ObservableCollection<string>();
         private IEntitiesManager _entitiesManger;
         private IEntityVm _selectedEntity;
+
         //public ObservableCollection<string> HidePropertyItems
         //{
         //    get { return hidePropertyItems; }
@@ -48,6 +50,8 @@ namespace DrawingModule.ViewModels
                         return Visibility.Collapsed;
                     case Wall2DVm _:
                         return Visibility.Visible;
+                    case LinearPathWall2DVm _:
+                        return Visibility.Visible;
                     default:
                         return Visibility.Collapsed;
                 }
@@ -65,6 +69,7 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(LevelVisibility));
             }
         }
+        public ObservableCollection<LevelWall> Levels { get; private set; }
 
         #endregion
         public SelectedEntityPropertiesViewModel()
@@ -78,22 +83,34 @@ namespace DrawingModule.ViewModels
             _entitiesManger = entitiesManager;
             this.RaisePropertyChanged(nameof(EntitiesManager));
             EntitiesManager.PropertyChanged += EntitiesManager_PropertyChanged;
+            var job = UnityContainer.Resolve<IJob>("GlobalJob");
+            if (job!=null)
+            {
+                this.Levels = job.Levels;
+            }
+           
         }
 
         private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName=="SelectedEntity")
+            if (e.PropertyName != "SelectedEntity") return;
+            if (EntitiesManager.SelectedEntity != null)
             {
-                if (EntitiesManager.SelectedEntity != null)
-                {
-                    var objectEntity = EntitiesManager.SelectedEntity;
-                    this.SelectedEntity = objectEntity;
-                }
-                else
-                {
-                    this.SelectedEntity = null;
-                }
+                var objectEntity = EntitiesManager.SelectedEntity;
+                this.SelectedEntity = objectEntity;
+                this.SelectedEntity.PropertyChanged += SelectedEntity_PropertyChanged;
+            }
+            else
+            {
+                this.SelectedEntity = null;
+            }
+        }
 
+        private void SelectedEntity_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "WallLevelName")
+            {
+                EntitiesManager?.SyncLevelSelectedsEntityPropertyChanged(((IWall2D)this.SelectedEntity).WallLevelName);
             }
         }
     }

@@ -14,6 +14,7 @@ namespace ApplicationInterfaceCore
         //event EventHandler ToolMessageChanged;
         IEntitiesManager EntitiesManager { get; }
         ILayerManager LayerManager { get; }
+        string ActiveLevel { get; set; }
         string ToolName { get; }
         string ToolMessage { get; }
         bool IsSnapEnable { get; }

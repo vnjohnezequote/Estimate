@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,29 +10,17 @@ using devDept.Eyeshot.Entities;
 namespace AppModels.CustomEntity
 {
     [Serializable]
-    public class Wall2D: Line,IEntityVmCreateAble,IWall2D
+    public class LinearPathWall2D: LinearPath, IWall2D,IEntityVmCreateAble
     {
-        #region Field
-        //private string _wallLevelName;
-        //private int _wallHeight;
-        //private string _wallLength;
-        #endregion
-
-        #region Properties
-
         public string WallLevelName { get; set; }
 
-        #endregion
-
-        public Wall2D(Line another) : base(another)
+        public LinearPathWall2D(LinearPath another) : base(another)
         {
-            
+
         }
-
-
         public IEntityVm CreateEntityVm()
         {
-            return new Wall2DVm(this);
+            return new LinearPathWall2DVm(this);
         }
     }
 }

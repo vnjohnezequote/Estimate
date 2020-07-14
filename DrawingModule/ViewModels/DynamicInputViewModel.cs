@@ -1051,7 +1051,11 @@ namespace DrawingModule.ViewModels
             }
 
             this.CurrentTool = currentTool;
-            this.CurrentTool.PropertyChanged += CurrentTool_PropertyChanged;
+            if (this.CurrentTool!=null)
+            {
+                this.CurrentTool.PropertyChanged += CurrentTool_PropertyChanged;
+            }
+            //this.CurrentTool.PropertyChanged += CurrentTool_PropertyChanged;
             //NotifyToolChanged();
         }
 

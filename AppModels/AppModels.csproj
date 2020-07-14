@@ -159,6 +159,7 @@
     <Compile Include="Bracing.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Comparer\WallTypeComparer.cs" />
+    <Compile Include="CustomEntity\LinearPathWall2D.cs" />
     <Compile Include="CustomEntity\Wall2D.cs" />
     <Compile Include="DesignInfor.cs" />
     <Compile Include="DynamicObject\AutoNotifyProxy.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Interaface\IEntityVm.cs" />
     <Compile Include="Interaface\IEntityVmCreateAble.cs" />
     <Compile Include="Interaface\IJob.cs" />
+    <Compile Include="Interaface\IWall2D.cs" />
     <Compile Include="JobInfo.cs" />
     <Compile Include="JobModel.cs" />
     <Compile Include="JobWallDefaultInfo.cs" />
@@ -187,6 +189,7 @@
     <Compile Include="ViewModelEntity\EntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVmBase.cs" />
     <Compile Include="ViewModelEntity\LinearPathVm.cs" />
+    <Compile Include="ViewModelEntity\LinearPathWall2DVm.cs" />
     <Compile Include="ViewModelEntity\LineVm.cs" />
     <Compile Include="ViewModelEntity\Wall2DVm.cs" />
     <Compile Include="WallStud.cs" />

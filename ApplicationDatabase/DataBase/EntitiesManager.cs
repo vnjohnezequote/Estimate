@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Threading;
 using ApplicationInterfaceCore;
+using AppModels;
 using AppModels.AppData;
 using AppModels.CustomEntity;
 using AppModels.DynamicObject;
@@ -24,9 +25,27 @@ namespace AppDataBase.DataBase
         private IEntityVm _selectedEntity;
         private ObservableCollection<Entity> _selectedEntities;
         public EntityList Entities { get; private set; }
-        public IEntityVm SelectedEntity { get=>_selectedEntity; set=>SetProperty(ref _selectedEntity,value); }
-        public ObservableCollection<Entity> SelectedEntities { get=>_selectedEntities; set=>SetProperty(ref _selectedEntities,value); }
 
+        public IEntityVm SelectedEntity
+        {
+            get=>_selectedEntity;
+            set => SetProperty(ref _selectedEntity,value);
+        }
+
+        public void SyncLevelSelectedsEntityPropertyChanged(string wallLevel)
+        {
+            foreach (var selectedEntity in SelectedEntities)
+            {
+                if (selectedEntity is IWall2D wall2D)
+                {
+                    wall2D.WallLevelName = wallLevel;
+                }
+            }
+
+            this.NotifyEntitiesListChanged();
+        }
+
+        public ObservableCollection<Entity> SelectedEntities { get=>_selectedEntities; set=>SetProperty(ref _selectedEntities,value); }
         public ICadDrawAble CanvasDrawing { get;private set; }
         //public ICadDrawAble CanvasDrawing { get; set; }
 
@@ -84,6 +103,24 @@ namespace AppDataBase.DataBase
             NotifyEntitiesListChanged();
         }
 
+        //public void SyncSelectedsPropertyChanged()
+        //{
+        //    if (this.SelectedEntity is IWall2D selWall2D)
+        //    {
+        //        foreach (var selectedEntity in SelectedEntities)
+        //        {
+        //            if (selectedEntity is IWall2D wall)
+        //            {
+        //                wall.WallLevelName = selWall2D.WallLevelName;
+        //            }
+        //        }
+        //    }
+            
+        //}
+
+        /// <summary>
+        /// Notify EntityList Changed to calculator againt wall length
+        /// </summary>
         public void NotifyEntitiesListChanged()
         {
             EntitiesCollectionChanged?.Invoke(this,null);

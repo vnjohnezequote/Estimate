@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using devDept.Eyeshot.Entities;
 using AppModels.CustomEntity;
 using AppModels.Interaface;
-using devDept.Eyeshot.Entities;
 
 namespace AppModels.ViewModelEntity
 {
-    [Serializable]
-    public class Wall2DVm : EntityVmBase,IWall2D
+    public class LinearPathWall2DVm: EntityVmBase, IWall2D
     {
         public string WallLevelName
         {
             get
             {
-                if (Entity!=null &&Entity is Wall2D wall2D)
+                if (Entity != null && Entity is LinearPathWall2D wall2D)
                 {
                     return wall2D.WallLevelName;
                 }
@@ -25,12 +19,12 @@ namespace AppModels.ViewModelEntity
             }
             set
             {
-                if (Entity != null && Entity is Wall2D)
+                if (Entity != null && Entity is LinearPathWall2D wall2D)
                 {
-                    ((Wall2D) Entity).WallLevelName = value;
+                    wall2D.WallLevelName = value;
                     RaisePropertyChanged(nameof(WallLevelName));
                 }
-                
+
             }
         }
 
@@ -44,14 +38,14 @@ namespace AppModels.ViewModelEntity
             return 0;
         }
 
-        public Wall2DVm(Entity entity) : base(entity)
+        public LinearPathWall2DVm(IEntity entity) : base(entity)
         {
         }
-
         public override void NotifyPropertiesChanged()
         {
             base.NotifyPropertiesChanged();
             RaisePropertyChanged(nameof(WallLevelName));
         }
+
     }
 }

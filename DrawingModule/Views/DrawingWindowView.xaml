@@ -105,26 +105,49 @@
 			<Button Content="{materialDesign:PackIcon ArrowExpand}" Margin="5 0 0 0" Command="{Binding ExtendCommand}"/>
 			<Button Content="{materialDesign:PackIcon ArrowCollapseLeft}" Margin="5 0 0 0" Command="{Binding FilletCommand}"/>
 			<Button Content="{materialDesign:PackIcon ImageFilterNone}" Margin="5 0 0 0" Command="{Binding OffsetCommand}"/>
-            <ComboBox VerticalAlignment="Center"
-					  HorizontalAlignment="Right"
-                      Margin="0 0 300 0"
-					  Width="150"
-                      ItemsSource="{Binding LayerManager.Layers}"
-                      SelectedItem="{Binding LayerManager.SelectedLayer}"
-					  DisplayMemberPath="Name"
-					  Style="{StaticResource MaterialDesignComboBox}"
-					  materialDesign:ComboBoxAssist.ClassicMode="true"
-                      Foreground="{Binding LayerManager.SelectedLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"
-                      Background="{StaticResource MaterialDesignLightBackground}"
-                      Padding="10 5 10 5">
-                <!--Style="{StaticResource Custom.MahApps.Style.ComboboxStyle}"-->
-                <ComboBox.ItemContainerStyle>
-                    <!-- In custom style, bind Forground color -->
-                    <Style TargetType="{x:Type ComboBoxItem}">
-                        <Setter Property="Foreground" Value="{Binding Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
-                    </Style>
-                </ComboBox.ItemContainerStyle>
-            </ComboBox>
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <ComboBox VerticalAlignment="Center"
+                          Margin="0 0 10 0"
+                          Width="150"
+                          ItemsSource="{Binding LayerManager.Layers}"
+                          SelectedItem="{Binding LayerManager.SelectedLayer}"
+                          DisplayMemberPath="Name"
+                          Style="{StaticResource MaterialDesignComboBox}"
+                          materialDesign:ComboBoxAssist.ClassicMode="true"
+                          Foreground="{Binding LayerManager.SelectedLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"
+                          Background="{StaticResource MaterialDesignLightBackground}"
+                          Padding="10 5 10 5">
+                    <!--Style="{StaticResource Custom.MahApps.Style.ComboboxStyle}"-->
+                    <ComboBox.ItemContainerStyle>
+                        <!-- In custom style, bind Forground color -->
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <Setter Property="Foreground" Value="{Binding Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+
+                <ComboBox VerticalAlignment="Center"
+                          Width="150"
+						  Margin="0 0 40 0"
+                          ItemsSource="{Binding Levels}"
+						  DisplayMemberPath="LevelName"
+						  SelectedValuePath="LevelName"
+						  SelectedValue="{Binding SelectedLevel}"
+                          Style="{StaticResource MaterialDesignComboBox}"
+                          Background="{StaticResource MaterialDesignLightBackground}"
+                          materialDesign:ComboBoxAssist.ClassicMode="true"
+                          Padding="10 5 10 5"
+                          Foreground="{StaticResource MaterialDesignDarkBackground}">
+                    <ComboBox.ItemContainerStyle>
+                        <!-- In custom style, bind Forground color -->
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <Setter Property="Foreground" Value="{StaticResource MaterialDesignLightBackground}"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+            </StackPanel>
+            
+                
         </DockPanel>
 		<!-- Splitter For ToolBar and Main Region -->
 		<Border Style="{StaticResource DarkBorder}"

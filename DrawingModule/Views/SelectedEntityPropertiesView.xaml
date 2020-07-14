@@ -82,7 +82,11 @@
                   Grid.Column="2"
                   Style="{StaticResource MahApps.Styles.ComboBox}"
                   Margin="0 5 0 5"
-                  Visibility="{Binding LevelVisibility}"/>
+                  Visibility="{Binding LevelVisibility}"
+                  ItemsSource="{Binding Levels}"
+                  DisplayMemberPath="LevelName"
+                  SelectedValuePath="LevelName"
+                  SelectedValue="{Binding Path= SelectedEntity.WallLevelName}"/>
         </Grid>
     
 </UserControl>

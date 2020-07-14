@@ -5,6 +5,7 @@ using System.Windows.Input;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using ApplicationService;
+using AppModels.Interaface;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -34,11 +35,11 @@ namespace DrawingModule.ViewModels
         private CanvasDrawing _canvasDrawing;
         private PaperSpaceDrawing _paperSpace;
         private CanvasDrawingView _canvasDrawingView;
-        
+
         private DynamicInputViewModel  _dynamciInputViewModel;
         #endregion
         #region Properties
-
+        public string ActiveLevel { get; set; }
         public bool IsCanvasMouseOn
         {
             get => this._isCanvasMouseOn;
@@ -82,13 +83,17 @@ namespace DrawingModule.ViewModels
             this.RaisePropertyChanged(nameof(EntitiesManager));
             //CanvasDrawingLoadedCommand = ReactiveCommand.Create<Grid,Grid >(canvasGrid =>this._canvasGrid = canvasGrid );
             //CanvasDrawingLoadedCommand = new DelegateCommand<CanvasDrawing>(OnCanvasDrawingLoaded);
-
             CanvasDrawingLoadedCommand = new DelegateCommand<CanvasDrawingView>(OnCanvasDrawingLoaded);
             CanvasDrawingMouseLeave = new DelegateCommand(OnCanvasDrawingMouseLeave);
             CanvasDrawingMouseEnter = new DelegateCommand(OnCanvasDrawingMouseEnter);
             this.EventAggre.GetEvent<CommandExcuteStringEvent>().Subscribe(ExcuteCommand);
+            this.EventAggre.GetEvent<LevelNameService>().Subscribe(OnSelectedLevelChanged);
         }
-
+        
+        private void OnSelectedLevelChanged(string para)
+        {
+            _canvasDrawing?.SetActivelevel(para);
+        }
         private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (EntitiesManager.SelectedEntity == null)
@@ -223,6 +228,15 @@ namespace DrawingModule.ViewModels
             canvasDrawingView.CanvasDrawing.SetView(viewType.Top);
             canvasDrawingView.CanvasDrawing.Camera.ProjectionMode = projectionType.Orthographic;
             this._canvasDrawing = canvasDrawingView.CanvasDrawing;
+            
+            
+            var job = UnityContainer.Resolve<IJob>("GlobalJob");
+            if (job != null && job.Levels != null && job.Levels.Count > 0)
+            {
+                this.OnSelectedLevelChanged(job.Levels[0].LevelName);
+            }
+
+
             _canvasDrawing.SetDynamicInput(canvasDrawingView.DynamicInput);
             _paperSpace = canvasDrawingView.PaperSpace;
             this._canvasDrawingView = canvasDrawingView;

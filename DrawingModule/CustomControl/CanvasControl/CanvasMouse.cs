@@ -188,7 +188,8 @@ namespace DrawingModule.CustomControl.CanvasControl
             {
                 CurrentTool.SetLayersManager((ILayerManager) LayersManager);
             }
-            
+
+            CurrentTool.ActiveLevel = this.ActiveLevel;
             IsProcessingTool = true;
             _isUserInteraction = false;
             MouseMove_Drawing += tool.NotifyMouseMove;

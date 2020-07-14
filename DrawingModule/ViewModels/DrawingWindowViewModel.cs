@@ -8,8 +8,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.ObjectModel;
 using ApplicationInterfaceCore;
+using ApplicationService;
+using AppModels;
 using AppModels.AppData;
+using AppModels.Interaface;
 using DrawingModule.Views;
 using CanvasDrawing = DrawingModule.CustomControl.CanvasControl.CanvasDrawing;
 
@@ -40,9 +44,41 @@ namespace DrawingModule.ViewModels
         private DrawingWindowView _window;
         private bool _isOrthorMode;
         private bool _isDimByObject;
-
+        private string _selectedLevel;
+        private ObservableCollection<LevelWall> _levels;
         #endregion
         #region public Property
+
+        public ObservableCollection<LevelWall> Levels
+        {
+            get=>_levels;
+            set
+            {
+                SetProperty(ref _levels, value);
+                this.RaisePropertyChanged(SelectedLevel);
+            }
+        }
+        public string SelectedLevel
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_selectedLevel)) return _selectedLevel;
+                if (this.Levels!=null && this.Levels.Count>0)
+                {
+                    return this.Levels[0].LevelName;
+                }
+
+                return _selectedLevel;
+            }
+            set
+            {
+                SetProperty(ref _selectedLevel, value);
+                if (this.EventAggre != null)
+                {
+                    this.EventAggre.GetEvent<LevelNameService>().Publish(_selectedLevel);
+                }
+            } 
+        }
 
         public bool IsOrthorMode
         {
@@ -101,6 +137,11 @@ namespace DrawingModule.ViewModels
         public DrawingWindowViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IEntitiesManager entitiesManager)
             : base(unityContainer, regionManager, eventAggregator, layerManager)
         {
+            var job = UnityContainer.Resolve<IJob>("GlobalJob");
+            if (job!=null)
+            {
+                this.Levels = job.Levels;
+            }
             _entitiesManager = entitiesManager;
             this.WindowLoadedCommand = new DelegateCommand<DrawingWindowView>(this.WindowLoaded);
             //this.DrawLineCommand = new DelegateCommand(this.OnDrawLine);

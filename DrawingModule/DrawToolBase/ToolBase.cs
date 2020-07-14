@@ -16,7 +16,7 @@ namespace DrawingModule.DrawToolBase
         private string _toolMessage;
         private IDynamicInputView _dynamicInput;
         public event EventHandler ToolMessageChanged;
-
+        public string ActiveLevel { get; set; }
         public IEntitiesManager EntitiesManager { get; private set; }
         public ILayerManager LayerManager { get; private set; }
         public virtual string ToolName { get; }

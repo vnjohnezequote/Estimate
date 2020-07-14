@@ -10,6 +10,7 @@ namespace ApplicationInterfaceCore
 {
     public interface ICadDrawAble : INotifyPropertyChanged
     {
+        string ActiveLevel { get; }
         int DimTextHeight { get; }
         ViewportList Viewports { get; }
         int ActiveViewport { get; }

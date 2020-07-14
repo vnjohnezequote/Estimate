@@ -145,35 +145,33 @@ namespace Estimate.ViewModels
         /// <summary>
         /// The job model.
         /// </summary>
-        private JobModel jobModel;
+        private JobModel _jobModel;
 
         /// <summary>
         /// The client db.
         /// </summary>
-        private ClientDataBase clientDB;
+        private ClientDataBase _clientDb;
 
         /// <summary>
         /// The clients.
         /// </summary>
-        private ObservableCollection<Client> clients;
+        private ObservableCollection<Client> _clients;
 
         /// <summary>
         /// The _selected client.
         /// </summary>
-        private Client selectedClient;
+        private Client _selectedClient;
 
         /// <summary>
         /// The selected client index.
         /// </summary>
-        private int? selectedClientIndex;
+        private int? _selectedClientIndex;
 
         /// <summary>
         /// The max panel changed.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private Action _maxPanelChanged;
-
-        private List<CommandClass> commandClassList;
+        private readonly Action _maxPanelChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
@@ -196,11 +194,7 @@ namespace Estimate.ViewModels
             ILayerManager layerManager)
             : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
-            commandClassList = new List<CommandClass>();
-
-            
-
-            this.clientDB = this.UnityContainer.Resolve<ClientDataBase>();
+            this._clientDb = this.UnityContainer.Resolve<ClientDataBase>();
             this.GetClientCollection();
             this._maxPanelChanged = this.OnMaxWidthPanelChanged;
             this._maxPanelChanged += this.OnMaxHeightPanelChanged;
@@ -337,22 +331,22 @@ namespace Estimate.ViewModels
         /// <summary>
         /// Gets or sets the client name.
         /// </summary>
-        public ObservableCollection<Client> Clients { get => this.clients; set => this.SetProperty(ref this.clients, value); }
+        public ObservableCollection<Client> Clients { get => this._clients; set => this.SetProperty(ref this._clients, value); }
 
         /// <summary>
         /// Gets or sets the selected client.
         /// </summary>
-        public Client SelectedClient { get => this.selectedClient; set => this.SetProperty(ref this.selectedClient, value); }
+        public Client SelectedClient { get => this._selectedClient; set => this.SetProperty(ref this._selectedClient, value); }
 
         /// <summary>
         /// Gets or sets the selected client index.
         /// </summary>
-        public int? SelectedClientIndex { get => this.selectedClientIndex; set => this.SetProperty(ref this.selectedClientIndex, value); }
+        public int? SelectedClientIndex { get => this._selectedClientIndex; set => this.SetProperty(ref this._selectedClientIndex, value); }
 
         /// <summary>
         /// Gets or sets the Job
         /// </summary>
-        public JobModel Job { get => this.jobModel; set => this.SetProperty(ref this.jobModel, value); }
+        public JobModel Job { get => this._jobModel; set => this.SetProperty(ref this._jobModel, value); }
 
         /// <summary>
         /// The load wall frame input.
@@ -376,7 +370,7 @@ namespace Estimate.ViewModels
         /// </summary>
         private void GetClientCollection()
         {
-            this.Clients = new ObservableCollection<Client>(this.clientDB.GetClients());
+            this.Clients = new ObservableCollection<Client>(this._clientDb.GetClients());
         }
 
         /// <summary>
@@ -410,7 +404,7 @@ namespace Estimate.ViewModels
         /// <param name="customer">The customer<see cref="string"/></param>
         private void OnSetSelectedClient(string customer)
         {
-            var selectedCustomer = this.clientDB.GetClient(customer);
+            var selectedCustomer = this._clientDb.GetClient(customer);
 
             if (selectedCustomer == null)
             {
