@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.Interaface;
+
 namespace AppModels
 {
     using System.Collections.ObjectModel;
@@ -16,17 +18,17 @@ namespace AppModels
     /// <summary>
     /// The job model.
     /// </summary>
-    public class JobModel : BindableBase
+    public class JobModel : BindableBase,IJob
     {
         /// <summary>
         /// The inFor.
         /// </summary>
-        private JobInfo inFor;
+        private JobInfo _inFor;
 
         /// <summary>
         /// The levels.
         /// </summary>
-        private ObservableCollection<LevelWall> levels;
+        private ObservableCollection<LevelWall> _levels;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JobModel"/> class.
@@ -42,14 +44,14 @@ namespace AppModels
         /// </summary>
         public JobInfo Info
         {
-            get => this.inFor;
-            set => this.SetProperty(ref this.inFor, value);
+            get => this._inFor;
+            set => this.SetProperty(ref this._inFor, value);
         }
 
         /// <summary>
         /// Gets or sets the levels.
         /// </summary>
-        public ObservableCollection<LevelWall> Levels { get => this.levels; set => this.SetProperty(ref this.levels, value); }
+        public ObservableCollection<LevelWall> Levels { get => this._levels; set => this.SetProperty(ref this._levels, value); }
 
     }
 }

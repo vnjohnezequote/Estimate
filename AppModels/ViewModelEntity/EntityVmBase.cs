@@ -21,28 +21,13 @@ namespace AppModels.ViewModelEntity
         [Display(AutoGenerateField = false)]
         public IEntity Entity { get; }
         [PropertyGrid(NestedPropertyDisplayMode = NestedPropertyDisplayMode.None)]
-        public System.Windows.Media.Color Color
+        public Color? Color
         {
-            get
-            {
-                if (this.Entity != null)
-                {
-                    System.Windows.Media.Color newColor = System.Windows.Media.Color.FromArgb(
-                        this.Entity.Color.A,
-                        this.Entity.Color.R,
-                        this.Entity.Color.G,
-                        this.Entity.Color.B);
-                    
-                    return newColor;
-                }
-                return Colors.White;
-            }
+            get => Entity?.Color;
             set
             {
-                if(this.Entity!= null)
-                {
-                    this.Entity.Color = System.Drawing.Color.FromArgb(value.A, value.R, value.G, value.B);
-                }
+                if (this.Entity == null) return;
+                if (value != null) this.Entity.Color = (Color) value;
             }
         }
         public string LayerName
@@ -56,7 +41,7 @@ namespace AppModels.ViewModelEntity
             }
         }
 
-        public EntityVmBase(Entity entity)
+        protected EntityVmBase(IEntity entity)
         {
             this.Entity = entity;
         }

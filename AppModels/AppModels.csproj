@@ -173,6 +173,7 @@
     <Compile Include="DoubleDimension.cs" />
     <Compile Include="Interaface\IEntityVm.cs" />
     <Compile Include="Interaface\IEntityVmCreateAble.cs" />
+    <Compile Include="Interaface\IJob.cs" />
     <Compile Include="JobInfo.cs" />
     <Compile Include="JobModel.cs" />
     <Compile Include="JobWallDefaultInfo.cs" />

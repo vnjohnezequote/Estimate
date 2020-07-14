@@ -10,6 +10,7 @@
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              xmlns:pt="http://propertytools.org/wpf"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:applicationConverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
              x:Class="DrawingModule.Views.SelectedEntityPropertiesView"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance {x:Type viewModels:SelectedEntityPropertiesViewModel}, IsDesignTimeCreatable=True}"
@@ -20,45 +21,68 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
-                <!--<ResourceDictionary>
-                    <converter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
-                    <converter:ColorToColorConverter x:Key="ColorToColorConverter"/>
-                    <converter:ColorToStringConverter x:Key="ColorToStringConverter"/>
-                </ResourceDictionary>-->
+                <ResourceDictionary>
+                    <applicationConverter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+                    <applicationConverter:ColorToColorConverter x:Key="ColorToColorConverter"/>
+                    <applicationConverter:ColorToStringConverter x:Key="ColorToStringConverter"/>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <!--<sf:PropertyGrid SelectedObject="{Binding SelectedEntity}" Width="200"/>-->
-        <!--<ContentControl prism:RegionManager.RegionName="EntitiesProperTiesManagerProperties"/>-->
-        <!--<syncfusion:PropertyGrid SelectedObject="{Binding SelectedEntity}"
-                                 PropertyExpandMode="NestedMode"
-                                 ViewBackgroundColor="Transparent"
-                                 LineColor="Transparent"
-                                 SearchBoxVisibility="Collapsed"
-                                 Foreground="{StaticResource MahApps.Brushes.IdealForeground}"
-                                 ButtonPanelVisibility="Collapsed"/>-->
-
-        <!--<TextBlock Text="{Binding SelectedTypeName}"/>-->
-        <xctk:PropertyGrid SelectedObject="{Binding SelectedEntity}" Background="Transparent"
-                           AutoGenerateProperties="False">
-            <xctk:PropertyGrid.PropertyDefinitions>
-                <xctk:PropertyDefinition Name="LayerName"/>
-                <xctk:PropertyDefinition Name="Color" />
-                <xctk:PropertyDefinition Name="WallLevelName"/>
-            </xctk:PropertyGrid.PropertyDefinitions>
-            <xctk:PropertyGrid.EditorDefinitions>
-                <xctk:EditorDefinition.EditorTemplate>
-                    <DataTemplate>
-                        <ComboBox ItemsSource="{Binding Value}" 
-                                  DisplayMemberPath="Country_Name" 
-                                  SelectedValuePath="Country_GUID"
-                                  SelectedValue="ef6c3f62-3fa8-45fe-84ab-f0d898e072c3"
-                        />
-                    </DataTemplate>
-                </xctk:EditorDefinition.EditorTemplate>
-            </xctk:PropertyGrid.EditorDefinitions>
-               
-        </xctk:PropertyGrid>
-    </Grid>
+   
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" MinWidth="100"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Layer" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LayerVisibility}"/>
+            <TextBlock Text="Color" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding ColorVisibility}"/>
+            <TextBlock Text="Level" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LevelVisibility}"/>
+            <GridSplitter Grid.Column="1"
+                          Grid.Row="0"
+                          Grid.RowSpan="3"
+                          ResizeDirection="Columns" 
+                          ResizeBehavior="PreviousAndNext"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Stretch"
+                          Margin="-3 -3 -3 -3"
+                          BorderThickness="3"
+                          BorderBrush="Transparent"/>
+        <ComboBox Grid.Row="0"
+                  Grid.Column="2"
+                  Style="{StaticResource MahApps.Styles.ComboBox}"
+                  Margin="0 5 0 5"
+                  Visibility="{Binding LayerVisibility}"
+                  ItemsSource="{Binding LayerManager.Layers}"
+                  SelectedValuePath="Name"
+                  SelectedValue="{Binding Path=SelectedEntity.LayerName}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle Fill="{Binding Color,Converter={StaticResource ColorToBrushConverter}}" Width="16" Height="16" Margin="0 2 5 2"/>
+                        <TextBlock Text="{Binding Name}" Foreground="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <syncfusion:ColorPicker Grid.Row="1"
+                                Grid.Column="2"
+                                Background="Transparent"
+                                Margin="0 5 0 5"
+                                Visibility="{Binding ColorVisibility}"
+                                Color="{Binding SelectedEntity.Color, Mode=TwoWay, Converter={StaticResource ColorToColorConverter}}"
+                                Foreground="{Binding SelectedEntity.Color,Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"/>
+        <ComboBox Grid.Row="2" 
+                  Grid.Column="2"
+                  Style="{StaticResource MahApps.Styles.ComboBox}"
+                  Margin="0 5 0 5"
+                  Visibility="{Binding LevelVisibility}"/>
+        </Grid>
+    
 </UserControl>

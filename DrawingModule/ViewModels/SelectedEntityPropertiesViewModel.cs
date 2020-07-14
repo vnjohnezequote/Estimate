@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using AppModels.CustomEntity;
@@ -35,10 +36,34 @@ namespace DrawingModule.ViewModels
             get => _entitiesManger;
         }
 
+        public Visibility LayerVisibility => _selectedEntity==null ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility ColorVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility LevelVisibility
+        {
+            get
+            {
+                switch (_selectedEntity)
+                {
+                    case null:
+                        return Visibility.Collapsed;
+                    case Wall2DVm _:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+            }
+        } 
+
         public IEntityVm SelectedEntity
         {
             get => _selectedEntity;
-            set=> SetProperty( ref _selectedEntity , value);
+            set
+            {
+                SetProperty(ref _selectedEntity, value);
+                RaisePropertyChanged(nameof(LayerVisibility));
+                RaisePropertyChanged(nameof(ColorVisibility));
+                RaisePropertyChanged(nameof(LevelVisibility));
+            }
         }
 
         #endregion

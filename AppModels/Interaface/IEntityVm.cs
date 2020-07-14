@@ -7,7 +7,7 @@ namespace AppModels.Interaface
     public interface IEntityVm: INotifyPropertyChanged
     {
         IEntity Entity { get; }
-        System.Windows.Media.Color Color { get; }
+        Color? Color { get; }
         string LayerName { get; }
 
         void NotifyPropertiesChanged();
