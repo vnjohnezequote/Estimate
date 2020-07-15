@@ -34,14 +34,14 @@ namespace AppDataBase.DataBase
         /// <summary>
         /// The db.
         /// </summary>
-        private readonly LiteDatabase db;
+        //private readonly LiteDatabase _db;
 
 
 
         /// <summary>
         /// The clients.
         /// </summary>
-        private readonly LiteCollection<Client> clients;
+        private readonly ILiteCollection<Client> _clients;
 
 
         #endregion
@@ -54,12 +54,17 @@ namespace AppDataBase.DataBase
         /// </summary>
         public ClientDataBase()
         {
-            this.db = new LiteDatabase("Clients.Db");
+            using (var db = new LiteDatabase("Clients.Db"))
+            {
+                this._clients = db.GetCollection<Client>("Clients");
+                this.Clients = this.GetClients();
+                this.DataBaseUpdated += this.ClientDataUpdated;
+            }
+            //this._db = new LiteDatabase("Clients.Db");
 
-            // this.db = new LiteDatabase("filename=Clients.Db;upgrade=true");
-            this.clients = this.db.GetCollection<Client>("Clients");
-            this.Clients = this.GetClients();
-            this.DataBaseUpdated += this.ClientDataUpdated;
+           //LiteDatabase db;
+            //this._db = new LiteDatabase("filename=Clients.Db;upgrade=true");
+            
         }
 
         #endregion
@@ -84,8 +89,8 @@ namespace AppDataBase.DataBase
         /// </returns>
         public List<Client> GetClients()
         {
-            this.CreateTestDataBase();
-            return this.clients.FindAll().ToList();
+            //this.CreateTestDataBase();
+            return this._clients.FindAll().ToList();
         }
 
         /// <summary>
@@ -104,17 +109,19 @@ namespace AppDataBase.DataBase
                 return null;
             }
 
-            if (this.clients.Exists(x => x.Name == clientName))
+            if (this.Clients.Exists(x => x.Name == clientName))
             {
-                var result = this.clients.FindOne(x => x.Name == clientName);
-                return result;
+                //var result = this.Clients.FindOne(x => x.Name == clientName);
+
+                return Clients.FirstOrDefault(client => client.Name == clientName);
+
+                //return result;
             }
-            else
-            {
-                this.CreateClient(clientName);
-                var client = this.clients.FindOne(x => x.Name == clientName);
-                return client;
-            }
+
+            this.CreateClient(clientName);
+            return Clients.FirstOrDefault(client => client.Name == clientName);
+            //var client = this.Clients.FindOne(x => x.Name == clientName);
+            //return client;
         }
 
         /// <summary>
@@ -132,8 +139,8 @@ namespace AppDataBase.DataBase
         public void CreateClient(string clientName, List<string> builders = null, string clientIcon = "")
         {
             var client = new Client() { Name = clientName, Builders = new List<string>(), ClientIcon = clientIcon };
-            this.clients.Insert(client);
-            this.clients.EnsureIndex(x => x.Name);
+            this._clients.Insert(client);
+            this._clients.EnsureIndex(x => x.Name);
             this.DataBaseUpdated?.Invoke(this, null);
         }
 
@@ -146,9 +153,9 @@ namespace AppDataBase.DataBase
         /// </param>
         public void UpdateClient(Client client)
         {
-            if (this.clients.Exists(x => x.Name == client.Name))
+            if (this._clients.Exists(x => x.Name == client.Name))
             {
-                this.clients.Update(client);
+                this._clients.Update(client);
                 this.DataBaseUpdated?.Invoke(this, null);
 
             }
@@ -188,14 +195,14 @@ namespace AppDataBase.DataBase
             };
 
 
-            if (this.clients.Exists(x => x.Name == ClientNames.Warnervale.ToString()))
+            if (this._clients.Exists(x => x.Name == ClientNames.Warnervale.ToString()))
             {
-                this.clients.Update(client);
+                this._clients.Update(client);
             }
             else
             {
-                this.clients.Insert(client);
-                this.clients.EnsureIndex(x => x.Name);
+                this._clients.Insert(client);
+                this._clients.EnsureIndex(x => x.Name);
             }
 
 
@@ -224,14 +231,14 @@ namespace AppDataBase.DataBase
             }
             };
 
-            if (this.clients.Exists(x => x.Name == ClientNames.Prenail.ToString()))
+            if (this._clients.Exists(x => x.Name == ClientNames.Prenail.ToString()))
             {
-                this.clients.Update(client);
+                this._clients.Update(client);
             }
             else
             {
-                this.clients.Insert(client);
-                this.clients.EnsureIndex(x => x.Name);
+                this._clients.Insert(client);
+                this._clients.EnsureIndex(x => x.Name);
             }
 
             client = new Client()
@@ -253,14 +260,14 @@ namespace AppDataBase.DataBase
 
             };
 
-            if (this.clients.Exists(x => x.Name == ClientNames.Rivo.ToString()))
+            if (this._clients.Exists(x => x.Name == ClientNames.Rivo.ToString()))
             {
-                this.clients.Update(client);
+                this._clients.Update(client);
             }
             else
             {
-                this.clients.Insert(client);
-                this.clients.EnsureIndex(x => x.Name);
+                this._clients.Insert(client);
+                this._clients.EnsureIndex(x => x.Name);
             }
         }
 

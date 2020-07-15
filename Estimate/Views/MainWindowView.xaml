@@ -136,8 +136,11 @@
             </StackPanel>
         </DockPanel>
         <!-- Tool Bar -->
-        <StackPanel Grid.Row="1" Background="{StaticResource DarkBackGround}">
-            <Button Content="Load Drawing Window" Command="{Binding LoadDrawingWindowCommand}"/>
+        <StackPanel Grid.Row="1" Background="{StaticResource DarkBackGround}" Orientation="Horizontal">
+            <Button Content="{materialDesign:PackIcon ContentSave}" Margin="15 0 0 0" Command="{Binding SaveJobCommand}" />
+            <Button Content="Load Drawing Window"
+                    Command="{Binding LoadDrawingWindowCommand}"
+                    Margin="15 0 0 0"/>
         </StackPanel>
         <!-- Splitter For ToolBar and Main Region -->
         <Border Style="{StaticResource DarkBorder}"

@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using AppModels.Interaface;
+using ProtoBuf;
 
 namespace AppModels
 {
@@ -18,6 +19,7 @@ namespace AppModels
     /// <summary>
     /// The job model.
     /// </summary>
+    [ProtoContract]
     public class JobModel : BindableBase,IJob
     {
         /// <summary>
@@ -42,6 +44,7 @@ namespace AppModels
         /// <summary>
         /// Gets or sets the info.
         /// </summary>
+        [ProtoMember(1)]
         public JobInfo Info
         {
             get => this._inFor;
@@ -51,6 +54,7 @@ namespace AppModels
         /// <summary>
         /// Gets or sets the levels.
         /// </summary>
+        [ProtoMember(1)]
         public ObservableCollection<LevelWall> Levels { get => this._levels; set => this.SetProperty(ref this._levels, value); }
 
     }

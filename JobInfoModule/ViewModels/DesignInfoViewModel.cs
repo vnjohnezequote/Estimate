@@ -60,8 +60,8 @@ namespace JobInfoModule.ViewModels
             [NotNull] IEventAggregator eventAggregator,ILayerManager layerManager)
             : base(unityContainer, regionManager, eventAggregator,layerManager)
         {
-            using (var db = new LiteDatabase(@"DesignInfo.db"))
-            // using (var db = new LiteDatabase(@"filename=DesignInfo.db;upgrade=true"))
+            //using (var db = new LiteDatabase(@"DesignInfo.db"))
+            using (var db = new LiteDatabase(@"filename=DesignInfo.db;upgrade=true"))
             {
                 var designInfors = db.GetCollection<DesignInfor>("DesignInfors");
 

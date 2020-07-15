@@ -42,12 +42,12 @@ namespace JobInfoModule.ViewModels
         /// <summary>
         /// The db base.
         /// </summary>
-        private ClientDataBase dbBase;
+        private ClientDataBase _dbBase;
 
         /// <summary>
         /// The clients.
         /// </summary>
-        private ObservableCollection<Client> clients;
+        private ObservableCollection<Client> _clients;
 
         
         #endregion
@@ -80,8 +80,8 @@ namespace JobInfoModule.ViewModels
             ILayerManager layermanager)
             : base(unityContainer, regionManager, eventAggregator,layermanager)
         {
-            this.dbBase = this.UnityContainer.Resolve<ClientDataBase>();
-            this.Clients = new ObservableCollection<Client>(this.dbBase.GetClients());
+            this._dbBase = this.UnityContainer.Resolve<ClientDataBase>();
+            this.Clients = new ObservableCollection<Client>(this._dbBase.Clients);
             this.CustomerMenuLoadedCommand = new DelegateCommand(this.OnCustomerMenuSelect);
             this.CustomerMenuSelectCommand = new DelegateCommand(this.OnCustomerMenuSelect);
             this.JobLocationCommand = new DelegateCommand(this.OnJobLocationSelect);
@@ -112,8 +112,8 @@ namespace JobInfoModule.ViewModels
         /// </summary>
         public ObservableCollection<Client> Clients
         {
-            get => this.clients;
-            set => this.SetProperty(ref this.clients, value);
+            get => this._clients;
+            set => this.SetProperty(ref this._clients, value);
         }
 
         #endregion

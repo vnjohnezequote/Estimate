@@ -7,9 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
 using ApplicationInterfaceCore;
-using DrawingModule.CommandClass;
+using LiteDB;
 using NewJobWizardModule.Views;
 
 namespace Estimate.ViewModels
@@ -33,14 +32,11 @@ namespace Estimate.ViewModels
 
     using DrawingModule.Views;
 
-    using Estimate.Views;
+    using Views;
 
     using JetBrains.Annotations;
 
     using JobInfoModule.Views;
-
-    using NewJobWizardModule;
-
     using Prism.Commands;
     using Prism.Events;
     using Prism.Regions;
@@ -212,12 +208,13 @@ namespace Estimate.ViewModels
             this.LoadLogoButton();
             this.CustomerMenuSelectCommand = new DelegateCommand(this.OnCustomerMenuSelect);
             this.LoadDrawingWindowCommand = new DelegateCommand(this.LoadDrawingWindow);
+            SaveJobCommand = new DelegateCommand(OnSaveJobCommand);
             this.EventAggre.GetEvent<JobModelService>().Subscribe(this.JobModelReceive);
 
 
         }
 
-        
+        #region Property
 
         /// <summary>
         /// Gets the window loaded command.
@@ -253,6 +250,7 @@ namespace Estimate.ViewModels
         /// </summary>
         public ICommand WindowSizeChangedCommand { get; private set; }
 
+        public ICommand SaveJobCommand { get; private set; }
         /// <summary>
         /// Gets the panel size changed command.
         /// </summary>
@@ -347,7 +345,17 @@ namespace Estimate.ViewModels
         /// Gets or sets the Job
         /// </summary>
         public JobModel Job { get => this._jobModel; set => this.SetProperty(ref this._jobModel, value); }
+        #endregion
 
+        private void OnSaveJobCommand()
+        {
+            if (this.Job != null)
+            {
+                var fileName = Job.Info.JobLocation + @"\" + Job.Info.JobNumber + ".db";
+
+                
+            }
+        }
         /// <summary>
         /// The load wall frame input.
         /// </summary>
@@ -370,7 +378,7 @@ namespace Estimate.ViewModels
         /// </summary>
         private void GetClientCollection()
         {
-            this.Clients = new ObservableCollection<Client>(this._clientDb.GetClients());
+            this.Clients = new ObservableCollection<Client>(this._clientDb.Clients);
         }
 
         /// <summary>

@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using ProtoBuf;
+
 namespace AppModels
 {
     using System;
@@ -17,6 +19,7 @@ namespace AppModels
     /// <summary>
     /// The job model.
     /// </summary>
+    [ProtoContract]
     public class JobInfo : BindableBase
     {
 
@@ -134,6 +137,7 @@ namespace AppModels
         /// <summary>
         /// Gets or sets the job default.
         /// </summary>
+        [ProtoMember(1)]
         public JobWallDefaultInfo JobDefault
         {
             get;
@@ -142,6 +146,7 @@ namespace AppModels
         /// <summary>
         /// Gets or sets the job location.
         /// </summary>
+        [ProtoMember(2)]
         public string JobLocation
         {
             get => this.jobLocation;

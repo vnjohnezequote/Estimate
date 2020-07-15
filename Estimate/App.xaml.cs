@@ -59,7 +59,6 @@ namespace Estimate
         {
             
             var shell = ServiceLocator.Current.GetInstance<MainWindowView>();
-
             RegionManager.SetRegionManager(shell, this.Container.Resolve<IRegionManager>());
             //RegionManager.UpdateRegions();
             return shell;
@@ -109,6 +108,10 @@ namespace Estimate
         {
             AppDomain.CurrentDomain.AssemblyLoad += CurrentDomainOnAssemblyLoad;
             base.OnStartup(e);
+            if (e.Args.Length > 0)
+            {
+                MessageBox.Show(e.Args[0]);
+            }
         }
         
 

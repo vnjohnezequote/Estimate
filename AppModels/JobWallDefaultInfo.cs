@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using ProtoBuf;
+
 namespace AppModels
 {
     using Prism.Mvvm;
@@ -14,6 +16,7 @@ namespace AppModels
     /// <summary>
     /// The wall default info.
     /// </summary>
+    [ProtoContract]
     public class JobWallDefaultInfo : BindableBase
     {
         #region private Field
