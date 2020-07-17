@@ -42,7 +42,8 @@ namespace JobInfoModule.ViewModels
         /// The prenai wind.
         /// </summary>
         //private PrenailWindCategoryView _prenaiWind;
-
+        private ObservableCollection<string> _windRates;
+        private ObservableCollection<string> _treatment;
         #endregion
 
         public WindCategoryViewModel()
@@ -65,17 +66,30 @@ namespace JobInfoModule.ViewModels
             : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             this.RegionManager = this.RegionManager.CreateRegionManager();
-            
+            WindRates = new ObservableCollection<string>();
+            Treatment = new ObservableCollection<string>();
             //this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SetClient);
         }
 
         #region Command
 
         #endregion
-		
-		#region Public Member
-        propp
+
+        #region Public Member
+        
+        public ObservableCollection<string> WindRates
+        {
+            get => _windRates;
+            set => SetProperty(ref _windRates, value);
+        }
+
        
+        public ObservableCollection<string> Treatment
+        {
+            get => _treatment;
+            set => SetProperty(ref _treatment, value);
+        }
+
         public string ClientName
         {
             get => this._clientName;
