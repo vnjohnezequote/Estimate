@@ -1,4 +1,5 @@
 ﻿using ApplicationInterfaceCore;
+using AppModels.Interaface;
 
 namespace JobInfoModule.ViewModels
 {
@@ -115,8 +116,8 @@ namespace JobInfoModule.ViewModels
         public PrenailWindCategoryViewModel(
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
-            [NotNull] IEventAggregator eventAggregator,ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator, layerManager)
+            [NotNull] IEventAggregator eventAggregator,ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
             this.WindCommand = new DelegateCommand<string>(OnSetWindCategory);
             this.WindLoadedCommand = new DelegateCommand(OnControlLoaded);
@@ -146,7 +147,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckWindRate("N1");
             set
             {
-                if (this.Job.WindRate.WindRate == "N1")
+                if (this.JobInfo.WindRate == "N1")
                 {
                     this.SetProperty(ref this.windN1, true);
                 }
@@ -165,7 +166,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckWindRate("N2");
             set
             {
-                if (this.Job.WindRate.WindRate == "N2")
+                if (this.JobInfo.WindRate == "N2")
                 {
                     this.SetProperty(ref this.windN2, true);
                 }
@@ -184,7 +185,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckWindRate("N3");
             set
             {
-                if (this.Job.WindRate.WindRate == "N3")
+                if (this.JobInfo.WindRate == "N3")
                 {
                     this.SetProperty(ref this.windN3, true);
                 }
@@ -203,7 +204,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckWindRate("N4");
             set
             {
-                if (this.Job.WindRate.WindRate == "N4")
+                if (this.JobInfo.WindRate == "N4")
                 {
                     this.SetProperty(ref this.windN4, true);
                 }
@@ -222,7 +223,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckWindRate("N5");
             set
             {
-                if (this.Job.WindRate.WindRate == "N5")
+                if (this.JobInfo.WindRate == "N5")
                 {
                     this.SetProperty(ref this.windN5, true);
                 }
@@ -241,7 +242,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckWindRate("N6");
             set
             {
-                if (this.Job.WindRate.WindRate == "N6")
+                if (this.JobInfo.WindRate == "N6")
                 {
                     this.SetProperty(ref this.windN6, true);
                 }
@@ -260,7 +261,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckWindRate("C1");
             set
             {
-                if (this.Job.WindRate.WindRate == "C1")
+                if (this.JobInfo.WindRate == "C1")
                 {
                     this.SetProperty(ref this.windC1, true);
                 }
@@ -279,7 +280,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckWindRate("C2");
             set
             {
-                if (this.Job.WindRate.WindRate == "C2")
+                if (this.JobInfo.WindRate == "C2")
                 {
                     this.SetProperty(ref this.windC2, true);
                 }
@@ -298,7 +299,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckWindRate("C3");
             set
             {
-                if (this.Job.WindRate.WindRate == "C3")
+                if (this.JobInfo.WindRate == "C3")
                 {
                     this.SetProperty(ref this.windC3, true);
                 }
@@ -317,7 +318,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckWindRate("C4");
             set
             {
-                if (this.Job.WindRate.WindRate == "C4")
+                if (this.JobInfo.WindRate == "C4")
                 {
                     this.SetProperty(ref this.windC4, true);
                 }
@@ -336,7 +337,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckTreatment("Untreated");
             set
             {
-                if (this.Job.Treatment == "Untreated")
+                if (this.JobInfo.Treatment == "Untreated")
                 {
                     this.SetProperty(ref this.unTreated, true);
                 }
@@ -355,7 +356,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckTreatment("H2");
             set
             {
-                if (this.Job.Treatment == "H2")
+                if (this.JobInfo.Treatment == "H2")
                 {
                     this.SetProperty(ref this.h2Treated, true);
                 }
@@ -374,7 +375,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckTreatment("H2S");
             set
             {
-                if (this.Job.Treatment == "H2S")
+                if (this.JobInfo.Treatment == "H2S")
                 {
                     this.SetProperty(ref this.h2STreated, true);
                 }
@@ -393,7 +394,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckTreatment("T2 Blue");
             set
             {
-                if (this.Job.Treatment == "T2 Blue")
+                if (this.JobInfo.Treatment == "T2 Blue")
                 {
                     this.SetProperty(ref this.t2Blue, true);
                 }
@@ -412,7 +413,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckTreatment("T2 Red");
             set
             {
-                if (this.Job.Treatment == "T2 Red")
+                if (this.JobInfo.Treatment == "T2 Red")
                 {
                     this.SetProperty(ref this.t2Red, true);
                 }
@@ -431,7 +432,7 @@ namespace JobInfoModule.ViewModels
             get => this.CheckTreatment("T3 Green");
             set
             {
-                if (this.Job.Treatment == "T3 Green")
+                if (this.JobInfo.Treatment == "T3 Green")
                 {
                     this.SetProperty(ref this.t3Green, true);
                 }
@@ -456,9 +457,9 @@ namespace JobInfoModule.ViewModels
         /// </summary>
         private void CheckTreatment()
         {
-            if (!string.IsNullOrEmpty(this.Job.Treatment))
+            if (!string.IsNullOrEmpty(this.JobInfo.Treatment))
             {
-                switch (this.Job.Treatment)
+                switch (this.JobInfo.Treatment)
                 {
                     case "H2":
                         this.H2Treated = true;
@@ -519,9 +520,9 @@ namespace JobInfoModule.ViewModels
         /// </summary>
         private void CheckWindRate()
         {
-            if (!string.IsNullOrEmpty(this.Job.WindRate.WindRate))
+            if (!string.IsNullOrEmpty(this.JobInfo.WindRate))
             {
-                switch (this.Job.WindRate.WindRate)
+                switch (this.JobInfo.WindRate)
                 {
                     case "N1":
                         this.WindN1 = true;
@@ -655,19 +656,19 @@ namespace JobInfoModule.ViewModels
         /// <returns>The <see cref="bool"/></returns>
         private bool CheckWindRate(string windRate)
         {
-            if (this.Job == null)
+            if (this.JobInfo == null)
             {
                 return false;
             }
             else
             {
-                if (string.IsNullOrEmpty(this.Job.WindRate.WindRate))
+                if (string.IsNullOrEmpty(this.JobInfo.WindRate))
                 {
                     return false;
                 }
                 else
                 {
-                    return this.Job.WindRate.WindRate == windRate;
+                    return this.JobInfo.WindRate == windRate;
                 }
             }
         }
@@ -679,19 +680,19 @@ namespace JobInfoModule.ViewModels
         /// <returns>The <see cref="bool"/></returns>
         private bool CheckTreatment(string treatMent)
         {
-            if (this.Job == null)
+            if (this.JobInfo == null)
             {
                 return false;
             }
             else
             {
-                if (string.IsNullOrEmpty(this.Job.Treatment))
+                if (string.IsNullOrEmpty(this.JobInfo.Treatment))
                 {
                     return false;
                 }
                 else
                 {
-                    return this.Job.Treatment == treatMent;
+                    return this.JobInfo.Treatment == treatMent;
                 }
             }
         }
@@ -702,7 +703,7 @@ namespace JobInfoModule.ViewModels
         /// <param name="windRate">The windRate<see cref="string"/></param>
         private void OnSetWindCategory(string windRate)
         {
-            this.Job.WindRate.WindRate = windRate;
+            this.JobInfo.WindRate = windRate;
             this.RaisePropertyChanged("WindN1");
             this.RaisePropertyChanged("WindN2");
             this.RaisePropertyChanged("WindN3");
@@ -721,7 +722,7 @@ namespace JobInfoModule.ViewModels
         /// <param name="treatMent">The treatMent<see cref="string"/></param>
         private void OnSetTreatment(string treatMent)
         {
-            this.Job.Treatment = treatMent;
+            this.JobInfo.Treatment = treatMent;
             this.RaisePropertyChanged(nameof(UnTreated));
             this.RaisePropertyChanged(nameof(H2Treated));
             this.RaisePropertyChanged(nameof(H2STreated));

@@ -11,6 +11,9 @@ using System.Runtime.InteropServices;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
+using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 
 namespace ApplicationCore.BaseModule
 {
@@ -27,7 +30,7 @@ namespace ApplicationCore.BaseModule
     {
         #region private Member
         private LevelWall _level;
-        private Client _selectedClient;
+        private ClientPoco _selectedClient;
         #endregion
         #region Constructor
 
@@ -50,24 +53,26 @@ namespace ApplicationCore.BaseModule
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        protected BaseFloorViewModelAware(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
-        : base(unityContainer, regionManager, eventAggregator,layerManager)
+        /// <param name="layerManager"></param>
+        /// <param name="jobModel"></param>
+        protected BaseFloorViewModelAware(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IJob jobModel)
+        : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
-            this.EventAggre.GetEvent<CustomerService>().Subscribe(OnSetCustomer);
+            this.EventAggregator.GetEvent<CustomerService>().Subscribe(OnSetCustomer);
         }
 
         #endregion
 
         #region Properties
 		public LevelWall Level { get => this._level; set => this.SetProperty(ref this._level, value); }
-        public Client SelectedClient { get=>this._selectedClient;
+        public ClientPoco SelectedClient { get=>this._selectedClient;
             set => this.SetProperty(ref _selectedClient, value);
         }
         #endregion Properties
 
         #region private funtion
 
-        private void OnSetCustomer(Client selectedClient)
+        private void OnSetCustomer(ClientPoco selectedClient)
         {
             if (selectedClient != null)
                 this.SelectedClient = selectedClient;
@@ -76,7 +81,7 @@ namespace ApplicationCore.BaseModule
         {
             if (!(navigationContext.Parameters["Level"] is LevelWall level)) return;
             this.Level = level;
-            if (!(navigationContext.Parameters["SelectedClient"] is Client client)) return;
+            if (!(navigationContext.Parameters["SelectedClient"] is ClientPoco client)) return;
             {
                 this.SelectedClient = client;
             }

@@ -8,6 +8,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using ApplicationInterfaceCore;
+using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 
 namespace WallFrameInputModule.ViewModels
 {
@@ -33,9 +36,9 @@ namespace WallFrameInputModule.ViewModels
         #region private Field
 
         /// <summary>
-        /// The selected client.
+        /// The selected clientPoco.
         /// </summary>
-        private Client selectedClient;
+        private ClientPoco _selectedClient;
 
         /// <summary>
         /// The job.
@@ -67,8 +70,8 @@ namespace WallFrameInputModule.ViewModels
         public WallFrameInputViewModel(
             IUnityContainer unityContainer,
             IRegionManager regionManager,
-            IEventAggregator eventAggregator,ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator,layerManager)
+            IEventAggregator eventAggregator,ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
         }
 
@@ -81,12 +84,12 @@ namespace WallFrameInputModule.ViewModels
         public bool IsCreated { get; set; }
 
         /// <summary>
-        /// Gets or sets the selected client.
+        /// Gets or sets the selected clientPoco.
         /// </summary>
-        public Client SelectedClient
+        public ClientPoco SelectedClient
         {
-            get => this.selectedClient;
-            set => this.SetProperty(ref this.selectedClient, value);
+            get => this._selectedClient;
+            set => this.SetProperty(ref this._selectedClient, value);
         }
 
         /// <summary>
@@ -108,12 +111,12 @@ namespace WallFrameInputModule.ViewModels
         /// </param>
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            if (navigationContext.Parameters["Job"] is JobModel jobParam)
+            if (navigationContext.Parameters["JobInfo"] is JobModel jobParam)
             {
                 this.Job = jobParam;
             }
 
-            if (navigationContext.Parameters["SelectedClient"] is Client selectedCustomer)
+            if (navigationContext.Parameters["SelectedClient"] is ClientPoco selectedCustomer)
             {
                 this.SelectedClient = selectedCustomer;
             }

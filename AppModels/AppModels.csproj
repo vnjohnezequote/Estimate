@@ -86,12 +86,6 @@
     <Reference Include="LiteDB, Version=5.0.8.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.5.0.8\lib\net45\LiteDB.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignColors, Version=1.2.6.1513, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignColors.1.2.6\lib\net45\MaterialDesignColors.dll</HintPath>
-    </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=3.1.3.1513, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.3.1.3\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -155,35 +149,64 @@
   <ItemGroup>
     <Compile Include="AppData\ColorItem.cs" />
     <Compile Include="AppData\LayerItem.cs" />
-    <Compile Include="Beam.cs" />
-    <Compile Include="Bracing.cs" />
-    <Compile Include="Client.cs" />
+    <Compile Include="CustomEntity\BeamLeader.cs" />
+    <Compile Include="Enums\BeamType.cs" />
+    <Compile Include="Enums\ClientNames.cs" />
+    <Compile Include="Enums\LoadBearingWallType.cs" />
+    <Compile Include="Enums\OpeningType.cs" />
+    <Compile Include="Enums\RoofFrameType.cs" />
+    <Compile Include="Enums\RoofType.cs" />
+    <Compile Include="Enums\WallType.cs" />
+    <Compile Include="Interaface\IClientDatabase.cs" />
+    <Compile Include="PocoDataModel\BeamPoco.cs" />
+    <Compile Include="PocoDataModel\BracingBasePoco.cs" />
+    <Compile Include="PocoDataModel\BracingPoco.cs" />
+    <Compile Include="PocoDataModel\DesignInfoPoco.cs" />
+    <Compile Include="PocoDataModel\GenericBracingBasePoco.cs" />
+    <Compile Include="PocoDataModel\GenericBracingPoco.cs" />
+    <Compile Include="PocoDataModel\JobWallDefaultInfoPoco.cs" />
+    <Compile Include="PocoDataModel\JobInfoPoco.cs" />
+    <Compile Include="PocoDataModel\JobModelPoco.cs" />
+    <Compile Include="PocoDataModel\LayerItemPoco.cs" />
+    <Compile Include="PocoDataModel\LevelWallDefaultInfoPoco.cs" />
+    <Compile Include="PocoDataModel\LevelWallPoco.cs" />
+    <Compile Include="PocoDataModel\OpeningPoco.cs" />
+    <Compile Include="PocoDataModel\RlwCalcPoco.cs" />
+    <Compile Include="PocoDataModel\TimberBasePoco.cs" />
+    <Compile Include="PocoDataModel\TimberWallPoco.cs" />
+    <Compile Include="PocoDataModel\WallBasePoco.cs" />
+    <Compile Include="PocoDataModel\WallLayerPoco.cs" />
+    <Compile Include="PocoDataModel\WallMemberBasePoco.cs" />
+    <Compile Include="PocoDataModel\WallStudPoco.cs" />
+    <Compile Include="ResponsiveData\Treatment.cs" />
+    <Compile Include="ResponsiveData\Beam.cs" />
+    <Compile Include="ResponsiveData\Bracing.cs" />
+    <Compile Include="PocoDataModel\ClientPoco.cs" />
     <Compile Include="Comparer\WallTypeComparer.cs" />
     <Compile Include="CustomEntity\LinearPathWall2D.cs" />
     <Compile Include="CustomEntity\Wall2D.cs" />
-    <Compile Include="DesignInfor.cs" />
+    <Compile Include="ResponsiveData\DesignInfor.cs" />
     <Compile Include="DynamicObject\AutoNotifyProxy.cs" />
     <Compile Include="EventArg\DrawInteractiveArgs.cs" />
-    <Compile Include="ExcelNote.cs" />
+    <Compile Include="ResponsiveData\ExcelNote.cs" />
     <Compile Include="Factories\EntitiyVmFactory.cs" />
     <Compile Include="Factories\EyeshotEntityVMFactory.cs" />
-    <Compile Include="GenericBracing.cs" />
-    <Compile Include="GenericBracingBase.cs" />
-    <Compile Include="Geometry.cs" />
-    <Compile Include="IntegerDimension.cs" />
-    <Compile Include="DoubleDimension.cs" />
+    <Compile Include="ResponsiveData\GenericBracing.cs" />
+    <Compile Include="ResponsiveData\GenericBracingBase.cs" />
+    <Compile Include="ResponsiveData\IntegerDimension.cs" />
+    <Compile Include="ResponsiveData\DoubleDimension.cs" />
     <Compile Include="Interaface\IEntityVm.cs" />
     <Compile Include="Interaface\IEntityVmCreateAble.cs" />
     <Compile Include="Interaface\IJob.cs" />
     <Compile Include="Interaface\IWall2D.cs" />
-    <Compile Include="JobInfo.cs" />
-    <Compile Include="JobModel.cs" />
-    <Compile Include="JobWallDefaultInfo.cs" />
-    <Compile Include="LevelWallDefaultInfo.cs" />
-    <Compile Include="PocoDataModel\WallTempLength.cs" />
-    <Compile Include="RlwCalc.cs" />
-    <Compile Include="Shape.cs" />
-    <Compile Include="BracingBase.cs" />
+    <Compile Include="ResponsiveData\JobInfo.cs" />
+    <Compile Include="ResponsiveData\JobModel.cs" />
+    <Compile Include="ResponsiveData\JobWallDefaultInfo.cs" />
+    <Compile Include="ResponsiveData\LevelWallDefaultInfo.cs" />
+    <Compile Include="ResponsiveData\WallTempLength.cs" />
+    <Compile Include="ResponsiveData\RlwCalc.cs" />
+    <Compile Include="ResponsiveData\Shape.cs" />
+    <Compile Include="ResponsiveData\BracingBase.cs" />
     <Compile Include="CustomEntity\CustomTable.cs" />
     <Compile Include="CustomEntity\PictureEntity.cs" />
     <Compile Include="ViewModelEntity\EntityVm.cs" />
@@ -192,26 +215,24 @@
     <Compile Include="ViewModelEntity\LinearPathWall2DVm.cs" />
     <Compile Include="ViewModelEntity\LineVm.cs" />
     <Compile Include="ViewModelEntity\Wall2DVm.cs" />
-    <Compile Include="WallStud.cs" />
-    <Compile Include="TimberBase.cs" />
-    <Compile Include="WallBase.cs" />
-    <Compile Include="WallLayer.cs" />
-    <Compile Include="LevelWall.cs" />
-    <Compile Include="Opening.cs" />
+    <Compile Include="ResponsiveData\WallStud.cs" />
+    <Compile Include="ResponsiveData\TimberBase.cs" />
+    <Compile Include="ResponsiveData\WallBase.cs" />
+    <Compile Include="ResponsiveData\WallLayer.cs" />
+    <Compile Include="ResponsiveData\LevelWall.cs" />
+    <Compile Include="ResponsiveData\Opening.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WallMemberBase.cs" />
-    <Compile Include="TimberWall.cs" />
-    <Compile Include="WallType.cs" />
-    <Compile Include="WindCategory.cs" />
+    <Compile Include="ResponsiveData\WallMemberBase.cs" />
+    <Compile Include="ResponsiveData\TimberWall.cs" />
+    <Compile Include="PocoDataModel\WallTypePoco.cs" />
+    <Compile Include="ResponsiveData\WindCategory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
@@ -225,11 +246,4 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets'))" />
-  </Target>
 </Project>

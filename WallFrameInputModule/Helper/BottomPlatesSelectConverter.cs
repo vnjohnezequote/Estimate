@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.ResponsiveData;
+
 namespace WallFrameInputModule.Helper
 {
     using System;

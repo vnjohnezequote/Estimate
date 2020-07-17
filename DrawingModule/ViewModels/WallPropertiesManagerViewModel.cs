@@ -7,6 +7,7 @@ using AppDataBase.DataBase;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using AppModels.CustomEntity;
+using AppModels.Interaface;
 using AppModels.ViewModelEntity;
 using Prism.Events;
 using Prism.Mvvm;
@@ -28,8 +29,8 @@ namespace DrawingModule.ViewModels
         {
 
         }
-        public WallPropertiesManagerViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator, layerManager)
+        public WallPropertiesManagerViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
             
         }

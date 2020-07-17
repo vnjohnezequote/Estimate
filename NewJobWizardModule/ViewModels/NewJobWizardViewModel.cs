@@ -10,8 +10,10 @@
 using System.Collections.Generic;
 using ApplicationInterfaceCore;
 using AppModels;
+using AppModels.Enums;
 using AppModels.Interaface;
-using DataType.Enums;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 using NewJobWizardModule.Helper;
 
 namespace NewJobWizardModule.ViewModels
@@ -47,17 +49,16 @@ namespace NewJobWizardModule.ViewModels
         /// <summary>
         /// The is saved.
         /// </summary>
-        private bool isSaved = true;
+        //private bool isSaved = true;
 
         /// <summary>
         /// The selected index tab.
         /// </summary>
-        private int selectedIndexTab;
+        private int _selectedIndexTab;
 
         /// <summary>
         /// The _window.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
         private FlatWindow _window;
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace NewJobWizardModule.ViewModels
         /// <summary>
         /// The job.
         /// </summary>
-        private JobModel job;
+        private IJob _job;
 
         #endregion
         #region Constructor
@@ -92,12 +93,12 @@ namespace NewJobWizardModule.ViewModels
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        public NewJobWizardViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManger)
-            : base(unityContainer, regionManager, eventAggregator,layerManger)
+        public NewJobWizardViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManger,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layerManger,jobModel)
         {
             // delegate Loaded
-            this.Job = this.UnityContainer.Resolve<JobModel>();
-            this.UnityContainer.RegisterInstance<IJob>("GlobalJob", Job);
+            this.Job = jobModel;
+            //this.UnityContainer.RegisterInstance<IJob>("GlobalJob", JobInfo);
             /* create data test */
             this.Job.Info.JobNumber = "2220";
             this.Job.Info.JobLocation = "test";
@@ -118,16 +119,17 @@ namespace NewJobWizardModule.ViewModels
 
             this.TabChangedCommand = new DelegateCommand(this.OnTabChanged);
 
-            // this.Job.PropertyChanged += Job_PropertyChanged;
+            // this.JobInfo.PropertyChanged += Job_PropertyChanged;
 
 
             // delegate close button
             this.CloseWindowCommand = new DelegateCommand(() =>
                 {
-                    if (this.isSaved)
-                    {
-                        this._window.Close();
-                    }
+                    //if (this.isSaved)
+                    //{
+                    //    this._window.Close();
+                    //}
+                    this._window.Close();
                 });
 
             // delegate Minimize window button
@@ -136,7 +138,7 @@ namespace NewJobWizardModule.ViewModels
                     this._window.WindowState = WindowState.Minimized;
                 });
 
-            this.EventAggre.GetEvent<CustomerService>().Subscribe(this.ChangeClient);
+            this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.ChangeClient);
 
             this.CreateJobCommand = new DelegateCommand(this.OnCreateJob);
         }
@@ -186,10 +188,10 @@ namespace NewJobWizardModule.ViewModels
         /// <summary>
         /// Gets or sets the job.
         /// </summary>
-        public JobModel Job
+        public IJob Job
         {
-            get => this.job;
-            set => this.SetProperty(ref this.job, value);
+            get => this._job;
+            set => this.SetProperty(ref this._job, value);
         }
 
         /// <summary>
@@ -212,10 +214,10 @@ namespace NewJobWizardModule.ViewModels
         /// </summary>
         public int SelectedIndexTab
         {
-            get => this.selectedIndexTab;
+            get => this._selectedIndexTab;
             set
             {
-                this.SetProperty(ref this.selectedIndexTab, value);
+                this.SetProperty(ref this._selectedIndexTab, value);
                 this.NextTabCommand.RaiseCanExecuteChanged();
                 this.BackTabCommand.RaiseCanExecuteChanged();
             }
@@ -230,8 +232,6 @@ namespace NewJobWizardModule.ViewModels
         /// <param name="param">
         /// The obj.
         /// </param>
-        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-        [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1503:CurlyBracketsMustNotBeOmitted", Justification = "Reviewed. Suppression is OK here.")]
         private void ControlLoaded(FrameworkElement param)
         {
             var parrentWindow = WindowHelper.GetWindowParent(param);
@@ -268,7 +268,7 @@ namespace NewJobWizardModule.ViewModels
         /// </param>
         private void TransferJob(string regionName, string uriPath)
         {
-            var parameters = new NavigationParameters { { "Job", this.Job.Info } };
+            var parameters = new NavigationParameters { { "JobInfo", this.Job.Info } };
             if (this.Job.Info != null)
             {
                 this.RegionManager.RequestNavigate(regionName, uriPath, parameters);
@@ -288,7 +288,7 @@ namespace NewJobWizardModule.ViewModels
         {
             var parameters = new NavigationParameters
                                  {
-                                     { "Job", this.Job.Info }, 
+                                     { "JobInfo", this.Job.Info }, 
                                      { "Levels", this.Job.Levels }
                                  };
             if (this.Job.Info != null && this.Job.Levels != null)
@@ -366,14 +366,7 @@ namespace NewJobWizardModule.ViewModels
         /// </returns>
         private bool CanNextTab()
         {
-            if (this.SelectedIndexTab == 5)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return this.SelectedIndexTab != 5;
         }
 
         /// <summary>
@@ -384,30 +377,23 @@ namespace NewJobWizardModule.ViewModels
         /// </returns>
         private bool CanBackTab()
         {
-            if (this.SelectedIndexTab == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return this.SelectedIndexTab != 0;
         }
 
         /// <summary>
-        /// The change client.
+        /// The change clientPoco.
         /// </summary>
         /// <param name="selectClient">
-        /// The select Client.
+        /// The select ClientPoco.
         /// </param>
-        private void ChangeClient(Client selectClient)
+        private void ChangeClient(ClientPoco selectClient)
         {
             if (selectClient == null)
             {
                 this.IsDesignVisibility = Visibility.Collapsed;
                 return;
             }
-            this.IsDesignVisibility = selectClient.Name == "Prenail" ? Visibility.Visible : Visibility.Collapsed;
+            this.IsDesignVisibility = selectClient.Name == ClientNames.Prenail.ToString() ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
@@ -415,7 +401,7 @@ namespace NewJobWizardModule.ViewModels
         /// </summary>
         private void OnCreateJob()
         {
-            this.EventAggre.GetEvent<JobModelService>().Publish(this.Job);
+            //this.EventAggregator.GetEvent<JobModelService>().Publish(this.JobInfo);
             this._window.Close();
 
         }

@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.ResponsiveData;
+
 namespace ApplicationService
 {
     using AppModels;

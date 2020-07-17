@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using ApplicationInterfaceCore;
+using AppModels.Interaface;
 
 namespace ApplicationCore.BaseModule
 {
@@ -52,11 +53,12 @@ namespace ApplicationCore.BaseModule
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        protected BaseViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
+        protected BaseViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IJob jobModel)
         {
+            this.JobModel = jobModel;
             this.UnityContainer = unityContainer;
             this.RegionManager = regionManager;
-            this.EventAggre = eventAggregator;
+            this.EventAggregator = eventAggregator;
             _layerManager = layerManager;
             this.RaisePropertyChanged(nameof(LayerManager));
         }
@@ -70,17 +72,9 @@ namespace ApplicationCore.BaseModule
         /// </summary>
         protected IUnityContainer UnityContainer { get; private set; }
         public ILayerManager LayerManager => _layerManager;
-
-        /// <summary>
-        /// Gets or sets the region manager.
-        /// </summary>
         public IRegionManager RegionManager { get; set; }
-
-        /// <summary>
-        /// Gets the event aggre.
-        /// </summary>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-        protected IEventAggregator EventAggre { get; private set; }
+        protected IEventAggregator EventAggregator { get; private set; }
+        public IJob JobModel { get; private set; }
         #endregion Properties
     }
 }

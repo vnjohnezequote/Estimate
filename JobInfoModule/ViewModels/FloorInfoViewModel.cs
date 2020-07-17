@@ -2,6 +2,7 @@
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using AppModels;
+using AppModels.Interaface;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
@@ -36,8 +37,8 @@ namespace JobInfoModule.ViewModels
         public FloorInfoViewModel(
            IUnityContainer unityContainer,
            IRegionManager regionManager,
-           IEventAggregator eventAggregator,ILayerManager layerManager)
-           : base(unityContainer, regionManager, eventAggregator,layerManager)
+           IEventAggregator eventAggregator,ILayerManager layerManager,IJob jobModel)
+           : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             
 

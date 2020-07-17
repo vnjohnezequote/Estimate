@@ -92,7 +92,7 @@
                     <TabItem.Header>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                             <materialDesign:PackIcon Kind="InformationVariant" Style="{StaticResource MaterialDesignTabHeaderMaterialPackIcon}"/>
-                            <TextBlock Text="Job" 
+                            <TextBlock Text="JobInfo" 
                                        Style="{StaticResource MaterialDesignTabHeaderTextBlock}"/>
                         </StackPanel>
                     </TabItem.Header>

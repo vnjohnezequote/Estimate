@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
+using AppModels.Interaface;
 using devDept.Eyeshot;
 using Prism.Commands;
 using Prism.Events;
@@ -29,8 +30,8 @@ namespace DrawingModule.ViewModels
         {
 
         }
-        public LayerManagerViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IEntitiesManager entitiesManager)
-            : base(unityContainer, regionManager, eventAggregator,layerManager)
+        public LayerManagerViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IEntitiesManager entitiesManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             _entitiesManger = entitiesManager;
             LineTypes = new ObservableCollection<LinePattern>();

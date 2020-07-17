@@ -9,6 +9,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
              xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:helper="clr-namespace:AppThemes.Helper;assembly=AppThemes"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:JobInfoViewModel, IsDesignTimeCreatable=True}"
              Style="{DynamicResource MaterialDesignUserControl}">
@@ -16,33 +17,36 @@
         <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
     </UserControl.Resources>
     <StackPanel>
-        <TextBox x:Name="TxtJobNumber"
-                 materialDesign:HintAssist.Hint="Job Number"
-                 Text="{Binding Job.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <TextBox Margin="0 10 0 0" x:Name="TxtJobNumber"
+                 materialDesign:HintAssist.Hint="JobInfo Number"
+                 Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
-        <ComboBox x:Name="BuiderNameComboBox"
+        <ComboBox Margin="0 10 0 0" x:Name="BuiderNameComboBox"
                   materialDesign:HintAssist.Hint="Builder"
                   IsEditable="True"
                   IsEnabled="{Binding IsBuilderEnable}"
                   HorizontalAlignment="Stretch"
                   ItemsSource="{Binding Builders}"
-				  SelectedItem="{Binding Job.BuilderName}"
-                  SelectedValue="{Binding Job.BuilderName}">
-			<interactions:Interaction.Triggers>
+                  SelectedItem="{Binding JobInfo.BuilderName}"
+                  SelectedValue="{Binding JobInfo.BuilderName}"
+                  materialDesign:TextFieldAssist.HasClearButton="True"
+                  materialDesign:TextFieldAssist.HasOutlinedTextField="True">
+            <interactions:Interaction.Triggers>
                 <interactions:EventTrigger EventName="LostFocus">
                     <interactions:InvokeCommandAction	Command="{Binding BuilderNameLostFocusCommand}"
-														CommandParameter="{Binding ElementName=BuiderNameComboBox}"/>
+                                                        CommandParameter="{Binding ElementName=BuiderNameComboBox}"/>
                 </interactions:EventTrigger>
-            </interactions:Interaction.Triggers>	  
-		</ComboBox>
-        <TextBox x:Name="TxtAddress"
+            </interactions:Interaction.Triggers>
+        </ComboBox>
+        <TextBox Margin="0 10 0 0"
+            x:Name="TxtAddress"
                  materialDesign:HintAssist.Hint="Address"
-                 Text="{Binding Job.FullAddress, Mode=TwoWay}">
+                 Text="{Binding JobInfo.FullAddress, Mode=TwoWay}">
         </TextBox>
-        <TextBox x:Name="TxtUnitNumber"
+        <TextBox Margin="0 10 0 0" x:Name="TxtUnitNumber"
                  HorizontalAlignment="Stretch"
                  materialDesign:HintAssist.Hint="Unit Number"
-                 Text="{Binding Job.UnitNumber, Mode=TwoWay}">
+                 Text="{Binding JobInfo.UnitNumber, Mode=TwoWay}">
         </TextBox>
     </StackPanel>
 </UserControl>

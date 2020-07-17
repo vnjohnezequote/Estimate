@@ -9,15 +9,13 @@
 
 using System.Collections.ObjectModel;
 using ApplicationInterfaceCore;
+using AppModels.Interaface;
 
 namespace JobInfoModule.ViewModels
 {
     using System.Windows.Input;
 
     using ApplicationCore.BaseModule;
-
-    using ApplicationService;
-
     using JetBrains.Annotations;
 
     using Prism.Commands;
@@ -62,8 +60,8 @@ namespace JobInfoModule.ViewModels
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
             [NotNull] IEventAggregator eventAggregator,
-            ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator,layerManager)
+            ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             this.RoofTypeCommand = new DelegateCommand<string>(OnSetRoofType);
         }
@@ -84,7 +82,7 @@ namespace JobInfoModule.ViewModels
 			get => this.CheckRoofType("SHEET");
             set
             {
-                if (this.Job.RoofType == "SHEET")
+                if (this.JobInfo.RoofType == "SHEET")
                 {
                     this.SetProperty(ref this._isSheetRoof, true);
                 }
@@ -98,7 +96,7 @@ namespace JobInfoModule.ViewModels
 			get => this.CheckRoofType("TILES");
             set
             {
-                if (this.Job.RoofType == "TILES")
+                if (this.JobInfo.RoofType == "TILES")
                 {
                     this.SetProperty(ref this._isTileRoof, true);
                 }
@@ -112,19 +110,19 @@ namespace JobInfoModule.ViewModels
         #region Private Method
 		private bool CheckRoofType(string roofType)	
 		{
-			if (this.Job == null)
+			if (this.JobInfo == null)
             {
                 return false;
             }
             else
             {
-                if (string.IsNullOrEmpty(this.Job.RoofType))
+                if (string.IsNullOrEmpty(this.JobInfo.RoofType))
                 {
                     return false;
                 }
                 else
                 {
-                    return this.Job.RoofType == roofType;
+                    return this.JobInfo.RoofType == roofType;
                 }
             }
 		}
@@ -132,7 +130,7 @@ namespace JobInfoModule.ViewModels
 		
 		 private void OnSetRoofType(string roofType)
         {
-            this.Job.RoofType = roofType;
+            this.JobInfo.RoofType = roofType;
 			this.RaisePropertyChanged(nameof(this.IsSheetRoof));
             this.RaisePropertyChanged(nameof(this.IsTileRoof));
             

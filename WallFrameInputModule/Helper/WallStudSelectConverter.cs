@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.ResponsiveData;
+
 namespace WallFrameInputModule.Helper
 {
     using System;
@@ -47,7 +49,7 @@ namespace WallFrameInputModule.Helper
 
             var wallInfor = record as WallLayer;
             string wallKey = "LBW";
-            if (!wallInfor.TimberWallType.IsLBW)
+            if (!wallInfor.TimberWallTypePoco.IsLoadBearingWall)
             {
                 wallKey = "NONLBW";
             }

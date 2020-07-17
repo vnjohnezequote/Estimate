@@ -67,16 +67,17 @@
             </ListBox.ItemTemplate>
             </ListBox>
         </materialDesign:Card>
-        <TextBox materialDesign:HintAssist.Hint="Please Choose Your's Folder...!"
-                 Text="{Binding Job.JobLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Margin="0 10 0 0" materialDesign:HintAssist.Hint="Please Choose Your's Folder...!"
+                 Text="{Binding JobInfo.JobLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Content="Browser"
                     Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
                     Margin="{StaticResource ControlMargin}"
                     HorizontalAlignment="Stretch"
                     Command="{Binding JobLocationCommand}"/>
-        <TextBox x:Name="TxtJobNumber"
-                 materialDesign:HintAssist.Hint="Project Name/Job Number"
-                 Text="{Binding Job.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <TextBox Margin="0 10 0 0"
+            x:Name="TxtJobNumber"
+                 materialDesign:HintAssist.Hint="Project Name/JobInfo Number"
+                 Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
     </StackPanel>
 </UserControl>

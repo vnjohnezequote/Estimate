@@ -7,10 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.ResponsiveData;
+
 namespace NewJobWizardModule.Helper
 {
-    using AppModels;
-
     using Prism.Mvvm;
 
     /// <summary>
@@ -21,12 +21,12 @@ namespace NewJobWizardModule.Helper
         /// <summary>
         /// The _can create job.
         /// </summary>
-        private bool canCreateJob;
+        private bool _canCreateJob;
 
         /// <summary>
         /// The inFor.
         /// </summary>
-        private JobInfo inFor;
+        private JobInfo _inFor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckJobInfo"/> class.
@@ -56,13 +56,11 @@ namespace NewJobWizardModule.Helper
                 {
                     return false;
                 }
-                else
-                {
-                    return !(string.IsNullOrEmpty(this.Info.JobLocation) || string.IsNullOrEmpty(this.Info.JobNumber) || string.IsNullOrEmpty(this.Info.ClientName));
-                }
+
+                return !(string.IsNullOrEmpty(this.Info.JobLocation) || string.IsNullOrEmpty(this.Info.JobNumber) || string.IsNullOrEmpty(this.Info.ClientName));
             }
 
-            set => this.SetProperty(ref this.canCreateJob, value);
+            set => this.SetProperty(ref this._canCreateJob, value);
         }
 
         /// <summary>
@@ -70,10 +68,10 @@ namespace NewJobWizardModule.Helper
         /// </summary>
         public JobInfo Info
         {
-            get => this.inFor;
+            get => this._inFor;
             set
             {
-                this.SetProperty(ref this.inFor, value);
+                this.SetProperty(ref this._inFor, value);
                 this.RaisePropertyChanged(nameof(this.CanCreateJob));
             }
         }

@@ -8,6 +8,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using ApplicationInterfaceCore;
+using AppModels.Interaface;
+using AppModels.ResponsiveData;
 
 namespace JobInfoModule.ViewModels
 {
@@ -57,8 +59,8 @@ namespace JobInfoModule.ViewModels
         public DesignInfoViewModel(
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
-            [NotNull] IEventAggregator eventAggregator,ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator,layerManager)
+            [NotNull] IEventAggregator eventAggregator,ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             //using (var db = new LiteDatabase(@"DesignInfo.db"))
             using (var db = new LiteDatabase(@"filename=DesignInfo.db;upgrade=true"))
@@ -103,32 +105,32 @@ namespace JobInfoModule.ViewModels
         /// </summary>
         private void OnBeamDesignInfoChanged()
         {
-            if (this.Job is null)
+            if (this.JobInfo is null)
             {
                 return;
             }
 
-            if (this.Job.FrameDesignInfor != null && this.Job.FrameDesignInfor.Content != null)
+            if (this.JobInfo.FrameDesignInfor != null && this.JobInfo.FrameDesignInfor.Content != null)
             {
-                if (this.Job.FrameDesignInfor.Content == "Engineer")
+                if (this.JobInfo.FrameDesignInfor.Content == "Engineer")
                 {
-                    this.Job.IsEngineer = true;
+                    this.JobInfo.IsEngineer = true;
                 }
             }
 
-            if (this.Job.BeamDesignInfor != null && this.Job.BeamDesignInfor.Content != null)
+            if (this.JobInfo.BeamDesignInfor != null && this.JobInfo.BeamDesignInfor.Content != null)
             {
-                if (Job.BeamDesignInfor.Content == "Engineer")
+                if (JobInfo.BeamDesignInfor.Content == "Engineer")
                 {
-                    this.Job.IsEngineer = true;
+                    this.JobInfo.IsEngineer = true;
                 }
             }
 
-            if (this.Job.BracingDesignInfor!=null && this.Job.BracingDesignInfor.Content!=null)
+            if (this.JobInfo.BracingDesignInfor!=null && this.JobInfo.BracingDesignInfor.Content!=null)
             {
-                if (this.Job.BracingDesignInfor.Content == "Engineer")
+                if (this.JobInfo.BracingDesignInfor.Content == "Engineer")
                 {
-                    this.Job.IsEngineer = true;
+                    this.JobInfo.IsEngineer = true;
                 }
             }
            

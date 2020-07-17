@@ -8,6 +8,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using ApplicationInterfaceCore;
+using AppModels.Interaface;
+using AppModels.ResponsiveData;
 
 namespace ApplicationCore.BaseModule
 {
@@ -55,11 +57,11 @@ namespace ApplicationCore.BaseModule
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        public ApplicationWindowBaseViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator,layerManager)
+        public ApplicationWindowBaseViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             this.RegionManager = this.RegionManager.CreateRegionManager();
-            this.EventAggre.GetEvent<JobModelService>().Subscribe(this.JobReceive);
+            this.EventAggregator.GetEvent<JobModelService>().Subscribe(this.JobReceive);
         }
 
         #endregion

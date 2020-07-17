@@ -46,7 +46,7 @@ namespace DrawingModule.ViewModels
             set
             {
                 this.SetProperty(ref _isCanvasMouseOn, value);
-                this.EventAggre.GetEvent<DynamicInputViewEvent>().Publish(this._isCanvasMouseOn);
+                this.EventAggregator.GetEvent<DynamicInputViewEvent>().Publish(this._isCanvasMouseOn);
             } 
         }
 
@@ -73,8 +73,8 @@ namespace DrawingModule.ViewModels
         #region Constructor
         public CanvasDrawingViewModel() :base()
         {}
-        public CanvasDrawingViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager, IEntitiesManager entitiesManager)
-            : base(unityContainer, regionManager, eventAggregator,layerManager)
+        public CanvasDrawingViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager, IEntitiesManager entitiesManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layerManager, jobModel)
         {
             this._entitiesManager = entitiesManager;
             this.LayerManager.SelectedPropertiesChanged += LayerManager_SelectedPropertiesChanged;
@@ -86,8 +86,8 @@ namespace DrawingModule.ViewModels
             CanvasDrawingLoadedCommand = new DelegateCommand<CanvasDrawingView>(OnCanvasDrawingLoaded);
             CanvasDrawingMouseLeave = new DelegateCommand(OnCanvasDrawingMouseLeave);
             CanvasDrawingMouseEnter = new DelegateCommand(OnCanvasDrawingMouseEnter);
-            this.EventAggre.GetEvent<CommandExcuteStringEvent>().Subscribe(ExcuteCommand);
-            this.EventAggre.GetEvent<LevelNameService>().Subscribe(OnSelectedLevelChanged);
+            this.EventAggregator.GetEvent<CommandExcuteStringEvent>().Subscribe(ExcuteCommand);
+            this.EventAggregator.GetEvent<LevelNameService>().Subscribe(OnSelectedLevelChanged);
         }
         
         private void OnSelectedLevelChanged(string para)

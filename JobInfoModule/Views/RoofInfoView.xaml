@@ -17,7 +17,7 @@
         <StackPanel>
             <TextBox x:Name="TxtRoofPitch"
                              materialDesign:HintAssist.Hint="Roof Pitch"
-                             Text="{Binding Job.JobDefault.RoofPitch, TargetNullValue={x:Static sys:String.Empty}}"/>
+                             Text="{Binding JobInfo.JobDefault.RoofPitch, TargetNullValue={x:Static sys:String.Empty}}"/>
             <Border>
                 <DockPanel HorizontalAlignment="Center"
                                VerticalAlignment="Center">
@@ -37,21 +37,21 @@
         </StackPanel>
         <StackPanel>
             <DockPanel>
-                <CheckBox Content="Trusses" IsChecked="{Binding Job.IsTruss}"/>
+                <CheckBox Content="Trusses" IsChecked="{Binding JobInfo.IsTruss}"/>
                 <ComboBox x:Name="TrussSpacingComboBox"
                           materialDesign:HintAssist.Hint="Truss Spacing"
-                          IsEnabled="{Binding Job.IsTruss}"
+                          IsEnabled="{Binding JobInfo.IsTruss}"
                           ItemsSource="{Binding TrussSpacings}"
-                          SelectedItem="{Binding Job.TrussSpacing}"
+                          SelectedItem="{Binding JobInfo.TrussSpacing}"
                           IsEditable="True"/>
             </DockPanel>
             <DockPanel>
-                <CheckBox Content="Rafters" IsChecked="{Binding Job.IsRafter}"/>
+                <CheckBox Content="Rafters" IsChecked="{Binding JobInfo.IsRafter}"/>
                 <ComboBox x:Name="RafterSpacingComboBox"
                           materialDesign:HintAssist.Hint="Truss Spacing"
-                          IsEnabled="{Binding Job.IsRafter}"
+                          IsEnabled="{Binding JobInfo.IsRafter}"
                           ItemsSource="{Binding RafterSpacings}"
-                          SelectedItem="{Binding Job.RafterSpacing}"
+                          SelectedItem="{Binding JobInfo.RafterSpacing}"
                           IsEditable="True"/>
             </DockPanel>
         </StackPanel>

@@ -7,23 +7,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.ObjectModel;
 using ApplicationInterfaceCore;
-using AppModels;
+using AppModels.Interaface;
 
 namespace JobInfoModule.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-    using System.Windows;
-    using System.Windows.Input;
-
     using ApplicationCore.BaseModule;
-
-    using ApplicationService;
-
     using CustomControls.Controls;
     using Views;
-
-    using Prism.Commands;
     using Prism.Events;
     using Prism.Regions;
 
@@ -38,7 +31,6 @@ namespace JobInfoModule.ViewModels
         /// <summary>
         /// The _window.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
         private FlatWindow _window;
         /// <summary>
         /// The general wind.
@@ -49,14 +41,10 @@ namespace JobInfoModule.ViewModels
         /// <summary>
         /// The prenai wind.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         //private PrenailWindCategoryView _prenaiWind;
 
         #endregion
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WindCategoryViewModel"/> class.
-        /// </summary>
         public WindCategoryViewModel()
         {
         }
@@ -73,11 +61,12 @@ namespace JobInfoModule.ViewModels
         /// <param name="eventAggregator">
         /// The event aggregator.
         /// </param>
-        public WindCategoryViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator,layerManager)
+        public WindCategoryViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             this.RegionManager = this.RegionManager.CreateRegionManager();
-            //this.EventAggre.GetEvent<CustomerService>().Subscribe(this.SetClient);
+            
+            //this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SetClient);
         }
 
         #region Command
@@ -85,7 +74,8 @@ namespace JobInfoModule.ViewModels
         #endregion
 		
 		#region Public Member
-
+        propp
+       
         public string ClientName
         {
             get => this._clientName;
@@ -100,10 +90,10 @@ namespace JobInfoModule.ViewModels
         #region Private Funtion
 
         /// <summary>
-        /// The set client.
+        /// The set clientPoco.
         /// </summary>
         /// <param name="clientName">
-        /// The client name.
+        /// The clientPoco name.
         /// </param>
         private void SetClient(string selectClientName)
         {
@@ -118,7 +108,7 @@ namespace JobInfoModule.ViewModels
         /// The load wind category.
         /// </summary>
         /// <param name="clientName">
-        /// The client name.
+        /// The clientPoco name.
         /// </param>
         private void LoadWindCategory(string clientName)
         {
@@ -135,6 +125,7 @@ namespace JobInfoModule.ViewModels
                     this.TranfersJob(windRegion, nameof(GeneralWindCategoryView));
                     break;
                 case "StickFrame":
+                    this.TranfersJob(windRegion,nameof(PrenailWindCategoryView));
                     break;
                 default:
                     break;
@@ -144,8 +135,8 @@ namespace JobInfoModule.ViewModels
 		private void TranfersJob(string regionName, string viewPath)
 		{
 			var parameters = new NavigationParameters();
-                parameters.Add("Job", Job);
-                if (Job!=null)
+                parameters.Add("JobInfo", JobInfo);
+                if (JobInfo!=null)
                 {
                     this.RegionManager.RequestNavigate(regionName,viewPath,parameters);   
                 }
@@ -154,7 +145,7 @@ namespace JobInfoModule.ViewModels
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);
-            this.SetClient(this.Job.ClientName);
+            this.SetClient(this.JobInfo.ClientName);
         }
 
         #endregion

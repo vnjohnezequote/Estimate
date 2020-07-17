@@ -8,6 +8,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using ApplicationInterfaceCore;
+using AppModels.Interaface;
+using AppModels.ResponsiveData;
 
 namespace JobInfoModule.ViewModels
 {
@@ -90,8 +92,8 @@ namespace JobInfoModule.ViewModels
             IUnityContainer unityContainer,
             IRegionManager regionManager,
             IEventAggregator eventAggregator,
-            ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator,layerManager)
+            ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             this.RegionManager = this.RegionManager.CreateRegionManager();
 
@@ -164,7 +166,7 @@ namespace JobInfoModule.ViewModels
         /// </param>
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            if (navigationContext.Parameters["Job"] is JobInfo job)
+            if (navigationContext.Parameters["JobInfo"] is JobInfo job)
             {
                 this.Job = job;
             }
@@ -322,7 +324,7 @@ namespace JobInfoModule.ViewModels
 
             }
 
-            // this.RaisePropertyChanged(nameof(this.Job.Levels));
+            // this.RaisePropertyChanged(nameof(this.JobInfo.Levels));
             this.IsCreated = true;
 
         }

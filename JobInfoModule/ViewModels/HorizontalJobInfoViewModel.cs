@@ -10,6 +10,9 @@
 using System.Linq;
 using AppDataBase.DataBase;
 using ApplicationInterfaceCore;
+using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 
 namespace JobInfoModule.ViewModels
 {
@@ -35,7 +38,7 @@ namespace JobInfoModule.ViewModels
     {
         #region Private Member
 
-        private Client _client;
+        private ClientPoco _clientPoco;
         private ObservableCollection<string> _builders;
 
 
@@ -61,11 +64,11 @@ namespace JobInfoModule.ViewModels
         /// <param name="eventAggregator">
         /// The event aggregator.
         /// </param>
-        public HorizontalJobInfoViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator, layerManager)
+        public HorizontalJobInfoViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
             this.BuilderNameLostFocusCommand = new DelegateCommand<ComboBox>(this.OnAddBuilderNamesChanged, this.CanAddBuiderNameCanExcute);
-            this.EventAggre.GetEvent<CustomerService>().Subscribe(this.SelectedClientReceive);
+            this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SelectedClientReceive);
         }
 
         #endregion
@@ -92,12 +95,12 @@ namespace JobInfoModule.ViewModels
             }
         }
 
-        public Client SelectClient
+        public ClientPoco SelectClient
         {
-            get => this._client;
+            get => this._clientPoco;
             set
             {
-                this.SetProperty(ref this._client, value);
+                this.SetProperty(ref this._clientPoco, value);
                 this.RaisePropertyChanged(nameof(IsBuilderEnable));
             }
         }
@@ -112,7 +115,7 @@ namespace JobInfoModule.ViewModels
 
         #region Private Funtc
 
-        private void SelectedClientReceive(Client selectClient)
+        private void SelectedClientReceive(ClientPoco selectClient)
         {
             if (selectClient == null)
             {
@@ -164,11 +167,11 @@ namespace JobInfoModule.ViewModels
         {
             base.OnNavigatedTo(navigationContext);
             var db = this.UnityContainer.Resolve<ClientDataBase>();
-            if (string.IsNullOrEmpty(this.Job.ClientName))
+            if (string.IsNullOrEmpty(this.JobInfo.ClientName))
             {
                 return;
             }
-            this.SelectClient = db.GetClient(this.Job.ClientName);
+            this.SelectClient = db.GetClient(this.JobInfo.ClientName);
             this.BuilderNamesReseive(this.SelectClient.Builders);
         }
 

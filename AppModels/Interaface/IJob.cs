@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using AppModels.ResponsiveData;
 
 namespace AppModels.Interaface
 {

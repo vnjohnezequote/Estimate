@@ -20,7 +20,7 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <TextBlock Text="{Binding Job.ClientName}"></TextBlock>
+        <TextBlock Text="{Binding JobModel.ClientName}"></TextBlock>
 		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.HJobInformation}"/>
 		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainWindInforRegion}"/>
 		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainRoofInfoRegion}"/>

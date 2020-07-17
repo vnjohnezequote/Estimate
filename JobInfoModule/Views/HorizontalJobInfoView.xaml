@@ -19,8 +19,8 @@
     <StackPanel>
 	<DockPanel>
         <TextBox x:Name="TxtJobNumber"
-                 materialDesign:HintAssist.Hint="Job Number"
-                 Text="{Binding Job.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                 materialDesign:HintAssist.Hint="JobInfo Number"
+                 Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
         <ComboBox x:Name="BuiderNameComboBox"
                   materialDesign:HintAssist.Hint="Builder"
@@ -28,9 +28,9 @@
                   HorizontalAlignment="Stretch"
 				  IsEnabled="{Binding IsBuilderEnable}"
                   ItemsSource="{Binding Builders}"
-				  SelectedItem="{Binding Job.BuilderName}"
-                  SelectedValue="{Binding Job.BuilderName}"
-                  Text="{Binding Job.BuilderName}">
+				  SelectedItem="{Binding JobInfo.BuilderName}"
+                  SelectedValue="{Binding JobInfo.BuilderName}"
+                  Text="{Binding JobInfo.BuilderName}">
 				  <interactions:Interaction.Triggers>
                 <interactions:EventTrigger EventName="LostFocus">
                     <interactions:InvokeCommandAction	Command="{Binding BuilderNameLostFocusCommand}"
@@ -42,11 +42,11 @@
 	<DockPanel>
         <TextBox x:Name="TxtAddress"
                  materialDesign:HintAssist.Hint="Address"
-				 Text="{Binding Job.FullAddress, Mode=TwoWay}"/>
+				 Text="{Binding JobInfo.FullAddress, Mode=TwoWay}"/>
         <TextBox x:Name="TxtUnitNumber"
                  HorizontalAlignment="Stretch"
                  materialDesign:HintAssist.Hint="Unit Number"
-				 Text="{Binding Job.UnitNumber, Mode=TwoWay}"/>
+				 Text="{Binding JobInfo.UnitNumber, Mode=TwoWay}"/>
 	</DockPanel>
     </StackPanel>
 </UserControl>

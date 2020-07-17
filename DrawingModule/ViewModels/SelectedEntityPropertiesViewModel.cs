@@ -11,6 +11,7 @@ using AppModels;
 using AppModels.CustomEntity;
 using AppModels.DynamicObject;
 using AppModels.Interaface;
+using AppModels.ResponsiveData;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -76,8 +77,8 @@ namespace DrawingModule.ViewModels
         {
 
         }
-        public SelectedEntityPropertiesViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IEntitiesManager entitiesManager)
-            : base(unityContainer, regionManager, eventAggregator, layerManager)
+        public SelectedEntityPropertiesViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IEntitiesManager entitiesManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
             //HidePropertyItems.Add("Entity");
             _entitiesManger = entitiesManager;

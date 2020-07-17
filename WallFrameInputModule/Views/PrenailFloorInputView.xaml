@@ -127,7 +127,7 @@
                     </interactions:EventTrigger>
                 </interactions:Interaction.Triggers>-->
                         <syncfusion:SfDataGrid.SortComparers>
-                            <data:SortComparer Comparer="{StaticResource WallTypeComparer}" PropertyName="TimberWallType" />
+                            <data:SortComparer Comparer="{StaticResource WallTypeComparer}" PropertyName="TimberWallTypePoco" />
                         </syncfusion:SfDataGrid.SortComparers>
                         <!--<syncfusion:SfDataGrid.SortColumnDescriptions>
                     <syncfusion:SortColumnDescription ColumnName="TimberWallType" SortDirection="Ascending" />
@@ -164,7 +164,7 @@
                         DisplayMemberPath="AliasName"
                         HeaderText="Wall Type"
                         ItemsSource="{Binding SelectedClient.WallTypes}"
-                        MappingName="TimberWallType" 
+                        MappingName="TimberWallTypePoco" 
                         UseBindingValue="True"/>
                             <syncfusion:GridComboBoxColumn
                         ItemsSource="{Binding LayerManager.Layers}"
@@ -219,22 +219,22 @@
                             <syncfusion:GridTextColumn HeaderText="Wall Spacing"
                                                MappingName="StudSpacing.Size"
                                                UseBindingValue="True"/>
-                            <syncfusion:GridComboBoxColumn DisplayMemberPath="SizeGrade"
+                            <syncfusion:GridComboBoxColumn DisplayMemberPath="SizeTimberGrade"
                                                    HeaderText="Ribbon Plate"
                                                    ItemsSourceSelector="{StaticResource RibbonPlatesSelectConverter}"
                                                    MappingName="RibbonPlate.TimberInfo"
                                                    UseBindingValue="True"/>
-                            <syncfusion:GridComboBoxColumn DisplayMemberPath="SizeGrade"
+                            <syncfusion:GridComboBoxColumn DisplayMemberPath="SizeTimberGrade"
                                                    HeaderText="Top Plate"
                                                    ItemsSourceSelector="{StaticResource TopPlatesSelectConverter}"
                                                    MappingName="TopPlate.TimberInfo"
                                                    UseBindingValue="True"/>
-                            <syncfusion:GridComboBoxColumn DisplayMemberPath="SizeGrade"
+                            <syncfusion:GridComboBoxColumn DisplayMemberPath="SizeTimberGrade"
                                                    HeaderText="Bottom Plate"
                                                    ItemsSourceSelector="{StaticResource BottomPlatesSelectConverter}"
                                                    MappingName="BottomPlate.TimberInfo"
                                                    UseBindingValue="True"/>
-                            <syncfusion:GridComboBoxColumn DisplayMemberPath="SizeGrade"
+                            <syncfusion:GridComboBoxColumn DisplayMemberPath="SizeTimberGrade"
                                                    HeaderText="Stud"
                                                    ItemsSourceSelector="{StaticResource WallStudSelectConverter}"
                                                    MappingName="Stud.TimberInfo"
@@ -291,8 +291,8 @@
                         <syncfusion:SfDataGrid.Columns>
                             <syncfusion:GridTextColumn HeaderText="Location"
                                                        MappingName="Location" />
-                            <syncfusion:GridComboBoxColumn HeaderText="Grade"
-                                                           MappingName="BeamGrade" 
+                            <syncfusion:GridComboBoxColumn HeaderText="TimberGrade"
+                                                           MappingName="BeamTimberGrade" 
                                                            ItemsSource="{Binding BeamGradeList}"
                                                            UseBindingValue="True"
                                                            />

@@ -52,7 +52,7 @@ namespace NewJobWizardModule
         #region Public Event
 
         /// <summary>
-        /// The client changed.
+        /// The clientPoco changed.
         /// </summary>
         public event EventHandler ClientChanged;
 

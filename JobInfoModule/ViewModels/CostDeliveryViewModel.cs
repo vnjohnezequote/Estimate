@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using AppModels;
+using AppModels.Interaface;
+using AppModels.ResponsiveData;
 using Prism.Events;
 using Prism.Regions;
 using Unity;
@@ -23,8 +25,8 @@ namespace JobInfoModule.ViewModels
         public CostDeliveryViewModel(
            IUnityContainer unityContainer,
            IRegionManager regionManager,
-           IEventAggregator eventAggregator,ILayerManager layerManager)
-           : base(unityContainer, regionManager, eventAggregator,layerManager)
+           IEventAggregator eventAggregator,ILayerManager layerManager,IJob jobModel)
+           : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
 
 

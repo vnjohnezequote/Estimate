@@ -8,25 +8,23 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Globalization;
+using AppModels.Enums;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 
 namespace AppDataBase.DataBase
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using AppModels;
-    using AppModels.PocoDataModel;
-
     using CsvHelper;
-
-    using DataType.Enums;
     using LiteDB;
 
     /// <summary>
-    /// The client data base.
+    /// The clientPoco data base.
     /// </summary>
     public class ClientDataBase
     {
@@ -41,7 +39,7 @@ namespace AppDataBase.DataBase
         /// <summary>
         /// The clients.
         /// </summary>
-        private readonly ILiteCollection<Client> _clients;
+        private readonly ILiteCollection<ClientPoco> _clients;
 
 
         #endregion
@@ -56,7 +54,7 @@ namespace AppDataBase.DataBase
         {
             using (var db = new LiteDatabase("Clients.Db"))
             {
-                this._clients = db.GetCollection<Client>("Clients");
+                this._clients = db.GetCollection<ClientPoco>("Clients");
                 this.Clients = this.GetClients();
                 this.DataBaseUpdated += this.ClientDataUpdated;
             }
@@ -79,7 +77,7 @@ namespace AppDataBase.DataBase
         /// <summary>
         /// Gets or sets the clients.
         /// </summary>
-        public List<Client> Clients { get; set; }
+        public List<ClientPoco> Clients { get; set; }
 
         /// <summary>
         /// The get clients.
@@ -87,22 +85,22 @@ namespace AppDataBase.DataBase
         /// <returns>
         /// The <see cref="List"/>.
         /// </returns>
-        public List<Client> GetClients()
+        public List<ClientPoco> GetClients()
         {
-            //this.CreateTestDataBase();
+            this.CreateTestDataBase();
             return this._clients.FindAll().ToList();
         }
 
         /// <summary>
-        /// The get client.
+        /// The get clientPoco.
         /// </summary>
         /// <param name="clientName">
-        /// The client name.
+        /// The clientPoco name.
         /// </param>
         /// <returns>
-        /// The <see cref="Client"/>.
+        /// The <see cref="ClientPoco"/>.
         /// </returns>
-        public Client GetClient(string clientName)
+        public ClientPoco GetClient(string clientName)
         {
             if (string.IsNullOrEmpty(clientName))
             {
@@ -120,25 +118,25 @@ namespace AppDataBase.DataBase
 
             this.CreateClient(clientName);
             return Clients.FirstOrDefault(client => client.Name == clientName);
-            //var client = this.Clients.FindOne(x => x.Name == clientName);
-            //return client;
+            //var clientPoco = this.Clients.FindOne(x => x.Name == clientName);
+            //return clientPoco;
         }
 
         /// <summary>
-        /// The create client.
+        /// The create clientPoco.
         /// </summary>
         /// <param name="clientName">
-        /// The client name.
+        /// The clientPoco name.
         /// </param>
         /// <param name="builders">
         /// The builders.
         /// </param>
         /// <param name="clientIcon">
-        /// The client icon.
+        /// The clientPoco icon.
         /// </param>
         public void CreateClient(string clientName, List<string> builders = null, string clientIcon = "")
         {
-            var client = new Client() { Name = clientName, Builders = new List<string>(), ClientIcon = clientIcon };
+            var client = new ClientPoco() { Name = clientName, Builders = new List<string>(), ClientIcon = clientIcon };
             this._clients.Insert(client);
             this._clients.EnsureIndex(x => x.Name);
             this.DataBaseUpdated?.Invoke(this, null);
@@ -146,23 +144,23 @@ namespace AppDataBase.DataBase
 
 
         /// <summary>
-        /// The update client.
+        /// The update clientPoco.
         /// </summary>
-        /// <param name="client">
-        /// The client.
+        /// <param name="clientPoco">
+        /// The clientPoco.
         /// </param>
-        public void UpdateClient(Client client)
+        public void UpdateClient(ClientPoco clientPoco)
         {
-            if (this._clients.Exists(x => x.Name == client.Name))
+            if (this._clients.Exists(x => x.Name == clientPoco.Name))
             {
-                this._clients.Update(client);
+                this._clients.Update(clientPoco);
                 this.DataBaseUpdated?.Invoke(this, null);
 
             }
         }
 
         /// <summary>
-        /// The client data updated.
+        /// The clientPoco data updated.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -180,17 +178,17 @@ namespace AppDataBase.DataBase
         /// </summary>
         private void CreateTestDataBase()
         {
-            var client = new Client()
+            var client = new ClientPoco()
             {
                 Name = ClientNames.Warnervale.ToString(),
                 ClientIcon = "AlphabetW",
                 Builders = new List<string>() { "Jason Home", "Kenvin Home", "Happy Home", "Crazy Home" },
-                WallTypes = new List<WallType>()
+                WallTypes = new List<WallTypePoco>()
                                 {
-                                    new WallType() { Id = 0, IsLBW = true, IsRaked = false, AliasName = "EXT WALL" },
-                                    new WallType() { Id = 1, IsLBW = false, IsRaked = false, AliasName = "INT WALL" },
-                                    new WallType() { Id = 2, IsLBW = true, IsRaked = true, AliasName = "EXT RAKED WALL" },
-                                    new WallType() { Id = 3, IsLBW = false, IsRaked = true, AliasName = "INT RAKED WALL" }
+                                    new WallTypePoco() { Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "EXT WALL" },
+                                    new WallTypePoco() { Id = 1, IsLoadBearingWall = false, IsRaked = false, AliasName = "INT WALL" },
+                                    new WallTypePoco() { Id = 2, IsLoadBearingWall = true, IsRaked = true, AliasName = "EXT RAKED WALL" },
+                                    new WallTypePoco() { Id = 3, IsLoadBearingWall = false, IsRaked = true, AliasName = "INT RAKED WALL" }
                                 }
             };
 
@@ -206,7 +204,7 @@ namespace AppDataBase.DataBase
             }
 
 
-            client = new Client()
+            client = new ClientPoco()
             {
                 Name = ClientNames.Prenail.ToString(),
                 ClientIcon = "AlphabetP",
@@ -217,17 +215,17 @@ namespace AppDataBase.DataBase
                 BottomPlates = this.CreatePrenailBottomPlates(),
                 Beams = this.CreatePrenailBeamList(),
                 TimberBracingBases = this.CreatePrenailBracingList(),
-                WallTypes = new List<WallType>()
+                WallTypes = new List<WallTypePoco>()
                                 {
-                                    new WallType() { Id = 0, IsLBW = true, IsRaked = false, AliasName = "LB_External" },
-                                    new WallType() { Id = 1, IsLBW = true, IsRaked = true, AliasName = "LB_ExtRaking" },
-                                    new WallType() { Id = 2, IsLBW = true, IsRaked = false, AliasName = "LB_Internal" },
-                                    new WallType() { Id = 3, IsLBW = true, IsRaked = false, AliasName = "LB_PartiWall" },
-                                    new WallType() { Id = 4, IsLBW = true, IsRaked = true, AliasName = "LB_Raked_PartiWall" },
-                                    new WallType() { Id = 6, IsLBW = false, IsRaked = false, AliasName = "NLB_Internal" },
-                                    new WallType() { Id = 7, IsLBW = false, IsRaked = true, AliasName = "NLB_IntRaking" },
-                                    new WallType() { Id = 8, IsLBW = false, IsRaked = false, AliasName = "NLB_PartiWall" },
-                                    new WallType() { Id = 9, IsLBW = false, IsRaked = true, AliasName = "NLB_Raked_PartiWall" }
+                                    new WallTypePoco() { Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "LB_External" },
+                                    new WallTypePoco() { Id = 1, IsLoadBearingWall = true, IsRaked = true, AliasName = "LB_ExtRaking" },
+                                    new WallTypePoco() { Id = 2, IsLoadBearingWall = true, IsRaked = false, AliasName = "LB_Internal" },
+                                    new WallTypePoco() { Id = 3, IsLoadBearingWall = true, IsRaked = false, AliasName = "LB_PartiWall" },
+                                    new WallTypePoco() { Id = 4, IsLoadBearingWall = true, IsRaked = true, AliasName = "LB_Raked_PartiWall" },
+                                    new WallTypePoco() { Id = 5, IsLoadBearingWall = false, IsRaked = false, AliasName = "NLB_Internal" },
+                                    new WallTypePoco() { Id = 6, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_IntRaking" },
+                                    new WallTypePoco() { Id = 7, IsLoadBearingWall = false, IsRaked = false, AliasName = "NLB_PartiWall" },
+                                    new WallTypePoco() { Id = 8, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_Raked_PartiWall" }
             }
             };
 
@@ -241,21 +239,21 @@ namespace AppDataBase.DataBase
                 this._clients.EnsureIndex(x => x.Name);
             }
 
-            client = new Client()
+            client = new ClientPoco()
             {
                 Name = ClientNames.Rivo.ToString(),
                 ClientIcon = "AlphabetR",
                 Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
 
-                WallTypes = new List<WallType>
+                WallTypes = new List<WallTypePoco>
                             {
-                new WallType(){Id = 0, IsLBW = true, IsRaked = false, AliasName = "EXTERNAL LOAD BEARING"},
-                new WallType(){Id = 1, IsLBW = true, IsRaked = false, AliasName = "INTERNAL LOAD BEARING"},
-                new WallType(){Id = 2, IsLBW = false, IsRaked = false, AliasName = "EXTERNAL NON LOAD BEARING"},
-                new WallType(){Id = 3, IsLBW = false, IsRaked = false, AliasName = "INTERNAL NON LOAD BEARING"},
-                new WallType(){Id = 4, IsLBW = false, IsRaked = true, AliasName = "EXT RAKING WALL"},
-                new WallType(){Id = 5, IsLBW = false, IsRaked = true, AliasName = "INT RAKING WALL"},
-                new WallType(){Id = 5, IsLBW = false, IsRaked = false, AliasName = "PARAPET WALL"},
+                new WallTypePoco(){Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "EXTERNAL LOAD BEARING"},
+                new WallTypePoco(){Id = 1, IsLoadBearingWall = true, IsRaked = false, AliasName = "INTERNAL LOAD BEARING"},
+                new WallTypePoco(){Id = 2, IsLoadBearingWall = false, IsRaked = false, AliasName = "EXTERNAL NON LOAD BEARING"},
+                new WallTypePoco(){Id = 3, IsLoadBearingWall = false, IsRaked = false, AliasName = "INTERNAL NON LOAD BEARING"},
+                new WallTypePoco(){Id = 4, IsLoadBearingWall = false, IsRaked = true, AliasName = "EXT RAKING WALL"},
+                new WallTypePoco(){Id = 5, IsLoadBearingWall = false, IsRaked = true, AliasName = "INT RAKING WALL"},
+                new WallTypePoco(){Id = 6, IsLoadBearingWall = false, IsRaked = false, AliasName = "PARAPET WALL"},
             }
 
             };
@@ -269,6 +267,39 @@ namespace AppDataBase.DataBase
                 this._clients.Insert(client);
                 this._clients.EnsureIndex(x => x.Name);
             }
+
+            client = new ClientPoco()
+            {
+                Name = ClientNames.StickFrame.ToString(),
+                ClientIcon = "AlphabetS",
+                Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
+
+                WallTypes = new List<WallTypePoco>
+                {
+                    new WallTypePoco(){Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "LOAD BEARING WALL"},
+                    new WallTypePoco(){Id = 1, IsLoadBearingWall = true, IsRaked = false, AliasName = "RAKED LOAD BEARING WALL"},
+                    new WallTypePoco(){Id = 2, IsLoadBearingWall = true, IsRaked = false, AliasName = "NONE LOAD BEARING WALL"},
+                    new WallTypePoco(){Id = 3, IsLoadBearingWall = true, IsRaked = false, AliasName = "RAKED NONE LOAD BEARING WALL"}
+                }
+
+            };
+
+            if (this._clients.Exists(x => x.Name == ClientNames.StickFrame.ToString()))
+            {
+                this._clients.Update(client);
+            }
+            else
+            {
+                this._clients.Insert(client);
+                this._clients.EnsureIndex(x => x.Name);
+            }
+
+
+
+
+
+
+
         }
 
         /// <summary>

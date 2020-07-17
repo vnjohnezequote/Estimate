@@ -8,6 +8,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using ApplicationInterfaceCore;
+using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using MaterialDesignExtensions.Controls;
 
 namespace JobInfoModule.ViewModels
 {
@@ -19,12 +22,9 @@ namespace JobInfoModule.ViewModels
     using ApplicationCore.BaseModule;
 
     using ApplicationService;
-
-    using AppModels;
-
     using JetBrains.Annotations;
 
-    using MaterialDesignExtensions.Controls;
+    //using MaterialDesignExtensions.Controls;
 
     using Prism.Commands;
     using Prism.Events;
@@ -47,7 +47,7 @@ namespace JobInfoModule.ViewModels
         /// <summary>
         /// The clients.
         /// </summary>
-        private ObservableCollection<Client> _clients;
+        private ObservableCollection<ClientPoco> _clients;
 
         
         #endregion
@@ -77,11 +77,11 @@ namespace JobInfoModule.ViewModels
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
             [NotNull] IEventAggregator eventAggregator,
-            ILayerManager layermanager)
-            : base(unityContainer, regionManager, eventAggregator,layermanager)
+            ILayerManager layermanager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layermanager,jobModel)
         {
             this._dbBase = this.UnityContainer.Resolve<ClientDataBase>();
-            this.Clients = new ObservableCollection<Client>(this._dbBase.Clients);
+            this.Clients = new ObservableCollection<ClientPoco>(this._dbBase.Clients);
             this.CustomerMenuLoadedCommand = new DelegateCommand(this.OnCustomerMenuSelect);
             this.CustomerMenuSelectCommand = new DelegateCommand(this.OnCustomerMenuSelect);
             this.JobLocationCommand = new DelegateCommand(this.OnJobLocationSelect);
@@ -110,7 +110,7 @@ namespace JobInfoModule.ViewModels
         /// <summary>
         /// Gets or sets the clients.
         /// </summary>
-        public ObservableCollection<Client> Clients
+        public ObservableCollection<ClientPoco> Clients
         {
             get => this._clients;
             set => this.SetProperty(ref this._clients, value);
@@ -122,17 +122,14 @@ namespace JobInfoModule.ViewModels
         /// <summary>
         /// The on customer menu select.
         /// </summary>
-        /// <param name="customerMenu">
-        /// The customer Menu.
-        /// </param>
         private void OnCustomerMenuSelect()
         {
             if (this.SelectedClient is null)
             {
                 return;
             }
-            this.Job.ClientName = this.SelectedClient.Name;
-            this.EventAggre.GetEvent<CustomerService>().Publish(this.SelectedClient);
+            this.JobInfo.ClientName = this.SelectedClient.Name;
+            this.EventAggregator.GetEvent<CustomerService>().Publish(this.SelectedClient);
         }
 
         private async void OnJobLocationSelect()
@@ -146,7 +143,7 @@ namespace JobInfoModule.ViewModels
             OpenDirectoryDialogResult result = await OpenDirectoryDialog.ShowDialogAsync("dialogHost", dialogArgs);
             if (!result.Canceled)
             {
-                this.Job.JobLocation = result.DirectoryInfo.FullName;
+                this.JobInfo.JobLocation = result.DirectoryInfo.FullName;
             }
         }
 

@@ -12,6 +12,7 @@ using System.Globalization;
 using ApplicationInterfaceCore;
 using AppModels.CustomEntity;
 using AppModels.Interaface;
+using AppModels.ResponsiveData;
 using devDept.Eyeshot.Entities;
 
 namespace WallFrameInputModule.ViewModels
@@ -29,8 +30,6 @@ namespace WallFrameInputModule.ViewModels
     using ApplicationCore.BaseModule;
 
     using AppModels;
-    using AppModels.PocoDataModel;
-
     using CsvHelper;
 
     using MaterialDesignExtensions.Controls;
@@ -114,8 +113,8 @@ namespace WallFrameInputModule.ViewModels
         /// <param name="eventAggregator">
         /// The event aggregator.
         /// </param>
-        public PrenailFloorInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager, IEntitiesManager entitiesManager )
-            : base(unityContainer, regionManager, eventAggregator,layerManager)
+        public PrenailFloorInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager, IEntitiesManager entitiesManager,IJob jobModel )
+            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             this.EntitiesManager = entitiesManager;
             EntitiesManager.EntitiesCollectionChanged += EntitiesManager_EntitiesCollectionChanged;
@@ -455,7 +454,7 @@ namespace WallFrameInputModule.ViewModels
                     wallLayer.ChangeWallThickness();
 
 
-                    if (wallLayer.TimberWallType.IsLBW && e.PropertyName == "ExternalWallThickness")
+                    if (wallLayer.TimberWallTypePoco.IsLoadBearingWall && e.PropertyName == "ExternalWallThickness")
                     {
                         if (wallLayer.WallThickness.Size == this.Level.LevelInfo.ExternalWallThickness)
                         {
@@ -464,7 +463,7 @@ namespace WallFrameInputModule.ViewModels
                             this.ChangedWallThickness(wallLayer);
                         }
                     }
-                    else if (!wallLayer.TimberWallType.IsLBW && e.PropertyName == "InternalWallThickness")
+                    else if (!wallLayer.TimberWallTypePoco.IsLoadBearingWall && e.PropertyName == "InternalWallThickness")
                     {
                         if (wallLayer.WallThickness.Size == this.Level.LevelInfo.InternalWallThickness)
                         {
@@ -501,7 +500,7 @@ namespace WallFrameInputModule.ViewModels
             //var currentRow = wallInput.SelectedIndex;
             //var currentWallLayer = this.Level.WallLayers[currentRow];
 
-            //if (wallInput.CurrentColumn.MappingName == "TimberWallType")
+            //if (wallInput.CurrentColumn.MappingName == "TimberWallTypePoco")
             //{
             //    this.ChangedWallThickness(currentWallLayer);
             //}
@@ -530,7 +529,7 @@ namespace WallFrameInputModule.ViewModels
             var rowData = sfDataGrid.GetRecordAtRowIndex(currentRow);
             var currentWallLayer = (WallLayer)rowData;
 
-            if (sfDataGrid.CurrentColumn.MappingName == "TimberWallType")
+            if (sfDataGrid.CurrentColumn.MappingName == "TimberWallTypePoco")
             {
                 this.ChangedWallThickness(currentWallLayer);
 
@@ -607,7 +606,7 @@ namespace WallFrameInputModule.ViewModels
             }
 
             return currentTimberbase.TimberInfo.Thickness == currentStud.TimberInfo.Thickness && currentTimberbase.TimberInfo.Depth == currentStud.TimberInfo.Depth
-                   && currentTimberbase.TimberInfo.Grade == currentStud.TimberInfo.Grade;
+                   && currentTimberbase.TimberInfo.TimberGrade == currentStud.TimberInfo.TimberGrade;
         }
 
         /// <summary>
@@ -629,7 +628,7 @@ namespace WallFrameInputModule.ViewModels
                 return;
             }
 
-            if (!currenLayer.TimberWallType.IsLBW)
+            if (!currenLayer.TimberWallTypePoco.IsLoadBearingWall)
             {
                 currenLayer.RibbonPlate.TimberInfo = this.ChangedTimberPlateThickness("RibbonPlate", currenLayer, currenLayer.RibbonPlate, this.RibbonPlates);
             }
@@ -682,7 +681,7 @@ namespace WallFrameInputModule.ViewModels
             var filterTimbers = listTimberBases.SelectMany(x => x.Value).Where(x => x.Thickness == currenLayer.WallThickness.Size);
 
             var selectedTimber = filterTimbers.FirstOrDefault(
-            x => x.Depth == currentStud.TimberInfo.Depth && x.Grade == currentStud.TimberInfo.Grade);
+            x => x.Depth == currentStud.TimberInfo.Depth && x.TimberGrade == currentStud.TimberInfo.TimberGrade);
             if (selectedTimber == null)
             {
                 return null;
@@ -739,7 +738,7 @@ namespace WallFrameInputModule.ViewModels
             var filterStuds = this.Studs.SelectMany(x => x.Value).Where(x => x.Thickness == currenLayer.WallThickness.Size);
 
             var selectedStud = filterStuds.FirstOrDefault(
-                x => x.Depth == currentTimber.TimberInfo.Depth && x.Grade == currentTimber.TimberInfo.Grade);
+                x => x.Depth == currentTimber.TimberInfo.Depth && x.TimberGrade == currentTimber.TimberInfo.TimberGrade);
             if (selectedStud == null)
             {
                 return;
@@ -780,7 +779,7 @@ namespace WallFrameInputModule.ViewModels
             if (memberNameChange == "RibbonPlate")
             {
                 // return nil if wall is None LBW and member change is ribbon plate
-                if (!currentLayer.TimberWallType.IsLBW)
+                if (!currentLayer.TimberWallTypePoco.IsLoadBearingWall)
                 {
                     var rbInfor = filterTimbers.FirstOrDefault(
                     x => x.SizeGrade == "Nil");
@@ -805,13 +804,13 @@ namespace WallFrameInputModule.ViewModels
 
                 // else select ribbon plate like top plate
                 var rbInfo = filterTimbers.FirstOrDefault(
-                x => x.Depth == currentLayer.TopPlate.TimberInfo.Depth && x.Grade == currentLayer.TopPlate.TimberInfo.Grade);
+                x => x.Depth == currentLayer.TopPlate.TimberInfo.Depth && x.TimberGrade == currentLayer.TopPlate.TimberInfo.TimberGrade);
                 return rbInfo;
             }
 
             // else change member thickness with iformation as current member
             var selectedTimberInfo = filterTimbers.FirstOrDefault(
-                x => x.Depth == currentWallMember.TimberInfo.Depth && x.Grade == currentWallMember.TimberInfo.Grade);
+                x => x.Depth == currentWallMember.TimberInfo.Depth && x.TimberGrade == currentWallMember.TimberInfo.TimberGrade);
             if (selectedTimberInfo == null)
             {
                 // them dialog new ko chuyen doi duoc o day

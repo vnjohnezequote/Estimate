@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.ResponsiveData;
+
 namespace AppModels.Comparer
 {
     using System.Collections.Generic;
@@ -34,7 +36,7 @@ namespace AppModels.Comparer
             var objectB = (WallLayer)y;
             if (objectA!= null && objectB!=null)
             {
-                return objectA.TimberWallType.CompareTo(objectB.TimberWallType);    
+                return objectA.TimberWallTypePoco.CompareTo(objectB.TimberWallTypePoco);    
             }
 
             return 0;

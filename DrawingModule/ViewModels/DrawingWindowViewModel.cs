@@ -14,6 +14,7 @@ using ApplicationService;
 using AppModels;
 using AppModels.AppData;
 using AppModels.Interaface;
+using AppModels.ResponsiveData;
 using DrawingModule.Views;
 using CanvasDrawing = DrawingModule.CustomControl.CanvasControl.CanvasDrawing;
 
@@ -73,9 +74,9 @@ namespace DrawingModule.ViewModels
             set
             {
                 SetProperty(ref _selectedLevel, value);
-                if (this.EventAggre != null)
+                if (this.EventAggregator != null)
                 {
-                    this.EventAggre.GetEvent<LevelNameService>().Publish(_selectedLevel);
+                    this.EventAggregator.GetEvent<LevelNameService>().Publish(_selectedLevel);
                 }
             } 
         }
@@ -134,8 +135,8 @@ namespace DrawingModule.ViewModels
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        public DrawingWindowViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IEntitiesManager entitiesManager)
-            : base(unityContainer, regionManager, eventAggregator, layerManager)
+        public DrawingWindowViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IEntitiesManager entitiesManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
             var job = UnityContainer.Resolve<IJob>("GlobalJob");
             if (job!=null)
@@ -310,7 +311,7 @@ namespace DrawingModule.ViewModels
         private void LoadLayerManger()
         {
             //var parameters = new NavigationParameters { { "Layers", Layers } };
-            //if (this.Job.Info != null)
+            //if (this.JobInfo.Info != null)
             //{
                 this.RegionManager.RequestNavigate("LayerManagerRegion", nameof(LayerManagerView));
             //}

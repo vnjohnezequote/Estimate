@@ -8,7 +8,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using ApplicationInterfaceCore;
-using LiteDB;
+using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 using NewJobWizardModule.Views;
 
 namespace Estimate.ViewModels
@@ -25,9 +27,6 @@ namespace Estimate.ViewModels
     using ApplicationCore.BaseModule;
 
     using ApplicationService;
-
-    using AppModels;
-
     using DataType.Class;
 
     using DrawingModule.Views;
@@ -50,123 +49,109 @@ namespace Estimate.ViewModels
     /// </summary>
     public class MainWindowViewModel : BaseViewModel
     {
+        #region Field
+
+        
+
+        #endregion
         /// <summary>
         /// Minimum height size for Main Panel
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
         private const int MainPanelMinHeight = 30;
 
         /// <summary>
         /// Minimum width size for Main Panel
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
         private const int MainPanelMinWidth = 30;
 
         /// <summary>
         /// The window.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private MainWindowView window;
+        private MainWindowView _window;
 
         /// <summary>
         /// Max with size for Quick Panel
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private int quickPanelMaxWidth;
+        private int _quickPanelMaxWidth;
 
         /// <summary>
         /// Max with size for Property Panel
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private int propertyPanelMaxWidth;
+        private int _propertyPanelMaxWidth;
 
         /// <summary>
         /// Max Height size of bottom Panel
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private int bottomPanelMaxHeight;
+        private int _bottomPanelMaxHeight;
 
         /// <summary>
         /// Width size of divider between Panels
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private int splitterSize = 1;
+        private int _splitterSize = 1;
 
         /// <summary>
         /// Width size of divider for Left Panel
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private int leftPanelSplitterWidth = 0;
+        private int _leftPanelSplitterWidth = 0;
 
         /// <summary>
         /// Width size of divider for Right Panel
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private int rightPanelSplitterWidth = 0;
+        private int _rightPanelSplitterWidth = 0;
 
         /// <summary>
         /// Store Last Height for bottom panel
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private int lastBottomHeight = 30;
+        private int _lastBottomHeight = 30;
 
         /// <summary>
         /// Store Last Height for bottom panel
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private int lastPropertyWidth = 150;
+        private int _lastPropertyWidth = 150;
 
         /// <summary>
         /// Decide Bottom panel opened or not
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private bool isBottomBarOpened = false;
+        private bool _isBottomBarOpened = false;
 
         /// <summary>
         /// Decide Property Panel Opened or not
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
-        private bool isPropertyBarOpened = false;
+        private bool _isPropertyBarOpened = false;
 
         /// <summary>
-        /// The client name.
+        /// The clientPoco name.
         /// </summary>
-        private string clientName;
+        private string _clientName;
 
         /// <summary>
         /// The is job exist.
         /// </summary>
-        private bool isJobExist = false;
+        private bool _isJobExist = false;
 
         /// <summary>
-        /// The job model.
-        /// </summary>
-        private JobModel _jobModel;
-
-        /// <summary>
-        /// The client db.
+        /// The clientPoco db.
         /// </summary>
         private ClientDataBase _clientDb;
 
         /// <summary>
         /// The clients.
         /// </summary>
-        private ObservableCollection<Client> _clients;
+        private ObservableCollection<ClientPoco> _clients;
 
         /// <summary>
-        /// The _selected client.
+        /// The _selected clientPoco.
         /// </summary>
-        private Client _selectedClient;
+        private ClientPoco _selectedClient;
 
         /// <summary>
-        /// The selected client index.
+        /// The selected clientPoco index.
         /// </summary>
         private int? _selectedClientIndex;
 
         /// <summary>
         /// The max panel changed.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Reviewed. Suppression is OK here.")]
         private readonly Action _maxPanelChanged;
 
         /// <summary>
@@ -174,6 +159,7 @@ namespace Estimate.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
+            //this._clientName = clientName;
         }
 
         /// <summary>
@@ -182,14 +168,15 @@ namespace Estimate.ViewModels
         /// <param name="unityContainer">The unityContainer<see cref="IUnityContainer"/></param>
         /// <param name="regionManager">The regionManager<see cref="IRegionManager"/></param>
         /// <param name="eventAggregator">The eventAggregator<see cref="IEventAggregator"/></param>
-        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1120:CommentsMustContainText", Justification = "Reviewed. Suppression is OK here.")]
+        /// <param name="layerManager"></param>
         public MainWindowViewModel(
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
             [NotNull] IEventAggregator eventAggregator,
-            ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator,layerManager)
+            ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
+            //this._clientName = clientName;
             this._clientDb = this.UnityContainer.Resolve<ClientDataBase>();
             this.GetClientCollection();
             this._maxPanelChanged = this.OnMaxWidthPanelChanged;
@@ -209,9 +196,18 @@ namespace Estimate.ViewModels
             this.CustomerMenuSelectCommand = new DelegateCommand(this.OnCustomerMenuSelect);
             this.LoadDrawingWindowCommand = new DelegateCommand(this.LoadDrawingWindow);
             SaveJobCommand = new DelegateCommand(OnSaveJobCommand);
-            this.EventAggre.GetEvent<JobModelService>().Subscribe(this.JobModelReceive);
+            //JobModel.Info.PropertyChanged += Info_PropertyChanged;
+            //this.EventAggregator.GetEvent<JobModelService>().Subscribe(this.OnChangeClient);
 
 
+        }
+
+        private void Info_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName== "ClientName")
+            {
+                this.OnChangeClient(JobModel.Info.ClientName);
+            }
         }
 
         #region Property
@@ -289,69 +285,68 @@ namespace Estimate.ViewModels
         /// <summary>
         /// Gets or sets the quick panel max width.
         /// </summary>
-        public int QuickPanelMaxWidth { get => this.quickPanelMaxWidth; set => this.SetProperty(ref this.quickPanelMaxWidth, value); }
+        public int QuickPanelMaxWidth { get => this._quickPanelMaxWidth; set => this.SetProperty(ref this._quickPanelMaxWidth, value); }
 
         /// <summary>
         /// Gets the property panel max width.
         /// </summary>
-        public int PropertyPanelMaxWidth { get => this.propertyPanelMaxWidth; private set => this.SetProperty(ref this.propertyPanelMaxWidth, value); }
+        public int PropertyPanelMaxWidth { get => this._propertyPanelMaxWidth; private set => this.SetProperty(ref this._propertyPanelMaxWidth, value); }
 
         /// <summary>
         /// Gets the bottom panel max height.
         /// </summary>
-        public int BottomPanelMaxHeight { get => this.bottomPanelMaxHeight; private set => this.SetProperty(ref this.bottomPanelMaxHeight, value); }
+        public int BottomPanelMaxHeight { get => this._bottomPanelMaxHeight; private set => this.SetProperty(ref this._bottomPanelMaxHeight, value); }
 
         /// <summary>
         /// Gets the splitter size.
         /// </summary>
-        public int SplitterSize { get => this.splitterSize; private set => this.SetProperty(ref this.splitterSize, value); }
+        public int SplitterSize { get => this._splitterSize; private set => this.SetProperty(ref this._splitterSize, value); }
 
         /// <summary>
         /// Gets the left panel splitter width.
         /// </summary>
-        public int LeftPanelSplitterWidth { get => this.leftPanelSplitterWidth; private set => this.SetProperty(ref this.leftPanelSplitterWidth, value); }
+        public int LeftPanelSplitterWidth { get => this._leftPanelSplitterWidth; private set => this.SetProperty(ref this._leftPanelSplitterWidth, value); }
 
         /// <summary>
         /// Gets the right panel splitter width.
         /// </summary>
-        public int RightPanelSplitterWidth { get => this.rightPanelSplitterWidth; private set => this.SetProperty(ref this.rightPanelSplitterWidth, value); }
+        public int RightPanelSplitterWidth { get => this._rightPanelSplitterWidth; private set => this.SetProperty(ref this._rightPanelSplitterWidth, value); }
 
         /// <summary>
         /// Gets the last bottom bar height.
         /// </summary>
-        public int LastBottomBarHeight { get => this.lastBottomHeight; private set => this.SetProperty(ref this.lastBottomHeight, value); }
+        public int LastBottomBarHeight { get => this._lastBottomHeight; private set => this.SetProperty(ref this._lastBottomHeight, value); }
 
         /// <summary>
         /// Gets the last property panel width.
         /// </summary>
-        public int LastPropertyPanelWidth { get => this.lastPropertyWidth; private set => this.SetProperty(ref this.lastPropertyWidth, value); }
+        public int LastPropertyPanelWidth { get => this._lastPropertyWidth; private set => this.SetProperty(ref this._lastPropertyWidth, value); }
 
         /// <summary>
-        /// Gets or sets the client name.
+        /// Gets or sets the clientPoco name.
         /// </summary>
-        public ObservableCollection<Client> Clients { get => this._clients; set => this.SetProperty(ref this._clients, value); }
+        public ObservableCollection<ClientPoco> Clients { get => this._clients; set => this.SetProperty(ref this._clients, value); }
 
         /// <summary>
-        /// Gets or sets the selected client.
+        /// Gets or sets the selected clientPoco.
         /// </summary>
-        public Client SelectedClient { get => this._selectedClient; set => this.SetProperty(ref this._selectedClient, value); }
+        public ClientPoco SelectedClient { get => this._selectedClient; set => this.SetProperty(ref this._selectedClient, value); }
 
         /// <summary>
-        /// Gets or sets the selected client index.
+        /// Gets or sets the selected clientPoco index.
         /// </summary>
         public int? SelectedClientIndex { get => this._selectedClientIndex; set => this.SetProperty(ref this._selectedClientIndex, value); }
 
         /// <summary>
-        /// Gets or sets the Job
+        /// Gets or sets the JobInfo
         /// </summary>
-        public JobModel Job { get => this._jobModel; set => this.SetProperty(ref this._jobModel, value); }
         #endregion
 
         private void OnSaveJobCommand()
         {
-            if (this.Job != null)
+            if (this.JobModel != null)
             {
-                var fileName = Job.Info.JobLocation + @"\" + Job.Info.JobNumber + ".db";
+                var fileName = JobModel.Info.JobLocation + @"\" + JobModel.Info.JobNumber + ".db";
 
                 
             }
@@ -364,31 +359,30 @@ namespace Estimate.ViewModels
             var parameters =
                 new NavigationParameters
                     {
-                        { "Job", this.Job },
+                        { "JobInfo", this.JobModel },
                         { "SelectedClient", this.SelectedClient }
                     };
-            if (this.Job != null)
+            if (this.JobModel != null)
             {
                 this.RegionManager.RequestNavigate(MainWindowRegions.MainRegion, nameof(WallFrameInputView), parameters);
             }
         }
 
         /// <summary>
-        /// The get client collection.
+        /// The get clientPoco collection.
         /// </summary>
         private void GetClientCollection()
         {
-            this.Clients = new ObservableCollection<Client>(this._clientDb.Clients);
+            this.Clients = new ObservableCollection<ClientPoco>(this._clientDb.Clients);
         }
 
         /// <summary>
         /// The job model receive.
         /// </summary>
         /// <param name="job">The job<see cref="JobModel"/></param>
-        private void JobModelReceive(JobModel job)
+        private void OnChangeClient(string clientName)
         {
-            this.Job = job;
-            this.OnSetSelectedClient(this.Job.Info.ClientName);
+            this.OnSetSelectedClient(clientName);
             this.LoadJobInfor();
             this.LoadWallFrameInput();
         }
@@ -401,13 +395,12 @@ namespace Estimate.ViewModels
             //var drawingWindow = new DrawingWindowView();
             var drawingWindow = this.UnityContainer.Resolve<BaseWindowService>();
             //shell.ShowShell<NewJobWizardView>();
-            this.EventAggre.GetEvent<JobModelService>().Publish(this.Job);
             drawingWindow.ShowShell<DrawingWindowView>(false);
             //drawingWindow.Show();
         }
 
         /// <summary>
-        /// The on set selected client.
+        /// The on set selected clientPoco.
         /// </summary>
         /// <param name="customer">The customer<see cref="string"/></param>
         private void OnSetSelectedClient(string customer)
@@ -427,14 +420,13 @@ namespace Estimate.ViewModels
         /// The window loaded.
         /// </summary>
         /// <param name="window">The window<see cref="MainWindowView"/></param>
-        [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1503:CurlyBracketsMustNotBeOmitted", Justification = "Reviewed. Suppression is OK here.")]
         private void WindowLoaded([NotNull] MainWindowView window)
         {
             if (window == null) throw new ArgumentNullException(nameof(window));
-            this.window = window ?? throw new ArgumentNullException(nameof(window));
+            this._window = window ?? throw new ArgumentNullException(nameof(window));
             this._maxPanelChanged.Invoke();
 
-            if (this.isJobExist == false)
+            if (this._isJobExist == false)
             {
                 this.CreateJobWizard();
             }
@@ -445,11 +437,11 @@ namespace Estimate.ViewModels
         /// </summary>
         private void LoadJobInfor()
         {
-            var parameters = new NavigationParameters { { "Job", Job } };
-            if (this.Job != null)
-            {
-                this.RegionManager.RequestNavigate(MainWindowRegions.RightContentRegion, nameof(JobInfomationView), parameters);
-            }
+            //var parameters = new NavigationParameters { { "JobInfo", JobInfo } };
+            //if (this.JobInfo != null)
+            //{
+                this.RegionManager.RequestNavigate(MainWindowRegions.RightContentRegion, nameof(JobInfomationView));
+            //}
         }
 
         /// <summary>
@@ -466,20 +458,20 @@ namespace Estimate.ViewModels
         /// </summary>
         private void OnExpanderPropertyPanel()
         {
-            if (this.isPropertyBarOpened == false)
+            if (this._isPropertyBarOpened == false)
             {
-                this.isPropertyBarOpened = true;
-                var openProperty = this.window.FindResource("OpenPropertyPanel") as Storyboard;
-                this.window.ButtonOpenPropertyPanel.Visibility = Visibility.Collapsed;
-                this.window.ButtonClosePropertyPanel.Visibility = Visibility.Visible;
+                this._isPropertyBarOpened = true;
+                var openProperty = this._window.FindResource("OpenPropertyPanel") as Storyboard;
+                this._window.ButtonOpenPropertyPanel.Visibility = Visibility.Collapsed;
+                this._window.ButtonClosePropertyPanel.Visibility = Visibility.Visible;
                 openProperty?.Begin();
             }
             else
             {
-                this.isPropertyBarOpened = false;
-                var closeProperty = this.window.FindResource("ClosePropertyPanel") as Storyboard;
-                this.window.ButtonOpenPropertyPanel.Visibility = Visibility.Visible;
-                this.window.ButtonClosePropertyPanel.Visibility = Visibility.Collapsed;
+                this._isPropertyBarOpened = false;
+                var closeProperty = this._window.FindResource("ClosePropertyPanel") as Storyboard;
+                this._window.ButtonOpenPropertyPanel.Visibility = Visibility.Visible;
+                this._window.ButtonClosePropertyPanel.Visibility = Visibility.Collapsed;
                 closeProperty?.Begin();
             }
         }
@@ -490,18 +482,18 @@ namespace Estimate.ViewModels
         private void OnExpanderBottomPanel()
         {
 
-            if (this.isBottomBarOpened == false)
+            if (this._isBottomBarOpened == false)
             {
-                this.isBottomBarOpened = true;
-                var openBottom = this.window.FindResource("OpenCalc") as Storyboard;
-                this.window.ButtonOpenBottomPanel.Visibility = Visibility.Collapsed;
+                this._isBottomBarOpened = true;
+                var openBottom = this._window.FindResource("OpenCalc") as Storyboard;
+                this._window.ButtonOpenBottomPanel.Visibility = Visibility.Collapsed;
                 openBottom?.Begin();
             }
             else
             {
-                this.isBottomBarOpened = false;
-                var closeBottom = this.window.FindResource("CloseCalc") as Storyboard;
-                this.window.ButtonOpenBottomPanel.Visibility = Visibility.Visible;
+                this._isBottomBarOpened = false;
+                var closeBottom = this._window.FindResource("CloseCalc") as Storyboard;
+                this._window.ButtonOpenBottomPanel.Visibility = Visibility.Visible;
                 closeBottom?.Begin();
             }
         }
@@ -517,10 +509,10 @@ namespace Estimate.ViewModels
             switch (frameWorkElement.Name)
             {
                 case "QuickBar":
-                    this.LeftPanelSplitterWidth = (int)this.window.QuickPanel.ActualWidth == 0 ? 0 : 1;
+                    this.LeftPanelSplitterWidth = (int)this._window.QuickPanel.ActualWidth == 0 ? 0 : 1;
                     break;
                 case "PropertyBar":
-                    this.RightPanelSplitterWidth = (int)this.window.PropertyPanel.ActualWidth == 0 ? 0 : 1;
+                    this.RightPanelSplitterWidth = (int)this._window.PropertyPanel.ActualWidth == 0 ? 0 : 1;
                     break;
                 case "BottomBar":
                     break;
@@ -538,11 +530,11 @@ namespace Estimate.ViewModels
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         private void OnBottomPanelGridSplitterDragComplete()
         {
-            if ((int)this.window.BottomBarPanel.ActualHeight <= 0
-                || (int)this.window.BottomBarPanel.ActualHeight >= 30) return;
-            this.isBottomBarOpened = false;
-            this.window.ButtonOpenBottomPanel.Visibility = Visibility.Visible;
-            this.window.BottomBarPanel.Height = new GridLength(0);
+            if ((int)this._window.BottomBarPanel.ActualHeight <= 0
+                || (int)this._window.BottomBarPanel.ActualHeight >= 30) return;
+            this._isBottomBarOpened = false;
+            this._window.ButtonOpenBottomPanel.Visibility = Visibility.Visible;
+            this._window.BottomBarPanel.Height = new GridLength(0);
             this.LastBottomBarHeight = 30;
         }
 
@@ -552,12 +544,12 @@ namespace Estimate.ViewModels
         [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1503:CurlyBracketsMustNotBeOmitted", Justification = "Reviewed. Suppression is OK here.")]
         private void OnPropertyPanelGridSplitterDragComplete()
         {
-            if ((int)this.window.PropertyPanel.ActualWidth <= 0
-                || (int)this.window.PropertyPanel.ActualWidth >= 150) return;
-            this.isPropertyBarOpened = false;
-            this.window.ButtonOpenPropertyPanel.Visibility = Visibility.Visible;
-            this.window.ButtonClosePropertyPanel.Visibility = Visibility.Collapsed;
-            this.window.PropertyPanel.Width = new GridLength(0);
+            if ((int)this._window.PropertyPanel.ActualWidth <= 0
+                || (int)this._window.PropertyPanel.ActualWidth >= 150) return;
+            this._isPropertyBarOpened = false;
+            this._window.ButtonOpenPropertyPanel.Visibility = Visibility.Visible;
+            this._window.ButtonClosePropertyPanel.Visibility = Visibility.Collapsed;
+            this._window.PropertyPanel.Width = new GridLength(0);
             this.LastPropertyPanelWidth = 150;
         }
 
@@ -569,16 +561,16 @@ namespace Estimate.ViewModels
         {
             // hide or Unhide Bottom Panel Button
             // _window.ButtonOpenBottomPanel.Visibility = _window.BottomBarPanel.ActualHeight > 0 ? Visibility.Collapsed : Visibility.Visible;
-            if ((int)this.window.BottomBarPanel.ActualHeight > 0)
+            if ((int)this._window.BottomBarPanel.ActualHeight > 0)
             {
-                this.isBottomBarOpened = true;
-                this.window.ButtonOpenBottomPanel.Visibility = Visibility.Collapsed;
-                this.LastBottomBarHeight = (int)this.window.BottomBarPanel.ActualHeight;
+                this._isBottomBarOpened = true;
+                this._window.ButtonOpenBottomPanel.Visibility = Visibility.Collapsed;
+                this.LastBottomBarHeight = (int)this._window.BottomBarPanel.ActualHeight;
             }
             else
             {
-                this.isBottomBarOpened = false;
-                this.window.ButtonOpenBottomPanel.Visibility = Visibility.Visible;
+                this._isBottomBarOpened = false;
+                this._window.ButtonOpenBottomPanel.Visibility = Visibility.Visible;
                 this.LastBottomBarHeight = 30;
             }
         }
@@ -588,18 +580,18 @@ namespace Estimate.ViewModels
         /// </summary>
         private void OnPropertyPanelSizeChanged()
         {
-            if ((int)this.window.PropertyPanel.ActualWidth > 0)
+            if ((int)this._window.PropertyPanel.ActualWidth > 0)
             {
-                this.isPropertyBarOpened = true;
-                this.window.ButtonOpenPropertyPanel.Visibility = Visibility.Collapsed;
-                this.window.ButtonClosePropertyPanel.Visibility = Visibility.Visible;
-                this.LastPropertyPanelWidth = (int)this.window.PropertyPanel.ActualWidth;
+                this._isPropertyBarOpened = true;
+                this._window.ButtonOpenPropertyPanel.Visibility = Visibility.Collapsed;
+                this._window.ButtonClosePropertyPanel.Visibility = Visibility.Visible;
+                this.LastPropertyPanelWidth = (int)this._window.PropertyPanel.ActualWidth;
             }
             else
             {
-                this.isPropertyBarOpened = false;
-                this.window.ButtonOpenPropertyPanel.Visibility = Visibility.Visible;
-                this.window.ButtonClosePropertyPanel.Visibility = Visibility.Collapsed;
+                this._isPropertyBarOpened = false;
+                this._window.ButtonOpenPropertyPanel.Visibility = Visibility.Visible;
+                this._window.ButtonClosePropertyPanel.Visibility = Visibility.Collapsed;
                 this.LastPropertyPanelWidth = 150;
             }
         }
@@ -609,8 +601,8 @@ namespace Estimate.ViewModels
         /// </summary>
         private void OnOpenMenu()
         {
-            this.window.ButtonCloseMenu.Visibility = Visibility.Visible;
-            this.window.ButtonOpenMenu.Visibility = Visibility.Collapsed;
+            this._window.ButtonCloseMenu.Visibility = Visibility.Visible;
+            this._window.ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -618,8 +610,8 @@ namespace Estimate.ViewModels
         /// </summary>
         private void OnCloseMenu()
         {
-            this.window.ButtonCloseMenu.Visibility = Visibility.Collapsed;
-            this.window.ButtonOpenMenu.Visibility = Visibility.Visible;
+            this._window.ButtonCloseMenu.Visibility = Visibility.Collapsed;
+            this._window.ButtonOpenMenu.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -630,16 +622,16 @@ namespace Estimate.ViewModels
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         private void OnMaxWidthPanelChanged()
         {
-            this.QuickPanelMaxWidth = (int)(this.window.ActualWidth
-                                            - (this.window.LeftPanel.ActualWidth + this.window.RightPanel.ActualWidth
-                                                                                 + this.window.PropertyPanel.ActualWidth
+            this.QuickPanelMaxWidth = (int)(this._window.ActualWidth
+                                            - (this._window.LeftPanel.ActualWidth + this._window.RightPanel.ActualWidth
+                                                                                 + this._window.PropertyPanel.ActualWidth
                                                                                  + 2 * this.SplitterSize
                                                                                  + this.LeftPanelSplitterWidth
                                                                                  + this.RightPanelSplitterWidth
                                                                                  + MainPanelMinWidth));
-            this.PropertyPanelMaxWidth = (int)(this.window.ActualWidth
-                                               - (this.window.LeftPanel.ActualWidth + this.window.RightPanel.ActualWidth
-                                                                                    + this.window.QuickPanel.ActualWidth
+            this.PropertyPanelMaxWidth = (int)(this._window.ActualWidth
+                                               - (this._window.LeftPanel.ActualWidth + this._window.RightPanel.ActualWidth
+                                                                                    + this._window.QuickPanel.ActualWidth
                                                                                     + 2 * this.SplitterSize
                                                                                     + this.LeftPanelSplitterWidth
                                                                                     + this.RightPanelSplitterWidth
@@ -654,9 +646,9 @@ namespace Estimate.ViewModels
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         private void OnMaxHeightPanelChanged()
         {
-            this.BottomPanelMaxHeight = (int)(this.window.ActualHeight
-                                              - (this.window.TitlePanel.ActualHeight
-                                                 + this.window.ToolBarPanel.ActualHeight + 2 * this.SplitterSize
+            this.BottomPanelMaxHeight = (int)(this._window.ActualHeight
+                                              - (this._window.TitlePanel.ActualHeight
+                                                 + this._window.ToolBarPanel.ActualHeight + 2 * this.SplitterSize
                                                  + MainPanelMinHeight));
         }
 
@@ -673,12 +665,12 @@ namespace Estimate.ViewModels
         /// </summary>
         private void OnCustomerMenuSelect()
         {
-            if (this.SelectedClient is null)
-            {
-                return;
-            }
-            this.Job.Info.ClientName = this.SelectedClient.Name;
-            this.EventAggre.GetEvent<CustomerService>().Publish(this.SelectedClient);
+            //if (this.SelectedClient is null)
+            //{
+            //    return;
+            //}
+            //this.JobModel.Info.ClientName = this.SelectedClient.Name;
+            //this.EventAggregator.GetEvent<CustomerService>().Publish(this.SelectedClient);
         }
 
         

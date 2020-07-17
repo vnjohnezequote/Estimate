@@ -10,6 +10,7 @@ using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels.Interaface;
 using DrawingModule.CommandLine;
 using DrawingModule.Enums;
 using DrawingModule.Helper;
@@ -495,10 +496,10 @@ namespace DrawingModule.ViewModels
         #region Constructor
         public DynamicInputViewModel() : base()
         { }
-        public DynamicInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
-        : base(unityContainer, regionManager, eventAggregator, layerManager)
+        public DynamicInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IJob jobModel)
+        : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
-            this.EventAggre.GetEvent<DynamicInputViewEvent>().Subscribe(ShowOrHideDynamicInput);
+            this.EventAggregator.GetEvent<DynamicInputViewEvent>().Subscribe(ShowOrHideDynamicInput);
             this.InitSuggestionHints();
             this._dispatcher = System.Windows.Application.Current.Dispatcher;
             //this.SetupCommandLineHints();
@@ -937,7 +938,7 @@ namespace DrawingModule.ViewModels
 
         //            }
         //            this.mInputBuffer.ReplaceInputQueue(currentHint.Value + '\n', currentHint.Name);
-        //            this.EventAggre.GetEvent<CommandExcuteStringEvent>().Publish(commandSysvarHintItem.GlobalName);
+        //            this.EventAggregator.GetEvent<CommandExcuteStringEvent>().Publish(commandSysvarHintItem.GlobalName);
         //            handled = true;
 
         //            //currentHint.Command.Execute(null);
@@ -1002,13 +1003,13 @@ namespace DrawingModule.ViewModels
                 {
                     var commandSysvarHintItem = currentHint as CommandSysvarHintItem;
                     if (commandSysvarHintItem != null)
-                        this.EventAggre.GetEvent<CommandExcuteStringEvent>().Publish(commandSysvarHintItem.GlobalName);
+                        this.EventAggregator.GetEvent<CommandExcuteStringEvent>().Publish(commandSysvarHintItem.GlobalName);
                     if (commandSysvarHintItem != null) this._lastCommandString = commandSysvarHintItem.GlobalName;
                 }
             }
             else if (string.IsNullOrEmpty(CommandTextInput) && !string.IsNullOrEmpty(_lastCommandString))
             {
-                this.EventAggre.GetEvent<CommandExcuteStringEvent>().Publish(_lastCommandString);
+                this.EventAggregator.GetEvent<CommandExcuteStringEvent>().Publish(_lastCommandString);
             }
             this.HintViewerVisible = false;
             this.CommandTextInput = string.Empty;

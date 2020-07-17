@@ -4,6 +4,9 @@ using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
+using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 using DataType.Class;
 using JobInfoModule.Views;
 using Prism.Events;
@@ -17,7 +20,7 @@ namespace JobInfoModule.ViewModels
 		#region private member
         private Visibility _isDesignVisibility;
 		private JobModel _job;
-        private Client _selectedClient;
+        private ClientPoco _selectedClient;
 		
 		#endregion
 		
@@ -25,11 +28,11 @@ namespace JobInfoModule.ViewModels
 		public JobInfomationViewModel()
 		{}
 		
-		 public JobInfomationViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager)
-            : base(unityContainer, regionManager, eventAggregator, layerManager)
+		 public JobInfomationViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
-			this.EventAggre.GetEvent<CustomerService>().Subscribe(this.ChangeClient);
-		}
+			this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.ChangeClient);
+        }
 		#endregion
 		
 		#region Public Member
@@ -49,7 +52,7 @@ namespace JobInfoModule.ViewModels
             set => this.SetProperty(ref this._job, value);
         }
 
-        public Client SelectedClient
+        public ClientPoco SelectedClient
         {
             get => this._selectedClient;
             set => this.SetProperty(ref _selectedClient, value);
@@ -59,10 +62,10 @@ namespace JobInfoModule.ViewModels
 		#region private function
 
         /// <summary>
-        /// The Change Client
+        /// The Change ClientPoco
         /// </summary>
         /// <param name="selectClient"></param>
-        private void ChangeClient(Client selectClient)
+        private void ChangeClient(ClientPoco selectClient)
         {
             if (selectClient ==null)
             {
@@ -70,35 +73,35 @@ namespace JobInfoModule.ViewModels
                 return;
             }
             this.IsDesignVisibility = selectClient.Name == "Prenail" ? Visibility.Visible : Visibility.Collapsed;
-			this.LoadInformation();
+			//this.LoadInformation();
         }
 		
 		public void OnNavigatedTo(NavigationContext navigationContext)
         {
-             if (navigationContext.Parameters["Job"] is JobModel job)
-             {
-                 this.Job = job;
-             }
+             //if (navigationContext.Parameters["JobInfo"] is JobModel job)
+             //{
+             //    this.JobInfo = job;
+             //}
 			
-             this.LoadInformation();
+             //this.LoadInformation();
         }
 		
 		public void LoadInformation()
 		{
-			this.TranfersJob(JobInformationRegions.HJobInformation,nameof(HorizontalJobInfoView));
-			this.TranfersJob(JobInformationRegions.MainWindInforRegion,nameof(WindCategoryView));
-			this.TranfersJob(JobInformationRegions.MainRoofInfoRegion,nameof(RoofInfoView));
-			if (this.Job.Info.ClientName == "Prenail")
-			{
-				this.TranfersJob(JobInformationRegions.MainDesignRegion,nameof(DesignInfoView));
-			}
+			//this.TranfersJob(JobInformationRegions.HJobInformation,nameof(HorizontalJobInfoView));
+			//this.TranfersJob(JobInformationRegions.MainWindInforRegion,nameof(WindCategoryView));
+			//this.TranfersJob(JobInformationRegions.MainRoofInfoRegion,nameof(RoofInfoView));
+			//if (this.JobInfo.Info.ClientName == "Prenail")
+			//{
+			//	this.TranfersJob(JobInformationRegions.MainDesignRegion,nameof(DesignInfoView));
+			//}
 			
-			this.TranferFloorInfo(JobInformationRegions.MainFloorChooseRegion,nameof(LevelInfoView));
+			//this.TranferFloorInfo(JobInformationRegions.MainFloorChooseRegion,nameof(LevelInfoView));
 
 		}
 		private void TranfersJob(string regionName, string uriPath)
 		{
-            var parameters = new NavigationParameters {{"Job", Job.Info}};
+            var parameters = new NavigationParameters {{"JobInfo", JobModel.Info}};
             if (Job!=null)
             {
                 this.RegionManager.RequestNavigate(regionName,uriPath,parameters);   
@@ -107,9 +110,9 @@ namespace JobInfoModule.ViewModels
 		
 		private void TranferFloorInfo(string regionName, string uriPath)
 		{
-			var parameters = new NavigationParameters {{"Job", Job.Info}};
-			parameters.Add("Levels", Job.Levels);
-            if (Job.Info!=null && Job.Levels != null)
+			var parameters = new NavigationParameters {{"JobInfo", JobModel.Info}};
+			parameters.Add("Levels", JobModel.Levels);
+            if (Job.Info!=null && JobModel.Levels != null)
             {
                 this.RegionManager.RequestNavigate(regionName,uriPath,parameters);   
             }

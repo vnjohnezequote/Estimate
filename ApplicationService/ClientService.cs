@@ -12,7 +12,7 @@ namespace ApplicationService
     using Prism.Events;
 
     /// <summary>
-    /// The client service.
+    /// The clientPoco service.
     /// </summary>
     public class ClientService : PubSubEvent<string>
     {

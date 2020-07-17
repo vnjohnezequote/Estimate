@@ -12,13 +12,14 @@ using AppAddons;
 using AppDataBase.DataBase;
 using ApplicationInterfaceCore;
 using AppModels;
+using AppModels.Interaface;
+using AppModels.ResponsiveData;
 
 namespace Estimate
 {
     using System;
     using DrawingModule.Application;
     using WallFrameInputModule;
-    using System.Diagnostics.CodeAnalysis;
     using System.Windows;
     using CommonServiceLocator;
     using Views;
@@ -34,7 +35,6 @@ namespace Estimate
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
     public partial class App : PrismApplication
     {
         /// <summary>
@@ -45,6 +45,7 @@ namespace Estimate
         /// </param>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<IJob, JobModel>();
             containerRegistry.RegisterSingleton<ILayerManager,LayerManager>();
             containerRegistry.RegisterSingleton<IEntitiesManager, EntitiesManager>();
         }
@@ -73,15 +74,9 @@ namespace Estimate
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             base.ConfigureModuleCatalog(moduleCatalog);
-
-            
-
             moduleCatalog.AddModule(typeof(WindowControlModule));
-
             moduleCatalog.AddModule(typeof(JobInformationModule));
-
             moduleCatalog.AddModule(typeof(WallFrameModule));
-
             moduleCatalog.AddModule(typeof(DrawingModule.DrawingModuleControler));
             moduleCatalog.AddModule(typeof(AppAddonsModuleControl));
 

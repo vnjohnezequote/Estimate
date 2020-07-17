@@ -10,6 +10,9 @@
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
+using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 
 namespace ApplicationCore.BaseModule
 {
@@ -27,14 +30,14 @@ namespace ApplicationCore.BaseModule
         #region private Member
 
         /// <summary>
-        /// The _job.
+        /// The _jobInfo.
         /// </summary>
-        private JobInfo _job;
+        private JobInfo _jobInfo;
 
         /// <summary>
-        /// The _selected client.
+        /// The _selected clientPoco.
         /// </summary>
-        private Client _selectedClient;
+        private ClientPoco _selectedClient;
         #endregion
         #region Constructor
 
@@ -57,8 +60,8 @@ namespace ApplicationCore.BaseModule
         /// <param name="eventAggregator">
         /// The event Aggregator.
         /// </param>
-        protected BaseViewModelAware(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager)
-        : base(unityContainer, regionManager, eventAggregator,layerManager)
+        protected BaseViewModelAware(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager,IJob jobModel)
+        : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             // this.RegionManager = regionManager.CreateRegionManager();
         }
@@ -70,13 +73,13 @@ namespace ApplicationCore.BaseModule
         /// <summary>
         /// Gets or sets the job.
         /// </summary>
-        public JobInfo Job
+        public JobInfo JobInfo
         {
-            get => this._job;
-            set => this.SetProperty(ref this._job, value);
+            get => this._jobInfo;
+            set => this.SetProperty(ref this._jobInfo, value);
         }
 
-        public Client SelectedClient
+        public ClientPoco SelectedClient
         {
             get => this._selectedClient;
             set => this.SetProperty(ref this._selectedClient, value);
@@ -93,12 +96,12 @@ namespace ApplicationCore.BaseModule
         /// </param>
         public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
-            if (navigationContext.Parameters["Job"] is JobInfo job)
+            if (navigationContext.Parameters["JobInfo"] is JobInfo job)
             {
-                this.Job = job;
+                this.JobInfo = job;
             }
 
-            if (navigationContext.Parameters["SelectedClient"] is Client selectedClient)
+            if (navigationContext.Parameters["SelectedClient"] is ClientPoco selectedClient)
             {
                 this.SelectedClient = selectedClient;
             }

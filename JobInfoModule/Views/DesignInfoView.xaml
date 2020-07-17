@@ -21,12 +21,12 @@
         <!-- Engineer Infor-->
         <DockPanel>
             <materialDesign:ColorZone Mode="PrimaryMid">
-                <Label Content="{Binding Job.FrameDesignInfor.Header, FallbackValue='Frame as per'}"/>
+                <Label Content="{Binding JobInfo.FrameDesignInfor.Header, FallbackValue='Frame as per'}"/>
             </materialDesign:ColorZone>
             <ComboBox ItemsSource="{Binding FrameDesignInfors}"
-                      SelectedItem="{Binding Job.FrameDesignInfor}"
-                      SelectedValue="{Binding Job.FrameDesignInfor}"
-                      Text="{Binding Job.FrameDesignInfor.Content}"
+                      SelectedItem="{Binding JobInfo.FrameDesignInfor}"
+                      SelectedValue="{Binding JobInfo.FrameDesignInfor}"
+                      Text="{Binding JobInfo.FrameDesignInfor.Content}"
                       DisplayMemberPath="Content">
                 <interactions:Interaction.Triggers>
                     <interactions:EventTrigger EventName="SelectionChanged">
@@ -38,12 +38,12 @@
         </DockPanel>
         <DockPanel>
             <materialDesign:ColorZone Mode="PrimaryMid">
-                <Label Content="{Binding Job.BeamDesignInfor.Header, FallbackValue='Beam as per'}"/>
+                <Label Content="{Binding JobInfo.BeamDesignInfor.Header, FallbackValue='Beam as per'}"/>
             </materialDesign:ColorZone>
             <ComboBox ItemsSource="{Binding BeamDesignInfors}"
-                      SelectedItem="{Binding Job.BeamDesignInfor}"
-                      SelectedValue="{Binding Job.BeamDesignInfor}"
-                      Text="{Binding Job.BeamDesignInfor.Content}"
+                      SelectedItem="{Binding JobInfo.BeamDesignInfor}"
+                      SelectedValue="{Binding JobInfo.BeamDesignInfor}"
+                      Text="{Binding JobInfo.BeamDesignInfor.Content}"
                       DisplayMemberPath="Content">
                 <interactions:Interaction.Triggers>
                     <interactions:EventTrigger EventName="SelectionChanged">
@@ -54,12 +54,12 @@
         </DockPanel>
         <DockPanel>
             <materialDesign:ColorZone Mode="PrimaryMid">
-                <Label Content="{Binding Job.BracingDesignInfor.Header, FallbackValue='Bracing as per'}"/>
+                <Label Content="{Binding JobInfo.BracingDesignInfor.Header, FallbackValue='Bracing as per'}"/>
             </materialDesign:ColorZone>
             <ComboBox ItemsSource="{Binding BracingInfors}"
-                      SelectedItem="{Binding Job.BracingDesignInfor}"
-                      SelectedValue="{Binding Job.BracingDesignInfor}"
-                      Text="{Binding Job.BracingDesignInfor.Content}"
+                      SelectedItem="{Binding JobInfo.BracingDesignInfor}"
+                      SelectedValue="{Binding JobInfo.BracingDesignInfor}"
+                      Text="{Binding JobInfo.BracingDesignInfor.Content}"
                       DisplayMemberPath="Content">
                 <interactions:Interaction.Triggers>
                     <interactions:EventTrigger EventName="SelectionChanged">
@@ -74,13 +74,13 @@
                 <Label Content="Plan Issue"/>
             </materialDesign:ColorZone>
             <DatePicker materialDesign:HintAssist.Hint="Pick Date"
-                        SelectedDate="{Binding Job.PlanIsueDate}"
+                        SelectedDate="{Binding JobInfo.PlanIsueDate}"
                         IsTodayHighlighted="False"
                         Language="en-AU"/>
 
-            <CheckBox Content="E - Plan" IsChecked="{Binding Job.IsEPlan}"/>
-            <CheckBox Content="Engineer" IsChecked="{Binding Job.IsEngineer}"/>
-            <CheckBox Content="Bracing Plan" IsChecked="{Binding Job.IsBracingPlan}"/>
+            <CheckBox Content="E - Plan" IsChecked="{Binding JobInfo.IsEPlan}"/>
+            <CheckBox Content="Engineer" IsChecked="{Binding JobInfo.IsEngineer}"/>
+            <CheckBox Content="Bracing Plan" IsChecked="{Binding JobInfo.IsBracingPlan}"/>
         </DockPanel>
     </StackPanel>
 </UserControl>
