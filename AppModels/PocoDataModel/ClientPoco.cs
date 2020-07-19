@@ -37,6 +37,14 @@ namespace AppModels.PocoDataModel
         /// </summary>
         public List<string> Builders { get; set; }
         /// <summary>
+        /// Gets or sets the treatments list.
+        /// </summary>
+        public List<string> Treatments { get; set; }
+        /// <summary>
+        /// Gets or sets the windrates list.
+        /// </summary>
+        public List<string> WinRates { get; set; }
+        /// <summary>
         /// Gets or sets the builders list.
         /// </summary>
         public List<WallTypePoco> WallTypes { get; set; }

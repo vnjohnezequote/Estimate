@@ -43,7 +43,7 @@ namespace JobInfoModule.ViewModels
         /// </summary>
         //private PrenailWindCategoryView _prenaiWind;
         private ObservableCollection<string> _windRates;
-        private ObservableCollection<string> _treatment;
+        private ObservableCollection<string> _treatments;
         #endregion
 
         public WindCategoryViewModel()
@@ -65,10 +65,8 @@ namespace JobInfoModule.ViewModels
         public WindCategoryViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager,IJob jobModel)
             : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
-            this.RegionManager = this.RegionManager.CreateRegionManager();
-            WindRates = new ObservableCollection<string>();
-            Treatment = new ObservableCollection<string>();
-            //this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SetClient);
+            //this.RegionManager = this.RegionManager.CreateRegionManager();
+           //this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SetClient);
         }
 
         #region Command
@@ -84,10 +82,10 @@ namespace JobInfoModule.ViewModels
         }
 
        
-        public ObservableCollection<string> Treatment
+        public ObservableCollection<string> Treatments
         {
-            get => _treatment;
-            set => SetProperty(ref _treatment, value);
+            get => _treatments;
+            set => SetProperty(ref _treatments, value);
         }
 
         public string ClientName
@@ -126,41 +124,41 @@ namespace JobInfoModule.ViewModels
         /// </param>
         private void LoadWindCategory(string clientName)
         {
-            var windRegion = "WindRegion";
-            switch (clientName)
-            {
-                case "Warnervale":
-					this.TranfersJob(windRegion,nameof(GeneralWindCategoryView));
-                    break;
-                case "Prenail":
-                    this.TranfersJob(windRegion, nameof(PrenailWindCategoryView));
-                    break;
-                case "Rivo":
-                    this.TranfersJob(windRegion, nameof(GeneralWindCategoryView));
-                    break;
-                case "StickFrame":
-                    this.TranfersJob(windRegion,nameof(PrenailWindCategoryView));
-                    break;
-                default:
-                    break;
-            }
+     //       var windRegion = "WindRegion";
+     //       switch (clientName)
+     //       {
+     //           case "Warnervale":
+					//this.TranfersJob(windRegion,nameof(GeneralWindCategoryView));
+     //               break;
+     //           case "Prenail":
+     //               this.TranfersJob(windRegion, nameof(PrenailWindCategoryView));
+     //               break;
+     //           case "Rivo":
+     //               this.TranfersJob(windRegion, nameof(GeneralWindCategoryView));
+     //               break;
+     //           case "StickFrame":
+     //               this.TranfersJob(windRegion,nameof(PrenailWindCategoryView));
+     //               break;
+     //           default:
+     //               break;
+     //       }
         }
 		
-		private void TranfersJob(string regionName, string viewPath)
-		{
-			var parameters = new NavigationParameters();
-                parameters.Add("JobInfo", JobInfo);
-                if (JobInfo!=null)
-                {
-                    this.RegionManager.RequestNavigate(regionName,viewPath,parameters);   
-                }
-		}
+		//private void TranfersJob(string regionName, string viewPath)
+		//{
+		//	var parameters = new NavigationParameters();
+  //              parameters.Add("JobInfo", JobInfo);
+  //              if (JobInfo!=null)
+  //              {
+  //                  this.RegionManager.RequestNavigate(regionName,viewPath,parameters);   
+  //              }
+		//}
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
-            this.SetClient(this.JobInfo.ClientName);
-        }
+        //public override void OnNavigatedTo(NavigationContext navigationContext)
+        //{
+        //    base.OnNavigatedTo(navigationContext);
+        //    this.SetClient(this.JobInfo.ClientName);
+        //}
 
         #endregion
     }

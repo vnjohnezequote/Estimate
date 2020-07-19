@@ -52,7 +52,7 @@ namespace AppDataBase.DataBase
         /// </summary>
         public ClientDataBase()
         {
-            using (var db = new LiteDatabase("Clients.Db"))
+            using (var db = new LiteDatabase("filename=Clients.Db;upgrade=true"))
             {
                 this._clients = db.GetCollection<ClientPoco>("Clients");
                 this.Clients = this.GetClients();
@@ -182,6 +182,14 @@ namespace AppDataBase.DataBase
             {
                 Name = ClientNames.Warnervale.ToString(),
                 ClientIcon = "AlphabetW",
+                WinRates = new List<string>()
+                {
+                    "N1","N2","N3"
+                },
+                Treatments = new List<string>()
+                {
+                    "Untreated", "H2","H2S"
+                },
                 Builders = new List<string>() { "Jason Home", "Kenvin Home", "Happy Home", "Crazy Home" },
                 WallTypes = new List<WallTypePoco>()
                                 {
@@ -208,6 +216,14 @@ namespace AppDataBase.DataBase
             {
                 Name = ClientNames.Prenail.ToString(),
                 ClientIcon = "AlphabetP",
+                WinRates = new List<string>()
+                {
+                    "N1","N2","N3","N4","N5","N6","C1","C2","C3","C4"
+                },
+                Treatments = new List<string>()
+                {
+                    "Untreated", "H2","H2S Treated","T2 Blue","T2 Red","T3 Green"
+                },
                 Builders = new List<string>() { "Funny Home", "Teddy Home", "America Home", "Dalat Home" },
                 Studs = this.CreatePrenailStuds(),
                 RibbonPlates = this.CreatePrenailRibbonPlates(),
@@ -243,6 +259,14 @@ namespace AppDataBase.DataBase
             {
                 Name = ClientNames.Rivo.ToString(),
                 ClientIcon = "AlphabetR",
+                WinRates = new List<string>()
+                {
+                    "N1","N2","N3"
+                },
+                Treatments = new List<string>()
+                {
+                    "Untreated", "H2","H2S Treated"
+                },
                 Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
 
                 WallTypes = new List<WallTypePoco>
@@ -272,6 +296,14 @@ namespace AppDataBase.DataBase
             {
                 Name = ClientNames.StickFrame.ToString(),
                 ClientIcon = "AlphabetS",
+                WinRates = new List<string>()
+                {
+                    "N1","N2","N3","N4","N5","N6","C1","C2","C3","C4"
+                },
+                Treatments = new List<string>()
+                {
+                    "Untreated", "H2","H2S Treated", "H2F Treated","H3 Treated","T2 Treated","T2 Blue Treated", "T2 Red Treated","T3 Green Treated","LOSP"
+                },
                 Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
 
                 WallTypes = new List<WallTypePoco>
@@ -294,7 +326,39 @@ namespace AppDataBase.DataBase
                 this._clients.EnsureIndex(x => x.Name);
             }
 
+            client = new ClientPoco()
+            {
+                Name = ClientNames.ITMTumu.ToString(),
+                ClientIcon = "AlphabetT",
+                WinRates = new List<string>()
+                {
+                    "Extra High","Very High","High Wind","Medium Wind","Low Wind"
+                },
+                Treatments = new List<string>()
+                {
+                    "Untreated", "H2","H2S Treated", "H2F Treated","H3 Treated","T2 Treated","T2 Blue Treated", "T2 Red Treated","T3 Green Treated","LOSP"
+                },
+                Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
 
+                WallTypes = new List<WallTypePoco>
+                {
+                    new WallTypePoco(){Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "LOAD BEARING WALL"},
+                    new WallTypePoco(){Id = 1, IsLoadBearingWall = true, IsRaked = false, AliasName = "RAKED LOAD BEARING WALL"},
+                    new WallTypePoco(){Id = 2, IsLoadBearingWall = true, IsRaked = false, AliasName = "NONE LOAD BEARING WALL"},
+                    new WallTypePoco(){Id = 3, IsLoadBearingWall = true, IsRaked = false, AliasName = "RAKED NONE LOAD BEARING WALL"}
+                }
+
+            };
+
+            if (this._clients.Exists(x => x.Name == ClientNames.StickFrame.ToString()))
+            {
+                this._clients.Update(client);
+            }
+            else
+            {
+                this._clients.Insert(client);
+                this._clients.EnsureIndex(x => x.Name);
+            }
 
 
 

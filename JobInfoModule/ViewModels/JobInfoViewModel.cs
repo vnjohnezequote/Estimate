@@ -40,7 +40,7 @@ namespace JobInfoModule.ViewModels
     {
         #region Private Member
 
-        private ClientPoco _clientPoco;
+        //private ClientPoco _clientPoco;
         private ObservableCollection<string> _builders;
 
 
@@ -86,7 +86,7 @@ namespace JobInfoModule.ViewModels
         {
             get
             {
-                if (this.SelectClient == null)
+                if (this.SelectedClient == null)
                 {
                     return false;
                 }
@@ -97,15 +97,15 @@ namespace JobInfoModule.ViewModels
             }
         }
 
-        public ClientPoco SelectClient
-        {
-            get => this._clientPoco;
-            set
-            {
-                this.SetProperty(ref this._clientPoco, value);
-                this.RaisePropertyChanged(nameof(IsBuilderEnable));
-            }
-        }
+        //public ClientPoco SelectClient
+        //{
+        //    get => this._clientPoco;
+        //    set
+        //    {
+        //        this.SetProperty(ref this._clientPoco, value);
+        //        this.RaisePropertyChanged(nameof(IsBuilderEnable));
+        //    }
+        //}
 
         public ObservableCollection<string> Builders
         {
@@ -123,7 +123,7 @@ namespace JobInfoModule.ViewModels
             {
                 return;
             }
-            this.SelectClient = selectClient;
+            this.SelectedClient = selectClient;
             BuilderNamesReseive(selectClient.Builders);
         }
 
@@ -137,7 +137,7 @@ namespace JobInfoModule.ViewModels
             var canExcute = false;
             if (parameter is ComboBox inforView)
             {
-                if (string.IsNullOrEmpty(inforView.Text) || SelectClient is null)
+                if (string.IsNullOrEmpty(inforView.Text) || SelectedClient is null)
                 {
                     canExcute = false;
                 }
@@ -153,16 +153,16 @@ namespace JobInfoModule.ViewModels
         private void OnAddBuilderNamesChanged(ComboBox parameter)
         {
             if (!(parameter is ComboBox inforView)) return;
-            if (this.SelectClient.Builders.Contains(inforView.Text) || string.IsNullOrEmpty(inforView.Text))
+            if (this.SelectedClient.Builders.Contains(inforView.Text) || string.IsNullOrEmpty(inforView.Text))
             {
                 return;
             }
             this.Builders.Add(inforView.Text);
 
-            this.SelectClient.Builders = this.Builders.ToList();
+            this.SelectedClient.Builders = this.Builders.ToList();
 
             var dataBase = this.UnityContainer.Resolve<ClientDataBase>();
-            dataBase.UpdateClient(this.SelectClient);
+            dataBase.UpdateClient(this.SelectedClient);
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
@@ -173,8 +173,8 @@ namespace JobInfoModule.ViewModels
             {
                 return;
             }
-            this.SelectClient = db.GetClient(this.JobInfo.ClientName);
-            this.BuilderNamesReseive(this.SelectClient.Builders);
+            this.SelectedClient = db.GetClient(this.JobInfo.ClientName);
+            this.BuilderNamesReseive(this.SelectedClient.Builders);
         }
 
         #endregion
