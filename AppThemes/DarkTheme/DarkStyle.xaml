@@ -45,8 +45,8 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="materialDesign:HintAssist.FloatingOffset" Value="1,-20"/>
-        <!--<Setter Property="Template" Value="{StaticResource FloatHintComboBoxWithButton}"/>
-        <Setter Property="mah:TextBoxHelper.ButtonContent" Value="{materialDesign:PackIcon Clear}"/>-->
+        <Setter Property="Template" Value="{StaticResource MyMaterialDesignFloatingHintComboBoxTemplate}"/>
+        <Setter Property="mah:TextBoxHelper.ButtonContent" Value="{materialDesign:PackIcon Clear}"/>
         <!--<Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>-->
         <Setter Property="Padding" Value="5"/>
         <!--<Style.Triggers>

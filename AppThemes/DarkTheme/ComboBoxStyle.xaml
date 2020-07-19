@@ -364,30 +364,22 @@
                                             ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                             IsHitTestVisible="False"/>
                             <TextBox x:Name="PART_EditableTextBox"
-					   
-																						
-                                   IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
+                                     IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
                                    HorizontalAlignment="Stretch"
                                    HorizontalContentAlignment="Stretch"
                                    Style="{StaticResource MaterialDesignComboBoxEditableTextBox}"
-									   
-															
-												  
-																											
                                    CaretBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}"
                                    Visibility="Collapsed" />
-
-
                             <materialDesign:SmartHint x:Name="Hint"
-                                         HintProxy="{Binding RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static materialDesign:HintProxyFabricConverter.Instance}}"
-                                         FontSize="{TemplateBinding FontSize}"
-                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                         UseLayoutRounding="{TemplateBinding UseLayoutRounding}"
-                                         UseFloating="{Binding Path=(materialDesign:HintAssist.IsFloating), RelativeSource={RelativeSource TemplatedParent}}"
-                                         FloatingScale="{Binding Path=(materialDesign:HintAssist.FloatingScale), RelativeSource={RelativeSource TemplatedParent}}"
-                                         FloatingOffset="{Binding Path=(materialDesign:HintAssist.FloatingOffset), RelativeSource={RelativeSource TemplatedParent}}"
-                                         HintOpacity="{Binding Path=(materialDesign:HintAssist.HintOpacity), RelativeSource={RelativeSource TemplatedParent}}"
-                                         Hint="{TemplateBinding materialDesign:HintAssist.Hint}" />
+                                                      HintProxy="{Binding RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static materialDesign:HintProxyFabricConverter.Instance}}"
+                                                      FontSize="{TemplateBinding FontSize}"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                      UseLayoutRounding="{TemplateBinding UseLayoutRounding}"
+                                                      UseFloating="{Binding Path=(materialDesign:HintAssist.IsFloating), RelativeSource={RelativeSource TemplatedParent}}"
+                                                      FloatingScale="{Binding Path=(materialDesign:HintAssist.FloatingScale), RelativeSource={RelativeSource TemplatedParent}}"
+                                                      FloatingOffset="{Binding Path=(materialDesign:HintAssist.FloatingOffset), RelativeSource={RelativeSource TemplatedParent}}"
+                                                      HintOpacity="{Binding Path=(materialDesign:HintAssist.HintOpacity), RelativeSource={RelativeSource TemplatedParent}}"
+                                                      Hint="{TemplateBinding materialDesign:HintAssist.Hint}" />
                         </Grid>
                         <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Top">
                             <TextBlock

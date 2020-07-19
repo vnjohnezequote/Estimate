@@ -11,6 +11,7 @@ using ApplicationInterfaceCore;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
+using Prism.Mvvm;
 
 namespace JobInfoModule.ViewModels
 {
@@ -36,23 +37,32 @@ namespace JobInfoModule.ViewModels
     /// <summary>
     /// The job info view model.
     /// </summary>
-    public class JobInfoViewModel : BaseViewModelAware
+    public class JobInfoViewModel : BaseJobInForViewModel
     {
         #region Private Member
 
         //private ClientPoco _clientPoco;
         private ObservableCollection<string> _builders;
+        #endregion
 
+        #region Property
 
+        public bool IsBuilderEnable => SelectedClient != null;
+
+        public ObservableCollection<string> Builders
+        {
+            get => this._builders;
+            set => this.SetProperty(ref this._builders, value);
+        }
         #endregion
         #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JobInfoViewModel"/> class.
         /// </summary>
-        public JobInfoViewModel()
-        {
-        }
+        //public JobInfoViewModel()
+        //{
+        //}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JobInfoViewModel"/> class.
@@ -70,7 +80,7 @@ namespace JobInfoModule.ViewModels
             : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
             this.BuilderNameLostFocusCommand = new DelegateCommand<ComboBox>(this.OnAddBuilderNamesChanged, this.CanAddBuiderNameCanExcute);
-            this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SelectedClientReceive);
+            //this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SelectedClientReceive);
         }
 
         #endregion
@@ -80,50 +90,14 @@ namespace JobInfoModule.ViewModels
 
         #endregion
 
-        #region Public Member
-
-        public bool IsBuilderEnable
-        {
-            get
-            {
-                if (this.SelectedClient == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
-
-        //public ClientPoco SelectClient
-        //{
-        //    get => this._clientPoco;
-        //    set
-        //    {
-        //        this.SetProperty(ref this._clientPoco, value);
-        //        this.RaisePropertyChanged(nameof(IsBuilderEnable));
-        //    }
-        //}
-
-        public ObservableCollection<string> Builders
-        {
-            get => this._builders;
-            set => this.SetProperty(ref this._builders, value);
-        }
-
-        #endregion
+       
 
         #region Private Funtc
 
-        private void SelectedClientReceive(ClientPoco selectClient)
+        protected override void SelectedClientReceive(ClientPoco selectClient)
         {
-            if (selectClient == null)
-            {
-                return;
-            }
-            this.SelectedClient = selectClient;
+           base.SelectedClientReceive(selectClient);
+            this.RaisePropertyChanged(nameof(IsBuilderEnable));
             BuilderNamesReseive(selectClient.Builders);
         }
 
@@ -165,15 +139,9 @@ namespace JobInfoModule.ViewModels
             dataBase.UpdateClient(this.SelectedClient);
         }
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
+        protected override void Initilazied()
         {
-            base.OnNavigatedTo(navigationContext);
-            var db = this.UnityContainer.Resolve<ClientDataBase>();
-            if (string.IsNullOrEmpty(this.JobInfo.ClientName))
-            {
-                return;
-            }
-            this.SelectedClient = db.GetClient(this.JobInfo.ClientName);
+            base.Initilazied();
             this.BuilderNamesReseive(this.SelectedClient.Builders);
         }
 

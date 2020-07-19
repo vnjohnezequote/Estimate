@@ -111,6 +111,7 @@
   <ItemGroup>
     <Compile Include="BaseModule\ApplicationWindowBaseViewModel.cs" />
     <Compile Include="BaseModule\BaseFloorViewModelAware.cs" />
+    <Compile Include="BaseModule\BaseJobInForViewModel.cs" />
     <Compile Include="BaseModule\BaseModule.cs" />
     <Compile Include="BaseModule\BaseWindowService.cs" />
     <Compile Include="BaseModule\BaseViewModel.cs" />
@@ -140,6 +141,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ApplicationDatabase\AppDataBase.csproj">
+      <Project>{8aedcb68-4fbb-40ac-ae8c-2e191c7a5d2f}</Project>
+      <Name>AppDataBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ApplicationInterfaceCore\ApplicationInterfaceCore.csproj">
       <Project>{ea2caab1-eb61-4436-b30a-7f8d993b3414}</Project>
       <Name>ApplicationInterfaceCore</Name>

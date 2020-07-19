@@ -7,16 +7,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using AppDataBase.DataBase;
 using ApplicationInterfaceCore;
+using ApplicationService;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 
 namespace JobInfoModule.ViewModels
 {
-    using System.Diagnostics.CodeAnalysis;
     using ApplicationCore.BaseModule;
-    using CustomControls.Controls;
-    using Views;
     using Prism.Events;
     using Prism.Regions;
 
@@ -25,19 +27,9 @@ namespace JobInfoModule.ViewModels
     /// <summary>
     /// The win category view model.
     /// </summary>
-    public class WindCategoryViewModel : BaseViewModelAware
+    public class WindCategoryViewModel : BaseJobInForViewModel
     {
         #region Private Region
-        /// <summary>
-        /// The _window.
-        /// </summary>
-        private FlatWindow _window;
-        /// <summary>
-        /// The general wind.
-        /// </summary>
-        //private GeneralWindCategoryView _generalWind;
-
-        private string _clientName;
         /// <summary>
         /// The prenai wind.
         /// </summary>
@@ -45,10 +37,23 @@ namespace JobInfoModule.ViewModels
         private ObservableCollection<string> _windRates;
         private ObservableCollection<string> _treatments;
         #endregion
+        #region Property
 
-        public WindCategoryViewModel()
+        public ObservableCollection<string> WindRates
         {
+            get => _windRates;
+            set => SetProperty(ref _windRates, value);
         }
+        public ObservableCollection<string> Treatments
+        {
+            get => _treatments;
+            set => SetProperty(ref _treatments, value);
+        }
+        #endregion
+
+        //public WindCategoryViewModel()
+        //{
+        //}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WindCategoryViewModel"/> class.
@@ -66,40 +71,19 @@ namespace JobInfoModule.ViewModels
             : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             //this.RegionManager = this.RegionManager.CreateRegionManager();
-           //this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SetClient);
         }
 
         #region Command
 
         #endregion
-
-        #region Public Member
-        
-        public ObservableCollection<string> WindRates
-        {
-            get => _windRates;
-            set => SetProperty(ref _windRates, value);
-        }
-
-       
-        public ObservableCollection<string> Treatments
-        {
-            get => _treatments;
-            set => SetProperty(ref _treatments, value);
-        }
-
-        public string ClientName
-        {
-            get => this._clientName;
-            set
-            {
-                this.SetProperty(ref this._clientName, value);
-                this.LoadWindCategory(value);
-            } 
-        }
-
-        #endregion
         #region Private Funtion
+
+        protected override void Initilazied()
+        {
+            base.Initilazied();
+            WindRatesReseive(SelectedClient.WinRates);
+            TreatmentsReseive(SelectedClient.Treatments);
+        }
 
         /// <summary>
         /// The set clientPoco.
@@ -107,58 +91,27 @@ namespace JobInfoModule.ViewModels
         /// <param name="clientName">
         /// The clientPoco name.
         /// </param>
-        private void SetClient(string selectClientName)
+        protected override void SelectedClientReceive(ClientPoco selectedClient)
         {
-            if (string.IsNullOrEmpty(selectClientName))
+            base.SelectedClientReceive(selectedClient);
+            if (selectedClient == null)
             {
                 return;
             }
-            this.ClientName = selectClientName;
+            this.SelectedClient = selectedClient;
+            WindRatesReseive(selectedClient.WinRates);
+            TreatmentsReseive(selectedClient.Treatments);
         }
+        private void WindRatesReseive(List<string> windRates)
 
-        /// <summary>
-        /// The load wind category.
-        /// </summary>
-        /// <param name="clientName">
-        /// The clientPoco name.
-        /// </param>
-        private void LoadWindCategory(string clientName)
         {
-     //       var windRegion = "WindRegion";
-     //       switch (clientName)
-     //       {
-     //           case "Warnervale":
-					//this.TranfersJob(windRegion,nameof(GeneralWindCategoryView));
-     //               break;
-     //           case "Prenail":
-     //               this.TranfersJob(windRegion, nameof(PrenailWindCategoryView));
-     //               break;
-     //           case "Rivo":
-     //               this.TranfersJob(windRegion, nameof(GeneralWindCategoryView));
-     //               break;
-     //           case "StickFrame":
-     //               this.TranfersJob(windRegion,nameof(PrenailWindCategoryView));
-     //               break;
-     //           default:
-     //               break;
-     //       }
+            this.WindRates = new ObservableCollection<string>(windRates);
         }
-		
-		//private void TranfersJob(string regionName, string viewPath)
-		//{
-		//	var parameters = new NavigationParameters();
-  //              parameters.Add("JobInfo", JobInfo);
-  //              if (JobInfo!=null)
-  //              {
-  //                  this.RegionManager.RequestNavigate(regionName,viewPath,parameters);   
-  //              }
-		//}
 
-        //public override void OnNavigatedTo(NavigationContext navigationContext)
-        //{
-        //    base.OnNavigatedTo(navigationContext);
-        //    this.SetClient(this.JobInfo.ClientName);
-        //}
+        private void TreatmentsReseive(List<string> treatMents)
+        {
+            this.Treatments = new ObservableCollection<string>(treatMents);
+        }
 
         #endregion
     }

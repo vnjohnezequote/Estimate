@@ -329,7 +329,7 @@ namespace AppDataBase.DataBase
             client = new ClientPoco()
             {
                 Name = ClientNames.ITMTumu.ToString(),
-                ClientIcon = "AlphabetT",
+                ClientIcon = "AlphabetI",
                 WinRates = new List<string>()
                 {
                     "Extra High","Very High","High Wind","Medium Wind","Low Wind"
@@ -350,7 +350,7 @@ namespace AppDataBase.DataBase
 
             };
 
-            if (this._clients.Exists(x => x.Name == ClientNames.StickFrame.ToString()))
+            if (this._clients.Exists(x => x.Name == ClientNames.ITMTumu.ToString()))
             {
                 this._clients.Update(client);
             }
