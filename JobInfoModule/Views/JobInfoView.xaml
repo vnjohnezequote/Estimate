@@ -18,7 +18,7 @@
     </UserControl.Resources>
     <StackPanel>
         <TextBox Margin="0 10 0 0" x:Name="TxtJobNumber"
-                 materialDesign:HintAssist.Hint="JobInfo Number"
+                 materialDesign:HintAssist.Hint="JobDefaultInfo Number"
                  Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
         <ComboBox Margin="0 10 0 0" x:Name="BuiderNameComboBox"

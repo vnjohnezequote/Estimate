@@ -111,7 +111,7 @@ namespace WallFrameInputModule.ViewModels
         /// </param>
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            if (navigationContext.Parameters["JobInfo"] is JobModel jobParam)
+            if (navigationContext.Parameters["JobDefaultInfo"] is JobModel jobParam)
             {
                 this.Job = jobParam;
             }

@@ -151,11 +151,13 @@
     <Compile Include="AppData\LayerItem.cs" />
     <Compile Include="CustomEntity\BeamLeader.cs" />
     <Compile Include="Enums\BeamType.cs" />
+    <Compile Include="Enums\CeilingBattensType.cs" />
     <Compile Include="Enums\ClientNames.cs" />
     <Compile Include="Enums\LoadBearingWallType.cs" />
     <Compile Include="Enums\OpeningType.cs" />
     <Compile Include="Enums\RoofFrameType.cs" />
     <Compile Include="Enums\RoofType.cs" />
+    <Compile Include="Enums\Suppliers.cs" />
     <Compile Include="Enums\WallType.cs" />
     <Compile Include="Interaface\IClientDatabase.cs" />
     <Compile Include="PocoDataModel\BeamPoco.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="PocoDataModel\WallLayerPoco.cs" />
     <Compile Include="PocoDataModel\WallMemberBasePoco.cs" />
     <Compile Include="PocoDataModel\WallStudPoco.cs" />
+    <Compile Include="ResponsiveData\WallDefaultInfo.cs" />
     <Compile Include="ResponsiveData\Treatment.cs" />
     <Compile Include="ResponsiveData\Beam.cs" />
     <Compile Include="ResponsiveData\Bracing.cs" />

@@ -7,9 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
 using ApplicationInterfaceCore;
+using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 
 namespace JobInfoModule.ViewModels
 {
@@ -27,22 +33,31 @@ namespace JobInfoModule.ViewModels
     /// <summary>
     /// The general wind category view model.
     /// </summary>
-    public class RoofInfoViewModel : BaseViewModelAware
+    public class RoofInfoViewModel : BaseJobInForViewModel
     {
-        #region Private Member
-		private bool _isSheetRoof;
-		private bool _isTileRoof;
+        #region Field
+        private ObservableCollection<string> _roofMaterials;
+        #endregion
+        #region Property
+        public ObservableCollection<int> TrussSpacings { get; } = new ObservableCollection<int>() { 600, 900 };
+        public ObservableCollection<int> RafterSpacings { get; } = new ObservableCollection<int>() { 450, 600, 900 };
+
+        public ObservableCollection<string> RoofMaterials
+        {
+            get=>_roofMaterials;
+            set=>SetProperty(ref _roofMaterials,value);
+        }
+
+        public bool IsTrussSpacingEnable =>
+            this.JobInfo.JobDefault.RoofFrameType == RoofFrameType.Truss ||
+            this.JobInfo.JobDefault.RoofFrameType == RoofFrameType.TrussAndRafter;
+
+        public bool IsRaterSpacingEnable =>
+        this.JobInfo.JobDefault.RoofFrameType == RoofFrameType.Rafter ||
+        this.JobInfo.JobDefault.RoofFrameType == RoofFrameType.TrussAndRafter;
         #endregion
 
         #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GeneralWindCategoryViewModel"/> class.
-        /// </summary>
-        public RoofInfoViewModel()
-        {
-
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneralWindCategoryViewModel"/> class.
@@ -63,82 +78,44 @@ namespace JobInfoModule.ViewModels
             ILayerManager layerManager,IJob jobModel)
             : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
-            this.RoofTypeCommand = new DelegateCommand<string>(OnSetRoofType);
+            this.JobInfo.JobDefault.PropertyChanged += JobDefault_PropertyChanged;
+        }
+
+        private void JobDefault_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "RoofFrameType") return;
+            RaisePropertyChanged(nameof(IsTrussSpacingEnable));
+            RaisePropertyChanged(nameof(IsRaterSpacingEnable));
         }
 
         #endregion
-		
-		#region Command
-		public ICommand RoofTypeCommand {get;private set;}
+
+        #region Command
 
 
-        #endregion
-		
-		#region Public Member
-		public ObservableCollection<int> TrussSpacings { get; } = new ObservableCollection<int>(){600,900};
-		public ObservableCollection<int> RafterSpacings { get; } = new ObservableCollection<int>(){450,600,900};
-		
-		public bool IsSheetRoof{
-			get => this.CheckRoofType("SHEET");
-            set
-            {
-                if (this.JobInfo.RoofType == "SHEET")
-                {
-                    this.SetProperty(ref this._isSheetRoof, true);
-                }
-                else
-                {
-                    this.SetProperty(ref this._isSheetRoof, false);
-                }
-            }
-			}
-		public bool IsTileRoof{
-			get => this.CheckRoofType("TILES");
-            set
-            {
-                if (this.JobInfo.RoofType == "TILES")
-                {
-                    this.SetProperty(ref this._isTileRoof, true);
-                }
-                else
-                {
-                    this.SetProperty(ref this._isTileRoof, false);
-                }
-            }}
         #endregion
 
         #region Private Method
-		private bool CheckRoofType(string roofType)	
-		{
-			if (this.JobInfo == null)
-            {
-                return false;
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(this.JobInfo.RoofType))
-                {
-                    return false;
-                }
-                else
-                {
-                    return this.JobInfo.RoofType == roofType;
-                }
-            }
-		}
-	
-		
-		 private void OnSetRoofType(string roofType)
+
+        protected override void SelectedClientReceive(ClientPoco selectClient)
         {
-            this.JobInfo.RoofType = roofType;
-			this.RaisePropertyChanged(nameof(this.IsSheetRoof));
-            this.RaisePropertyChanged(nameof(this.IsTileRoof));
-            
+            base.SelectedClientReceive(selectClient);
+            RoofMaterialsReseive(selectClient.RoofMaterials);
+        }
+
+        private void RoofMaterialsReseive(List<string> roofMaterials)
+        {
+            this.RoofMaterials = new ObservableCollection<string>(roofMaterials);
+        }
+        protected override void Initilazied()
+        {
+            base.Initilazied();
+            this.RoofMaterialsReseive(this.SelectedClient.RoofMaterials);
         }
         #endregion
-		
-		#region public Method
-			
+
+        #region public Method
+
         #endregion
     }
 }

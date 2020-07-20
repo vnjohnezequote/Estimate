@@ -66,6 +66,8 @@ namespace NewJobWizardModule.ViewModels
         /// </summary>
         private Visibility _isDesignVisibility = Visibility.Collapsed;
 
+        private Visibility _isStickFrameVisibility = Visibility.Collapsed;
+
         /// <summary>
         /// The job.
         /// </summary>
@@ -98,7 +100,7 @@ namespace NewJobWizardModule.ViewModels
         {
             // delegate Loaded
             this.Job = jobModel;
-            //this.UnityContainer.RegisterInstance<IJob>("GlobalJob", JobInfo);
+            //this.UnityContainer.RegisterInstance<IJob>("GlobalJob", JobDefaultInfo);
             /* create data test */
             this.Job.Info.JobNumber = "2220";
             this.Job.Info.JobLocation = "test";
@@ -109,17 +111,17 @@ namespace NewJobWizardModule.ViewModels
 
             this.CheckJob = new CheckJobInfo(this.Job.Info);
 
-            this.NextTabCommand = new DelegateCommand(this.OnNextTab, this.CanNextTab);
+            //this.NextTabCommand = new DelegateCommand(this.OnNextTab, this.CanNextTab);
 
-            this.BackTabCommand = new DelegateCommand(this.OnBackTab, this.CanBackTab);
+            //this.BackTabCommand = new DelegateCommand(this.OnBackTab, this.CanBackTab);
 
-            this.SelectedIndexTab = 0;
+            //this.SelectedIndexTab = 0;
 
             this.LoadedCommand = new DelegateCommand<FrameworkElement>(this.ControlLoaded);
 
             this.TabChangedCommand = new DelegateCommand(this.OnTabChanged);
 
-            // this.JobInfo.PropertyChanged += Job_PropertyChanged;
+            // this.JobDefaultInfo.PropertyChanged += Job_PropertyChanged;
 
 
             // delegate close button
@@ -164,12 +166,12 @@ namespace NewJobWizardModule.ViewModels
         /// <summary>
         /// Gets the next tab command.
         /// </summary>
-        public DelegateCommand NextTabCommand { get; private set; }
+        //public DelegateCommand NextTabCommand { get; private set; }
 
         /// <summary>
         /// Gets the back tab command.
         /// </summary>
-        public DelegateCommand BackTabCommand { get; private set; }
+        //public DelegateCommand BackTabCommand { get; private set; }
 
         /// <summary>
         /// Gets the tab changed command.
@@ -209,6 +211,11 @@ namespace NewJobWizardModule.ViewModels
 
         }
 
+        public Visibility IsStickFrameVisibitily
+        {
+            get => this._isStickFrameVisibility;
+            set => this.SetProperty(ref this._isStickFrameVisibility, value);
+        }
         /// <summary>
         /// Gets or sets the selected index tab.
         /// </summary>
@@ -218,10 +225,13 @@ namespace NewJobWizardModule.ViewModels
             set
             {
                 this.SetProperty(ref this._selectedIndexTab, value);
-                this.NextTabCommand.RaiseCanExecuteChanged();
-                this.BackTabCommand.RaiseCanExecuteChanged();
+                //this.NextTabCommand.RaiseCanExecuteChanged();
+                //this.BackTabCommand.RaiseCanExecuteChanged();
             }
         }
+
+        public bool CanChangedTab => !string.IsNullOrEmpty(this.JobModel.Info.ClientName);
+
         #endregion
 
         #region Private Function
@@ -268,7 +278,7 @@ namespace NewJobWizardModule.ViewModels
         /// </param>
         private void TransferJob(string regionName, string uriPath)
         {
-            var parameters = new NavigationParameters { { "JobInfo", this.Job.Info } };
+            var parameters = new NavigationParameters { { "JobDefaultInfo", this.Job.Info } };
             if (this.Job.Info != null)
             {
                 this.RegionManager.RequestNavigate(regionName, uriPath, parameters);
@@ -288,7 +298,7 @@ namespace NewJobWizardModule.ViewModels
         {
             var parameters = new NavigationParameters
                                  {
-                                     { "JobInfo", this.Job.Info }, 
+                                     { "JobDefaultInfo", this.Job.Info }, 
                                      { "Levels", this.Job.Levels }
                                  };
             if (this.Job.Info != null && this.Job.Levels != null)
@@ -317,9 +327,12 @@ namespace NewJobWizardModule.ViewModels
                     this.TransferJob(NewJobWizardRegions.RoofInfoRegion, nameof(RoofInfoView));
                     break;
                 case 4:
-                    this.TransferJob(NewJobWizardRegions.DesignInfoRegion, nameof(DesignInfoView));
+                    this.TransferJob(NewJobWizardRegions.AddStickFrameInfoRegion, nameof(AdditionInforForStickFrameView));
                     break;
                 case 5:
+                    this.TransferJob(NewJobWizardRegions.DesignInfoRegion, nameof(DesignInfoView));
+                    break;
+                case 6:
                     this.TransferFloorInfo(NewJobWizardRegions.FloorNumberChooseRegion, nameof(LevelInfoView));
                     break;
                 default:
@@ -331,32 +344,41 @@ namespace NewJobWizardModule.ViewModels
         /// <summary>
         /// The on next tab.
         /// </summary>
-        private void OnNextTab()
-        {
-            if (this.SelectedIndexTab == 3 & this.IsDesignVisibility == Visibility.Collapsed)
-            {
-                this.SelectedIndexTab += 2;
-            }
-            else
-            {
-                this.SelectedIndexTab++;
-            }
-        }
+        //private void OnNextTab()
+        //{
+        //    if (this.SelectedIndexTab == 3)
+        //    {
+        //        if (this.IsDesignVisibility == Visibility.Collapsed && this.IsStickFrameVisibitily == Visibility.Collapsed)
+        //        {
+        //            this.SelectedIndexTab += 3;
+        //        }
+
+        //        if (this.IsDesignVisibility == Visibility.)
+        //        {
+                    
+        //        }
+                
+        //    }
+        //    else
+        //    {
+        //        this.SelectedIndexTab++;
+        //    }
+        //}
 
         /// <summary>
         /// The on back tab.
         /// </summary>
-        private void OnBackTab()
-        {
-            if (this.SelectedIndexTab == 5 & this.IsDesignVisibility == Visibility.Collapsed)
-            {
-                this.SelectedIndexTab -= 2;
-            }
-            else
-            {
-                this.SelectedIndexTab--;
-            }
-        }
+        //private void OnBackTab()
+        //{
+        //    if (this.SelectedIndexTab == 5 & this.IsDesignVisibility == Visibility.Collapsed)
+        //    {
+        //        this.SelectedIndexTab -= 2;
+        //    }
+        //    else
+        //    {
+        //        this.SelectedIndexTab--;
+        //    }
+        //}
 
         /// <summary>
         /// The can next tab.
@@ -364,10 +386,10 @@ namespace NewJobWizardModule.ViewModels
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        private bool CanNextTab()
-        {
-            return this.SelectedIndexTab != 5;
-        }
+        //private bool CanNextTab()
+        //{
+        //    return this.SelectedIndexTab != 5;
+        //}
 
         /// <summary>
         /// The can back tab.
@@ -375,10 +397,10 @@ namespace NewJobWizardModule.ViewModels
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        private bool CanBackTab()
-        {
-            return this.SelectedIndexTab != 0;
-        }
+        //private bool CanBackTab()
+        //{
+        //    return this.SelectedIndexTab != 0;
+        //}
 
         /// <summary>
         /// The change clientPoco.
@@ -391,9 +413,12 @@ namespace NewJobWizardModule.ViewModels
             if (selectClient == null)
             {
                 this.IsDesignVisibility = Visibility.Collapsed;
+                this.IsStickFrameVisibitily = Visibility.Collapsed;
                 return;
             }
             this.IsDesignVisibility = selectClient.Name == ClientNames.Prenail.ToString() ? Visibility.Visible : Visibility.Collapsed;
+            this.IsStickFrameVisibitily = selectClient.Name == ClientNames.StickFrame.ToString() ? Visibility.Visible : Visibility.Collapsed;
+            RaisePropertyChanged(nameof(CanChangedTab));
         }
 
         /// <summary>
@@ -401,7 +426,7 @@ namespace NewJobWizardModule.ViewModels
         /// </summary>
         private void OnCreateJob()
         {
-            //this.EventAggregator.GetEvent<JobModelService>().Publish(this.JobInfo);
+            //this.EventAggregator.GetEvent<JobModelService>().Publish(this.JobDefaultInfo);
             this._window.Close();
 
         }

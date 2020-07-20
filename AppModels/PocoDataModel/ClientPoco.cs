@@ -44,6 +44,8 @@ namespace AppModels.PocoDataModel
         /// Gets or sets the windrates list.
         /// </summary>
         public List<string> WinRates { get; set; }
+
+        public List<string> RoofMaterials { get; set; }
         /// <summary>
         /// Gets or sets the builders list.
         /// </summary>

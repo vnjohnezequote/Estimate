@@ -338,7 +338,7 @@ namespace Estimate.ViewModels
         public int? SelectedClientIndex { get => this._selectedClientIndex; set => this.SetProperty(ref this._selectedClientIndex, value); }
 
         /// <summary>
-        /// Gets or sets the JobInfo
+        /// Gets or sets the JobDefaultInfo
         /// </summary>
         #endregion
 
@@ -359,7 +359,7 @@ namespace Estimate.ViewModels
             var parameters =
                 new NavigationParameters
                     {
-                        { "JobInfo", this.JobModel },
+                        { "JobDefaultInfo", this.JobModel },
                         { "SelectedClient", this.SelectedClient }
                     };
             if (this.JobModel != null)
@@ -437,8 +437,8 @@ namespace Estimate.ViewModels
         /// </summary>
         private void LoadJobInfor()
         {
-            //var parameters = new NavigationParameters { { "JobInfo", JobInfo } };
-            //if (this.JobInfo != null)
+            //var parameters = new NavigationParameters { { "JobDefaultInfo", JobDefaultInfo } };
+            //if (this.JobDefaultInfo != null)
             //{
                 this.RegionManager.RequestNavigate(MainWindowRegions.RightContentRegion, nameof(JobInfomationView));
             //}

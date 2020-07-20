@@ -8,6 +8,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using DataType.Class;
+
 namespace NewJobWizardModule
 {
     using System;
@@ -79,6 +81,7 @@ namespace NewJobWizardModule
             this.RegionManager.RegisterViewWithRegion("RoofInfoRegion", typeof(RoofInfoView));
             this.RegionManager.RegisterViewWithRegion("DesignRegion", typeof(DesignInfoView));
             this.RegionManager.RegisterViewWithRegion("FloorNumberChooseRegion", typeof(LevelInfoView));
+            this.RegionManager.RegisterViewWithRegion(NewJobWizardRegions.AddStickFrameInfoRegion, typeof(AdditionInforForStickFrameView));
         }
 
     }

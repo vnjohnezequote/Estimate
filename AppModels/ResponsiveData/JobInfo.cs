@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using AppModels.Enums;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -56,27 +57,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// The roof type.
         /// </summary>
-        private string _roofType;
-
-        /// <summary>
-        /// The is truss.
-        /// </summary>
-        private bool _isTruss;
-
-        /// <summary>
-        /// The is rafter.
-        /// </summary>
-        private bool _isRafter;
-
-        /// <summary>
-        /// The truss spacing.
-        /// </summary>
-        private int? _trussSpacing;
-
-        /// <summary>
-        /// The rafter spacing.
-        /// </summary>
-        private int? _rafterSpacing;
+        private string _roofMaterial;
 
 
         /// <summary>
@@ -113,8 +94,12 @@ namespace AppModels.ResponsiveData
         /// The is bracing plan.
         /// </summary>
         private bool _isBracingPlan;
-        private string _windrate;
 
+        private string _windrate;
+        private int _tieDown;
+        private int _externalDoorHeight;
+        private int _internalDoorHeight;
+        private bool _quoteCeilingBattent;
         #endregion
 
         #region Property
@@ -135,6 +120,8 @@ namespace AppModels.ResponsiveData
             get => this._jobLocation;
             set => this.SetProperty(ref this._jobLocation, value);
         }
+        public int TieDown { get=>_tieDown; set=>SetProperty(ref _tieDown,value); }
+        public Suppliers Supplier { get; set; }
 
         /// <summary>
         /// Gets or sets the clientPoco name.
@@ -217,6 +204,30 @@ namespace AppModels.ResponsiveData
             }
         }
 
+        public int ExternalDoorHeight { 
+            get=>_externalDoorHeight;
+            set
+            {
+                SetProperty(ref _externalDoorHeight, value);
+                RaisePropertyChanged(nameof(InternalDoorHeight));
+            }
+
+        }
+
+       
+        public bool QuoteCeilingBattent { get=>_quoteCeilingBattent; set=>SetProperty(ref _quoteCeilingBattent,value); }
+        public CeilingBattensType CeilingBattensType { get; set; } = CeilingBattensType.Timber;
+
+        public int QuoteTolengthSize { get; set; } = 5400;
+        public bool JambBeamSupport { get; set; }
+        public int InternalDoorHeight
+        {
+            get => _internalDoorHeight == 0 ? _externalDoorHeight : _internalDoorHeight;
+            set=>SetProperty(ref _internalDoorHeight,value);
+        }
+
+        public bool NoggingsAndSillInLM { get; set; }
+        public bool UpToLength { get; set; }
         /// <summary>
         /// Gets or sets the treatment.
         /// </summary>
@@ -230,47 +241,13 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the roof type.
         /// </summary>
-        public string RoofType
+        public string RoofMaterial
         {
-            get => this._roofType;
-            set => this.SetProperty(ref this._roofType, value);
+            get => this._roofMaterial;
+            set => this.SetProperty(ref this._roofMaterial, value);
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether is truss.
-        /// </summary>
-        public bool IsTruss
-        {
-            get => this._isTruss;
-            set => this.SetProperty(ref this._isTruss, value);
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is rafter.
-        /// </summary>
-        public bool IsRafter
-        {
-            get => this._isRafter;
-            set => this.SetProperty(ref this._isRafter, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the truss spacing.
-        /// </summary>
-        public int? TrussSpacing
-        {
-            get => this._trussSpacing;
-            set => this.SetProperty(ref this._trussSpacing, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the rafter spacing.
-        /// </summary>
-        public int? RafterSpacing
-        {
-            get => this._rafterSpacing;
-            set => this.SetProperty(ref this._rafterSpacing, value);
-        }
+        
 
         /// <summary>
         /// Gets or sets the total linear meter.

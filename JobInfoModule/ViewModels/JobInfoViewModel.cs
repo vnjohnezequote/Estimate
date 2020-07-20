@@ -10,8 +10,6 @@
 using ApplicationInterfaceCore;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
-using AppModels.ResponsiveData;
-using Prism.Mvvm;
 
 namespace JobInfoModule.ViewModels
 {
@@ -23,11 +21,6 @@ namespace JobInfoModule.ViewModels
     using AppDataBase.DataBase;
 
     using ApplicationCore.BaseModule;
-
-    using ApplicationService;
-
-    using AppModels;
-
     using Prism.Commands;
     using Prism.Events;
     using Prism.Regions;
@@ -56,13 +49,6 @@ namespace JobInfoModule.ViewModels
         }
         #endregion
         #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JobInfoViewModel"/> class.
-        /// </summary>
-        //public JobInfoViewModel()
-        //{
-        //}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JobInfoViewModel"/> class.

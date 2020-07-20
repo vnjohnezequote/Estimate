@@ -190,6 +190,10 @@ namespace AppDataBase.DataBase
                 {
                     "Untreated", "H2","H2S"
                 },
+                RoofMaterials = new List<string>()
+                {
+                    "Sheets","Tiles"
+                },
                 Builders = new List<string>() { "Jason Home", "Kenvin Home", "Happy Home", "Crazy Home" },
                 WallTypes = new List<WallTypePoco>()
                                 {
@@ -223,6 +227,10 @@ namespace AppDataBase.DataBase
                 Treatments = new List<string>()
                 {
                     "Untreated", "H2","H2S Treated","T2 Blue","T2 Red","T3 Green"
+                },
+                RoofMaterials = new List<string>()
+                {
+                    "Sheets","Tiles"
                 },
                 Builders = new List<string>() { "Funny Home", "Teddy Home", "America Home", "Dalat Home" },
                 Studs = this.CreatePrenailStuds(),
@@ -267,6 +275,10 @@ namespace AppDataBase.DataBase
                 {
                     "Untreated", "H2","H2S Treated"
                 },
+                RoofMaterials = new List<string>()
+                {
+                    "Sheets","Tiles"
+                },
                 Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
 
                 WallTypes = new List<WallTypePoco>
@@ -304,6 +316,10 @@ namespace AppDataBase.DataBase
                 {
                     "Untreated", "H2","H2S Treated", "H2F Treated","H3 Treated","T2 Treated","T2 Blue Treated", "T2 Red Treated","T3 Green Treated","LOSP"
                 },
+                RoofMaterials = new List<string>()
+                {
+                    "Sheets","Tiles"
+                },
                 Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
 
                 WallTypes = new List<WallTypePoco>
@@ -337,6 +353,10 @@ namespace AppDataBase.DataBase
                 Treatments = new List<string>()
                 {
                     "Untreated", "H2","H2S Treated", "H2F Treated","H3 Treated","T2 Treated","T2 Blue Treated", "T2 Red Treated","T3 Green Treated","LOSP"
+                },
+                RoofMaterials = new List<string>()
+                {
+                    "Sheets","Tiles"
                 },
                 Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
 

@@ -311,7 +311,7 @@ namespace DrawingModule.ViewModels
         private void LoadLayerManger()
         {
             //var parameters = new NavigationParameters { { "Layers", Layers } };
-            //if (this.JobInfo.Info != null)
+            //if (this.JobDefaultInfo.Info != null)
             //{
                 this.RegionManager.RequestNavigate("LayerManagerRegion", nameof(LayerManagerView));
             //}

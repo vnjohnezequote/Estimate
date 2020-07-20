@@ -96,7 +96,7 @@ namespace ApplicationCore.BaseModule
         /// </param>
         public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
-            if (navigationContext.Parameters["JobInfo"] is JobInfo job)
+            if (navigationContext.Parameters["JobDefaultInfo"] is JobInfo job)
             {
                 this.JobInfo = job;
             }

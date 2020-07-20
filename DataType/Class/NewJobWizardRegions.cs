@@ -43,5 +43,7 @@ namespace DataType.Class
         /// The floor number choose region.
         /// </summary>
         public const string FloorNumberChooseRegion = nameof(FloorNumberChooseRegion);
+
+        public const string AddStickFrameInfoRegion = nameof(AddStickFrameInfoRegion);
     }
 }

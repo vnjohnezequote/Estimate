@@ -172,11 +172,6 @@ namespace AppModels.ResponsiveData
         public bool IsHightWall { get; set; }
 
         /// <summary>
-        /// Gets or sets the sud stud.
-        /// </summary>
-        public int SudStud { get; set; }
-
-        /// <summary>
         /// Gets or sets the is non load bearing wall.
         /// </summary>
         public int IsNonLbWall { get; set; }

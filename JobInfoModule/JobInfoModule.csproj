@@ -215,6 +215,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ViewModels\AdditionInforForStickFrameViewModel.cs" />
     <Compile Include="ViewModels\ChoosingCustomerViewModel.cs" />
     <Compile Include="ViewModels\CostDeliveryViewModel.cs" />
     <Compile Include="ViewModels\DesignInfoViewModel.cs" />
@@ -227,6 +228,9 @@
     <Compile Include="ViewModels\PrenailWindCategoryViewModel.cs" />
     <Compile Include="ViewModels\RoofInfoViewModel.cs" />
     <Compile Include="ViewModels\WindCategoryViewModel.cs" />
+    <Compile Include="Views\AdditionInforForStickFrameView.xaml.cs">
+      <DependentUpon>AdditionInforForStickFrameView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ChoosingCustomerView.xaml.cs">
       <DependentUpon>ChoosingCustomerView.xaml</DependentUpon>
     </Compile>
@@ -235,6 +239,9 @@
     </Compile>
     <Compile Include="Views\DesignInfoView.xaml.cs">
       <DependentUpon>DesignInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EngineerInfoView.xaml.cs">
+      <DependentUpon>EngineerInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FloorInfoView.xaml.cs">
       <DependentUpon>FloorInfoView.xaml</DependentUpon>
@@ -314,6 +321,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AdditionInforForStickFrameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ChoosingCustomerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -325,6 +336,10 @@
     <Page Include="Views\DesignInfoView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EngineerInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FloorInfoView.xaml">
       <Generator>MSBuild:Compile</Generator>

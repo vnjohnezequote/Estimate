@@ -30,19 +30,415 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel x:Name="LevelRoot">
-	<!-- Wall Spacing Infor-->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBox materialDesign:HintAssist.Hint="Load Bearing Wall Spacing"
-                     Text="{Binding Job.JobDefault.ExternalWallSpacing, TargetNullValue={x:Static sys:String.Empty}}"/>
-            <TextBox materialDesign:HintAssist.Hint="None Load Bearing Wall Spacing"
-                     Grid.Column="1"
-                     Text="{Binding Job.JobDefault.InternalWallSpacing, TargetNullValue={x:Static sys:String.Empty}}"/>
-        </Grid>
-        <materialDesign:Card>
+        <!-- Wall Spacing Infor-->
+        <StackPanel Margin="0 10 0 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ComboBox materialDesign:HintAssist.Hint="Load Bearing Wall Spacing"
+                 Text="{Binding Job.JobDefault.ExternalWallSpacing, TargetNullValue={x:Static sys:String.Empty}}"/>
+                <ComboBox materialDesign:HintAssist.Hint="None Load Bearing Wall Spacing"
+                         Grid.Column="2"
+                         Text="{Binding Job.JobDefault.InternalWallSpacing, TargetNullValue={x:Static sys:String.Empty}}"/>
+            </Grid>
+            <Border Margin="0 10 0 0"
+                Background="{DynamicResource MaterialDesignDivider}"
+                Height="1"
+                HorizontalAlignment="Stretch"
+                SnapsToDevicePixels="True" />
+            <StackPanel Orientation="Horizontal" Margin="0 10 0 10">
+                <Grid VerticalAlignment="Center" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <!--<Border Grid.Row="1" Background="{StaticResource AccentColorBrush}" Grid.ColumnSpan="9"/>-->
+                    <Label Content="External Wall" Grid.Row="0" Background="Chocolate"/>
+                    <!--<Border Grid.Row="3" Background="{StaticResource AccentColorBrush}" Grid.ColumnSpan="9"/>-->
+                    <Label Content="Internal Wall" Grid.Row="2" Background="{StaticResource MahApps.Brushes.Accent}"/>
+                    <!--<Border Grid.Row="5" Background="{StaticResource AccentColorBrush}" Grid.ColumnSpan="9"/>-->
+                    <Label Content="Nogging" Grid.Row="4" Background="DarkSlateGray"/>
+
+                    <TextBox Padding="5 0 0 0" materialDesign:HintAssist.Hint="No of" Grid.Row="0" Grid.Column="2" Style="{StaticResource MaterialDesignTextBox}" BorderThickness="1"/>
+                    <TextBox Padding="5 0 0 0" materialDesign:HintAssist.Hint="No of" Grid.Row="2" Grid.Column="2" Style="{StaticResource MaterialDesignTextBox}" BorderThickness="1"/>
+                    <TextBox Padding="5 0 0 0" materialDesign:HintAssist.Hint="No of" Grid.Row="4" Grid.Column="2" Style="{StaticResource MaterialDesignTextBox}" BorderThickness="1"/>
+
+                    <TextBox Padding="5 0 5 0" materialDesign:HintAssist.Hint="Thickness" Grid.Row="0" Grid.Column="4" Style="{StaticResource MaterialDesignTextBox}" BorderThickness="1"/>
+                    <TextBox Padding="5 0 5 0" materialDesign:HintAssist.Hint="Thickness" Grid.Row="2" Grid.Column="4" Style="{StaticResource MaterialDesignTextBox}" BorderThickness="1"/>
+                    <TextBox Padding="5 0 5 0" materialDesign:HintAssist.Hint="Thickness" Grid.Row="4" Grid.Column="4" Style="{StaticResource MaterialDesignTextBox}" BorderThickness="1"/>
+
+                    <TextBox Padding="5 0 5 0" materialDesign:HintAssist.Hint="Depth" Grid.Row="0" Grid.Column="6" Style="{StaticResource MaterialDesignTextBox}" BorderThickness="1"/>
+                    <TextBox Padding="5 0 5 0" materialDesign:HintAssist.Hint="Depth" Grid.Row="2" Grid.Column="6" Style="{StaticResource MaterialDesignTextBox}" BorderThickness="1"/>
+                    <TextBox Padding="5 0 5 0" materialDesign:HintAssist.Hint="Depth" Grid.Row="4" Grid.Column="6" Style="{StaticResource MaterialDesignTextBox}" BorderThickness="1"/>
+
+                    <ComboBox Padding="5"  materialDesign:HintAssist.Hint="Material" Grid.Row="0" Grid.Column="8" Style="{StaticResource MaterialDesignComboBox}" BorderThickness="1"/>
+                    <ComboBox Padding="5"  materialDesign:HintAssist.Hint="Material"  Grid.Row="2" Grid.Column="8" Style="{StaticResource MaterialDesignComboBox}" BorderThickness="1"/>
+                    <ComboBox Padding="5"  materialDesign:HintAssist.Hint="Material"  Grid.Row="4" Grid.Column="8" Style="{StaticResource MaterialDesignComboBox}" BorderThickness="1"/>
+
+                </Grid>
+                <Expander Header="GLobal Door Info" ExpandDirection="Right">
+                    <materialDesign:ColorZone Mode="Dark" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <DockPanel>
+                                <TextBox materialDesign:HintAssist.Hint="External Door Height"/>
+                                <TextBox materialDesign:HintAssist.Hint="Number of Jamb" Margin="10 0 0 0"/>
+                                <TextBox materialDesign:HintAssist.Hint="Depth of Jamb" Margin="10 0 0 0"/>
+                                <ComboBox materialDesign:HintAssist.Hint="Material Of Jamb" Margin="10 0 0 0"/>
+                            </DockPanel>
+                            <TextBox materialDesign:HintAssist.Hint="Internal Door Height" Margin="0 10 0 0"/>
+                        </StackPanel>
+                    </materialDesign:ColorZone>
+                    
+                </Expander>
+            </StackPanel>
+           
+        </StackPanel>
+        <Border
+            Background="{DynamicResource MaterialDesignDivider}"
+            Height="1"
+            HorizontalAlignment="Stretch"
+            SnapsToDevicePixels="True" />
+        <StackPanel Margin="0 10 0 0">
+            <Expander Header="Global Wall Info">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="1"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="1"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="1"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="1"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="1"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label VerticalContentAlignment="Center"
+                           Content="EXT" Grid.Row="0"
+                           Grid.RowSpan="11" 
+                           Background="Chocolate"/>
+
+                        <Label Content="Ribbon Plate" Grid.Row="0" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="Top Plate" Grid.Row="2" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="Stud" Grid.Row="4" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="Bottom Plate" Grid.Row="6" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="Nogging" Grid.Row="8" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="Trimmer" Grid.Row="10" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="0" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="2" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="4" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="6" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="8" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="10" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="0" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="2" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="4" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="6" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="8" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="10" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="0" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="2" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="4" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="6" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="8" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="10" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="0" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="2" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="4" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="6" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="8" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="10" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label VerticalContentAlignment="Center"
+                           Content="INT" Grid.Row="0"
+                           Grid.RowSpan="9" 
+                           Background="DarkCyan" Margin="10 0 0 0"/>
+                        <Label Content="Top Plate" Grid.Row="0" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="Stud" Grid.Row="2" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="Bottom Plate" Grid.Row="4" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="Nogging" Grid.Row="6" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="Trimmer" Grid.Row="8" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="0" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="2" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="4" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="6" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 0 0"
+                             materialDesign:HintAssist.Hint="No of" 
+                             Grid.Row="8" Grid.Column="4"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="0" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="2" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="4" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="6" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Thickness" 
+                             Grid.Row="8" Grid.Column="6"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="0" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="2" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="4" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="6" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+                        <TextBox Padding="5 0 5 0"
+                             materialDesign:HintAssist.Hint="Depth" 
+                             Grid.Row="8" Grid.Column="8"
+                             Style="{StaticResource MaterialDesignTextBox}"
+                             BorderThickness="1"/>
+
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="0" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="2" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="4" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="6" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                        <ComboBox Padding="5"
+                             materialDesign:HintAssist.Hint="Material" 
+                             Grid.Row="8" Grid.Column="10"
+                             Style="{StaticResource MaterialDesignComboBox}"
+                             BorderThickness="1"/>
+                    </Grid>
+                </Grid>
+               
+
+
+            </Expander>
+            <Border
+                    Background="{DynamicResource MaterialDesignDivider}"
+                    Height="1"
+                    HorizontalAlignment="Stretch"
+                    SnapsToDevicePixels="True" />
+
+        </StackPanel>
+        <materialDesign:Card Margin="0 10 0 0">
             <ListBox Style="{DynamicResource MaterialListBox}"
                      x:Name="LevelNumberRoot"
                      SelectedIndex="{Binding SelectedIndex}">
@@ -70,24 +466,34 @@
             <ItemsControl prism:RegionManager.RegionManager="{Binding RegionManager}"
                           prism:RegionManager.RegionName="DeliveryRegion"/>
         </StackPanel>
+        <Border
+            Background="{DynamicResource MaterialDesignDivider}"
+            Height="1"
+            HorizontalAlignment="Stretch"
+            SnapsToDevicePixels="True" />
         <!-- Floor Infor -->
         <TabControl prism:RegionManager.RegionManager="{Binding RegionManager}"
                     prism:RegionManager.RegionName="FloorInfoRegion"
                     Style="{StaticResource MaterialDesignTabControlCustom}"
-                    materialDesignExtention:TabControlAssist.TabHeaderHorizontalAlignment="Left">
+                    materialDesignExtention:TabControlAssist.TabHeaderHorizontalAlignment="Left" Margin="0 10 0 0">
             <TabControl.Resources>
                 <ResourceDictionary>
                     <Style TargetType="TabItem" BasedOn="{StaticResource MaterialDesignTabItem}">
-						<Setter Property="Header" Value="{Binding DataContext.Level.LevelName}" />
-					</Style>
+                        <Setter Property="Header" Value="{Binding DataContext.Level.LevelName}" />
+                    </Style>
                 </ResourceDictionary>
             </TabControl.Resources>
         </TabControl>
+        <Border
+            Background="{DynamicResource MaterialDesignDivider}"
+            Height="1"
+            HorizontalAlignment="Stretch"
+            SnapsToDevicePixels="True" />
         <!-- Step Down -->
-        <DockPanel>
+        <DockPanel Margin="0 10 0 0">
             <materialDesign:ColorZone Mode="PrimaryMid"
-                                          VerticalAlignment="Stretch">
-                <Label>Step Down</Label>
+                                          VerticalAlignment="Bottom" Width="114">
+                <Label Padding="10 5 10 5">Step Down</Label>
             </materialDesign:ColorZone>
             <StackPanel>
                 <TextBox materialDesign:HintAssist.Hint="Garage Step Down" Text="{Binding Job.JobDefault.StepDown}"/>

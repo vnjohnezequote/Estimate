@@ -11,10 +11,22 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              Style="{DynamicResource MaterialDesignUserControl}"
              d:DataContext="{d:DesignInstance viewModels:CostDeliveryViewModel, IsDesignTimeCreatable=True}"
-             mc:Ignorable="d">
-    <DockPanel>
-            <Label Content="{Binding Level.LevelName}"/>
-            <TextBox materialDesign:HintAssist.Hint="Cost Delivery $"
-                             Text="{Binding Level.CostDelivery, TargetNullValue={x:Static sys:String.Empty},StringFormat={}{0:C}}"/>
-    </DockPanel>
+             mc:Ignorable="d" Margin="0 10 0 0">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Content="{Binding Level.LevelName}" Background="Chocolate" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
+        <TextBox materialDesign:HintAssist.Hint="Cost Delivery $"
+                 materialDesign:TextFieldAssist.SuffixText="$"
+                 Text="{Binding Level.CostDelivery, TargetNullValue={x:Static sys:String.Empty},StringFormat={}{0:C}}"
+                 Grid.Column="1"
+                 Style="{DynamicResource MaterialDesignTextBox}"
+                 Padding="5 0 0 0"
+                 Width="150"
+                 HorizontalAlignment="Left"
+                 BorderThickness="1"
+                 />
+    </Grid>
 </UserControl>

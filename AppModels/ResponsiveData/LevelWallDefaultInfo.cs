@@ -22,47 +22,47 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// The external wall height.
         /// </summary>
-        private int? externalWallHeight;
+        private int? _externalWallHeight;
 
         /// <summary>
         /// The internal wall height.
         /// </summary>
-        private int? internalWallHeight;
+        private int? _internalWallHeight;
 
         /// <summary>
         /// The external wall thickness.
         /// </summary>
-        private int? externalWallThickness;
+        private int? _externalWallThickness;
 
         /// <summary>
         /// The internal wall thickness.
         /// </summary>
-        private int? internalWallThickness;
+        private int? _internalWallThickness;
 
         /// <summary>
         /// The step down.
         /// </summary>
-        private IntegerDimension stepDown;
+        private IntegerDimension _stepDown;
 
         /// <summary>
         /// The roof pitch.
         /// </summary>
-        private DoubleDimension roofPitch;
+        private DoubleDimension _roofPitch;
 
         /// <summary>
         /// The job info.
         /// </summary>
-        private JobWallDefaultInfo jobInfo;
+        private JobWallDefaultInfo _jobDefaultInfo;
 
         /// <summary>
         /// The external wall spacing.
         /// </summary>
-        private IntegerDimension externalWallSpacing;
+        private IntegerDimension _externalWallSpacing;
 
         /// <summary>
         /// The internal wall spacing.
         /// </summary>
-        private IntegerDimension internalWallSpacing;
+        private IntegerDimension _internalWallSpacing;
 
         #endregion
 
@@ -71,12 +71,12 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Initializes a new instance of the <see cref="LevelWallDefaultInfo"/> class.
         /// </summary>
-        /// <param name="defaultInfo">
+        /// <param name="defaultDefaultInfo">
         /// The default info.
         /// </param>
-        public LevelWallDefaultInfo(JobWallDefaultInfo defaultInfo)
+        public LevelWallDefaultInfo(JobWallDefaultInfo defaultDefaultInfo)
         {
-            this.JobInfo = defaultInfo;
+            this.JobDefaultInfo = defaultDefaultInfo;
             this.InitializeLevelDefault();
         }
         
@@ -89,8 +89,8 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public int? ExternalWallHeight
         {
-            get => this.externalWallHeight;
-            set => this.SetProperty(ref this.externalWallHeight, value);
+            get => this._externalWallHeight;
+            set => this.SetProperty(ref this._externalWallHeight, value);
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public int? InternalWallHeight
         {
-            get => this.internalWallHeight;
-            set => this.SetProperty(ref this.internalWallHeight, value);
+            get => this._internalWallHeight;
+            set => this.SetProperty(ref this._internalWallHeight, value);
         }
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public int? ExternalWallThickness
         {
-            get => this.externalWallThickness;
-            set => this.SetProperty(ref this.externalWallThickness, value);
+            get => this._externalWallThickness;
+            set => this.SetProperty(ref this._externalWallThickness, value);
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public int? InternalWallThickness
         {
-            get => this.internalWallThickness;
-            set => this.SetProperty(ref this.internalWallThickness, value);
+            get => this._internalWallThickness;
+            set => this.SetProperty(ref this._internalWallThickness, value);
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public IntegerDimension StepDown
         {
-            get => this.stepDown;
-            set => this.SetProperty(ref this.stepDown, value);
+            get => this._stepDown;
+            set => this.SetProperty(ref this._stepDown, value);
         }
 
         /// <summary>
@@ -134,17 +134,17 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public DoubleDimension RoofPitch
         {
-            get => this.roofPitch;
-            set => this.SetProperty(ref this.roofPitch, value);
+            get => this._roofPitch;
+            set => this.SetProperty(ref this._roofPitch, value);
         }
 
         /// <summary>
         /// Gets or sets the job info.
         /// </summary>
-        public JobWallDefaultInfo JobInfo
+        public JobWallDefaultInfo JobDefaultInfo
         {
-            get => this.jobInfo;
-            set => this.SetProperty(ref this.jobInfo, value);
+            get => this._jobDefaultInfo;
+            set => this.SetProperty(ref this._jobDefaultInfo, value);
         }
 
         /// <summary>
@@ -152,8 +152,8 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public IntegerDimension ExternalWallSpacing
         {
-            get => this.externalWallSpacing;
-            set => this.SetProperty(ref this.externalWallSpacing, value);
+            get => this._externalWallSpacing;
+            set => this.SetProperty(ref this._externalWallSpacing, value);
         }
 
         /// <summary>
@@ -161,8 +161,8 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public IntegerDimension InternalWallSpacing
         {
-            get => this.internalWallSpacing;
-            set => this.SetProperty(ref this.internalWallSpacing, value);
+            get => this._internalWallSpacing;
+            set => this.SetProperty(ref this._internalWallSpacing, value);
         }
 
         #endregion
@@ -174,17 +174,17 @@ namespace AppModels.ResponsiveData
         /// </summary>
         private void InitializeLevelDefault()
         {
-            this.StepDown = new IntegerDimension(this.JobInfo.StepDown);
-            this.RoofPitch = this.JobInfo.RoofPitch == null ? new DoubleDimension() : new DoubleDimension(this.JobInfo.RoofPitch);
+            this.StepDown = new IntegerDimension(this.JobDefaultInfo.StepDown);
+            this.RoofPitch = this.JobDefaultInfo.RoofPitch == null ? new DoubleDimension() : new DoubleDimension(this.JobDefaultInfo.RoofPitch);
 
-            this.ExternalWallSpacing = this.JobInfo.ExternalWallSpacing == null
-                                           ? new IntegerDimension()
-                                           : new IntegerDimension(this.JobInfo.ExternalWallSpacing);
-            this.InternalWallSpacing = this.JobInfo.InternalWallSpacing == null 
-                                           ? new IntegerDimension() 
-                                           : new IntegerDimension(this.JobInfo.InternalWallSpacing);
+            //this.ExternalWallSpacing = this.JobDefaultInfo.ExternalWallSpacing == null
+            //                               ? new IntegerDimension()
+            //                               : new IntegerDimension(this.JobDefaultInfo.ExternalWallSpacing);
+            //this.InternalWallSpacing = this.JobDefaultInfo.InternalWallSpacing == null 
+            //                               ? new IntegerDimension() 
+            //                               : new IntegerDimension(this.JobDefaultInfo.InternalWallSpacing);
 
-            this.JobInfo.PropertyChanged += this.JobInfoPropertyChanged;
+            this.JobDefaultInfo.PropertyChanged += this.JobInfoPropertyChanged;
             this.StepDown.PropertyChanged += this.StepDownPropertyChanged;
             this.RoofPitch.PropertyChanged += this.RoofPitchPropertyChanged;
             this.ExternalWallSpacing.PropertyChanged += this.ExternalWallSpacingPropertyChanged;
@@ -207,7 +207,7 @@ namespace AppModels.ResponsiveData
                 return;
             }
 
-            this.InternalWallSpacing.IsDefaultValue = this.InternalWallSpacing.Size == this.JobInfo.InternalWallSpacing;
+            this.InternalWallSpacing.IsDefaultValue = this.InternalWallSpacing.Size == this.JobDefaultInfo.InternalWallSpacing;
             this.RaisePropertyChanged(nameof(this.InternalWallSpacing));
 
         }
@@ -228,7 +228,7 @@ namespace AppModels.ResponsiveData
                 return;
             }
 
-            this.ExternalWallSpacing.IsDefaultValue = this.ExternalWallSpacing.Size == this.JobInfo.ExternalWallSpacing;
+            this.ExternalWallSpacing.IsDefaultValue = this.ExternalWallSpacing.Size == this.JobDefaultInfo.ExternalWallSpacing;
             this.RaisePropertyChanged(nameof(this.ExternalWallSpacing));
         }
 
@@ -247,7 +247,7 @@ namespace AppModels.ResponsiveData
             {
                 return;
             }
-            this.RoofPitch.IsDefaultValue = this.RoofPitch.Size.Equals(this.JobInfo.RoofPitch);
+            this.RoofPitch.IsDefaultValue = this.RoofPitch.Size.Equals(this.JobDefaultInfo.RoofPitch);
             this.RaisePropertyChanged(nameof(this.RoofPitch));
         }
 
@@ -266,7 +266,7 @@ namespace AppModels.ResponsiveData
             {
                 return;
             }
-            this.StepDown.IsDefaultValue = this.StepDown.Size == this.JobInfo.StepDown;
+            this.StepDown.IsDefaultValue = this.StepDown.Size == this.JobDefaultInfo.StepDown;
             this.RaisePropertyChanged(nameof(this.StepDown));
         }
 
@@ -283,17 +283,17 @@ namespace AppModels.ResponsiveData
         {
             switch (e.PropertyName)
             {
-                case nameof(this.JobInfo.StepDown):
+                case nameof(this.JobDefaultInfo.StepDown):
                     if (this.StepDown.IsDefaultValue)
                     {
-                        this.StepDown.Size = this.JobInfo.StepDown;
+                        this.StepDown.Size = this.JobDefaultInfo.StepDown;
                     }
                     break;
-                case nameof(this.JobInfo.RoofPitch):
+                case nameof(this.JobDefaultInfo.RoofPitch):
                     
                     if (this.RoofPitch.IsDefaultValue)
                     {
-                        var jobInfoRoofPitch = this.JobInfo.RoofPitch;
+                        var jobInfoRoofPitch = this.JobDefaultInfo.RoofPitch;
                         if (jobInfoRoofPitch != null)
                         {
                             this.RoofPitch.Size = (double)jobInfoRoofPitch;
@@ -302,10 +302,10 @@ namespace AppModels.ResponsiveData
                     
 
                     break;
-                case nameof(this.JobInfo.ExternalWallSpacing):
+                case nameof(this.JobDefaultInfo.ExternalWallSpacing):
                     if (this.ExternalWallSpacing.IsDefaultValue)
                     {
-                        var jobInfoExternalWallSpacing = this.JobInfo.ExternalWallSpacing;
+                        var jobInfoExternalWallSpacing = this.JobDefaultInfo.ExternalWallSpacing;
                         if (jobInfoExternalWallSpacing != null)
                         {
                             this.ExternalWallSpacing.Size = (int)jobInfoExternalWallSpacing;
@@ -313,10 +313,10 @@ namespace AppModels.ResponsiveData
                     }
 
                     break;
-                case nameof(this.JobInfo.InternalWallSpacing):
+                case nameof(this.JobDefaultInfo.InternalWallSpacing):
                     if (this.InternalWallSpacing.IsDefaultValue)
                     {
-                        var jobInfoInternalWallSpacing = this.JobInfo.InternalWallSpacing;
+                        var jobInfoInternalWallSpacing = this.JobDefaultInfo.InternalWallSpacing;
                         if (jobInfoInternalWallSpacing != null)
                         {
                             this.InternalWallSpacing.Size = (int)jobInfoInternalWallSpacing;

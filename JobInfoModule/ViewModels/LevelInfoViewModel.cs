@@ -18,9 +18,6 @@ namespace JobInfoModule.ViewModels
     using System.Windows.Input;
 
     using ApplicationCore.BaseModule;
-
-    using AppModels;
-
     using Prism.Commands;
     using Prism.Events;
     using Prism.Regions;
@@ -38,27 +35,27 @@ namespace JobInfoModule.ViewModels
         /// <summary>
         /// The job.
         /// </summary>
-        private JobInfo job;
+        private JobInfo _job;
 
         /// <summary>
         /// The is cost visible.
         /// </summary>
-        private bool isCostVisible;
+        private bool _isCostVisible;
 
         /// <summary>
         /// The select index.
         /// </summary>
-        private int? selectIndex;
+        private int? _selectIndex;
 
         /// <summary>
         /// The levels.
         /// </summary>
-        private ObservableCollection<LevelWall> levels;
+        private ObservableCollection<LevelWall> _levels;
 
         /// <summary>
         /// The floor names.
         /// </summary>
-        private string[] floorNames = new string[]
+        private string[] _floorNames = new string[]
                                           {
                                               "Ground Floor", "First Floor", "Second Floor", "Third Floor",
                                               "Fourth Floor", "Fifth Floor", "Sixth Floor"
@@ -118,8 +115,8 @@ namespace JobInfoModule.ViewModels
         /// </summary>
         public JobInfo Job
         {
-            get => this.job;
-            set => this.SetProperty(ref this.job, value);
+            get => this._job;
+            set => this.SetProperty(ref this._job, value);
         }
 
         /// <summary>
@@ -127,8 +124,8 @@ namespace JobInfoModule.ViewModels
         /// </summary>
         public bool IsCostVisible
         {
-            get => this.isCostVisible;
-            set => this.SetProperty(ref this.isCostVisible, value);
+            get => this._isCostVisible;
+            set => this.SetProperty(ref this._isCostVisible, value);
         }
 
         /// <summary>
@@ -136,8 +133,8 @@ namespace JobInfoModule.ViewModels
         /// </summary>
         public int? SelectedIndex
         {
-            get => this.selectIndex;
-            set => this.SetProperty(ref this.selectIndex, value);
+            get => this._selectIndex;
+            set => this.SetProperty(ref this._selectIndex, value);
         }
 
         /// <summary>
@@ -150,8 +147,8 @@ namespace JobInfoModule.ViewModels
         /// </summary>
         public ObservableCollection<LevelWall> Levels
         {
-            get => this.levels;
-            set => this.SetProperty(ref this.levels, value);
+            get => this._levels;
+            set => this.SetProperty(ref this._levels, value);
         }
         #endregion
 
@@ -166,7 +163,7 @@ namespace JobInfoModule.ViewModels
         /// </param>
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            if (navigationContext.Parameters["JobInfo"] is JobInfo job)
+            if (navigationContext.Parameters["JobDefaultInfo"] is JobInfo job)
             {
                 this.Job = job;
             }
@@ -308,7 +305,7 @@ namespace JobInfoModule.ViewModels
                 for (var i = 0; i < stepIn; i++)
                 {
                     var level = new LevelWall(this.Job.JobDefault);
-                    level.LevelName = this.floorNames[levelNameIndex];
+                    level.LevelName = this._floorNames[levelNameIndex];
 
                     /* this is for testing */
                     level.LevelInfo.ExternalWallHeight = 2740;
@@ -324,7 +321,7 @@ namespace JobInfoModule.ViewModels
 
             }
 
-            // this.RaisePropertyChanged(nameof(this.JobInfo.Levels));
+            // this.RaisePropertyChanged(nameof(this.JobDefaultInfo.Levels));
             this.IsCreated = true;
 
         }

@@ -34,7 +34,7 @@
                 <Button>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="NewBox" />
-                        <TextBlock Text="New JobInfo" />
+                        <TextBlock Text="New JobDefaultInfo" />
                     </StackPanel>
                 </Button>
                 <Button>

@@ -3,7 +3,7 @@
 //   John Nguyen
 // </copyright>
 // <summary>
-//   Interaction logic for JobInfo.xaml
+//   Interaction logic for JobDefaultInfo.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace JobInfoModule.Views
     using System.Windows.Controls;
 
     /// <summary>
-    /// Interaction logic for JobInfo.xaml
+    /// Interaction logic for JobDefaultInfo.xaml
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
     public partial class HorizontalJobInfoView : UserControl

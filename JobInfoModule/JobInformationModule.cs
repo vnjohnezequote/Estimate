@@ -63,6 +63,7 @@ namespace JobInfoModule
             containerRegistry.RegisterForNavigation<CostDeliveryView>();
             containerRegistry.RegisterForNavigation<GeneralWindCategoryView>();
             containerRegistry.RegisterForNavigation<PrenailWindCategoryView>();
+            containerRegistry.RegisterForNavigation<AdditionInforForStickFrameView>();
 
         }
 

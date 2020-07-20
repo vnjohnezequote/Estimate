@@ -78,9 +78,9 @@ namespace JobInfoModule.ViewModels
 		
 		public void OnNavigatedTo(NavigationContext navigationContext)
         {
-             //if (navigationContext.Parameters["JobInfo"] is JobModel job)
+             //if (navigationContext.Parameters["JobDefaultInfo"] is JobModel job)
              //{
-             //    this.JobInfo = job;
+             //    this.JobDefaultInfo = job;
              //}
 			
              //this.LoadInformation();
@@ -91,7 +91,7 @@ namespace JobInfoModule.ViewModels
 			//this.TranfersJob(JobInformationRegions.HJobInformation,nameof(HorizontalJobInfoView));
 			//this.TranfersJob(JobInformationRegions.MainWindInforRegion,nameof(WindCategoryView));
 			//this.TranfersJob(JobInformationRegions.MainRoofInfoRegion,nameof(RoofInfoView));
-			//if (this.JobInfo.Info.ClientName == "Prenail")
+			//if (this.JobDefaultInfo.Info.ClientName == "Prenail")
 			//{
 			//	this.TranfersJob(JobInformationRegions.MainDesignRegion,nameof(DesignInfoView));
 			//}
@@ -101,7 +101,7 @@ namespace JobInfoModule.ViewModels
 		}
 		private void TranfersJob(string regionName, string uriPath)
 		{
-            var parameters = new NavigationParameters {{"JobInfo", JobModel.Info}};
+            var parameters = new NavigationParameters {{"JobDefaultInfo", JobModel.Info}};
             if (Job!=null)
             {
                 this.RegionManager.RequestNavigate(regionName,uriPath,parameters);   
@@ -110,7 +110,7 @@ namespace JobInfoModule.ViewModels
 		
 		private void TranferFloorInfo(string regionName, string uriPath)
 		{
-			var parameters = new NavigationParameters {{"JobInfo", JobModel.Info}};
+			var parameters = new NavigationParameters {{"JobDefaultInfo", JobModel.Info}};
 			parameters.Add("Levels", JobModel.Levels);
             if (Job.Info!=null && JobModel.Levels != null)
             {

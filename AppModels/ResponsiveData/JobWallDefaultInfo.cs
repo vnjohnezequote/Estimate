@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.Enums;
 using Prism.Mvvm;
 using ProtoBuf;
 
@@ -20,46 +21,71 @@ namespace AppModels.ResponsiveData
         #region private Field
 
         /// <summary>
-        /// The external wall spacing.
+        /// The truss spacing.
         /// </summary>
-        private int? _externalWallSpacing;
+        private int _trussSpacing;
 
         /// <summary>
-        /// The internal wall spacing.
+        /// The rafter spacing.
         /// </summary>
-        private int? _internalWallSpacing;
+        private int _rafterSpacing;
 
         /// <summary>
         /// The step down.
         /// </summary>
         private int _stepDown;
 
+        private int _roofOverHang;
+
         /// <summary>
         /// The roof pitch.
         /// </summary>
-        private double? _roofPitch;
+        private double _roofPitch;
+
+        private double _ceilingPitch;
+
+        public RoofFrameType _roofFrameType;
 
         #endregion
 
         #region public Property
 
-        /// <summary>
-        /// Gets or sets the external wall spacing.
-        /// </summary>
-        public int? ExternalWallSpacing
+        public int RoofOverHang
         {
-            get => this._externalWallSpacing;
-            set => this.SetProperty(ref this._externalWallSpacing, value);
+            get => _roofOverHang;
+            set => SetProperty(ref _roofOverHang, value);
+        }
+
+        public RoofFrameType RoofFrameType
+        {
+            get=>_roofFrameType;
+            set
+            {
+                SetProperty(ref _roofFrameType, value);
+                RaisePropertyChanged(nameof(CeilingPitch));
+            }
         }
 
         /// <summary>
-        /// Gets or sets the internal wall spacing.
+        /// Gets or sets the truss spacing.
         /// </summary>
-  
-        public int? InternalWallSpacing
+        public int TrussSpacing
         {
-            get => this._internalWallSpacing;
-            set => this.SetProperty(ref this._internalWallSpacing, value);
+            get => this._trussSpacing;
+            set
+            {
+                this.SetProperty(ref this._trussSpacing, value);
+                RaisePropertyChanged(nameof(RafterSpacing));
+            } 
+        }
+
+        /// <summary>
+        /// Gets or sets the rafter spacing.
+        /// </summary>
+        public int RafterSpacing
+        {
+            get => this._rafterSpacing == 0 ? _trussSpacing : this._rafterSpacing;
+            set => this.SetProperty(ref this._rafterSpacing, value);
         }
 
         /// <summary>
@@ -76,10 +102,32 @@ namespace AppModels.ResponsiveData
         /// Gets or sets the roof pitch.
         /// </summary>
        
-        public double? RoofPitch
+        public double RoofPitch
         {
             get => this._roofPitch;
-            set => this.SetProperty(ref this._roofPitch, value);
+            set
+            {
+                this.SetProperty(ref this._roofPitch, value);
+                this.RaisePropertyChanged(nameof(CeilingPitch));
+            } 
+        }
+
+        public double CeilingPitch
+        {
+            get => this._roofFrameType == RoofFrameType.Truss ? _ceilingPitch : _roofPitch;
+            set => SetProperty(ref _ceilingPitch, value);
+        }
+
+        public WallDefaultInfo WallDefaultInfo { get; set; }
+
+        #endregion
+
+        #region Constructor
+
+        public JobWallDefaultInfo()
+        {
+            RoofFrameType = RoofFrameType.Truss;
+            WallDefaultInfo = new WallDefaultInfo();
         }
 
         #endregion
