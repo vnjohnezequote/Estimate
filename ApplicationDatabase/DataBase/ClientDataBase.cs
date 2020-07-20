@@ -320,7 +320,7 @@ namespace AppDataBase.DataBase
                 {
                     "Sheets","Tiles"
                 },
-                Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
+                Builders = new List<string>() { "Privium", "Privium Homes" },
 
                 WallTypes = new List<WallTypePoco>
                 {

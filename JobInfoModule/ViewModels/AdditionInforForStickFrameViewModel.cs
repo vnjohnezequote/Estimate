@@ -14,9 +14,10 @@ namespace JobInfoModule.ViewModels
 {
     public class AdditionInforForStickFrameViewModel : BaseJobInForViewModel
     {
-        public List<int> TieDowns { get; } = new List<int>(){900,1200,1500,1800};
+        public List<string> TieDowns { get; } = new List<string>(){"900","1200","1500","1800","Direct"};
         public AdditionInforForStickFrameViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IJob jobModel) : base(unityContainer, regionManager, eventAggregator, layerManager, jobModel)
         {
         }
+
     }
 }

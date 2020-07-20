@@ -187,8 +187,8 @@ namespace AppModels.ResponsiveData
             this.JobDefaultInfo.PropertyChanged += this.JobInfoPropertyChanged;
             this.StepDown.PropertyChanged += this.StepDownPropertyChanged;
             this.RoofPitch.PropertyChanged += this.RoofPitchPropertyChanged;
-            this.ExternalWallSpacing.PropertyChanged += this.ExternalWallSpacingPropertyChanged;
-            this.InternalWallSpacing.PropertyChanged += this.InternalWallSpacingPropertyChanged;
+            //this.ExternalWallSpacing.PropertyChanged += this.ExternalWallSpacingPropertyChanged;
+            //this.InternalWallSpacing.PropertyChanged += this.InternalWallSpacingPropertyChanged;
         }
 
         /// <summary>
@@ -200,17 +200,17 @@ namespace AppModels.ResponsiveData
         /// <param name="e">
         /// The e.
         /// </param>
-        private void InternalWallSpacingPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName != "Size")
-            {
-                return;
-            }
+        //private void InternalWallSpacingPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    if (e.PropertyName != "Size")
+        //    {
+        //        return;
+        //    }
 
-            this.InternalWallSpacing.IsDefaultValue = this.InternalWallSpacing.Size == this.JobDefaultInfo.InternalWallSpacing;
-            this.RaisePropertyChanged(nameof(this.InternalWallSpacing));
+        //    this.InternalWallSpacing.IsDefaultValue = this.InternalWallSpacing.Size == this.JobDefaultInfo.InternalWallSpacing;
+        //    this.RaisePropertyChanged(nameof(this.InternalWallSpacing));
 
-        }
+        //}
 
         /// <summary>
         /// The external wall spacing property changed.
@@ -221,16 +221,16 @@ namespace AppModels.ResponsiveData
         /// <param name="e">
         /// The e.
         /// </param>
-        private void ExternalWallSpacingPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName != "Size")
-            {
-                return;
-            }
+        //private void ExternalWallSpacingPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    if (e.PropertyName != "Size")
+        //    {
+        //        return;
+        //    }
 
-            this.ExternalWallSpacing.IsDefaultValue = this.ExternalWallSpacing.Size == this.JobDefaultInfo.ExternalWallSpacing;
-            this.RaisePropertyChanged(nameof(this.ExternalWallSpacing));
-        }
+        //    this.ExternalWallSpacing.IsDefaultValue = this.ExternalWallSpacing.Size == this.JobDefaultInfo.ExternalWallSpacing;
+        //    this.RaisePropertyChanged(nameof(this.ExternalWallSpacing));
+        //}
 
         /// <summary>
         /// The roof pitch property changed.
@@ -281,53 +281,53 @@ namespace AppModels.ResponsiveData
         /// </param>
         private void JobInfoPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
-            {
-                case nameof(this.JobDefaultInfo.StepDown):
-                    if (this.StepDown.IsDefaultValue)
-                    {
-                        this.StepDown.Size = this.JobDefaultInfo.StepDown;
-                    }
-                    break;
-                case nameof(this.JobDefaultInfo.RoofPitch):
+            //switch (e.PropertyName)
+            //{
+            //    case nameof(this.JobDefaultInfo.StepDown):
+            //        if (this.StepDown.IsDefaultValue)
+            //        {
+            //            this.StepDown.Size = this.JobDefaultInfo.StepDown;
+            //        }
+            //        break;
+            //    case nameof(this.JobDefaultInfo.RoofPitch):
                     
-                    if (this.RoofPitch.IsDefaultValue)
-                    {
-                        var jobInfoRoofPitch = this.JobDefaultInfo.RoofPitch;
-                        if (jobInfoRoofPitch != null)
-                        {
-                            this.RoofPitch.Size = (double)jobInfoRoofPitch;
-                        }
-                    }
+            //        if (this.RoofPitch.IsDefaultValue)
+            //        {
+            //            var jobInfoRoofPitch = this.JobDefaultInfo.RoofPitch;
+            //            if (jobInfoRoofPitch != null)
+            //            {
+            //                this.RoofPitch.Size = (double)jobInfoRoofPitch;
+            //            }
+            //        }
                     
 
-                    break;
-                case nameof(this.JobDefaultInfo.ExternalWallSpacing):
-                    if (this.ExternalWallSpacing.IsDefaultValue)
-                    {
-                        var jobInfoExternalWallSpacing = this.JobDefaultInfo.ExternalWallSpacing;
-                        if (jobInfoExternalWallSpacing != null)
-                        {
-                            this.ExternalWallSpacing.Size = (int)jobInfoExternalWallSpacing;
-                        }
-                    }
+            //        break;
+            //    case nameof(this.JobDefaultInfo.ExternalWallSpacing):
+            //        if (this.ExternalWallSpacing.IsDefaultValue)
+            //        {
+            //            var jobInfoExternalWallSpacing = this.JobDefaultInfo.ExternalWallSpacing;
+            //            if (jobInfoExternalWallSpacing != null)
+            //            {
+            //                this.ExternalWallSpacing.Size = (int)jobInfoExternalWallSpacing;
+            //            }
+            //        }
 
-                    break;
-                case nameof(this.JobDefaultInfo.InternalWallSpacing):
-                    if (this.InternalWallSpacing.IsDefaultValue)
-                    {
-                        var jobInfoInternalWallSpacing = this.JobDefaultInfo.InternalWallSpacing;
-                        if (jobInfoInternalWallSpacing != null)
-                        {
-                            this.InternalWallSpacing.Size = (int)jobInfoInternalWallSpacing;
-                        }
-                    }
+            //        break;
+            //    case nameof(this.JobDefaultInfo.InternalWallSpacing):
+            //        if (this.InternalWallSpacing.IsDefaultValue)
+            //        {
+            //            var jobInfoInternalWallSpacing = this.JobDefaultInfo.InternalWallSpacing;
+            //            if (jobInfoInternalWallSpacing != null)
+            //            {
+            //                this.InternalWallSpacing.Size = (int)jobInfoInternalWallSpacing;
+            //            }
+            //        }
 
-                    break;
-                default:
-                    break;
+            //        break;
+            //    default:
+            //        break;
                 
-            }
+            //}
         }
 
 

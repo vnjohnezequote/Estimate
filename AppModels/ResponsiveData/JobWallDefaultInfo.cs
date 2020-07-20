@@ -118,7 +118,8 @@ namespace AppModels.ResponsiveData
             set => SetProperty(ref _ceilingPitch, value);
         }
 
-        public WallDefaultInfo WallDefaultInfo { get; set; }
+        public WallDefaultInfo ExternalWallDefaultInfo { get; set; }
+        public WallDefaultInfo InternalWallDefaultInfo { get; set; }
 
         #endregion
 
@@ -127,7 +128,8 @@ namespace AppModels.ResponsiveData
         public JobWallDefaultInfo()
         {
             RoofFrameType = RoofFrameType.Truss;
-            WallDefaultInfo = new WallDefaultInfo();
+            ExternalWallDefaultInfo = new WallDefaultInfo();
+            InternalWallDefaultInfo= new WallDefaultInfo();
         }
 
         #endregion

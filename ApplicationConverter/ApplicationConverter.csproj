@@ -105,6 +105,7 @@
     <Compile Include="ColorToBrushConverter.cs" />
     <Compile Include="ColorToColorConverter.cs" />
     <Compile Include="ColorToStringConverter.cs" />
+    <Compile Include="CustomersValueConverter.cs" />
     <Compile Include="IntToBooleanConverter.cs" />
     <Compile Include="PitchingHeightToWallHeightConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

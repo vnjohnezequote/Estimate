@@ -10,17 +10,33 @@
              xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
              xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:helper="clr-namespace:AppThemes.Helper;assembly=AppThemes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:JobInfoViewModel, IsDesignTimeCreatable=True}"
              Style="{DynamicResource MaterialDesignUserControl}">
     <UserControl.Resources>
-        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
     </UserControl.Resources>
     <StackPanel>
         <TextBox Margin="0 10 0 0" x:Name="TxtJobNumber"
-                 materialDesign:HintAssist.Hint="JobDefaultInfo Number"
+                 materialDesign:HintAssist.Hint="JobInfoDefaultInfo Number"
                  Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
+        <ComboBox Margin="0 10 0 0"
+                  materialDesign:HintAssist.Hint="Customer"
+                  IsEditable="True"
+                  Visibility="{Binding IsStickFrame}"
+                  HorizontalAlignment="Stretch"
+                  ItemsSource="{Binding Customers}"
+                  SelectedItem="{Binding JobInfo.Customer}"
+                  SelectedValue="{Binding JobInfo.Customer}"
+                  materialDesign:TextFieldAssist.HasClearButton="True"
+                  materialDesign:TextFieldAssist.HasOutlinedTextField="True"/>
         <ComboBox Margin="0 10 0 0" x:Name="BuiderNameComboBox"
                   materialDesign:HintAssist.Hint="Builder"
                   IsEditable="True"
@@ -39,7 +55,7 @@
             </interactions:Interaction.Triggers>
         </ComboBox>
         <TextBox Margin="0 10 0 0"
-            x:Name="TxtAddress"
+                 x:Name="TxtAddress"
                  materialDesign:HintAssist.Hint="Address"
                  Text="{Binding JobInfo.FullAddress, Mode=TwoWay}">
         </TextBox>

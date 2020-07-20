@@ -105,8 +105,8 @@ namespace NewJobWizardModule.ViewModels
             this.Job.Info.JobNumber = "2220";
             this.Job.Info.JobLocation = "test";
             this.Job.Info.JobDefault.RoofPitch = 22.5;
-            this.Job.Info.JobDefault.ExternalWallSpacing = 450;
-            this.Job.Info.JobDefault.InternalWallSpacing = 600;
+            //this.JobInfo.Info.JobDefault.ExternalWallSpacing = 450;
+            //this.JobInfo.Info.JobDefault.InternalWallSpacing = 600;
             this.Job.Info.JobDefault.StepDown = 170;
 
             this.CheckJob = new CheckJobInfo(this.Job.Info);

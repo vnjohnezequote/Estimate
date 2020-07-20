@@ -19,7 +19,7 @@
     <StackPanel>
 	<DockPanel>
         <TextBox x:Name="TxtJobNumber"
-                 materialDesign:HintAssist.Hint="JobDefaultInfo Number"
+                 materialDesign:HintAssist.Hint="JobInfoDefaultInfo Number"
                  Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
         <ComboBox x:Name="BuiderNameComboBox"

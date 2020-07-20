@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Windows;
 using ApplicationInterfaceCore;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
@@ -39,6 +41,13 @@ namespace JobInfoModule.ViewModels
         #endregion
 
         #region Property
+        public List<string> Customers { get; set; } = new List<string>()
+        {
+            "Bunnings Trade",
+            "Finlaysons",
+            "Bunnings Trade Victoria",
+            "Bunnings Hallam Frame And Truss"
+        };
 
         public bool IsBuilderEnable => SelectedClient != null;
 
@@ -46,6 +55,20 @@ namespace JobInfoModule.ViewModels
         {
             get => this._builders;
             set => this.SetProperty(ref this._builders, value);
+        }
+
+        public Visibility IsStickFrame
+        {
+            get
+            {
+                if (this.SelectedClient==null || this.SelectedClient.Name != "StickFrame")
+                {
+                    return Visibility.Collapsed;
+                }
+
+                return Visibility.Visible;
+            }
+            
         }
         #endregion
         #region Constructor
@@ -69,6 +92,12 @@ namespace JobInfoModule.ViewModels
             //this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SelectedClientReceive);
         }
 
+        
+
+
+
+
+
         #endregion
 
         #region Command		
@@ -84,6 +113,7 @@ namespace JobInfoModule.ViewModels
         {
            base.SelectedClientReceive(selectClient);
             this.RaisePropertyChanged(nameof(IsBuilderEnable));
+            this.RaisePropertyChanged(nameof(IsStickFrame));
             BuilderNamesReseive(selectClient.Builders);
         }
 

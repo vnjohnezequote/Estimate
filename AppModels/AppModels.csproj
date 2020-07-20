@@ -157,6 +157,7 @@
     <Compile Include="Enums\OpeningType.cs" />
     <Compile Include="Enums\RoofFrameType.cs" />
     <Compile Include="Enums\RoofType.cs" />
+    <Compile Include="Enums\StickFrameCustomers.cs" />
     <Compile Include="Enums\Suppliers.cs" />
     <Compile Include="Enums\WallType.cs" />
     <Compile Include="Interaface\IClientDatabase.cs" />

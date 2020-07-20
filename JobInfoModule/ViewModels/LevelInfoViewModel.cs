@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using ApplicationInterfaceCore;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
@@ -35,7 +36,8 @@ namespace JobInfoModule.ViewModels
         /// <summary>
         /// The job.
         /// </summary>
-        private JobInfo _job;
+        private JobInfo _jobInfo;
+        
 
         /// <summary>
         /// The is cost visible.
@@ -109,14 +111,14 @@ namespace JobInfoModule.ViewModels
 
         #endregion
         #region Property
-
+        public List<int> WallSpacings { get; set; } = new List<int>(){300,350,400,450,600};
         /// <summary>
         /// Gets or sets the job.
         /// </summary>
-        public JobInfo Job
+        public JobInfo JobInfo
         {
-            get => this._job;
-            set => this.SetProperty(ref this._job, value);
+            get => this._jobInfo;
+            set => this.SetProperty(ref this._jobInfo, value);
         }
 
         /// <summary>
@@ -165,21 +167,21 @@ namespace JobInfoModule.ViewModels
         {
             if (navigationContext.Parameters["JobDefaultInfo"] is JobInfo job)
             {
-                this.Job = job;
+                this.JobInfo = job;
             }
             if (navigationContext.Parameters["Levels"] is ObservableCollection<LevelWall> levels)
             {
                 this.Levels = levels;
             }
 
-            if (this.Job == null)
+            if (this.JobInfo == null)
             {
                 this.IsCostVisible = false;
                 return;
                 //this.SelectedIndex = null;
             }
 
-            this.IsCostVisible = this.Job.ClientName == "Prenail";
+            this.IsCostVisible = this.JobInfo.ClientName == "Prenail";
 
             if (this.Levels == null || this.Levels.Count == 0)
             {
@@ -304,7 +306,7 @@ namespace JobInfoModule.ViewModels
 
                 for (var i = 0; i < stepIn; i++)
                 {
-                    var level = new LevelWall(this.Job.JobDefault);
+                    var level = new LevelWall(this.JobInfo.JobDefault);
                     level.LevelName = this._floorNames[levelNameIndex];
 
                     /* this is for testing */

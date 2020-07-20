@@ -73,6 +73,7 @@ namespace JobInfoModule.ViewModels
             //this.RegionManager = this.RegionManager.CreateRegionManager();
         }
 
+
         #region Command
 
         #endregion

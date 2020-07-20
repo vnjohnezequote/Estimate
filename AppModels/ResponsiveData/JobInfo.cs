@@ -96,10 +96,11 @@ namespace AppModels.ResponsiveData
         private bool _isBracingPlan;
 
         private string _windrate;
-        private int _tieDown;
+        private string _tieDown;
         private int _externalDoorHeight;
         private int _internalDoorHeight;
         private bool _quoteCeilingBattent;
+        private string _customer;
         #endregion
 
         #region Property
@@ -120,7 +121,10 @@ namespace AppModels.ResponsiveData
             get => this._jobLocation;
             set => this.SetProperty(ref this._jobLocation, value);
         }
-        public int TieDown { get=>_tieDown; set=>SetProperty(ref _tieDown,value); }
+        public string TieDown {
+            get => string.IsNullOrEmpty(_tieDown) ? this.GeneralTieDown() : _tieDown;
+            set => SetTieDown(value);
+        }
         public Suppliers Supplier { get; set; }
 
         /// <summary>
@@ -130,6 +134,12 @@ namespace AppModels.ResponsiveData
         {
             get => this._clientName;
             set => this.SetProperty(ref this._clientName, value);
+        }
+
+        public string Customer
+        {
+            get => this._customer;
+            set => this.SetProperty(ref _customer, value);
         }
 
         /// <summary>
@@ -183,7 +193,7 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public string WindRate
         {
-            get=>_windrate;
+            get => _windrate;
             set
             {
                 SetProperty(ref _windrate, value);
@@ -347,7 +357,95 @@ namespace AppModels.ResponsiveData
         public JobInfo()
         {
             this.JobDefault = new JobWallDefaultInfo();
-			//this.WindRate = new WindCategory();
+            this.PropertyChanged += JobInfo_PropertyChanged;
+            WindRate = "N3";
+            Treatment = "Untreated";
+        }
+
+        private void SetTieDown(string value)
+        {
+            switch (WindRate)
+            {
+                case "C2":
+                case "C3":
+                    if (value =="Direct")
+                    {
+                        value = null;
+                    }
+                    break;
+                case "N1":
+                case "N2":
+                    if (string.IsNullOrEmpty(BuilderName) && value =="1800")
+                    {
+                        value = null;
+                    }
+                    else if (BuilderName.Contains("Privium") && value=="1500")
+                    {
+                        value = null;
+                    }
+                    else if(value =="1800")
+                    {
+                        value = null;
+                    }
+
+                    break;
+                case "N3":
+                    if (value == "1200")
+                    {
+                        value = null;
+                    }
+                    break;
+            }
+
+            this.SetProperty(ref _tieDown, value);
+
+        }
+
+        private void JobInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Customer))
+            {
+                if (this.Customer == "Bunnings Hallam Frame And Truss")
+                {
+                    this.BuilderName = "Privium";
+                }
+            }
+
+            if (e.PropertyName==nameof(BuilderName))
+            {
+                if (BuilderName.Contains("Privium"))
+                {
+                    this.WindRate = "N2";
+                    this.Treatment = "Untreated";
+                }
+            }
+
+            if (e.PropertyName==nameof(WindRate))
+            {
+                this.RaisePropertyChanged(nameof(TieDown));
+            }
+        }
+
+        private string GeneralTieDown()
+        {
+            switch (WindRate)
+            {
+                case "N1":
+                case "N2":
+                    if (string.IsNullOrEmpty(BuilderName))
+                    {
+                        return "1800";
+                    }
+                    return BuilderName.Contains("Privium") ? "1500" : "1800";
+
+                case "N3":
+                    return "1200";
+                case "C2":
+                case "C3":
+                    return "Direct";
+                default:
+                    return string.Empty;
+            }
         }
         #endregion
 
