@@ -38,20 +38,6 @@ namespace AppModels.ResponsiveData
         /// </summary>
         private string _timberGrade;
 
-        /// <summary>
-        /// The treatment.
-        /// </summary>
-        private string _treatment;
-
-        /// <summary>
-        /// The quantities.
-        /// </summary>
-        private int _quantities;
-
-        /// <summary>
-        /// The unit price.
-        /// </summary>
-        private string _unitPrice;
         #endregion
 
         #region Constructor
@@ -84,14 +70,14 @@ namespace AppModels.ResponsiveData
         /// <param name="treatment">
         /// The treatment.
         /// </param>
-        public TimberBase(int id, int thickness, int depth, int noItem, string timberGrade, string treatment = "H2S")
+        public TimberBase(int id, int thickness, int depth, int noItem, string timberGrade)
         {
             this.Id = id;
             this.Thickness = thickness;
             this.Depth = depth;
             this.NoItem = noItem;
             this.TimberGrade = timberGrade;
-            this.Treatment = treatment;
+            //this.Treatment = treatment;
         }
 
         /// <summary>
@@ -107,7 +93,7 @@ namespace AppModels.ResponsiveData
             this.Depth = info.Depth;
             this.NoItem = info.NoItem;
             this.TimberGrade = info.TimberGrade;
-            this.Treatment = info.Treatment;
+            //this.Treatment = info.Treatment;
         }
         #endregion
         /// <summary>
@@ -154,27 +140,27 @@ namespace AppModels.ResponsiveData
             }
         }
 
-        /// <summary>
-        /// Gets or sets the treatment.
-        /// </summary>
-        public string Treatment
-        {
-            get => this._treatment;
-            set
-            {
-                this.SetProperty(ref this._treatment, value);
-                this.CallBackPropertyChanged();
-            }
-        }
+        ///// <summary>
+        ///// Gets or sets the treatment.
+        ///// </summary>
+        //public string Treatment
+        //{
+        //    get => this._treatment;
+        //    set
+        //    {
+        //        this.SetProperty(ref this._treatment, value);
+        //        this.CallBackPropertyChanged();
+        //    }
+        //}
 
-        /// <summary>
-        /// Gets or sets the quantities.
-        /// </summary>
-        public int Quantities
-        {
-            get => this._quantities;
-            set => this.SetProperty(ref this._quantities, value);
-        }
+        ///// <summary>
+        ///// Gets or sets the quantities.
+        ///// </summary>
+        //public int Quantities
+        //{
+        //    get => this._quantities;
+        //    set => this.SetProperty(ref this._quantities, value);
+        //}
 
         /// <summary>
         /// Gets or sets the type. MGP12 or MPG10
@@ -218,27 +204,27 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the size treatment. 90x35 H2S Treated
         /// </summary>
-        public string SizeTreatment => this.Size + " " + this._treatment;
+        //public string SizeTreatment => this.Size + " " + this._treatment;
 
         /// <summary>
         /// Gets or sets the full name. 90x35 MGP12 H2S Treated
         /// </summary>
-        public string FullName => this.SizeGrade + " " + this._treatment;
+        //public string FullName => this.SizeGrade + " " + this._treatment;
 
         /// <summary>
         /// Gets or sets the supplier.
         /// </summary>
-        public string Supplier { get; set; }
+        //public string Supplier { get; set; }
 
         /// <summary>
         /// Gets or sets the customer.
         /// </summary>
-        public string Customer { get; set; }
+        //public string Customer { get; set; }
 
         /// <summary>
         /// Gets or sets the unit price.
         /// </summary>
-        public string UnitPrice { get => this._unitPrice; set => this.SetProperty(ref this._unitPrice, value); }
+        //public string UnitPrice { get => this._unitPrice; set => this.SetProperty(ref this._unitPrice, value); }
 
         /// <summary>
         /// The call back property changed.
@@ -247,8 +233,8 @@ namespace AppModels.ResponsiveData
         {
             this.RaisePropertyChanged(nameof(this.Size));
             this.RaisePropertyChanged(nameof(this.SizeGrade));
-            this.RaisePropertyChanged(nameof(this.SizeTreatment));
-            this.RaisePropertyChanged(nameof(this.FullName));
+            //this.RaisePropertyChanged(nameof(this.SizeTreatment));
+            //this.RaisePropertyChanged(nameof(this.FullName));
         }
 
     }

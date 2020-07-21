@@ -40,11 +40,13 @@ namespace JobInfoModule.ViewModels
            IEventAggregator eventAggregator,ILayerManager layerManager,IJob jobModel)
            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
-            
+            InitilaziedFloor();
 
         }
 
-
+        private void InitilaziedFloor()
+        {
+        }
         #endregion
     }
 }

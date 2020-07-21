@@ -213,7 +213,7 @@
                             <!--<syncfusion:GridTextColumn HeaderText="First Wall Height" MappingName="FirstWallHeight"/>-->
                             <!--<syncfusion:GridTextColumn HeaderText="Wall Thickness" MappingName="WallThickness.Size" />-->
                             <syncfusion:GridComboBoxColumn HeaderText="Wall Thickness"
-                                                   MappingName="WallThickness.Size"
+                                                   MappingName="Thickness.Size"
                                                    ItemsSource="{Binding WallThicknessList}"
                                                    UseBindingValue="True"/>
                             <syncfusion:GridTextColumn HeaderText="Wall Spacing"

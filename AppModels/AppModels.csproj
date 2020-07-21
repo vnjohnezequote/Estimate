@@ -153,7 +153,7 @@
     <Compile Include="Enums\BeamType.cs" />
     <Compile Include="Enums\CeilingBattensType.cs" />
     <Compile Include="Enums\ClientNames.cs" />
-    <Compile Include="Enums\LoadBearingWallType.cs" />
+    <Compile Include="Enums\NoggingMethod.cs" />
     <Compile Include="Enums\OpeningType.cs" />
     <Compile Include="Enums\RoofFrameType.cs" />
     <Compile Include="Enums\RoofType.cs" />
@@ -181,7 +181,9 @@
     <Compile Include="PocoDataModel\WallLayerPoco.cs" />
     <Compile Include="PocoDataModel\WallMemberBasePoco.cs" />
     <Compile Include="PocoDataModel\WallStudPoco.cs" />
-    <Compile Include="ResponsiveData\WallDefaultInfo.cs" />
+    <Compile Include="ResponsiveData\GlobalWallDetailInfo.cs" />
+    <Compile Include="ResponsiveData\TimberWallMemberBase.cs" />
+    <Compile Include="ResponsiveData\GlobalWallInfo.cs" />
     <Compile Include="ResponsiveData\Treatment.cs" />
     <Compile Include="ResponsiveData\Beam.cs" />
     <Compile Include="ResponsiveData\Bracing.cs" />
@@ -207,12 +209,14 @@
     <Compile Include="ResponsiveData\JobModel.cs" />
     <Compile Include="ResponsiveData\JobWallDefaultInfo.cs" />
     <Compile Include="ResponsiveData\LevelWallDefaultInfo.cs" />
+    <Compile Include="ResponsiveData\WallNogging.cs" />
     <Compile Include="ResponsiveData\WallTempLength.cs" />
     <Compile Include="ResponsiveData\RlwCalc.cs" />
     <Compile Include="ResponsiveData\Shape.cs" />
     <Compile Include="ResponsiveData\BracingBase.cs" />
     <Compile Include="CustomEntity\CustomTable.cs" />
     <Compile Include="CustomEntity\PictureEntity.cs" />
+    <Compile Include="ResponsiveData\WallTrimmer.cs" />
     <Compile Include="ViewModelEntity\EntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVmBase.cs" />
     <Compile Include="ViewModelEntity\LinearPathVm.cs" />
@@ -233,7 +237,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

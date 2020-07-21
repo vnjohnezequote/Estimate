@@ -504,7 +504,7 @@ namespace WallFrameInputModule.ViewModels
             //{
             //    this.ChangedWallThickness(currentWallLayer);
             //}
-            //if (wallInput.CurrentColumn.MappingName == "WallThickness.Size")
+            //if (wallInput.CurrentColumn.MappingName == "Thickness.Size")
             //{
             //    this.ChangedWallThickness(currentWallLayer);
             //}
@@ -534,7 +534,7 @@ namespace WallFrameInputModule.ViewModels
                 this.ChangedWallThickness(currentWallLayer);
 
             }
-            if (sfDataGrid.CurrentColumn.MappingName == "WallThickness.Size")
+            if (sfDataGrid.CurrentColumn.MappingName == "Thickness.Size")
             {
                 this.ChangedWallThickness(currentWallLayer);
             }

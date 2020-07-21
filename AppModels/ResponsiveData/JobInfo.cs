@@ -97,10 +97,10 @@ namespace AppModels.ResponsiveData
 
         private string _windrate;
         private string _tieDown;
-        private int _externalDoorHeight;
-        private int _internalDoorHeight;
+        
         private bool _quoteCeilingBattent;
         private string _customer;
+        private int _roofOverHang;
         #endregion
 
         #region Property
@@ -108,10 +108,15 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the job default.
         /// </summary>
-        public JobWallDefaultInfo JobDefault
+        public JobWallDefaultInfo DefaultInfo
         {
             get;
             set;
+        }
+        public int RoofOverHang
+        {
+            get => _roofOverHang;
+            set => SetProperty(ref _roofOverHang, value);
         }
         /// <summary>
         /// Gets or sets the job location.
@@ -213,28 +218,11 @@ namespace AppModels.ResponsiveData
                 return WindRate=="N2" || WindRate=="N3" || WindRate == "C1";
             }
         }
-
-        public int ExternalDoorHeight { 
-            get=>_externalDoorHeight;
-            set
-            {
-                SetProperty(ref _externalDoorHeight, value);
-                RaisePropertyChanged(nameof(InternalDoorHeight));
-            }
-
-        }
-
-       
         public bool QuoteCeilingBattent { get=>_quoteCeilingBattent; set=>SetProperty(ref _quoteCeilingBattent,value); }
         public CeilingBattensType CeilingBattensType { get; set; } = CeilingBattensType.Timber;
 
         public int QuoteTolengthSize { get; set; } = 5400;
         public bool JambBeamSupport { get; set; }
-        public int InternalDoorHeight
-        {
-            get => _internalDoorHeight == 0 ? _externalDoorHeight : _internalDoorHeight;
-            set=>SetProperty(ref _internalDoorHeight,value);
-        }
 
         public bool NoggingsAndSillInLM { get; set; }
         public bool UpToLength { get; set; }
@@ -356,11 +344,15 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public JobInfo()
         {
-            this.JobDefault = new JobWallDefaultInfo();
+            this.DefaultInfo = new JobWallDefaultInfo();
             this.PropertyChanged += JobInfo_PropertyChanged;
-            WindRate = "N3";
             Treatment = "Untreated";
+            RoofOverHang = 600;
+            //DefaultInfo.TrussSpacing = 600;
         }
+        #endregion
+
+        #region Private Function
 
         private void SetTieDown(string value)
         {
@@ -413,6 +405,10 @@ namespace AppModels.ResponsiveData
 
             if (e.PropertyName==nameof(BuilderName))
             {
+                if (string.IsNullOrEmpty(BuilderName))
+                {
+                    return;
+                }
                 if (BuilderName.Contains("Privium"))
                 {
                     this.WindRate = "N2";

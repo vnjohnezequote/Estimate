@@ -168,32 +168,32 @@
                              BorderThickness="1"/>
 
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="0" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="2" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="4" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="6" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="8" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="10" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
@@ -312,27 +312,27 @@
                              BorderThickness="1"/>
 
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="0" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="2" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="4" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="6" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
                 <ComboBox Padding="5"
-                             materialDesign:HintAssist.Hint="Material" 
+                             materialDesign:HintAssist.Hint="TimberGrade" 
                              Grid.Row="8" Grid.Column="10"
                              Style="{StaticResource MaterialDesignComboBox}"
                              BorderThickness="1"/>
@@ -346,7 +346,7 @@
                         <TextBox materialDesign:HintAssist.Hint="External Door Height"/>
                         <TextBox materialDesign:HintAssist.Hint="Number of Jamb" Margin="10 0 0 0"/>
                         <TextBox materialDesign:HintAssist.Hint="Depth of Jamb" Margin="10 0 0 0"/>
-                        <ComboBox materialDesign:HintAssist.Hint="Material Of Jamb" Margin="10 0 0 0"/>
+                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade Of Jamb" Margin="10 0 0 0"/>
                     </DockPanel>
                     <TextBox materialDesign:HintAssist.Hint="Internal Door Height" Margin="0 10 0 0"/>
                 </StackPanel>

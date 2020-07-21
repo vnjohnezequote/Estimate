@@ -118,7 +118,7 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                 Alignment = Text.alignmentType.MiddleCenter
             });
 
-            table.SetTextString(1, 0, "Roof Material:");
+            table.SetTextString(1, 0, "Roof TimberGrade:");
             table.SetAlignment(1, 0, Text.alignmentType.TopLeft);
             baseAtributePoint = table.GetCenter(1, 0);
             basePoint2 = new Point3D(baseAtributePoint.X + 13 * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y);

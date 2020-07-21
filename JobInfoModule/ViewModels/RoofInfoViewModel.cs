@@ -7,24 +7,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Documents;
+using System.Linq;
 using ApplicationInterfaceCore;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
-using AppModels.ResponsiveData;
 
 namespace JobInfoModule.ViewModels
 {
-    using System.Windows.Input;
-
     using ApplicationCore.BaseModule;
     using JetBrains.Annotations;
-
-    using Prism.Commands;
     using Prism.Events;
     using Prism.Regions;
 
@@ -49,12 +43,12 @@ namespace JobInfoModule.ViewModels
         }
 
         public bool IsTrussSpacingEnable =>
-            this.JobInfo.JobDefault.RoofFrameType == RoofFrameType.Truss ||
-            this.JobInfo.JobDefault.RoofFrameType == RoofFrameType.TrussAndRafter;
+            this.JobInfo.DefaultInfo.RoofFrameType == RoofFrameType.Truss ||
+            this.JobInfo.DefaultInfo.RoofFrameType == RoofFrameType.TrussAndRafter;
 
         public bool IsRaterSpacingEnable =>
-        this.JobInfo.JobDefault.RoofFrameType == RoofFrameType.Rafter ||
-        this.JobInfo.JobDefault.RoofFrameType == RoofFrameType.TrussAndRafter;
+        this.JobInfo.DefaultInfo.RoofFrameType == RoofFrameType.Rafter ||
+        this.JobInfo.DefaultInfo.RoofFrameType == RoofFrameType.TrussAndRafter;
         #endregion
 
         #region Constructor
@@ -78,7 +72,7 @@ namespace JobInfoModule.ViewModels
             ILayerManager layerManager,IJob jobModel)
             : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
-            this.JobInfo.JobDefault.PropertyChanged += JobDefault_PropertyChanged;
+            this.JobInfo.DefaultInfo.PropertyChanged += JobDefault_PropertyChanged;
         }
 
         private void JobDefault_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -111,6 +105,7 @@ namespace JobInfoModule.ViewModels
         {
             base.Initilazied();
             this.RoofMaterialsReseive(this.SelectedClient.RoofMaterials);
+            JobInfo.RoofMaterial = RoofMaterials.FirstOrDefault();
         }
         #endregion
 

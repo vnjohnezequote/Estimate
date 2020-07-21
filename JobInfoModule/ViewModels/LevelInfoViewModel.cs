@@ -112,6 +112,7 @@ namespace JobInfoModule.ViewModels
         #endregion
         #region Property
         public List<int> WallSpacings { get; set; } = new List<int>(){300,350,400,450,600};
+        public List<string> TimberGradeList { get; set; } = new List<string>(){ "MGP10", "MGP12", "F5" ,"F7","F17"};
         /// <summary>
         /// Gets or sets the job.
         /// </summary>
@@ -306,7 +307,7 @@ namespace JobInfoModule.ViewModels
 
                 for (var i = 0; i < stepIn; i++)
                 {
-                    var level = new LevelWall(this.JobInfo.JobDefault);
+                    var level = new LevelWall(this.JobInfo.DefaultInfo);
                     level.LevelName = this._floorNames[levelNameIndex];
 
                     /* this is for testing */

@@ -32,7 +32,8 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public WallMemberBase()
         {
-            this.IsDefault = true;
+            //this.IsDefault = true;
+            TimberInfo = new TimberBase();
         }
 
         #region Public Region

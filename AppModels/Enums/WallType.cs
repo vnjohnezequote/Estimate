@@ -6,8 +6,12 @@ namespace AppModels.Enums
     public enum WallType
     {
         [ProtoEnum]
-        External,
+        External_LBW,
         [ProtoEnum]
-        Internal
+        External_NonLBW,
+        [ProtoEnum]
+        Internal_LBW,
+        [ProtoEnum]
+        Internal_NonLBW
     }
 }

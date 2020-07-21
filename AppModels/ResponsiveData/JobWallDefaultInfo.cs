@@ -3,7 +3,7 @@
 //   John Nguyen
 // </copyright>
 // <summary>
-//   Defines the WallDefaultInfo type.
+//   Defines the GlobalWallInfo type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,43 +19,43 @@ namespace AppModels.ResponsiveData
     public class JobWallDefaultInfo : BindableBase
     {
         #region private Field
-
-        /// <summary>
-        /// The truss spacing.
-        /// </summary>
         private int _trussSpacing;
-
-        /// <summary>
-        /// The rafter spacing.
-        /// </summary>
         private int _rafterSpacing;
-
-        /// <summary>
-        /// The step down.
-        /// </summary>
         private int _stepDown;
-
-        private int _roofOverHang;
-
-        /// <summary>
-        /// The roof pitch.
-        /// </summary>
         private double _roofPitch;
-
         private double _ceilingPitch;
-
         public RoofFrameType _roofFrameType;
+        private int _externalDoorHeight;
+        private int _internalDoorHeight;
+        private NoggingMethodType _globalNoggingMethodType;
 
         #endregion
 
         #region public Property
 
-        public int RoofOverHang
+        public NoggingMethodType GlobalNoggingMethodType
         {
-            get => _roofOverHang;
-            set => SetProperty(ref _roofOverHang, value);
+            get => _globalNoggingMethodType;
+            set
+            {
+                SetProperty(ref _globalNoggingMethodType, value);
+            } 
         }
 
+        public int ExternalDoorHeight
+        {
+            get => _externalDoorHeight;
+            set
+            {
+                SetProperty(ref _externalDoorHeight, value);
+                RaisePropertyChanged(nameof(InternalDoorHeight));
+            }
+        }
+        public int InternalDoorHeight
+        {
+            get => _internalDoorHeight == 0 ? _externalDoorHeight : _internalDoorHeight;
+            set => SetProperty(ref _internalDoorHeight, value);
+        }
         public RoofFrameType RoofFrameType
         {
             get=>_roofFrameType;
@@ -65,10 +65,6 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(CeilingPitch));
             }
         }
-
-        /// <summary>
-        /// Gets or sets the truss spacing.
-        /// </summary>
         public int TrussSpacing
         {
             get => this._trussSpacing;
@@ -78,30 +74,16 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(RafterSpacing));
             } 
         }
-
-        /// <summary>
-        /// Gets or sets the rafter spacing.
-        /// </summary>
         public int RafterSpacing
         {
             get => this._rafterSpacing == 0 ? _trussSpacing : this._rafterSpacing;
             set => this.SetProperty(ref this._rafterSpacing, value);
         }
-
-        /// <summary>
-        /// Gets or sets the step down.
-        /// </summary>
-     
         public int StepDown
         {
             get => this._stepDown;
             set => this.SetProperty(ref this._stepDown, value);
         }
-
-        /// <summary>
-        /// Gets or sets the roof pitch.
-        /// </summary>
-       
         public double RoofPitch
         {
             get => this._roofPitch;
@@ -111,25 +93,32 @@ namespace AppModels.ResponsiveData
                 this.RaisePropertyChanged(nameof(CeilingPitch));
             } 
         }
-
         public double CeilingPitch
         {
             get => this._roofFrameType == RoofFrameType.Truss ? _ceilingPitch : _roofPitch;
             set => SetProperty(ref _ceilingPitch, value);
         }
-
-        public WallDefaultInfo ExternalWallDefaultInfo { get; set; }
-        public WallDefaultInfo InternalWallDefaultInfo { get; set; }
-
+        public GlobalWallInfo GlobalExternalWallInfo { get; set; }
+        public GlobalWallInfo GlobalInternalWallInfo { get; set; }
+        public GlobalWallDetailInfo GlobalExtWallDetailInfo { get; set; }
+        public GlobalWallDetailInfo GlobalIntWallDetaiInfo { get; set; }
+        public TimberWallMemberBase GlobalNoggingInfo { get; set; }
+        public TimberWallMemberBase GlobalDoorJambInfo { get; set; }
         #endregion
 
         #region Constructor
 
         public JobWallDefaultInfo()
         {
+            ExternalDoorHeight = 2100;
             RoofFrameType = RoofFrameType.Truss;
-            ExternalWallDefaultInfo = new WallDefaultInfo();
-            InternalWallDefaultInfo= new WallDefaultInfo();
+            GlobalExternalWallInfo = new GlobalWallInfo(WallType.External_LBW,this);
+            GlobalInternalWallInfo= new GlobalWallInfo(WallType.Internal_NonLBW,this);
+            GlobalNoggingInfo = new TimberWallMemberBase(GlobalExternalWallInfo);
+            GlobalDoorJambInfo = new TimberWallMemberBase(GlobalExternalWallInfo);
+            GlobalExtWallDetailInfo = new GlobalWallDetailInfo(GlobalExternalWallInfo,GlobalNoggingInfo,GlobalDoorJambInfo);
+            GlobalIntWallDetaiInfo = new GlobalWallDetailInfo(GlobalInternalWallInfo, GlobalNoggingInfo, GlobalDoorJambInfo);
+            TrussSpacing = 600;
         }
 
         #endregion

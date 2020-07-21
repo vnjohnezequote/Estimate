@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using AppDataBase.DataBase;
 using ApplicationInterfaceCore;
 using ApplicationService;
@@ -84,6 +85,7 @@ namespace JobInfoModule.ViewModels
             base.Initilazied();
             WindRatesReseive(SelectedClient.WinRates);
             TreatmentsReseive(SelectedClient.Treatments);
+            JobInfo.WindRate = WindRates.FirstOrDefault();
         }
 
         /// <summary>

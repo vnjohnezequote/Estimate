@@ -1,4 +1,6 @@
-﻿namespace JobInfoModule.Views
+﻿using JobInfoModule.ViewModels;
+
+namespace JobInfoModule.Views
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Windows.Controls;

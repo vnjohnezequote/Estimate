@@ -26,17 +26,17 @@
             <TextBox Margin="0 10 0 0"
                      x:Name="TxtRoofPitch"
                      materialDesign:HintAssist.Hint="Roof Pitch"
-                     Text="{Binding JobInfo.JobDefault.RoofPitch,UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding JobInfo.DefaultInfo.RoofPitch,UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Margin="0 10 0 0"
                      x:Name="TxtCeilingPitch"
                      materialDesign:HintAssist.Hint="Ceiling Pitch"
-                     Text="{Binding JobInfo.JobDefault.CeilingPitch}"/>
+                     Text="{Binding JobInfo.DefaultInfo.CeilingPitch}"/>
             <TextBox Margin="0 10 0 0"
                      x:Name="TxtRoofOverHang"
                      materialDesign:HintAssist.Hint="Roof OverHang"
-                     Text="{Binding JobInfo.JobDefault.RoofOverHang}"/>
+                     Text="{Binding JobInfo.RoofOverHang}"/>
             <ComboBox Margin="0 10 0 0" x:Name="RoofMaterialType"
-                      materialDesign:HintAssist.Hint="Roof Material"
+                      materialDesign:HintAssist.Hint="Roof TimberGrade"
                       HorizontalAlignment="Stretch"
                       ItemsSource="{Binding RoofMaterials}"
                       SelectedItem="{Binding JobInfo.RoofMaterial}"
@@ -47,8 +47,8 @@
                       materialDesign:HintAssist.Hint="Roof Frame Type"
                       HorizontalAlignment="Stretch"
                       ItemsSource="{Binding Source={StaticResource RoofFrameTypes}}"
-                      SelectedItem="{Binding JobInfo.JobDefault.RoofFrameType}"
-                      SelectedValue="{Binding JobInfo.JobDefault.RoofFrameType}"
+                      SelectedItem="{Binding JobInfo.DefaultInfo.RoofFrameType}"
+                      SelectedValue="{Binding JobInfo.DefaultInfo.RoofFrameType}"
                       materialDesign:TextFieldAssist.HasClearButton="True"
                       materialDesign:TextFieldAssist.HasOutlinedTextField="True"/>
 
@@ -57,13 +57,13 @@
                       materialDesign:HintAssist.Hint="Truss Spacing"
                       IsEnabled="{Binding IsTrussSpacingEnable}"
                       ItemsSource="{Binding TrussSpacings}"
-                      SelectedItem="{Binding JobInfo.JobDefault.TrussSpacing}"/>
+                      SelectedItem="{Binding JobInfo.DefaultInfo.TrussSpacing}"/>
             <ComboBox Margin="0 10 0 0"
                       x:Name="RafterSpacingComboBox"
-                      materialDesign:HintAssist.Hint="Truss Spacing"
+                      materialDesign:HintAssist.Hint="Rafter Spacing"
                       IsEnabled="{Binding IsRaterSpacingEnable}"
                       ItemsSource="{Binding RafterSpacings}"
-                      SelectedItem="{Binding JobInfo.JobDefault.RafterSpacing}"/>
+                      SelectedItem="{Binding JobInfo.DefaultInfo.RafterSpacing}"/>
         </StackPanel>
     </Grid>
 </UserControl>
