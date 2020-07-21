@@ -26,6 +26,14 @@
                     <!--<Style TargetType="TabItem" >
 						<Setter Property="Header" Value="{Binding DataContext.Level.LevelName}" />
 					</Style>-->
+                    <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Padding" Value="5 0 5 0"/>
+                    </Style>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Padding" Value="5"/>
+                    </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <ObjectDataProvider x:Key="NoggingMethodTypes"
@@ -88,34 +96,28 @@
                     <!--External Wall-->
                     <TextBox materialDesign:HintAssist.Hint="Thickness" 
                              Grid.Row="0" Grid.Column="2" 
-                             BorderThickness="1"
                              Text="{Binding JobInfo.DefaultInfo.GlobalExternalWallInfo.Thickness}"/>
                     <TextBox materialDesign:HintAssist.Hint="Depth"
                              Grid.Row="0"
                              Grid.Column="4"
-                             BorderThickness="1"
                              Text="{Binding JobInfo.DefaultInfo.GlobalExternalWallInfo.Depth}"/>
                     <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
                               Grid.Row="0"
                               Grid.Column="6"
-                              BorderThickness="1"
                               ItemsSource="{Binding TimberGradeList}"
                               SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExternalWallInfo.TimberGrade}"/>
 
                     <!--Internal Wall-->
                     <TextBox materialDesign:HintAssist.Hint="Thickness"
                              Grid.Row="2" Grid.Column="2"
-                             BorderThickness="1"
                              Text="{Binding JobInfo.DefaultInfo.GlobalInternalWallInfo.Thickness}"/>
                     <TextBox materialDesign:HintAssist.Hint="Depth"
                              Grid.Row="2"
                              Grid.Column="4" 
-                             BorderThickness="1"
                              Text="{Binding JobInfo.DefaultInfo.GlobalInternalWallInfo.Depth}"/>
                     <ComboBox materialDesign:HintAssist.Hint="TimberGrade"
                               Grid.Row="2"
                               Grid.Column="6"
-                              BorderThickness="1"
                               ItemsSource="{Binding TimberGradeList}"
                               SelectedItem="{Binding JobInfo.DefaultInfo.GlobalInternalWallInfo.TimberGrade}"/>
 
