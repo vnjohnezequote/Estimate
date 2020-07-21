@@ -20,20 +20,30 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />-->
                 <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
+                <!--<ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/ComboBoxStyle.xaml"/>-->
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/TextBoxStyle.xaml"/>
                 <ResourceDictionary>
+                    <ObjectDataProvider x:Key="NoggingMethodTypes"
+                                        MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="appModelEnum:NoggingMethodType"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
                     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-                    <!--<Style TargetType="TabItem" >
-						<Setter Property="Header" Value="{Binding DataContext.Level.LevelName}" />
-					</Style>-->
+                    <!--<Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Padding" Value="5 0 5 0"/>
+                        <Setter Property="materialDesign:HintAssist.IsFloating" Value="False"/>
+                    </Style>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Padding" Value="5"/>
+                        <Setter Property="materialDesign:HintAssist.FloatingOffset" Value="1,-20"/>
+                    </Style>-->
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
-            <ObjectDataProvider x:Key="NoggingMethodTypes"
-                                MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
-                <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="appModelEnum:NoggingMethodType"/>
-                </ObjectDataProvider.MethodParameters>
-            </ObjectDataProvider>
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel x:Name="LevelRoot">
@@ -46,9 +56,13 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <ComboBox materialDesign:HintAssist.Hint="Load Bearing Wall Spacing"
+                          materialDesign:HintAssist.IsFloating="True"
                           ItemsSource="{Binding WallSpacings}"
+                          Padding="5"
                           SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExternalWallInfo.WallSpacing}"/>
                 <ComboBox materialDesign:HintAssist.Hint="None Load Bearing Wall Spacing"
+                          materialDesign:HintAssist.IsFloating="True"
+                          Padding="5"
                           ItemsSource="{Binding WallSpacings}"
                           Grid.Column="2"
                           SelectedItem="{Binding JobInfo.DefaultInfo.GlobalInternalWallInfo.WallSpacing}"/>
@@ -60,6 +74,16 @@
                 SnapsToDevicePixels="True" />
             <StackPanel Orientation="Horizontal" Margin="0 10 0 10">
                 <Grid VerticalAlignment="Center" >
+                    <Grid.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Padding" Value="5 0 5 0"/>
+                                <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="False"/>
+                                <Setter Property ="materialDesign:HintAssist.IsFloating" Value="False"/>
+                            </Style>
+                        </ResourceDictionary>
+                    </Grid.Resources>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="1"/>
@@ -86,91 +110,112 @@
                     <Label Content="Nogging" Grid.Row="4" Background="DarkSlateGray"/>
 
                     <!--External Wall-->
-                    <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                             Grid.Row="0" Grid.Column="2" 
-                             BorderThickness="1"
+                    <TextBox Grid.Row="0" Grid.Column="2" 
                              Text="{Binding JobInfo.DefaultInfo.GlobalExternalWallInfo.Thickness}"/>
-                    <TextBox materialDesign:HintAssist.Hint="Depth"
-                             Grid.Row="0"
+                    <TextBox Grid.Row="0"
                              Grid.Column="4"
-                             BorderThickness="1"
                              Text="{Binding JobInfo.DefaultInfo.GlobalExternalWallInfo.Depth}"/>
-                    <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                              Grid.Row="0"
+                    <ComboBox Grid.Row="0"
                               Grid.Column="6"
-                              BorderThickness="1"
+                              materialDesign:HintAssist.IsFloating="False"
                               ItemsSource="{Binding TimberGradeList}"
                               SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExternalWallInfo.TimberGrade}"/>
 
                     <!--Internal Wall-->
-                    <TextBox materialDesign:HintAssist.Hint="Thickness"
-                             Grid.Row="2" Grid.Column="2"
-                             BorderThickness="1"
+                    <TextBox Grid.Row="2" Grid.Column="2"
                              Text="{Binding JobInfo.DefaultInfo.GlobalInternalWallInfo.Thickness}"/>
-                    <TextBox materialDesign:HintAssist.Hint="Depth"
-                             Grid.Row="2"
-                             Grid.Column="4" 
-                             BorderThickness="1"
+                    <TextBox Grid.Row="2"
+                             Grid.Column="4"
                              Text="{Binding JobInfo.DefaultInfo.GlobalInternalWallInfo.Depth}"/>
-                    <ComboBox materialDesign:HintAssist.Hint="TimberGrade"
-                              Grid.Row="2"
+                    <ComboBox Grid.Row="2"
                               Grid.Column="6"
-                              BorderThickness="1"
+                              materialDesign:HintAssist.IsFloating="False"
                               ItemsSource="{Binding TimberGradeList}"
                               SelectedItem="{Binding JobInfo.DefaultInfo.GlobalInternalWallInfo.TimberGrade}"/>
 
                     <!--Nogging Wall-->
                     <TextBox Grid.Row="4"
                              Grid.Column="2"
-                             BorderThickness="1"
-                             controls:TextBoxHelper.ClearTextButton="True"
+                             Padding="5 0 5 0"
+                             Style="{StaticResource ClearButtonTextBox}"
+                             materialDesign:HintAssist.IsFloating="False"
                              Text="{Binding JobInfo.DefaultInfo.GlobalNoggingInfo.Thickness}"/>
                     <TextBox Grid.Row="4"
                              Grid.Column="4"
-                             BorderThickness="1"
-                             controls:TextBoxHelper.ClearTextButton="True"
+                             Style="{StaticResource ClearButtonTextBox}"
+                             Padding="5 0 5 0"
+                             materialDesign:HintAssist.IsFloating="False"
                              Text="{Binding JobInfo.DefaultInfo.GlobalNoggingInfo.Depth}"/>
-                    <ComboBox materialDesign:HintAssist.Hint="Timber Grade" 
-                              Grid.Row="4"
+                    <ComboBox Grid.Row="4"
                               Grid.Column="6"
-                              BorderThickness="1"
-                              controls:TextBoxHelper.ClearTextButton="True"
+                              materialDesign:HintAssist.IsFloating="False"
+                              materialDesign:TextFieldAssist.HasClearButton="True"
                               ItemsSource="{Binding TimberGradeList}"
                               Text="{Binding JobInfo.DefaultInfo.GlobalNoggingInfo.TimberGrade}"
                               SelectedItem="{Binding JobInfo.DefaultInfo.GlobalNoggingInfo.TimberGrade}"/>
                     <ComboBox Margin="0 10 0 0"
                               materialDesign:HintAssist.Hint="Nogging Method" 
+                              materialDesign:HintAssist.IsFloating="True"
                               Grid.Row="6"
                               Grid.Column="0"
                               Grid.ColumnSpan="7"
-                              BorderThickness="1"
                               ItemsSource="{Binding Source={ StaticResource NoggingMethodTypes}}"
                               SelectedItem="{Binding JobInfo.DefaultInfo.GlobalNoggingMethodType}"/>
 
                 </Grid>
-                <Expander Header="GLobal Door Info" ExpandDirection="Right" Margin="10 0 0 0">
+                <Expander Header="GLobal Door Info" 
+                          ExpandDirection="Right"
+                          Margin="10 0 0 0" 
+                          IsExpanded="True"
+                          Background="Transparent">
                     <materialDesign:ColorZone Mode="Dark" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <DockPanel>
+                            <Grid>
+                                <!--<Grid.Resources>
+                                    <ResourceDictionary>
+                                        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="Padding" Value="5 0 5 0"/>
+                                            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="False"/>
+                                            <Setter Property ="materialDesign:HintAssist.IsFloating" Value="False"/>
+                                            <Setter Property="materialDesign:HintAssist.FloatingOffset" Value="1,20"></Setter>
+                                        </Style>
+                                    </ResourceDictionary>
+                                </Grid.Resources>-->
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
                                 <TextBox materialDesign:HintAssist.Hint="External Door Height"
-                                         Text="{Binding JobInfo.DefaultInfo.ExternalDoorHeight}"/>
+                                         Text="{Binding JobInfo.DefaultInfo.ExternalDoorHeight}"
+                                         controls:TextBoxHelper.ClearTextButton="False"/>
                                 <!--<controls:NumericUpDown Minimum="1" Maximum="4" Interval="1"
                                                         Margin="10 0 0 0"
                                                         Value="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.NoItem }"/>-->
                                 <TextBox materialDesign:HintAssist.Hint="Number of Jamb"
                                          Margin="10 0 0 0"
+                                         Grid.Column="1"
+                                         controls:TextBoxHelper.ClearTextButton="False"
                                          Text="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.NoItem }"/>
                                 <TextBox materialDesign:HintAssist.Hint="Depth of Jamb"
+                                         controls:TextBoxHelper.ClearTextButton="False"
                                          Margin="10 0 0 0"
+                                         Grid.Column="2"
                                          Text="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.Depth}"/>
                                 <ComboBox materialDesign:HintAssist.Hint="Timber Grade Of Jamb"
+                                          materialDesign:TextFieldAssist.HasClearButton="True"
                                           Margin="10 0 0 0"
+                                          Grid.Column="3"
+                                          Padding="5"
                                           ItemsSource="{Binding TimberGradeList}"
                                           Text="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.TimberGrade}"
-                                          materialDesign:TextFieldAssist.HasClearButton="True"
                                           SelectedItem="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.TimberGrade}"/>
-                            </DockPanel>
+                            </Grid>
                             <TextBox materialDesign:HintAssist.Hint="Internal Door Height"
+                                     materialDesign:TextFieldAssist.HasClearButton="True"
+                                     materialDesign:HintAssist.IsFloating="True"
                                      Margin="0 10 0 0"
                                      Text="{Binding JobInfo.DefaultInfo.InternalDoorHeight}"
                                      />
@@ -237,7 +282,18 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="0" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.NoItem}"/>
+                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.RibbonPlate.NoItem}"
+                                                Background="Transparent">
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
                         <!--<TextBox Padding="5 0 0 0"
                                  materialDesign:HintAssist.Hint="No of" 
                                  Grid.Row="0" Grid.Column="4"
@@ -245,20 +301,19 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.NoItem}"/>-->
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="0" Grid.Column="6"
+                        <TextBox Grid.Row="0"
+                                 Grid.Column="6"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
-                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                 controls:TextBoxHelper.ClearTextButton="False"
+                                 IsEnabled="False"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.RibbonPlate.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="0" Grid.Column="8"
+                        <TextBox Grid.Row="0" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.RibbonPlate.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="0" Grid.Column="10"
+                        <ComboBox Grid.Row="0" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
@@ -267,27 +322,37 @@
                                   SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.RibbonPlate.TimberGrade}"/>
 
                         <!--Top Plate-->
-                        <TextBox materialDesign:HintAssist.Hint="No of" 
-                                 Grid.Row="2" Grid.Column="4"
-                                 BorderThickness="1"
+                        <!--<TextBox Grid.Row="2" Grid.Column="4"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.NoItem}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="2" Grid.Column="6"
-                                 BorderThickness="1"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.NoItem}"/>-->
+                        <controls:NumericUpDown Minimum="1"
+                                                Maximum="4"
+                                                Interval="1"
+                                                Grid.Row="2" Grid.Column="4"
+                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.NoItem}"
+                                                Background="Transparent">
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
+                        <TextBox Grid.Row="2" Grid.Column="6"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 IsEnabled="False"
+                                 controls:TextBoxHelper.ClearTextButton="False"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="2" Grid.Column="8"
-                                 BorderThickness="1"
+                        <TextBox Grid.Row="2" Grid.Column="8"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="2" Grid.Column="10"
-                                  BorderThickness="1"
+                        <ComboBox Grid.Row="2" Grid.Column="10"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
@@ -295,27 +360,38 @@
                                   SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.TimberGrade}"/>
 
                         <!--Stud-->
-                        <TextBox materialDesign:HintAssist.Hint="No of" 
+                        <!--<TextBox materialDesign:HintAssist.Hint="No of" 
                                  Grid.Row="4" Grid.Column="4"
-                                 BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.NoItem}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="4" Grid.Column="6"
-                                 BorderThickness="1"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.NoItem}"/>-->
+                        <controls:NumericUpDown Minimum="1"
+                                                Maximum="4"
+                                                Interval="1"
+                                                Grid.Row="4" Grid.Column="4"
+                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.NoItem}"
+                                                Background="Transparent">
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
+                        <TextBox Grid.Row="4" Grid.Column="6"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 controls:TextBoxHelper.ClearTextButton="False"
+                                 IsEnabled="False"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="4" Grid.Column="8"
-                                 BorderThickness="1"
+                        <TextBox Grid.Row="4" Grid.Column="8"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="4" Grid.Column="10"
-                                  BorderThickness="1"
+                        <ComboBox Grid.Row="4" Grid.Column="10"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
@@ -323,26 +399,40 @@
                                   SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.TimberGrade}"/>
 
                         <!--Bottom Plate-->
-                        <TextBox materialDesign:HintAssist.Hint="No of" 
+                        <!--<TextBox materialDesign:HintAssist.Hint="No of" 
                                  Grid.Row="6" Grid.Column="4"
+                                 materialDesign:HintAssist.IsFloating="False"
+                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.NoItem}"/>-->
+                        <controls:NumericUpDown Minimum="1"
+                                                Maximum="4"
+                                                Interval="1"
+                                                Grid.Row="6" Grid.Column="4"
+                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.NoItem}"
+                                                Background="Transparent">
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
+                        <TextBox Grid.Row="6" Grid.Column="6"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.NoItem}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="6" Grid.Column="6"
-                                 BorderThickness="1"
-                                 materialDesign:HintAssist.IsFloating="False"
-                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                 controls:TextBoxHelper.ClearTextButton="False"
+                                 IsEnabled="False"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="6" Grid.Column="8"
+                        <TextBox Grid.Row="6" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="6" Grid.Column="10"
+                        <ComboBox Grid.Row="6" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
@@ -351,26 +441,41 @@
                                   SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.TimberGrade}"/>
 
                         <!--Nogging-->
-                        <TextBox materialDesign:HintAssist.Hint="No of" 
+                        <!--<TextBox materialDesign:HintAssist.Hint="No of" 
                                  Grid.Row="8" Grid.Column="4"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.NoItem}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="8" Grid.Column="6"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.NoItem}"/>-->
+                        <controls:NumericUpDown Minimum="1"
+                                                Maximum="4"
+                                                Interval="1"
+                                                Grid.Row="8" Grid.Column="4"
+                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.NoItem}"
+                                                Background="Transparent">
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
+                        <TextBox Grid.Row="8" Grid.Column="6"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 controls:TextBoxHelper.ClearTextButton="False"
+                                 IsEnabled="False"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="8" Grid.Column="8"
+                        <TextBox Grid.Row="8" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="8" Grid.Column="10"
+                        <ComboBox Grid.Row="8" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
@@ -378,26 +483,41 @@
                                   Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.TimberGrade}"
                                   SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.TimberGrade}"/>
                         <!--Trimmer-->
-                        <TextBox materialDesign:HintAssist.Hint="No of" 
+                        <!--<TextBox materialDesign:HintAssist.Hint="No of" 
                                  Grid.Row="10" Grid.Column="4"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.NoItem}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="10" Grid.Column="6"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.NoItem}"/>-->
+                        <controls:NumericUpDown Minimum="1"
+                                                Maximum="4"
+                                                Interval="1"
+                                                Grid.Row="10" Grid.Column="4"
+                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.NoItem}"
+                                                Background="Transparent">
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
+                        <TextBox Grid.Row="10" Grid.Column="6"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 controls:TextBoxHelper.ClearTextButton="False"
+                                 IsEnabled="False"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="10" Grid.Column="8"
+                        <TextBox Grid.Row="10" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="10" Grid.Column="10"
+                        <ComboBox Grid.Row="10" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
@@ -411,7 +531,7 @@
                             <ColumnDefinition Width="1"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="1"/>
-                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="1"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="1"/>
@@ -431,147 +551,219 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Label VerticalContentAlignment="Center"
-                           Content="INT" Grid.Row="0"
+                           Content="INT"
+                           Grid.Row="0"
+                           Grid.Column="0"
                            Grid.RowSpan="9" 
-                           Background="DarkCyan" Margin="10 0 0 0"/>
-                        <Label Content="Top Plate" Grid.Row="0" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
-                        <Label Content="Stud" Grid.Row="2" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
-                        <Label Content="Bottom Plate" Grid.Row="4" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
-                        <Label Content="Nogging" Grid.Row="6" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
-                        <Label Content="Trimmer" Grid.Row="8" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                           Background="DarkCyan" Margin="10,0,1.4,0.4" Grid.ColumnSpan="2"/>
+                        <Label Content="Top Plate" Grid.Row="0" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right" />
+                        <Label Content="Stud" Grid.Row="2" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"  />
+                        <Label Content="Bottom Plate" Grid.Row="4" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right" />
+                        <Label Content="Nogging" Grid.Row="6" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"  />
+                        <Label Content="Trimmer" Grid.Row="8" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right" />
                         <!--Internal Top Plate-->
-                        <TextBox materialDesign:HintAssist.Hint="No of" 
-                                 Grid.Row="0" Grid.Column="4"
+                        <!--<TextBox Grid.Row="0" Grid.Column="4"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.NoItem}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="0" Grid.Column="6"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.NoItem}"/>-->
+                        <controls:NumericUpDown Minimum="1"
+                        Maximum="4"
+                        Interval="1"
+                        Grid.Row="0" Grid.Column="4"
+                        Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.NoItem}"
+                        Background="Transparent">
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
+                        <TextBox Grid.Row="0" Grid.Column="6"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="0" Grid.Column="8"
+                                 controls:TextBoxHelper.ClearTextButton="False"
+                                 IsEnabled="False"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.Thickness}" />
+                        <TextBox Grid.Row="0" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="0" Grid.Column="10"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.Depth}" />
+                        <ComboBox Grid.Row="0" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
                                   Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.TimberGrade}"/>
+                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.TimberGrade}" />
 
                         <!--Internal Stud-->
-                        <TextBox materialDesign:HintAssist.Hint="No of" 
-                                 Grid.Row="2" Grid.Column="4"
+                        <!--<TextBox Grid.Row="2" Grid.Column="4"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.NoItem}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="2" Grid.Column="6"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.NoItem}"/>-->
+                        <controls:NumericUpDown Minimum="1"
+                                                Maximum="4"
+                                                Interval="1"
+                                                Grid.Row="2" Grid.Column="4"
+                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.NoItem}"
+                                                Background="Transparent" >
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
+                        <TextBox Grid.Row="2" Grid.Column="6"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="2" Grid.Column="8"
+                                 controls:TextBoxHelper.ClearTextButton="False"
+                                 IsEnabled="False"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.Thickness}" />
+                        <TextBox Grid.Row="2" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="2" Grid.Column="10"
+                        <ComboBox Grid.Row="2" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
                                   Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.TimberGrade}"/>
+                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.TimberGrade}" />
 
                         <!--Internal Bottom Plate-->
-                        <TextBox materialDesign:HintAssist.Hint="No of" 
-                                 Grid.Row="4" Grid.Column="4"
+                        <!--<TextBox Grid.Row="4" Grid.Column="4"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.NoItem}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="4" Grid.Column="6"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.NoItem}"/>-->
+                        <controls:NumericUpDown Minimum="1"
+                                                Maximum="4"
+                                                Interval="1"
+                                                Grid.Row="4" Grid.Column="4"
+                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.NoItem}"
+                                                Background="Transparent" >
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
+                        <TextBox Grid.Row="4" Grid.Column="6"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="4" Grid.Column="8"
+                                 controls:TextBoxHelper.ClearTextButton="False"
+                                 IsEnabled="False"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.Thickness}" />
+                        <TextBox Grid.Row="4" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="4" Grid.Column="10"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.Depth}" />
+                        <ComboBox Grid.Row="4" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
                                   Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.TimberGrade}"/>
+                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.TimberGrade}" />
 
                         <!--Internal Nogging-->
-                        <TextBox materialDesign:HintAssist.Hint="No of" 
-                                 Grid.Row="6" Grid.Column="4"
+                        <!--<TextBox Grid.Row="6" Grid.Column="4"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.NoItem}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="6" Grid.Column="6"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.NoItem}"/>-->
+                        <controls:NumericUpDown Minimum="1"
+                                                Maximum="4"
+                                                Interval="1"
+                                                Grid.Row="6" Grid.Column="4"
+                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.NoItem}"
+                                                Background="Transparent" >
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
+                        <TextBox Grid.Row="6" Grid.Column="6"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="6" Grid.Column="8"
+                                 controls:TextBoxHelper.ClearTextButton="False"
+                                 IsEnabled="False"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.Thickness}" />
+                        <TextBox Grid.Row="6" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="6" Grid.Column="10"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.Depth}" />
+                        <ComboBox Grid.Row="6" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
                                   Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.TimberGrade}"/>
+                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.TimberGrade}" />
 
                         <!--Internal Trimmer-->
-                        <TextBox materialDesign:HintAssist.Hint="No of"
-                                 Grid.Row="8" Grid.Column="4"
+                        <!--<TextBox Grid.Row="8" Grid.Column="4"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Trimmer.NoItem}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Thickness" 
-                                 Grid.Row="8" Grid.Column="6"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Trimmer.NoItem}"/>-->
+                        <controls:NumericUpDown Minimum="1"
+                                                Maximum="4"
+                                                Interval="1"
+                                                Grid.Row="8" Grid.Column="4"
+                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.NoItem}"
+                                                Background="Transparent" >
+                            <controls:NumericUpDown.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+
+                            </controls:NumericUpDown.Resources>
+
+                        </controls:NumericUpDown>
+                        <TextBox Grid.Row="8" Grid.Column="6"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 controls:TextBoxHelper.ClearTextButton="False"
+                                 IsEnabled="False"
                                  Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Trimmer.Thickness}"/>
-                        <TextBox materialDesign:HintAssist.Hint="Depth" 
-                                 Grid.Row="8" Grid.Column="8"
+                        <TextBox Grid.Row="8" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Trimmer.Depth}"/>
-                        <ComboBox materialDesign:HintAssist.Hint="TimberGrade" 
-                                  Grid.Row="8" Grid.Column="10"
+                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Trimmer.Depth}" />
+                        <ComboBox Grid.Row="8" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
