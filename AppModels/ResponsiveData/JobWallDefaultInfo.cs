@@ -119,7 +119,6 @@ namespace AppModels.ResponsiveData
             GlobalExtWallDetailInfo = new GlobalWallDetailInfo(GlobalExternalWallInfo, GlobalNoggingInfo, GlobalDoorJambInfo);
             GlobalIntWallDetaiInfo = new GlobalWallDetailInfo(GlobalInternalWallInfo, GlobalNoggingInfo, GlobalDoorJambInfo);
             GlobalDoorJambInfo = new WallMember(GlobalExternalWallInfo,GlobalExtWallDetailInfo.Stud);
-            //GlobalExtWallDetailInfo.Trimmer.GlobalMemberInfo = GlobalIntWallDetaiInfo.TopPlate;
             TrussSpacing = 600;
         }
 

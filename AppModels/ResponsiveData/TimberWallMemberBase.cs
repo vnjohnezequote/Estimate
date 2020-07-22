@@ -4,22 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppModels.Enums;
+using AppModels.Interaface;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
 {
-    public class TimberWallMemberBase : BindableBase
+    public class TimberWallMemberBase : BindableBase,IWallMember
     {
         #region Field
 
-        private GlobalWallInfo _globalWallInfo;
+        private IGlobalWallInfo _globalWallInfo;
         protected string _thickness;
         protected string _depth;
         protected string _noItem;
         protected string _timberGrade;
         #endregion
         #region Property
-        public GlobalWallInfo GlobalWallInfo { get=>_globalWallInfo; private set=>SetProperty(ref _globalWallInfo,value); }
+        public IGlobalWallInfo GlobalWallInfo { get=>_globalWallInfo; private set=>SetProperty(ref _globalWallInfo,value); }
         public virtual string NoItem
         {
             get => string.IsNullOrEmpty( _noItem) ? "1" : _noItem;
@@ -90,7 +91,7 @@ namespace AppModels.ResponsiveData
 
         #region Constructor
 
-        public TimberWallMemberBase(GlobalWallInfo globalWallInfo)
+        public TimberWallMemberBase(IGlobalWallInfo globalWallInfo)
         {
             this.GlobalWallInfo = globalWallInfo;
             GlobalWallInfo.PropertyChanged += DefaultInfo_PropertyChanged;

@@ -311,10 +311,10 @@ namespace JobInfoModule.ViewModels
                     level.LevelName = this._floorNames[levelNameIndex];
 
                     /* this is for testing */
-                    level.LevelInfo.ExternalWallHeight = 2740;
-                    level.LevelInfo.InternalWallHeight = 2600;
-                    level.LevelInfo.ExternalWallThickness = 90;
-                    level.LevelInfo.InternalWallThickness = 70;
+                    //level.LevelInfo.WallHeight = 2740;
+                    //level.LevelInfo.InternalWallHeight = 2600;
+                    //level.LevelInfo.ExternalWallThickness = 90;
+                    //level.LevelInfo.InternalWallThickness = 70;
                     
                     
 

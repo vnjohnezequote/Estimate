@@ -64,7 +64,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// The level info.
         /// </summary>
-        private LevelWallDefaultInfo _levelInfo;
+        private LevelDefaultInfo _levelInfo;
 
         /// <summary>
         /// The wall temp length.
@@ -86,7 +86,7 @@ namespace AppModels.ResponsiveData
         /// </param>
         public LevelWall(JobWallDefaultInfo jobInfo)
         {
-            this.LevelInfo = new LevelWallDefaultInfo(jobInfo);
+            this.LevelInfo = new LevelDefaultInfo(jobInfo);
             this.WallLayers = new ObservableCollection<WallLayer>();
             this.TimberWallBracings = new ObservableCollection<Bracing>();
             this.RoofBeams = new ObservableCollection<Beam>();
@@ -187,7 +187,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the level info.
         /// </summary>
-        public LevelWallDefaultInfo LevelInfo
+        public LevelDefaultInfo LevelInfo
         {
             get => this._levelInfo;
             set => this.SetProperty(ref this._levelInfo, value);

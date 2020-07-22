@@ -350,11 +350,11 @@
       <FileName>ResponsiveData\LevelWall.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AppModels.ResponsiveData.LevelWallDefaultInfo" Collapsed="true">
+  <Class Name="AppModels.ResponsiveData.LevelDefaultInfo" Collapsed="true">
     <Position X="12.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAMRAAAECgAAFAAAAAAUQAAAQEBAAAAAAEAAABEQEA=</HashCode>
-      <FileName>ResponsiveData\LevelWallDefaultInfo.cs</FileName>
+      <HashCode>AAAAAAAAAgAAABAAAAAAECAiAQACAAAAAAFABAAAAAg=</HashCode>
+      <FileName>ResponsiveData\LevelDefaultInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.Opening" Collapsed="true">
@@ -398,6 +398,7 @@
       <HashCode>AAQIAAABACABgBAAAAAAAAEAAABAAACggAAAAAAQAAA=</HashCode>
       <FileName>ResponsiveData\TimberWallMemberBase.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.ResponsiveData.Treatment" Collapsed="true">
     <Position X="19.25" Y="5.5" Width="1.5" />
@@ -452,7 +453,7 @@
   <Class Name="AppModels.ResponsiveData.WallMember" Collapsed="true">
     <Position X="5.25" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAABAAAAgAAEAAAAAAAg=</HashCode>
+      <HashCode>AAQAAAAAAAAAAAACAAAAAAAAAABAAAAgAAAAAAAAAAg=</HashCode>
       <FileName>ResponsiveData\WallMember.cs</FileName>
     </TypeIdentifier>
   </Class>

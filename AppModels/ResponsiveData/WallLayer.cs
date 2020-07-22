@@ -40,7 +40,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// The default info.
         /// </summary>
-        private LevelWallDefaultInfo _defaultInfo;
+        private LevelDefaultInfo _defaultInfo;
 
         /// <summary>
         /// The stud spacing.
@@ -99,7 +99,7 @@ namespace AppModels.ResponsiveData
         /// <param name="defaultInfo">
         /// The default info.
         /// </param>
-        public WallLayer(int wallId, WallTypePoco wallTypePoco, LevelWallDefaultInfo defaultInfo)
+        public WallLayer(int wallId, WallTypePoco wallTypePoco, LevelDefaultInfo defaultInfo)
         {
             this.Id = wallId;
             this.DefaultInfo = defaultInfo;
@@ -179,7 +179,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the default info.
         /// </summary>
-        public LevelWallDefaultInfo DefaultInfo
+        public LevelDefaultInfo DefaultInfo
         {
             get => this._defaultInfo;
             set => this.SetProperty(ref this._defaultInfo, value);
@@ -390,7 +390,7 @@ namespace AppModels.ResponsiveData
             {
                 this.StudSpacing = new IntegerDimension(this.DefaultInfo.ExternalWallSpacing.Size);
                 this.WallThickness = new IntegerDimension(this.DefaultInfo.ExternalWallThickness);
-                this.PitchingHeight = new IntegerDimension(this.DefaultInfo.ExternalWallHeight);
+                this.PitchingHeight = new IntegerDimension(this.DefaultInfo.WallHeight);
 
             }
             else
@@ -500,7 +500,7 @@ namespace AppModels.ResponsiveData
             }
             if (this.TimberWallTypePoco.IsLoadBearingWall)
             {
-                this.PitchingHeight.IsDefaultValue = this.PitchingHeight.Size == this.DefaultInfo.ExternalWallHeight;
+                this.PitchingHeight.IsDefaultValue = this.PitchingHeight.Size == this.DefaultInfo.WallHeight;
             }
             else
             {
@@ -556,7 +556,7 @@ namespace AppModels.ResponsiveData
                         break;
                     }
 
-                case "ExternalWallHeight":
+                case "WallHeight":
                 case "InternalWallHeight":
                     {
                         if (this.PitchingHeight.IsDefaultValue)
@@ -676,9 +676,9 @@ namespace AppModels.ResponsiveData
         {
             if (this.TimberWallTypePoco.IsLoadBearingWall)
             {
-                if (this.DefaultInfo.ExternalWallHeight != null)
+                if (this.DefaultInfo.WallHeight != null)
                 {
-                    this.PitchingHeight.Size = (int)this.DefaultInfo.ExternalWallHeight;
+                    this.PitchingHeight.Size = (int)this.DefaultInfo.WallHeight;
                 }
             }
             else

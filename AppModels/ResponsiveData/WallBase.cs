@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using AppModels.AppData;
+using AppModels.Interaface;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -27,17 +28,17 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// The roof pitch.
         /// </summary>
-        private DoubleDimension _roofPitch;
+        private string _ceilingPitch;
 
         /// <summary>
         /// The pitching height.
         /// </summary>
-        private IntegerDimension _pitchingHeight;
+        private string _pitchingHeight;
 
         /// <summary>
         /// The step down.
         /// </summary>
-        private IntegerDimension _stepDown;
+        private string _stepDown;
 
         /// <summary>
         /// The is sub stud.
@@ -58,8 +59,8 @@ namespace AppModels.ResponsiveData
 
         #endregion
         #region Property
-
-        /// <summary>
+        public IGlobalWallInfo GlobalWallInfo { get; set; }
+            /// <summary>
         /// Gets or sets the wall color layer.
         /// </summary>
         public LayerItem WallColorLayer
@@ -80,7 +81,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the pitching height.
         /// </summary>
-        public IntegerDimension PitchingHeight
+        public string PitchingHeight
         {
             get => this._pitchingHeight;
             set => this.SetProperty(ref this._pitchingHeight, value);
@@ -111,10 +112,10 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the roof pitch.
         /// </summary>
-        public DoubleDimension RoofPitch
+        public string CeilingPitch
         {
-            get => this._roofPitch;
-            set => this.SetProperty(ref this._roofPitch, value);
+            get => this._ceilingPitch;
+            set => this.SetProperty(ref this._ceilingPitch, value);
         }
 
         /// <summary>

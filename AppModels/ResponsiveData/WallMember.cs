@@ -1,10 +1,12 @@
 ﻿
 
+using AppModels.Interaface;
+
 namespace AppModels.ResponsiveData
 {
     public class WallMember: TimberWallMemberBase
     {
-        public TimberWallMemberBase GlobalMemberInfo { get; set; }
+        //public GlobalMemberInfo { get; set; }
         public override string NoItem
         {
             get => string.IsNullOrEmpty(_noItem) ? GlobalMemberInfo.NoItem : this._noItem;
@@ -37,7 +39,7 @@ namespace AppModels.ResponsiveData
                 CallBackPropertyChanged();
             }
         }
-        public WallMember(GlobalWallInfo globalWallInfo,TimberWallMemberBase topPlateInfo) : base(globalWallInfo)
+        public WallMember(IGlobalWallInfo globalWallInfo,TimberWallMemberBase topPlateInfo) : base(globalWallInfo)
         {
             GlobalMemberInfo = topPlateInfo;
             GlobalMemberInfo.PropertyChanged += TopPlate_PropertyChanged;

@@ -161,6 +161,8 @@
     <Compile Include="Enums\Suppliers.cs" />
     <Compile Include="Enums\WallType.cs" />
     <Compile Include="Interaface\IClientDatabase.cs" />
+    <Compile Include="Interaface\IGlobalWallInfo.cs" />
+    <Compile Include="Interaface\IWallMember.cs" />
     <Compile Include="PocoDataModel\BeamPoco.cs" />
     <Compile Include="PocoDataModel\BracingBasePoco.cs" />
     <Compile Include="PocoDataModel\BracingPoco.cs" />
@@ -182,6 +184,8 @@
     <Compile Include="PocoDataModel\WallMemberBasePoco.cs" />
     <Compile Include="PocoDataModel\WallStudPoco.cs" />
     <Compile Include="ResponsiveData\GlobalWallDetailInfo.cs" />
+    <Compile Include="ResponsiveData\LevelGlobalWallInfo.cs" />
+    <Compile Include="ResponsiveData\LevelWallDetailInfo.cs" />
     <Compile Include="ResponsiveData\TimberWallMemberBase.cs" />
     <Compile Include="ResponsiveData\GlobalWallInfo.cs" />
     <Compile Include="ResponsiveData\Treatment.cs" />
@@ -208,7 +212,7 @@
     <Compile Include="ResponsiveData\JobInfo.cs" />
     <Compile Include="ResponsiveData\JobModel.cs" />
     <Compile Include="ResponsiveData\JobWallDefaultInfo.cs" />
-    <Compile Include="ResponsiveData\LevelWallDefaultInfo.cs" />
+    <Compile Include="ResponsiveData\LevelDefaultInfo.cs" />
     <Compile Include="ResponsiveData\WallNogging.cs" />
     <Compile Include="ResponsiveData\WallTempLength.cs" />
     <Compile Include="ResponsiveData\RlwCalc.cs" />

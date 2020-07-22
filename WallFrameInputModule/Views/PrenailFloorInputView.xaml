@@ -54,7 +54,7 @@
                         <TextBlock Text="{Binding Title}" />
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox materialDesign:HintAssist.Hint="External Height" Text="{Binding Level.LevelInfo.ExternalWallHeight}" />
+                                <TextBox materialDesign:HintAssist.Hint="External Height" Text="{Binding Level.LevelInfo.WallHeight}" />
                                 <TextBox materialDesign:HintAssist.Hint="External Thickness" Text="{Binding Level.LevelInfo.ExternalWallThickness}" />
                                 <TextBox materialDesign:HintAssist.Hint="External Wall Spacing" Text="{Binding Level.LevelInfo.ExternalWallSpacing.Size}"/>
                             </StackPanel>
