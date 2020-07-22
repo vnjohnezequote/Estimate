@@ -13,23 +13,24 @@ namespace AppModels.ResponsiveData
         #region Field
 
         private GlobalWallInfo _globalWallInfo;
-        private string _thickness;
-        private string _depth;
-        private string _noItem = "1";
-        private string _timberGrade;
+        protected string _thickness;
+        protected string _depth;
+        protected string _noItem;
+        protected string _timberGrade;
         #endregion
         #region Property
         public GlobalWallInfo GlobalWallInfo { get=>_globalWallInfo; private set=>SetProperty(ref _globalWallInfo,value); }
-        public string NoItem
+        public virtual string NoItem
         {
-            get => _noItem;
+            get => string.IsNullOrEmpty( _noItem) ? "1" : _noItem;
+
             set
             {
                 SetProperty(ref _noItem, value);
                 CallBackPropertyChanged();
             } 
         }
-        public string Thickness
+        public virtual string Thickness
         {
             get
             {
@@ -45,7 +46,7 @@ namespace AppModels.ResponsiveData
                 this.CallBackPropertyChanged();
             }
         }
-        public string Depth
+        public virtual string Depth
         {
             get
             {
@@ -61,7 +62,7 @@ namespace AppModels.ResponsiveData
                 this.CallBackPropertyChanged();
             }
         }
-        public string TimberGrade
+        public virtual string TimberGrade
         {
             get
             {
@@ -115,7 +116,7 @@ namespace AppModels.ResponsiveData
         }
 
 
-        private void CallBackPropertyChanged()
+        protected virtual void CallBackPropertyChanged()
         {
             this.RaisePropertyChanged(nameof(this.Size));
             this.RaisePropertyChanged(nameof(this.SizeGrade));

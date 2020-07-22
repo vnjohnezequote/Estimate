@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using AppModels.Enums;
 using Prism.Mvvm;
 
@@ -28,7 +29,7 @@ namespace AppModels.ResponsiveData
         public TimberWallMemberBase Stud { get;private set; }
         public TimberWallMemberBase BottomPlate { get;private set; }
         public WallNogging Nogging { get;private set; }
-        public WallTrimmer Trimmer { get;private set; }
+        public WallMember Trimmer { get;private set; }
 
         #endregion
 
@@ -40,14 +41,14 @@ namespace AppModels.ResponsiveData
             {
                 RibbonPlate = new TimberWallMemberBase(globalWallInfo);
             }
-            
             TopPlate = new TimberWallMemberBase(globalWallInfo);
             Stud = new TimberWallMemberBase(globalWallInfo);
             BottomPlate = new TimberWallMemberBase(globalWallInfo);
             Nogging = new WallNogging(globalWallInfo,globalNoggingInfo);
-            Trimmer = new WallTrimmer(globalWallInfo,TopPlate);
+            Trimmer = new WallMember(globalWallInfo, TopPlate);
+            
         }
-        
+
 
         #endregion
     }

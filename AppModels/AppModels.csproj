@@ -216,7 +216,7 @@
     <Compile Include="ResponsiveData\BracingBase.cs" />
     <Compile Include="CustomEntity\CustomTable.cs" />
     <Compile Include="CustomEntity\PictureEntity.cs" />
-    <Compile Include="ResponsiveData\WallTrimmer.cs" />
+    <Compile Include="ResponsiveData\WallMember.cs" />
     <Compile Include="ViewModelEntity\EntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVmBase.cs" />
     <Compile Include="ViewModelEntity\LinearPathVm.cs" />
@@ -237,6 +237,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

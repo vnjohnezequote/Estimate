@@ -107,6 +107,7 @@
     <Compile Include="ColorToStringConverter.cs" />
     <Compile Include="CustomersValueConverter.cs" />
     <Compile Include="IntToBooleanConverter.cs" />
+    <Compile Include="NoggingMethodToBoolConverter.cs" />
     <Compile Include="PitchingHeightToWallHeightConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

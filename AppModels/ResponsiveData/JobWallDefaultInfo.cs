@@ -27,6 +27,7 @@ namespace AppModels.ResponsiveData
         public RoofFrameType _roofFrameType;
         private int _externalDoorHeight;
         private int _internalDoorHeight;
+        private int _globalWallThickness;
         private NoggingMethodType _globalNoggingMethodType;
 
         #endregion
@@ -36,10 +37,7 @@ namespace AppModels.ResponsiveData
         public NoggingMethodType GlobalNoggingMethodType
         {
             get => _globalNoggingMethodType;
-            set
-            {
-                SetProperty(ref _globalNoggingMethodType, value);
-            } 
+            set => SetProperty(ref _globalNoggingMethodType, value);
         }
 
         public int ExternalDoorHeight
@@ -98,6 +96,7 @@ namespace AppModels.ResponsiveData
             get => this._roofFrameType == RoofFrameType.Truss ? _ceilingPitch : _roofPitch;
             set => SetProperty(ref _ceilingPitch, value);
         }
+        public int GlobalWallThickness { get=>_globalWallThickness; set=>SetProperty(ref _globalWallThickness,value); }
         public GlobalWallInfo GlobalExternalWallInfo { get; set; }
         public GlobalWallInfo GlobalInternalWallInfo { get; set; }
         public GlobalWallDetailInfo GlobalExtWallDetailInfo { get; set; }
@@ -111,13 +110,16 @@ namespace AppModels.ResponsiveData
         public JobWallDefaultInfo()
         {
             ExternalDoorHeight = 2100;
+            GlobalWallThickness = 90;
             RoofFrameType = RoofFrameType.Truss;
+            GlobalNoggingMethodType = NoggingMethodType.AsWall;
             GlobalExternalWallInfo = new GlobalWallInfo(WallType.External_LBW,this);
             GlobalInternalWallInfo= new GlobalWallInfo(WallType.Internal_NonLBW,this);
-            GlobalNoggingInfo = new TimberWallMemberBase(GlobalExternalWallInfo);
-            GlobalDoorJambInfo = new TimberWallMemberBase(GlobalExternalWallInfo);
-            GlobalExtWallDetailInfo = new GlobalWallDetailInfo(GlobalExternalWallInfo,GlobalNoggingInfo,GlobalDoorJambInfo);
+            GlobalNoggingInfo = new TimberWallMemberBase(GlobalInternalWallInfo);
+            GlobalExtWallDetailInfo = new GlobalWallDetailInfo(GlobalExternalWallInfo, GlobalNoggingInfo, GlobalDoorJambInfo);
             GlobalIntWallDetaiInfo = new GlobalWallDetailInfo(GlobalInternalWallInfo, GlobalNoggingInfo, GlobalDoorJambInfo);
+            GlobalDoorJambInfo = new WallMember(GlobalExternalWallInfo,GlobalExtWallDetailInfo.Stud);
+            //GlobalExtWallDetailInfo.Trimmer.GlobalMemberInfo = GlobalIntWallDetaiInfo.TopPlate;
             TrussSpacing = 600;
         }
 
