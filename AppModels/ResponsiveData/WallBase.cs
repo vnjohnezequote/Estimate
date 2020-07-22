@@ -137,7 +137,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the stepdown.
         /// </summary>
-        public IntegerDimension StepDown
+        public string StepDown
         {
             get => this._stepDown;
             set => this.SetProperty(ref this._stepDown, value);
