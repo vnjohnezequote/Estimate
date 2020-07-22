@@ -1,70 +1,54 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Timber.cs" company="John Nguyen">
-//   John Nguyen
-// </copyright>
-// <summary>
-//   Defines the Timber type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AppModels.Interaface;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
 {
-    /// <summary>
-    /// The timber.
-    /// </summary>
-    public class WallMemberBase : BindableBase
+    public abstract class WallMemberBase: BindableBase,IWallMember
     {
-        #region Private Member
-        
-        /// <summary>
-        /// The timber in fo.
-        /// </summary>
-        private TimberBase _timberInfo;
-		
-		
-
+        #region Field
+        private IWallMemberInfo _timberMaterialInfo;
         #endregion
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WallMemberBase"/> class.
-        /// </summary>
-        public WallMemberBase()
+
+        #region Property
+        public IWallMemberInfo TimberMaterialInfo
         {
-            //this.IsDefault = true;
-            TimberInfo = new TimberBase();
+            get => this._timberMaterialInfo;
+            set => this.SetProperty(ref this._timberMaterialInfo, value);
         }
-
-        #region Public Region
-
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is default.
-        /// </summary>
-        public bool IsDefault {get;set;}
-  
-        /// <summary>
-        /// Gets or sets the timber info.
-        /// </summary>
-        public TimberBase TimberInfo
-        {
-            get => this._timberInfo;
-            set => this.SetProperty(ref this._timberInfo, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the length.
-        /// </summary>
-        public double Length { get; set; }
+        public IWallInfo WallInfo { get; set; }
+        public string Thickness => WallInfo.Thickness;
 
         #endregion
 
+        #region Constructor
 
+        protected WallMemberBase(IWallInfo wallInfo, IWallMemberInfo baseMaterialInfo)
+        {
+            WallInfo = wallInfo;
+            TimberMaterialInfo = new WallMemberInfo(baseMaterialInfo);
+            WallInfo.PropertyChanged += WallInfo_PropertyChanged;
 
+        }
+
+        private void WallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            NotifyPropertyChanged(e.PropertyName);
+        }
+
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (propertyName == nameof(Thickness))
+            {
+                RaisePropertyChanged(propertyName);
+            }
+            
+        }
+
+        #endregion
     }
 }

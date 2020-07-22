@@ -13,11 +13,11 @@ namespace AppModels.Interaface
         double CeilingPitch { get; }
 
 
-        WallMember RibbonPlate { get;  }
-        WallMember TopPlate { get; }
-        WallMember Stud { get; }
-        WallMember Nogging { get; }
-        WallMember Trimmer { get; }
+        WallMemberInfo RibbonPlate { get;  }
+        WallMemberInfo TopPlate { get; }
+        WallMemberInfo Stud { get; }
+        WallMemberInfo Nogging { get; }
+        WallMemberInfo Trimmer { get; }
         
 
     }

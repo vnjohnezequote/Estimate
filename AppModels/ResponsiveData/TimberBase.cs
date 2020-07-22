@@ -49,27 +49,6 @@ namespace AppModels.ResponsiveData
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimberBase"/> class.
-        /// </summary>
-        /// <param name="id">
-        /// The id.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="depth">
-        /// The depth.
-        /// </param>
-        /// <param name="noItem">
-        /// The no item.
-        /// </param>
-        /// <param name="timberGrade">
-        /// The TimberGrade.
-        /// </param>
-        /// <param name="treatment">
-        /// The treatment.
-        /// </param>
         public TimberBase(int id, int thickness, int depth, int noItem, string timberGrade)
         {
             this.Id = id;
@@ -77,7 +56,6 @@ namespace AppModels.ResponsiveData
             this.Depth = depth;
             this.NoItem = noItem;
             this.TimberGrade = timberGrade;
-            //this.Treatment = treatment;
         }
 
         /// <summary>
@@ -93,7 +71,6 @@ namespace AppModels.ResponsiveData
             this.Depth = info.Depth;
             this.NoItem = info.NoItem;
             this.TimberGrade = info.TimberGrade;
-            //this.Treatment = info.Treatment;
         }
         #endregion
         /// <summary>
@@ -140,29 +117,7 @@ namespace AppModels.ResponsiveData
             }
         }
 
-        ///// <summary>
-        ///// Gets or sets the treatment.
-        ///// </summary>
-        //public string Treatment
-        //{
-        //    get => this._treatment;
-        //    set
-        //    {
-        //        this.SetProperty(ref this._treatment, value);
-        //        this.CallBackPropertyChanged();
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Gets or sets the quantities.
-        ///// </summary>
-        //public int Quantities
-        //{
-        //    get => this._quantities;
-        //    set => this.SetProperty(ref this._quantities, value);
-        //}
-
-        /// <summary>
+       /// <summary>
         /// Gets or sets the type. MGP12 or MPG10
         /// </summary>
         public string TimberGrade
@@ -202,39 +157,12 @@ namespace AppModels.ResponsiveData
         }
 
         /// <summary>
-        /// Gets or sets the size treatment. 90x35 H2S Treated
-        /// </summary>
-        //public string SizeTreatment => this.Size + " " + this._treatment;
-
-        /// <summary>
-        /// Gets or sets the full name. 90x35 MGP12 H2S Treated
-        /// </summary>
-        //public string FullName => this.SizeGrade + " " + this._treatment;
-
-        /// <summary>
-        /// Gets or sets the supplier.
-        /// </summary>
-        //public string Supplier { get; set; }
-
-        /// <summary>
-        /// Gets or sets the customer.
-        /// </summary>
-        //public string Customer { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unit price.
-        /// </summary>
-        //public string UnitPrice { get => this._unitPrice; set => this.SetProperty(ref this._unitPrice, value); }
-
-        /// <summary>
         /// The call back property changed.
         /// </summary>
         private void CallBackPropertyChanged()
         {
             this.RaisePropertyChanged(nameof(this.Size));
             this.RaisePropertyChanged(nameof(this.SizeGrade));
-            //this.RaisePropertyChanged(nameof(this.SizeTreatment));
-            //this.RaisePropertyChanged(nameof(this.FullName));
         }
 
     }

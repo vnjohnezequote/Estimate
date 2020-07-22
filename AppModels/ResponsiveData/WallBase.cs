@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using AppModels.AppData;
+using AppModels.Enums;
 using AppModels.Interaface;
 using Prism.Mvvm;
 
@@ -16,42 +17,18 @@ namespace AppModels.ResponsiveData
     /// <summary>
     /// The wall base.
     /// </summary>
-    public abstract class WallBase : BindableBase
+    public abstract class WallBase : BindableBase, IWallInfo
     {
         #region private field
 
-        /// <summary>
-        /// The id.
-        /// </summary>
+        private WallType _wallType;
         private int _id;
-        
-        /// <summary>
-        /// The roof pitch.
-        /// </summary>
         private string _ceilingPitch;
-
-        /// <summary>
-        /// The pitching height.
-        /// </summary>
         private string _pitchingHeight;
-
-        /// <summary>
-        /// The step down.
-        /// </summary>
         private string _stepDown;
-
-        /// <summary>
-        /// The is sub stud.
-        /// </summary>
-        private int _isSubStud;
-
-        /// <summary>
-        /// The wall color layer.
-        /// </summary>
         private LayerItem _wallColorLayer;
 
         #endregion
-
         #region Constructor
 
 
@@ -59,142 +36,62 @@ namespace AppModels.ResponsiveData
 
         #endregion
         #region Property
+
+        public WallType WallType { get=>_wallType; set=>SetProperty(ref _wallType,value); }
+        public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IGlobalWallInfo GlobalWallInfo { get; set; }
-            /// <summary>
-        /// Gets or sets the wall color layer.
-        /// </summary>
+        public string Thickness { get; }
+
         public LayerItem WallColorLayer
         {
             get => this._wallColorLayer;
             set => this.SetProperty(ref this._wallColorLayer, value);
         }
 
-        /// <summary>
-        /// Gets or sets the wall id.
-        /// </summary>
+        public string Start_WallHeight { get; }
+        public int End_WallHeight { get; }
+        public int Show_WallHeight { get; }
+
         public int Id
         {
             get => this._id;
             set => this.SetProperty(ref this._id, value);
         }
-
-        /// <summary>
-        /// Gets or sets the pitching height.
-        /// </summary>
         public string PitchingHeight
         {
             get => this._pitchingHeight;
             set => this.SetProperty(ref this._pitchingHeight, value);
         }
-
-        /// <summary>
-        /// Gets or sets the wall height.
-        /// </summary>
         public int WallHeight { get; set; }
-        
-
-        /// <summary>
-        /// Gets or sets the treatment.
-        /// </summary>
         public string Treatment { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is raked wall.
-        /// </summary>
         public bool IsRakedWall { get; set; }
-
-
-        /// <summary>
-        /// Gets or sets the run length.
-        /// </summary>
+        public bool IsWallUnderFlatCeiling { get; }
+        public bool IsShorWall { get; }
         public int RunLength { get; set; }
-
-        /// <summary>
-        /// Gets or sets the roof pitch.
-        /// </summary>
         public string CeilingPitch
         {
             get => this._ceilingPitch;
             set => this.SetProperty(ref this._ceilingPitch, value);
         }
-
-        /// <summary>
-        /// Gets or sets the is h pitching.
-        /// </summary>
         public int IsHPitching { get; set; }
-
-        /// <summary>
-        /// Gets or sets the h pitching.
-        /// = Run length * tan (roof Pitching)
-        /// </summary>
         public int HPitching { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is step down.
-        /// </summary>
         public bool IsStepdown { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stepdown.
-        /// </summary>
         public string StepDown
         {
             get => this._stepDown;
             set => this.SetProperty(ref this._stepDown, value);
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether is ceiling raised.
-        /// </summary>
+        public bool IsRaisedCeiling { get; }
+        public int RaisedCeiling { get; }
+
         public bool IsCeilingRaised { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ceiling raised.
-        /// </summary>
         public int CeilingRaised { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is sub stud.
-        /// </summary>
-        public int IsSubStud
-        {
-            get => this._isSubStud;
-            set => this.SetProperty(ref this._isSubStud, value);
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is parallel with truss.
-        /// </summary>
         public bool IsParallelWithTruss { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is hight wall.
-        /// </summary>
-        public bool IsHightWall { get; set; }
-
-        /// <summary>
-        /// Gets or sets the is non load bearing wall.
-        /// </summary>
         public int IsNonLbWall { get; set; }
-        
-        /// <summary>
-        /// Gets or sets the ribbon plate.
-        /// </summary>
-        public WallMemberBase RibbonPlate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the top plate.
-        /// </summary>
-        public WallMemberBase TopPlate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the bottom plate.
-        /// </summary>
-        public WallMemberBase BottomPlate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stud.
-        /// </summary>
+        public WallMember RibbonPlate { get; set; }
+        public WallMember TopPlate { get; set; }
+        public WallMember BottomPlate { get; set; }
         public WallStud Stud { get; set; }
 
         #endregion

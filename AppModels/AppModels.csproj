@@ -162,7 +162,9 @@
     <Compile Include="Enums\WallType.cs" />
     <Compile Include="Interaface\IClientDatabase.cs" />
     <Compile Include="Interaface\IGlobalWallInfo.cs" />
+    <Compile Include="Interaface\IWallInfo.cs" />
     <Compile Include="Interaface\IWallMember.cs" />
+    <Compile Include="Interaface\IWallMemberInfo.cs" />
     <Compile Include="PocoDataModel\BeamPoco.cs" />
     <Compile Include="PocoDataModel\BracingBasePoco.cs" />
     <Compile Include="PocoDataModel\BracingPoco.cs" />
@@ -186,7 +188,7 @@
     <Compile Include="ResponsiveData\GlobalWallDetailInfo.cs" />
     <Compile Include="ResponsiveData\LevelGlobalWallInfo.cs" />
     <Compile Include="ResponsiveData\LevelWallDetailInfo.cs" />
-    <Compile Include="ResponsiveData\TimberWallMemberBase.cs" />
+    <Compile Include="ResponsiveData\TimberWallMemberInfoBase.cs" />
     <Compile Include="ResponsiveData\GlobalWallInfo.cs" />
     <Compile Include="ResponsiveData\Treatment.cs" />
     <Compile Include="ResponsiveData\Beam.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="ResponsiveData\JobModel.cs" />
     <Compile Include="ResponsiveData\JobWallDefaultInfo.cs" />
     <Compile Include="ResponsiveData\LevelDefaultInfo.cs" />
+    <Compile Include="ResponsiveData\WallMemberBase.cs" />
     <Compile Include="ResponsiveData\WallNogging.cs" />
     <Compile Include="ResponsiveData\WallTempLength.cs" />
     <Compile Include="ResponsiveData\RlwCalc.cs" />
@@ -220,7 +223,7 @@
     <Compile Include="ResponsiveData\BracingBase.cs" />
     <Compile Include="CustomEntity\CustomTable.cs" />
     <Compile Include="CustomEntity\PictureEntity.cs" />
-    <Compile Include="ResponsiveData\WallMember.cs" />
+    <Compile Include="ResponsiveData\WallMemberInfo.cs" />
     <Compile Include="ViewModelEntity\EntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVmBase.cs" />
     <Compile Include="ViewModelEntity\LinearPathVm.cs" />
@@ -234,7 +237,7 @@
     <Compile Include="ResponsiveData\LevelWall.cs" />
     <Compile Include="ResponsiveData\Opening.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResponsiveData\WallMemberBase.cs" />
+    <Compile Include="ResponsiveData\WallMember.cs" />
     <Compile Include="ResponsiveData\TimberWall.cs" />
     <Compile Include="PocoDataModel\WallTypePoco.cs" />
     <Compile Include="ResponsiveData\WindCategory.cs" />

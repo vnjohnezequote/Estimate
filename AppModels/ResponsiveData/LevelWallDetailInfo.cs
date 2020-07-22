@@ -12,39 +12,39 @@ namespace AppModels.ResponsiveData
     {
         #region Field
         private LevelGlobalWallInfo _globalWallInfo;
-        private TimberWallMemberBase _ribbonPlate;
-        private TimberWallMemberBase _topPlate;
-        private TimberWallMemberBase _stud;
-        private TimberWallMemberBase _bottomPlate;
-        private TimberWallMemberBase _nogging;
-        private TimberWallMemberBase _trimmer;
+        private TimberWallMemberInfoBase _ribbonPlate;
+        private TimberWallMemberInfoBase _topPlate;
+        private TimberWallMemberInfoBase _stud;
+        private TimberWallMemberInfoBase _bottomPlate;
+        private TimberWallMemberInfoBase _nogging;
+        private TimberWallMemberInfoBase _trimmer;
         #endregion
 
         #region Property
 
         public LevelGlobalWallInfo GlobalWallInfo { get; private set; }
-        public TimberWallMemberBase RibbonPlate { get; private set; }
-        public TimberWallMemberBase TopPlate { get; private set; }
-        public TimberWallMemberBase Stud { get; private set; }
-        public TimberWallMemberBase BottomPlate { get; private set; }
+        public TimberWallMemberInfoBase RibbonPlate { get; private set; }
+        public TimberWallMemberInfoBase TopPlate { get; private set; }
+        public TimberWallMemberInfoBase Stud { get; private set; }
+        public TimberWallMemberInfoBase BottomPlate { get; private set; }
         public WallNogging Nogging { get; private set; }
-        public WallMember Trimmer { get; private set; }
+        public WallMemberInfo Trimmer { get; private set; }
 
         #endregion
 
         #region Constructor
 
-        public LevelWallDetailInfo(GlobalWallInfo globalWallInfo, TimberWallMemberBase globalNoggingInfo, TimberWallMemberBase globalDoorInfor)
+        public LevelWallDetailInfo(GlobalWallInfo globalWallInfo, TimberWallMemberInfoBase globalNoggingInfo, TimberWallMemberInfoBase globalDoorInfor)
         {
             if (globalWallInfo.WallType == WallType.External_LBW || globalWallInfo.WallType == WallType.Internal_LBW)
             {
-                RibbonPlate = new TimberWallMemberBase(globalWallInfo);
+                RibbonPlate = new TimberWallMemberInfoBase(globalWallInfo);
             }
-            TopPlate = new TimberWallMemberBase(globalWallInfo);
-            Stud = new TimberWallMemberBase(globalWallInfo);
-            BottomPlate = new TimberWallMemberBase(globalWallInfo);
+            TopPlate = new TimberWallMemberInfoBase(globalWallInfo);
+            Stud = new TimberWallMemberInfoBase(globalWallInfo);
+            BottomPlate = new TimberWallMemberInfoBase(globalWallInfo);
             Nogging = new WallNogging(globalWallInfo, globalNoggingInfo);
-            Trimmer = new WallMember(globalWallInfo, TopPlate);
+            Trimmer = new WallMemberInfo(globalWallInfo, TopPlate);
 
         }
 

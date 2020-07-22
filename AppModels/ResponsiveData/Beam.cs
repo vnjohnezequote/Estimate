@@ -13,12 +13,12 @@ namespace AppModels.ResponsiveData
 /// <summary>
     /// The beam.
     /// </summary>
-    public class Beam : WallMemberBase
+    public class Beam 
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Beam"/> class.
         /// </summary>
-        public Beam()
+        public Beam() 
         {
         }
 

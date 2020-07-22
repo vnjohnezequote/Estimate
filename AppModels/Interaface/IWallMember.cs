@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AppModels.ResponsiveData;
 
 namespace AppModels.Interaface
 {
-    public interface IWallMember:INotifyPropertyChanged
+    public interface IWallMember
     {
-        IGlobalWallInfo GlobalWallInfo { get; }
-        string NoItem { get; }
+        IWallMemberInfo TimberMaterialInfo { get; }
+        IWallInfo WallInfo { get; }
         string Thickness { get; }
-        string Depth { get; }
-        string TimberGrade { get; }
     }
 }

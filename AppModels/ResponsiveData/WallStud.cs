@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.Interaface;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -14,68 +15,31 @@ namespace AppModels.ResponsiveData
     /// <summary>
     /// The stud member.
     /// </summary>
-    public class WallStud : BindableBase
+    public class WallStud : WallMemberBase
     {
-        #region Private Member
+        #region Field
 
-        /// <summary>
-        /// The timber info.
-        /// </summary>
-        private TimberBase _timberInfo;
-        
-        /// <summary>
-        /// The height.
-        /// </summary>
-        private int _height;
+        #endregion
+        #region Property
+
+       
+        public int Height { get; set; }
+        public IWallInfo WallInfo { get; set; }
 
         #endregion
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WallStud"/> class.
-        /// </summary>
-        public WallStud()
+
+        #region Constructor
+        public WallStud(IWallInfo wallInfo, IWallMemberInfo baseMaterialInfo):base(wallInfo,baseMaterialInfo)
         {
-			this.IsDefault = true;
+            
         }
 
-        #region Public Member
-
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the timber info.
-        /// </summary>
-        public TimberBase TimberInfo
-        {
-            get => this._timberInfo;
-            set
-            {
-                if (this._timberInfo == value)
-                {
-                    return;
-                }
-
-                this._timberInfo = new TimberBase(value);
-                this.RaisePropertyChanged();
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the height.
-        /// </summary>
-        public int Height
-        {
-            get => this._height;
-            set => this.SetProperty(ref this._height, value);
-
-        }
-		
-		public bool IsDefault {get;set;}
 
         #endregion
+
+
+       
 
 
     }

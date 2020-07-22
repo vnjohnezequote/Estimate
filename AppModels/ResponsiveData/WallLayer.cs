@@ -358,10 +358,10 @@ namespace AppModels.ResponsiveData
         /// </summary>
         private void InitializeWallMember()
         {
-            this.RibbonPlate = new WallMemberBase();
-            this.TopPlate = new WallMemberBase();
+            this.RibbonPlate = new WallMember();
+            this.TopPlate = new WallMember();
             this.Stud = new WallStud();
-            this.BottomPlate = new WallMemberBase();
+            this.BottomPlate = new WallMember();
         }
 
         /// <summary>

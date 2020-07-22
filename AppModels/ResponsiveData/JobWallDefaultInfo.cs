@@ -101,8 +101,8 @@ namespace AppModels.ResponsiveData
         public GlobalWallInfo GlobalInternalWallInfo { get; set; }
         public GlobalWallDetailInfo GlobalExtWallDetailInfo { get; set; }
         public GlobalWallDetailInfo GlobalIntWallDetaiInfo { get; set; }
-        public TimberWallMemberBase GlobalNoggingInfo { get; set; }
-        public TimberWallMemberBase GlobalDoorJambInfo { get; set; }
+        public TimberWallMemberInfoBase GlobalNoggingInfo { get; set; }
+        public TimberWallMemberInfoBase GlobalDoorJambInfo { get; set; }
         #endregion
 
         #region Constructor
@@ -115,10 +115,10 @@ namespace AppModels.ResponsiveData
             GlobalNoggingMethodType = NoggingMethodType.AsWall;
             GlobalExternalWallInfo = new GlobalWallInfo(WallType.External_LBW,this);
             GlobalInternalWallInfo= new GlobalWallInfo(WallType.Internal_NonLBW,this);
-            GlobalNoggingInfo = new TimberWallMemberBase(GlobalInternalWallInfo);
+            GlobalNoggingInfo = new TimberWallMemberInfoBase(GlobalInternalWallInfo);
             GlobalExtWallDetailInfo = new GlobalWallDetailInfo(GlobalExternalWallInfo, GlobalNoggingInfo, GlobalDoorJambInfo);
             GlobalIntWallDetaiInfo = new GlobalWallDetailInfo(GlobalInternalWallInfo, GlobalNoggingInfo, GlobalDoorJambInfo);
-            GlobalDoorJambInfo = new WallMember(GlobalExternalWallInfo,GlobalExtWallDetailInfo.Stud);
+            GlobalDoorJambInfo = new WallMemberInfo(GlobalExternalWallInfo,GlobalExtWallDetailInfo.Stud);
             TrussSpacing = 600;
         }
 

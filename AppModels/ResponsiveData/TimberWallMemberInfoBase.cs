@@ -9,7 +9,7 @@ using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
 {
-    public class TimberWallMemberBase : BindableBase,IWallMember
+    public class TimberWallMemberInfoBase : BindableBase,IWallMemberInfo
     {
         #region Field
 
@@ -91,7 +91,7 @@ namespace AppModels.ResponsiveData
 
         #region Constructor
 
-        public TimberWallMemberBase(IGlobalWallInfo globalWallInfo)
+        public TimberWallMemberInfoBase(IGlobalWallInfo globalWallInfo)
         {
             this.GlobalWallInfo = globalWallInfo;
             GlobalWallInfo.PropertyChanged += DefaultInfo_PropertyChanged;

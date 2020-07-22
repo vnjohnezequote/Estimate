@@ -1,70 +1,44 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Timber.cs" company="John Nguyen">
+//   John Nguyen
+// </copyright>
+// <summary>
+//   Defines the Timber type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 using AppModels.Interaface;
+using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
 {
-    public class WallMember: TimberWallMemberBase
+    /// <summary>
+    /// The timber.
+    /// </summary>
+    public class WallMember : WallMemberBase
     {
-        //public GlobalMemberInfo { get; set; }
-        public override string NoItem
+        #region Filed
+
+
+
+        #endregion
+        #region MyRegion
+
+
+        public double Length { get; set; }
+        #endregion
+
+        #region Constructor
+        public WallMember(IWallInfo wallInfo,IWallMemberInfo baseMaterialInfo):base(wallInfo,baseMaterialInfo)
         {
-            get => string.IsNullOrEmpty(_noItem) ? GlobalMemberInfo.NoItem : this._noItem;
-            set
-            {
-                this.SetProperty(ref this._noItem, value);
-                this.CallBackPropertyChanged();
-            }
-        }
-        public override string Depth
-        {
-            get => string.IsNullOrEmpty(_depth) ? GlobalMemberInfo.Depth : this._depth;
-            set
-            {
-                this.SetProperty(ref this._depth, value);
-                this.CallBackPropertyChanged();
-            }
+            
         }
 
-        public override string TimberGrade
-        {
-            get => string.IsNullOrEmpty(_timberGrade) ? GlobalMemberInfo.TimberGrade : _timberGrade;
-            set
-            {
-                if (value == GlobalMemberInfo.TimberGrade)
-                {
-                    value = string.Empty;
-                }
-                this.SetProperty(ref this._timberGrade, value);
-                CallBackPropertyChanged();
-            }
-        }
-        public WallMember(IGlobalWallInfo globalWallInfo,TimberWallMemberBase topPlateInfo) : base(globalWallInfo)
-        {
-            GlobalMemberInfo = topPlateInfo;
-            GlobalMemberInfo.PropertyChanged += TopPlate_PropertyChanged;
-        }
 
-        private void TopPlate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Thickness")
-            {
-                RaisePropertyChanged(nameof(Thickness));
-            }
-            if (e.PropertyName == "Depth")
-            {
-                RaisePropertyChanged(nameof(Depth));
-            }
+        #endregion
 
-            if (e.PropertyName=="NoItem")
-            {
-                RaisePropertyChanged(nameof(NoItem));
-            }
 
-            if (e.PropertyName == "TimberGrade")
-            {
-                RaisePropertyChanged(nameof(TimberGrade));
-            }
-        }
+
+
     }
 }
