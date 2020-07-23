@@ -87,7 +87,7 @@ namespace AppModels.ResponsiveData
         /// </param>
         public LevelWall(IGlobalWallInfo jobInfo)
         {
-            //this.LevelInfo = new LevelGlobalWallInfo(jobInfo);
+            this.LevelInfo = new LevelGlobalWallInfo(jobInfo);
             this.WallLayers = new ObservableCollection<WallLayer>();
             this.TimberWallBracings = new ObservableCollection<Bracing>();
             this.RoofBeams = new ObservableCollection<Beam>();
