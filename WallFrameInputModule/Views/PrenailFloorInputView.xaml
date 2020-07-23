@@ -55,12 +55,12 @@
 						<StackPanel>
 							<StackPanel Orientation="Horizontal">
 								<TextBox materialDesign:HintAssist.Hint="External Height" Text="{Binding Level.LevelInfo.WallHeight}" />
-								<TextBox materialDesign:HintAssist.Hint="External Thickness" Text="{Binding Level.LevelInfo.ExternalWallThickness}" />
+								<TextBox materialDesign:HintAssist.Hint="External WallThickness" Text="{Binding Level.LevelInfo.ExternalWallThickness}" />
 								<TextBox materialDesign:HintAssist.Hint="External Wall Spacing" Text="{Binding Level.LevelInfo.ExternalWallSpacing.Size}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal">
 								<TextBox materialDesign:HintAssist.Hint="Internal Height" Text="{Binding Level.LevelInfo.InternalWallHeight}" />
-								<TextBox materialDesign:HintAssist.Hint="Internal Thickness" Text="{Binding Level.LevelInfo.InternalWallThickness}" />
+								<TextBox materialDesign:HintAssist.Hint="Internal WallThickness" Text="{Binding Level.LevelInfo.InternalWallThickness}" />
 								<TextBox materialDesign:HintAssist.Hint="Internal Wall Spacing" Text="{Binding Level.LevelInfo.InternalWallSpacing.Size}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal">
@@ -212,8 +212,8 @@
 
 							<!--<syncfusion:GridTextColumn HeaderText="First Wall Height" MappingName="FirstWallHeight"/>-->
 							<!--<syncfusion:GridTextColumn HeaderText="Wall Thickness" MappingName="WallThickness.Size" />-->
-							<syncfusion:GridComboBoxColumn HeaderText="Wall Thickness"
-												   MappingName="Thickness.Size"
+							<syncfusion:GridComboBoxColumn HeaderText="Wall WallThickness"
+												   MappingName="WallThickness.Size"
 												   ItemsSource="{Binding WallThicknessList}"
 												   UseBindingValue="True"/>
 							<syncfusion:GridTextColumn HeaderText="Wall Spacing"

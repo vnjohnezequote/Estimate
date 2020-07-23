@@ -10,11 +10,11 @@ namespace AppModels.Interaface
         NoggingMethodType NoggingMethod { get; }
         IGlobalWallInfo GlobalWallInfo { get; }
         int Id { get; }
-        string Thickness { get; }
+        string WallThickness { get; }
         LayerItem WallColorLayer { get; }
-        string Start_WallHeight { get; }
-        int End_WallHeight { get; }
-        int Show_WallHeight { get; }
+        string WallPitchingHeight { get; }
+        int WallEndHeight { get; }
+        int WallHeight { get; }
         bool IsRakedWall { get; }
         bool IsWallUnderFlatCeiling { get; }
         bool IsShorWall { get; }
@@ -24,7 +24,7 @@ namespace AppModels.Interaface
         bool IsStepdown { get; }
         string StepDown { get; }
         bool IsRaisedCeiling { get; }
-        int RaisedCeiling { get; }
-        bool IsParallelWithTruss { get;}
+        string RaisedCeiling { get; }
+        bool IsParallelWithRoofFrame { get;}
     }
 }

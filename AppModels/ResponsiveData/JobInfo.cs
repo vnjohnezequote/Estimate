@@ -108,7 +108,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the job default.
         /// </summary>
-        public JobWallDefaultInfo DefaultInfo
+        public GlobalWallInfo GlobalWallInfo
         {
             get;
             set;
@@ -344,11 +344,11 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public JobInfo()
         {
-            this.DefaultInfo = new JobWallDefaultInfo();
+            this.GlobalWallInfo = new GlobalWallInfo();
             this.PropertyChanged += JobInfo_PropertyChanged;
             Treatment = "Untreated";
             RoofOverHang = 600;
-            //DefaultInfo.TrussSpacing = 600;
+            //GlobalWallInfo.TrussSpacing = 600;
         }
         #endregion
 

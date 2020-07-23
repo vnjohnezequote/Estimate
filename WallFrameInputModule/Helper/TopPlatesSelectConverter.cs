@@ -42,24 +42,24 @@ namespace WallFrameInputModule.Helper
         /// </returns>
         public IEnumerable GetItemsSource(object record, object dataContext)
         {
-            if (record == null)
-            {
-                return null;
-            }
+            //if (record == null)
+            //{
+            //    return null;
+            //}
 
-            var wallInfor = record as WallLayer;
-            var wallThickness = wallInfor.WallThickness.Size;
+            //var wallInfor = record as WallLayer;
+            //var wallThickness = wallInfor.WallThickness.Size;
 
-            var viewModel = dataContext as PrenailFloorInputViewModel;
+            //var viewModel = dataContext as PrenailFloorInputViewModel;
 
-            //Returns ShipCity collection based on ShipCountry.
+            ////Returns ShipCity collection based on ShipCountry.
 
-            if (viewModel != null && viewModel.SelectedClient.TopPlates.ContainsKey(wallThickness.ToString()))
-            {
-                List<TimberBase> topPlates = null;
-                viewModel.SelectedClient.TopPlates.TryGetValue(wallThickness.ToString(), out topPlates);
-                return (topPlates ?? throw new InvalidOperationException()).ToList();
-            }
+            //if (viewModel != null && viewModel.SelectedClient.TopPlates.ContainsKey(wallThickness.ToString()))
+            //{
+            //    List<TimberBase> topPlates = null;
+            //    viewModel.SelectedClient.TopPlates.TryGetValue(wallThickness.ToString(), out topPlates);
+            //    return (topPlates ?? throw new InvalidOperationException()).ToList();
+            //}
             return null;
         }
     }

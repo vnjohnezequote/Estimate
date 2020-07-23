@@ -33,12 +33,6 @@ namespace AppModels.ResponsiveData
         {
             
         }
-
-
         #endregion
-
-
-
-
     }
 }

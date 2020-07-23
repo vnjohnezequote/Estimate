@@ -21,25 +21,14 @@ namespace AppModels.ResponsiveData
 
         #endregion
         #region Property
-
-       
         public int Height { get; set; }
-        public IWallInfo WallInfo { get; set; }
-
         #endregion
-
-
         #region Constructor
         public WallStud(IWallInfo wallInfo, IWallMemberInfo baseMaterialInfo):base(wallInfo,baseMaterialInfo)
         {
             
         }
-
-
         #endregion
-
-
-       
 
 
     }

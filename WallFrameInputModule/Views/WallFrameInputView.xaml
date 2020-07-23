@@ -39,7 +39,7 @@
     <Button Content="Back"/>
     <Button Content="Next"/>
     <Button Content="Create Check List"/>
-    <Button Content="Complete JobGlobalWallInfo"/>
+    <Button Content="Complete JobJobGlobalWallInformation"/>
 </StackPanel>
     </StackPanel>
 </UserControl>

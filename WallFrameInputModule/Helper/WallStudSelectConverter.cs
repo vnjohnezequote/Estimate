@@ -42,34 +42,34 @@ namespace WallFrameInputModule.Helper
         /// </returns>
         public IEnumerable GetItemsSource(object record, object dataContext)
         {
-            if (record == null)
-            {
-                return null;
-            }
+            //if (record == null)
+            //{
+            //    return null;
+            //}
 
-            var wallInfor = record as WallLayer;
-            string wallKey = "LBW";
-            if (!wallInfor.TimberWallTypePoco.IsLoadBearingWall)
-            {
-                wallKey = "NONLBW";
-            }
-            var wallThickness = wallInfor.WallThickness.Size;
+            //var wallInfor = record as WallLayer;
+            //string wallKey = "LBW";
+            //if (!wallInfor.TimberWallTypePoco.IsLoadBearingWall)
+            //{
+            //    wallKey = "NONLBW";
+            //}
+            //var wallThickness = wallInfor.WallThickness.Size;
 
-            var viewModel = dataContext as PrenailFloorInputViewModel;
+            //var viewModel = dataContext as PrenailFloorInputViewModel;
 
 
-            if (viewModel != null && viewModel.SelectedClient.Studs.ContainsKey(wallKey))
-            {
-                List<TimberBase> studs = null;
-                List<TimberBase> selectedStuds = null;
-                viewModel.SelectedClient.Studs.TryGetValue(wallKey, out studs);
-                if (studs != null)
-                {
-                    selectedStuds = studs.FindAll(x => x.Thickness == wallThickness);
-                }
+            //if (viewModel != null && viewModel.SelectedClient.Studs.ContainsKey(wallKey))
+            //{
+            //    List<TimberBase> studs = null;
+            //    List<TimberBase> selectedStuds = null;
+            //    viewModel.SelectedClient.Studs.TryGetValue(wallKey, out studs);
+            //    if (studs != null)
+            //    {
+            //        selectedStuds = studs.FindAll(x => x.Thickness == wallThickness);
+            //    }
 
-                return selectedStuds;
-            }
+            //    return selectedStuds;
+            //}
 
             return null;
         }

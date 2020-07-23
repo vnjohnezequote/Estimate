@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppModels.Factories;
 using AppModels.Interaface;
 using Prism.Mvvm;
 
@@ -21,7 +22,7 @@ namespace AppModels.ResponsiveData
             set => this.SetProperty(ref this._timberMaterialInfo, value);
         }
         public IWallInfo WallInfo { get; set; }
-        public string Thickness => WallInfo.Thickness;
+        public string Thickness => WallInfo.WallThickness;
 
         #endregion
 
@@ -30,7 +31,7 @@ namespace AppModels.ResponsiveData
         protected WallMemberBase(IWallInfo wallInfo, IWallMemberInfo baseMaterialInfo)
         {
             WallInfo = wallInfo;
-            TimberMaterialInfo = new WallMemberInfo(baseMaterialInfo);
+            TimberMaterialInfo = WallMemberFactory.CreateWallMemberInfo(baseMaterialInfo, wallInfo);
             WallInfo.PropertyChanged += WallInfo_PropertyChanged;
 
         }

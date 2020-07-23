@@ -1,69 +1,121 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LevelGlobalWallInfo.cs" company="John Nguyen">
+//   John Nguyen
+// </copyright>
+// <summary>
+//   Defines the LevelWallDefaulInfo type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+
 using AppModels.Enums;
+using AppModels.Interaface;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
 {
-    public class LevelGlobalWallInfo: BindableBase
+    /// <summary>
+    /// The level wall default info.
+    /// </summary>
+    public class LevelGlobalWallInfo : BindableBase,IGlobalWallInfo
     {
-        #region Field
-        private string _thickness;
-        private string _depth;
-        private string _timberGrade;
-        private string _wallSpacing;
+        #region Private Field
+        private IGlobalWallInfo __globalWallInfo;
+        private int _wallHeight;
+        private string _externalDoorHeight;
+        private string _internalDoorHeight;
+
+        #endregion
+        #region public Property
+
+        public int WallHeight
+        {
+            get => this._wallHeight;
+            set => this.SetProperty(ref this._wallHeight, value);
+        }
+        public string ExternalDoorHeight
+        {
+            get;
+        }
+        public string InternalDoorHeight
+        {
+            get;
+        }
+        public int StepDown => GlobalWallInformation.StepDown;
+        public int RaisedCeilingHeight { get; }
+        public string ExternalWallTimberDepth { get; }
+        public string InternalWallTimberDepth { get; }
+        public string ExternalWallTimberGrade { get; }
+        public string InternalWallTimberGrade { get; }
+
+        public IGlobalWallInfo GlobalWallInformation { get; }
+        public NoggingMethodType NoggingMethod { get; }
+        public double CeilingPitch => GlobalWallInformation.CeilingPitch;
+        public string ExternalWallSpacing { get; }
+        public string InternalWallSpacing { get; }
+        public string ExternalWallThickness { get; }
+        public string InternalWallThickness { get; }
+        public GlobalWallDetailInfo GlobalExtWallDetailInfo { get; }
+        public GlobalWallDetailInfo GlobalIntWallDetaiInfo { get; }
+        public WallMemberInfo RibbonPlate { get; }
+        public WallMemberInfo TopPlate { get; }
+        public WallMemberInfo Stud { get; }
+        public WallMemberInfo Nogging { get; }
+        public WallMemberInfo Trimmer { get; }
+        public WallMemberInfo BottomPlate { get; }
+
         #endregion
 
-        #region Property
-        public GlobalWallInfo GlobalInfo { get; set; }
-        public NoggingMethodType NoggingMethodType => GlobalInfo.NoggingMethodType;
+        #region Constructor
 
-        public WallType WallType => GlobalInfo.WallType;
-
-        public string Thickness
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LevelGlobalWallInfo"/> class.
+        /// </summary>
+        /// <param name="defaultDefaultInfo">
+        /// The default info.
+        /// </param>
+        public LevelGlobalWallInfo(IGlobalWallInfo defaultDefaultInfo)
         {
-            get => string.IsNullOrEmpty(_thickness) ? GlobalInfo.Thickness : _thickness;
-            set => SetProperty(ref _thickness, value);
+            this.GlobalWallInformation = defaultDefaultInfo;
+            this.InitializeLevelDefault();
+        }
+        
+
+        #endregion
+        
+
+        #region private Method
+
+        private void InitializeLevelDefault()
+        {
+            GlobalWallInformation.PropertyChanged += GlobalWallInfo_PropertyChanged;
         }
 
-        public string Depth
+        private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            get => string.IsNullOrEmpty(_depth) ? GlobalInfo.Depth.ToString() : _depth;
-            set => SetProperty(ref _thickness, value);
-        }
-        public string TimberGrade
-        {
-            get => string.IsNullOrEmpty(_timberGrade) ? GlobalInfo.TimberGrade : _timberGrade;
-            set
+            switch (e.PropertyName)
             {
-                if (value == GlobalInfo.TimberGrade)
-                {
-                    value = null;
-                }
-                SetProperty(ref _timberGrade, value);
-            } 
-        }
-        public string WallSpacing
-        {
-            get => string.IsNullOrEmpty(_wallSpacing) ? GlobalInfo.WallSpacing.ToString() : _wallSpacing;
-            set
-            {
-                if (value == GlobalInfo.WallSpacing.ToString())
-                {
-                    value = null;
-                }
-                SetProperty(ref _wallSpacing, value);
+                case "ExternalDoorHeight":
+                    RaisePropertyChanged(nameof(ExternalDoorHeight));
+                    RaisePropertyChanged(nameof(InternalDoorHeight));
+                    break;
+                case "InternalDoorHeight":
+                    RaisePropertyChanged(nameof(InternalDoorHeight));
+                    break;
+                case "StepDown":
+                    RaisePropertyChanged(nameof(StepDown));
+                    break;
+                case "RoofPitch":
+                case "CeilingPitch":
+                    RaisePropertyChanged(nameof(CeilingPitch));
+                    break;
             }
         }
-        #endregion
 
-        public LevelGlobalWallInfo(WallType wallType, GlobalWallInfo globalDefaultInfo)
-        {
-            GlobalInfo = globalDefaultInfo;
-        }
+
+
+
+        #endregion
 
     }
 }

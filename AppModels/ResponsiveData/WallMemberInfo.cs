@@ -1,6 +1,7 @@
 ﻿
 
 using System.ComponentModel;
+using AppModels.Enums;
 using AppModels.Interaface;
 using Prism.Mvvm;
 
@@ -11,14 +12,17 @@ namespace AppModels.ResponsiveData
         #region Field
 
         private string _noItem;
-        private string _thickness;
+        // ReSharper disable once InconsistentNaming
+        protected string _thickness;
         private string _depth;
         private string _timberGrade;
 
         #endregion
         #region Property
+        public WallType WallType { get; set; }
         //public IWallInfo WallInfo { get; set; }
         public IWallMemberInfo BaseMaterialInfo { get; set; }
+        public WallMemberType MemberType { get; set; }
 
         public string NoItem
         {
@@ -33,7 +37,7 @@ namespace AppModels.ResponsiveData
             set => this.SetProperty(ref _noItem, value);
         }
 
-        public string Thickness
+        public virtual string Thickness
         {
             get
             {
@@ -80,6 +84,8 @@ namespace AppModels.ResponsiveData
             }
         }
 
+        
+
         public string Size
         {
             get
@@ -102,8 +108,9 @@ namespace AppModels.ResponsiveData
         #endregion
 
         #region Constructor
-        public WallMemberInfo(IWallMemberInfo baseMaterialInfo)
+        public WallMemberInfo(IWallMemberInfo baseMaterialInfo,WallMemberType memberType)
         {
+            MemberType = memberType;
             //WallInfo = wallInfo;
             BaseMaterialInfo = baseMaterialInfo;
             PropertyChanged += WallMember_PropertyChanged;

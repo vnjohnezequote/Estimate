@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.ObjectModel;
+using AppModels.Interaface;
 using Prism.Mvvm;
 using ProtoBuf;
 
@@ -64,7 +65,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// The level info.
         /// </summary>
-        private LevelDefaultInfo _levelInfo;
+        private LevelGlobalWallInfo _levelInfo;
 
         /// <summary>
         /// The wall temp length.
@@ -84,9 +85,9 @@ namespace AppModels.ResponsiveData
         /// <param name="jobInfo">
         /// The job Info.
         /// </param>
-        public LevelWall(JobWallDefaultInfo jobInfo)
+        public LevelWall(IGlobalWallInfo jobInfo)
         {
-            this.LevelInfo = new LevelDefaultInfo(jobInfo);
+            //this.LevelInfo = new LevelGlobalWallInfo(jobInfo);
             this.WallLayers = new ObservableCollection<WallLayer>();
             this.TimberWallBracings = new ObservableCollection<Bracing>();
             this.RoofBeams = new ObservableCollection<Beam>();
@@ -187,7 +188,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the level info.
         /// </summary>
-        public LevelDefaultInfo LevelInfo
+        public LevelGlobalWallInfo LevelInfo
         {
             get => this._levelInfo;
             set => this.SetProperty(ref this._levelInfo, value);

@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.Interaface;
+
 namespace AppModels.ResponsiveData
 {
     /// <summary>
@@ -37,6 +39,9 @@ namespace AppModels.ResponsiveData
 
         #endregion
 
+        public TimberWall(int id, IGlobalWallInfo globalWallInfo) : base(id, globalWallInfo)
+        {
+        }
     }
 
 }

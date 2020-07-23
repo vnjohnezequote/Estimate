@@ -104,7 +104,7 @@
                         <Label Content="Top Plate" Grid.Row="2" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
                         <Label Content="Stud" Grid.Row="4" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
                         <Label Content="Bottom Plate" Grid.Row="6" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
-                        <Label Content="Nogging" Grid.Row="8" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="NoggingInfo" Grid.Row="8" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
                         <Label Content="Trimmer" Grid.Row="10" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
 
                         <!--Ribbon Plate-->
@@ -398,7 +398,7 @@
                         <Label Content="Top Plate" Grid.Row="0" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right" />
                         <Label Content="Stud" Grid.Row="2" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"  />
                         <Label Content="Bottom Plate" Grid.Row="4" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right" />
-                        <Label Content="Nogging" Grid.Row="6" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"  />
+                        <Label Content="NoggingInfo" Grid.Row="6" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"  />
                         <Label Content="Trimmer" Grid.Row="8" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right" />
                         <!--Internal Top Plate-->
                         <!--<TextBox Grid.Row="0" Grid.Column="4"

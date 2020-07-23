@@ -36,7 +36,7 @@ namespace AppModels.Comparer
             var objectB = (WallLayer)y;
             if (objectA!= null && objectB!=null)
             {
-                return objectA.TimberWallTypePoco.CompareTo(objectB.TimberWallTypePoco);    
+                //return objectA.TimberWallTypePoco.CompareTo(objectB.TimberWallTypePoco);    
             }
 
             return 0;

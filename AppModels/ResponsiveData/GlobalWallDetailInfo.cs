@@ -5,48 +5,50 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using AppModels.Enums;
+using AppModels.Interaface;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
 {
-    public class GlobalWallDetailInfo : BindableBase
+    public class GlobalWallDetailInfo : BindableBase,IGlobalWallDetail
     {
         #region Field
-        private GlobalWallInfo _globalWallInfo;
-        private TimberWallMemberInfoBase _ribbonPlate;
-        private TimberWallMemberInfoBase _topPlate;
-        private TimberWallMemberInfoBase _stud;
-        private TimberWallMemberInfoBase _bottomPlate;
-        private TimberWallMemberInfoBase _nogging;
-        private TimberWallMemberInfoBase _trimmer;
+        private IBasicWallInfo _globallWallInfo;
+        private IWallMemberInfo _ribbonPlate;
+        private IWallMemberInfo _topPlate;
+        private IWallMemberInfo _stud;
+        private IWallMemberInfo _bottomPlate;
+        private IWallMemberInfo _nogging;
+        private IWallMemberInfo _trimmer;
         #endregion
 
         #region Property
-
-        public GlobalWallInfo GlobalWallInfo { get; private set; }
-        public TimberWallMemberInfoBase RibbonPlate { get; private set; }
-        public TimberWallMemberInfoBase TopPlate { get; private set; }
-        public TimberWallMemberInfoBase Stud { get;private set; }
-        public TimberWallMemberInfoBase BottomPlate { get;private set; }
-        public WallNogging Nogging { get;private set; }
-        public WallMemberInfo Trimmer { get;private set; }
+        public WallType WallType => _globallWallInfo.WallType;
+        public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
+        public IBasicWallInfo GlobalWallInfo { get; private set; }
+        public IWallMemberInfo RibbonPlate { get; private set; }
+        public IWallMemberInfo TopPlate { get; private set; }
+        public IWallMemberInfo Stud { get;private set; }
+        public IWallMemberInfo BottomPlate { get;private set; }
+        public IWallMemberInfo NoggingInfo { get;private set; }
+        public IWallMemberInfo Trimmer { get;private set; }
 
         #endregion
 
         #region Constructor
 
-        public GlobalWallDetailInfo(GlobalWallInfo globalWallInfo, TimberWallMemberInfoBase globalNoggingInfo,TimberWallMemberInfoBase globalDoorInfor)
+        public GlobalWallDetailInfo(IBasicWallInfo globalWallInfo,IWallMemberInfo globalNoggingInfo)
         {
-            if (globalWallInfo.WallType==WallType.External_LBW || globalWallInfo.WallType == WallType.Internal_LBW)
+            GlobalWallInfo = globalWallInfo;
+            if (GlobalWallInfo.WallType == WallType.LBW)
             {
-                RibbonPlate = new TimberWallMemberInfoBase(globalWallInfo);
+                RibbonPlate = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.RibbonPlate);
             }
-            TopPlate = new TimberWallMemberInfoBase(globalWallInfo);
-            Stud = new TimberWallMemberInfoBase(globalWallInfo);
-            BottomPlate = new TimberWallMemberInfoBase(globalWallInfo);
-            Nogging = new WallNogging(globalWallInfo,globalNoggingInfo);
-            Trimmer = new WallMemberInfo(globalWallInfo, TopPlate);
-            
+            TopPlate = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.TopPlate);
+            Stud = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.Stud);
+            BottomPlate = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.BottomPlate);
+            NoggingInfo = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.Nogging, globalNoggingInfo);
+            Trimmer = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.Trimmer, TopPlate);
         }
 
 

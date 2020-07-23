@@ -25,7 +25,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the roof pitch info.
         /// </summary>
-        public JobWallDefaultInfo RoofPitchInfo { get; set; }
+        //public JobWallDefaultInfo RoofPitchInfo { get; set; }
 
         /// <summary>
         /// Gets or sets the roof span.
