@@ -6,6 +6,6 @@ namespace AppModels.Interaface
     {
         IWallMemberInfo TimberMaterialInfo { get; }
         IWallInfo WallInfo { get; }
-        string Thickness { get; }
+        int Thickness { get; }
     }
 }

@@ -9,14 +9,14 @@ namespace AppModels.ResponsiveData
         public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IGlobalWallInfo GlobalWallInfo { get; private set; }
         public WallType WallType { get; }
-        public string WallSpacing => WallType == WallType.LBW
+        public int WallSpacing => WallType == WallType.LBW
             ? GlobalWallInfo.ExternalWallSpacing
             : GlobalWallInfo.InternalWallSpacing;
 
-        public string WallThickness => WallType == WallType.LBW
+        public int WallThickness => WallType == WallType.LBW
             ? GlobalWallInfo.ExternalWallThickness
             : GlobalWallInfo.InternalWallThickness;
-        public string Depth => WallType == WallType.LBW
+        public int Depth => WallType == WallType.LBW
             ? GlobalWallInfo.ExternalWallTimberDepth
             : GlobalWallInfo.InternalWallTimberDepth;
         public string TimberGrade=>WallType == WallType.LBW

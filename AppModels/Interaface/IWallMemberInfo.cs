@@ -13,9 +13,9 @@ namespace AppModels.Interaface
         //IWallInfo WallInfo { get; }
         WallType WallType { get; }
         IWallMemberInfo BaseMaterialInfo { get; }
-        string NoItem { get; }
-        string Thickness { get; }
-        string Depth { get; }
+        int NoItem { get; }
+        int Thickness { get; }
+        int Depth { get; }
         string TimberGrade { get; }
         WallMemberType MemberType { get; }
     }

@@ -1,4 +1,5 @@
-﻿using JobInfoModule.ViewModels;
+﻿using System.Windows.Input;
+using JobInfoModule.ViewModels;
 
 namespace JobInfoModule.Views
 {
@@ -15,5 +16,25 @@ namespace JobInfoModule.Views
         {
             this.InitializeComponent();
         }
+
+        private void NumericInputChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                if (!string.IsNullOrEmpty(textBox.Text)) return;
+                textBox.Text = "0";
+                textBox.SelectAll();
+                if (textBox.Name != "HackNonLbwCmb") return;
+                if (string.IsNullOrEmpty(this.NonLbwCmb.Text))
+                {
+                    NonLbwCmb.Text = "0";
+                }
+
+            }
+
+       
+        }
+
+        
     }
 }

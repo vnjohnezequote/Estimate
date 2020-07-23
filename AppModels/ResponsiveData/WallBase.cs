@@ -26,14 +26,14 @@ namespace AppModels.ResponsiveData
 
         private WallType _wallType= WallType.LBW;
         private int _id;
-        private string _ceilingPitch;
-        private string _pitchingHeight;
-        private string _stepDown;
+        private int _ceilingPitch;
+        private int _pitchingHeight;
+        private int _stepDown;
         private LayerItem _wallColorLayer;
-        private string _wallThickness;
-        private string _wallSpacing;
-        private string _wallPitchingHeight;
-        private string _raisedCeiling;
+        private int _wallThickness;
+        private int _wallSpacing;
+        private int _wallPitchingHeight;
+        private int _raisedCeiling;
 
         #endregion
 
@@ -59,11 +59,11 @@ namespace AppModels.ResponsiveData
             get => this._wallColorLayer;
             set => this.SetProperty(ref this._wallColorLayer, value);
         }
-        public string WallThickness
+        public int WallThickness
         {
             get
             {
-                if (!string.IsNullOrEmpty(_wallThickness))
+                if (_wallThickness==0)
                 {
                     return _wallThickness;
                 }
@@ -73,11 +73,11 @@ namespace AppModels.ResponsiveData
             set => SetProperty(ref _wallThickness, value);
 
         }
-        public string WallSpacing
+        public int WallSpacing
         {
             get
             {
-                if (!string.IsNullOrEmpty(_wallSpacing))
+                if (_wallSpacing==0)
                 {
                     return _wallThickness;
                 }
@@ -86,16 +86,16 @@ namespace AppModels.ResponsiveData
             }
             set => SetProperty(ref _wallThickness, value);
         }
-        public string WallPitchingHeight
+        public int WallPitchingHeight
         {
             get
             {
-                if (!string.IsNullOrEmpty(_wallPitchingHeight))
+                if (_wallPitchingHeight==0)
                 {
                     return _wallPitchingHeight;
                 }
 
-                return GlobalWallInfo.WallHeight.ToString();
+                return GlobalWallInfo.WallHeight;
             }
             set => this.SetProperty(ref this._wallPitchingHeight, value);
         }
@@ -108,7 +108,7 @@ namespace AppModels.ResponsiveData
         public bool IsRaisedCeiling { get; set; }
         public bool IsShorWall { get; set; }
         public int RunLength { get; set; }
-        public string CeilingPitch
+        public int CeilingPitch
         {
             get => this._ceilingPitch;
             set => this.SetProperty(ref this._ceilingPitch, value);
@@ -117,29 +117,29 @@ namespace AppModels.ResponsiveData
         public int HPitching { get; set; }
         
         
-        public string StepDown
+        public int StepDown
         {
             get
             {
                 if (!IsStepdown)
                 {
-                    return "0";
+                    return 0;
                 }
 
-                return !string.IsNullOrEmpty(_stepDown) ? _stepDown : GlobalWallInfo.StepDown.ToString();
+                return _stepDown!=0 ?  _stepDown: GlobalWallInfo.StepDown;
             }
             set => this.SetProperty(ref this._stepDown, value);
         }
-        public string RaisedCeiling
+        public int RaisedCeiling
         {
             get
             {
                 if (!IsRaisedCeiling)
                 {
-                    return "0";
+                    return 0;
                 }
 
-                return !string.IsNullOrEmpty(_raisedCeiling) ? _raisedCeiling : GlobalWallInfo.RaisedCeilingHeight.ToString();
+                return _raisedCeiling != 0 ? _raisedCeiling : GlobalWallInfo.RaisedCeilingHeight;
             }
 
         }

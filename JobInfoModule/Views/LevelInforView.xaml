@@ -51,26 +51,35 @@
     <StackPanel x:Name="LevelRoot">
         <!-- Wall Spacing Infor-->
         <StackPanel Margin="0 10 0 0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <DockPanel HorizontalAlignment="Left">
+                <TextBox materialDesign:HintAssist.Hint="Global Wall Height"
+                         materialDesign:HintAssist.IsFloating="True"
+                         controls:TextBoxHelper.ClearTextButton="False"
+                         Margin="10 0 0 0"
+                         Text="{Binding JobInfo.GlobalWallInfo.WallHeight}"/>
                 <ComboBox materialDesign:HintAssist.Hint="Load Bearing Wall Spacing"
                           materialDesign:HintAssist.IsFloating="True"
                           ItemsSource="{Binding WallSpacings}"
                           Padding="5"
+                          Margin="10 0 0 0"
                           SelectedItem="{Binding JobInfo.GlobalWallInfo.ExternalWallSpacing}"/>
-                <ComboBox materialDesign:HintAssist.Hint="None Load Bearing Wall Spacing"
+                <ComboBox Name="NonLbwCmb" materialDesign:HintAssist.Hint="None Load Bearing Wall Spacing"
                           materialDesign:HintAssist.IsFloating="True"
                           materialDesign:TextFieldAssist.HasClearButton="True"
                           Padding="5"
+                          Margin="10 0 0 0"
                           ItemsSource="{Binding WallSpacings}"
-                          Grid.Column="2"
                           SelectedItem="{Binding JobInfo.GlobalWallInfo.InternalWallSpacing}"
                           Text="{Binding JobInfo.GlobalWallInfo.InternalWallSpacing}"/>
-            </Grid>
+                <!--Hack Textbox Reset-->
+                <TextBox Name="HackNonLbwCmb" TextChanged="NumericInputChanged" Visibility="Collapsed" Text="{Binding ElementName=NonLbwCmb, Path=Text,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox materialDesign:HintAssist.Hint="Raised Ceiling Height"
+                         materialDesign:HintAssist.IsFloating="True"
+                         TextChanged="NumericInputChanged"
+                         Margin="10 0 0 0"
+                         Text="{Binding JobInfo.GlobalWallInfo.RaisedCeilingHeight}"/>
+            </DockPanel>
             <Border Margin="0 10 0 0"
                 Background="{DynamicResource MaterialDesignDivider}"
                 Height="1"
@@ -129,11 +138,13 @@
                     <TextBox Grid.Row="2" Grid.Column="2"
                              Style="{StaticResource ClearButtonTextBox}"
                              materialDesign:HintAssist.IsFloating="False"
+                             TextChanged="NumericInputChanged"
                              Padding="5 0 5 0"
                              Text="{Binding JobInfo.GlobalWallInfo.InternalWallThickness}"/>
                     <TextBox Grid.Row="2"
                              Grid.Column="4"
-                             Text="{Binding JobInfo.GlobalWallInfo.InternalWallTimberDepth}"/>
+                             Text="{Binding JobInfo.GlobalWallInfo.InternalWallTimberDepth}"
+                             TextChanged="NumericInputChanged"/>
                     <ComboBox Grid.Row="2"
                               Grid.Column="6"
                               materialDesign:HintAssist.IsFloating="False"
@@ -145,6 +156,7 @@
                              Grid.Column="2"
                              Padding="5 0 5 0"
                              Style="{StaticResource ClearButtonTextBox}"
+                             TextChanged="NumericInputChanged"
                              materialDesign:HintAssist.IsFloating="False"
                              Text="{Binding JobInfo.GlobalWallInfo.GlobalNoggingInfo.Thickness}"
                              IsEnabled="{Binding JobInfo.GlobalWallInfo.NoggingMethod,Converter={StaticResource NoggingMethodToBoolConverter}}"/>
@@ -153,6 +165,7 @@
                              Style="{StaticResource ClearButtonTextBox}"
                              Padding="5 0 5 0"
                              materialDesign:HintAssist.IsFloating="False"
+                             TextChanged="NumericInputChanged"
                              Text="{Binding JobInfo.GlobalWallInfo.GlobalNoggingInfo.Depth}"/>
                     <ComboBox Grid.Row="4"
                               Grid.Column="6"
@@ -172,11 +185,12 @@
                               />
 
                 </Grid>
-                <Expander Header="GLobal Door Info" 
+                <Expander Header="Global Door Info"
                           ExpandDirection="Right"
                           Margin="10 0 0 0" 
                           IsExpanded="True"
                           Background="Transparent">
+
                     <materialDesign:ColorZone Mode="Dark" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Grid>
@@ -206,10 +220,12 @@
                                 <TextBox materialDesign:HintAssist.Hint="Number of Jamb"
                                          Margin="10 0 0 0"
                                          Grid.Column="1"
+                                         TextChanged="NumericInputChanged"
                                          Text="{Binding JobInfo.GlobalWallInfo.GlobalDoorJambInfo.NoItem }"/>
                                 <TextBox materialDesign:HintAssist.Hint="Depth of Jamb"
                                          Margin="10 0 0 0"
                                          Grid.Column="2"
+                                         TextChanged="NumericInputChanged"
                                          Text="{Binding JobInfo.GlobalWallInfo.GlobalDoorJambInfo.Depth}"/>
                                 <ComboBox materialDesign:HintAssist.Hint="Timber Grade Of Jamb"
                                           materialDesign:TextFieldAssist.HasClearButton="True"
@@ -225,7 +241,7 @@
                                      materialDesign:HintAssist.IsFloating="True"
                                      Margin="0 10 0 0"
                                      Text="{Binding JobInfo.GlobalWallInfo.InternalDoorHeight}"
-                                     />
+                                     TextChanged="NumericInputChanged"/>
                         </StackPanel>
                     </materialDesign:ColorZone>
 
@@ -315,12 +331,14 @@
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  controls:TextBoxHelper.ClearTextButton="False"
+                                 TextChanged="NumericInputChanged"
                                  IsEnabled="False"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.RibbonPlate.Thickness}"/>
                         <TextBox Grid.Row="0" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 TextChanged="NumericInputChanged"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.RibbonPlate.Depth}"/>
                         <ComboBox Grid.Row="0" Grid.Column="10"
                                   BorderThickness="1"
@@ -356,11 +374,13 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  IsEnabled="False"
+                                 TextChanged="NumericInputChanged"
                                  controls:TextBoxHelper.ClearTextButton="False"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.TopPlate.Thickness}"/>
                         <TextBox Grid.Row="2" Grid.Column="8"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 TextChanged="NumericInputChanged"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.TopPlate.Depth}"/>
                         <ComboBox Grid.Row="2" Grid.Column="10"
                                   materialDesign:HintAssist.IsFloating="False"
@@ -396,11 +416,13 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  controls:TextBoxHelper.ClearTextButton="False"
+                                 TextChanged="NumericInputChanged"
                                  IsEnabled="False"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.Stud.Thickness}"/>
                         <TextBox Grid.Row="4" Grid.Column="8"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 TextChanged="NumericInputChanged"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.Stud.Depth}"/>
                         <ComboBox Grid.Row="4" Grid.Column="10"
                                   materialDesign:HintAssist.IsFloating="False"
@@ -437,12 +459,14 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  controls:TextBoxHelper.ClearTextButton="False"
+                                 TextChanged="NumericInputChanged"
                                  IsEnabled="False"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.BottomPlate.Thickness}"/>
                         <TextBox Grid.Row="6" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 TextChanged="NumericInputChanged"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.BottomPlate.Depth}"/>
                         <ComboBox Grid.Row="6" Grid.Column="10"
                                   BorderThickness="1"
@@ -481,12 +505,14 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  controls:TextBoxHelper.ClearTextButton="False"
+                                 TextChanged="NumericInputChanged"
                                  IsEnabled="False"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.NoggingInfo.Thickness}"/>
                         <TextBox Grid.Row="8" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 TextChanged="NumericInputChanged"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.NoggingInfo.Depth}"/>
                         <ComboBox Grid.Row="8" Grid.Column="10"
                                   BorderThickness="1"
@@ -526,11 +552,13 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  controls:TextBoxHelper.ClearTextButton="False"
+                                 TextChanged="NumericInputChanged"
                                  IsEnabled="False"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.Trimmer.Thickness}"/>
                         <TextBox Grid.Row="10" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
+                                 TextChanged="NumericInputChanged"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalExtWallDetailInfo.Trimmer.Depth}"/>
                         <ComboBox Grid.Row="10" Grid.Column="10"
@@ -604,12 +632,14 @@
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                 TextChanged="NumericInputChanged"
                                  controls:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalIntWallDetaiInfo.TopPlate.Thickness}" />
                         <TextBox Grid.Row="0" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
+                                 TextChanged="NumericInputChanged"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalIntWallDetaiInfo.TopPlate.Depth}" />
                         <ComboBox Grid.Row="0" Grid.Column="10"
@@ -648,10 +678,12 @@
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  controls:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
+                                 TextChanged="NumericInputChanged"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalIntWallDetaiInfo.Stud.Thickness}" />
                         <TextBox Grid.Row="2" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
+                                 TextChanged="NumericInputChanged"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalIntWallDetaiInfo.Stud.Depth}"/>
                         <ComboBox Grid.Row="2" Grid.Column="10"
@@ -689,11 +721,13 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  controls:TextBoxHelper.ClearTextButton="False"
+                                 TextChanged="NumericInputChanged"
                                  IsEnabled="False"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalIntWallDetaiInfo.BottomPlate.Thickness}" />
                         <TextBox Grid.Row="4" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
+                                 TextChanged="NumericInputChanged"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalIntWallDetaiInfo.BottomPlate.Depth}" />
                         <ComboBox Grid.Row="4" Grid.Column="10"
@@ -732,11 +766,13 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  controls:TextBoxHelper.ClearTextButton="False"
+                                 TextChanged="NumericInputChanged"
                                  IsEnabled="False"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalIntWallDetaiInfo.NoggingInfo.Thickness}" />
                         <TextBox Grid.Row="6" Grid.Column="8"
                                  BorderThickness="1"
                                  materialDesign:HintAssist.IsFloating="False"
+                                 TextChanged="NumericInputChanged"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalIntWallDetaiInfo.NoggingInfo.Depth}" />
                         <ComboBox Grid.Row="6" Grid.Column="10"
@@ -775,10 +811,12 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  controls:TextBoxHelper.ClearTextButton="False"
+                                 TextChanged="NumericInputChanged"
                                  IsEnabled="False"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalIntWallDetaiInfo.Trimmer.Thickness}"/>
                         <TextBox Grid.Row="8" Grid.Column="8"
                                  BorderThickness="1"
+                                 TextChanged="NumericInputChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Text="{Binding JobInfo.GlobalWallInfo.GlobalIntWallDetaiInfo.Trimmer.Depth}" />

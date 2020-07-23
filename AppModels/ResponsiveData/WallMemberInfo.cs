@@ -11,10 +11,10 @@ namespace AppModels.ResponsiveData
     {
         #region Field
 
-        private string _noItem;
+        private int _noItem;
         // ReSharper disable once InconsistentNaming
-        protected string _thickness;
-        private string _depth;
+        protected int _thickness;
+        private int _depth;
         private string _timberGrade;
 
         #endregion
@@ -24,39 +24,39 @@ namespace AppModels.ResponsiveData
         public IWallMemberInfo BaseMaterialInfo { get; set; }
         public WallMemberType MemberType { get; set; }
 
-        public string NoItem
+        public int NoItem
         {
             get
             {
-                if (string.IsNullOrEmpty(_noItem))
+                if (_noItem==0)
                 {
-                    return BaseMaterialInfo == null ? "Nil" : BaseMaterialInfo.NoItem;
+                    return BaseMaterialInfo == null ? 0 : BaseMaterialInfo.NoItem;
                 }
                 return _noItem;
             }
             set => this.SetProperty(ref _noItem, value);
         }
 
-        public virtual string Thickness
+        public virtual int Thickness
         {
             get
             {
-                if (string.IsNullOrEmpty(_thickness))
+                if (_thickness==0)
                 {
-                    return BaseMaterialInfo == null ? "Nil" : BaseMaterialInfo.Thickness;
+                    return BaseMaterialInfo == null ? 0 : BaseMaterialInfo.Thickness;
                 }
                 return _thickness;
             }
             set => this.SetProperty(ref _thickness, value);
         }
 
-        public string Depth
+        public int Depth
         {
             get
             {
-                if (string.IsNullOrEmpty(_depth))
+                if (_depth==0)
                 {
-                    return BaseMaterialInfo == null ? "Nil" : BaseMaterialInfo.Depth;
+                    return BaseMaterialInfo == null ? 0 : BaseMaterialInfo.Depth;
                 }
                 return _depth;
             }
@@ -96,7 +96,7 @@ namespace AppModels.ResponsiveData
                 }
 
                 var result = Thickness + "x" + Depth + " " + TimberGrade;
-                if (NoItem =="1")
+                if (NoItem ==1)
                 {
                     return result;
                 }

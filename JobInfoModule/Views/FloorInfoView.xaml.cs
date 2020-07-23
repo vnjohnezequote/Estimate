@@ -25,5 +25,23 @@ namespace JobInfoModule.Views
         {
             this.InitializeComponent();
         }
+
+        private void WallHeightTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                if (!string.IsNullOrEmpty(textBox.Text)) return;
+                textBox.Text = "0";
+                textBox.SelectAll();
+
+            }
+
+            if (sender is ComboBox comboBox)
+            {
+                if (!string.IsNullOrEmpty(comboBox.Text)) return;
+                comboBox.Text = "0";
+            }
+            
+        }
     }
 }

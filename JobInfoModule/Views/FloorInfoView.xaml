@@ -32,17 +32,18 @@
             </materialDesign:ColorZone>
         </Grid>
         
-            <Grid>
+            <Grid Margin="0 10 0 0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="10"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="10"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBox materialDesign:HintAssist.Hint="Wall Height"
                          materialDesign:HintAssist.IsFloating="True"
-                         Text="{Binding Level.LevelInfo.WallHeight}"/>
+                         Text="{Binding Level.LevelInfo.WallHeight}"
+                         TextChanged="WallHeightTextBox"/>
                 <ComboBox materialDesign:HintAssist.Hint="Load Bearing Wall Spacing"
                           materialDesign:HintAssist.IsFloating="True"
                           ItemsSource="{Binding Level.LevelInfo.ExternalWallSpacing}"

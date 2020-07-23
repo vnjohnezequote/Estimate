@@ -30,39 +30,31 @@ namespace AppModels.ResponsiveData
 
         public int WallHeight
         {
-            get => this._wallHeight;
+            get => _wallHeight == 0 ? GlobalWallInformation.WallHeight : _wallHeight;
             set => this.SetProperty(ref this._wallHeight, value);
         }
-        public string ExternalDoorHeight
+        public int ExternalDoorHeight
         {
             get;
         }
-        public string InternalDoorHeight
+        public int InternalDoorHeight
         {
             get;
         }
         public int StepDown => GlobalWallInformation.StepDown;
         public int RaisedCeilingHeight { get; }
-        public string ExternalWallTimberDepth { get; }
-        public string InternalWallTimberDepth { get; }
+        public int ExternalWallTimberDepth { get; }
+        public int InternalWallTimberDepth { get; }
         public string ExternalWallTimberGrade { get; }
         public string InternalWallTimberGrade { get; }
 
         public IGlobalWallInfo GlobalWallInformation { get; }
         public NoggingMethodType NoggingMethod { get; }
         public double CeilingPitch => GlobalWallInformation.CeilingPitch;
-        public string ExternalWallSpacing { get; }
-        public string InternalWallSpacing { get; }
-        public string ExternalWallThickness { get; }
-        public string InternalWallThickness { get; }
-        public GlobalWallDetailInfo GlobalExtWallDetailInfo { get; }
-        public GlobalWallDetailInfo GlobalIntWallDetaiInfo { get; }
-        public WallMemberInfo RibbonPlate { get; }
-        public WallMemberInfo TopPlate { get; }
-        public WallMemberInfo Stud { get; }
-        public WallMemberInfo Nogging { get; }
-        public WallMemberInfo Trimmer { get; }
-        public WallMemberInfo BottomPlate { get; }
+        public int ExternalWallSpacing { get; }
+        public int InternalWallSpacing { get; }
+        public int ExternalWallThickness { get; }
+        public int InternalWallThickness { get; }
 
         #endregion
 

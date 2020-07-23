@@ -22,7 +22,7 @@ namespace AppModels.ResponsiveData
             set => this.SetProperty(ref this._timberMaterialInfo, value);
         }
         public IWallInfo WallInfo { get; set; }
-        public string Thickness => WallInfo.WallThickness;
+        public int Thickness => WallInfo.WallThickness;
 
         #endregion
 

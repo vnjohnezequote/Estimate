@@ -27,14 +27,14 @@ namespace AppModels.ResponsiveData
         private double _ceilingPitch;
         public RoofFrameType _roofFrameType;
         private NoggingMethodType _noggingMethod;
-        private string _externalDoorHeight;
-        private string _internalDoorHeight;
-        private string _externalWallSpacing;
-        private string _internalWallSpacing;
-        private string _externalWallThickness;
-        private string _internalWallThickness;
-        private string _externalWallTimberDepth;
-        private string _internalWallTimberDepth;
+        private int _externalDoorHeight;
+        private int _internalDoorHeight;
+        private int _externalWallSpacing;
+        private int _internalWallSpacing;
+        private int _externalWallThickness;
+        private int _internalWallThickness;
+        private int _externalWallTimberDepth;
+        private int _internalWallTimberDepth;
         private string _externalWallTimberGrade;
         private string _internalWallTimberGrade;
         private int _wallHeight;
@@ -53,7 +53,7 @@ namespace AppModels.ResponsiveData
             get=>_wallHeight;
             set => SetProperty(ref _wallHeight, value);
         }
-        public string ExternalDoorHeight
+        public int ExternalDoorHeight
         {
             get => _externalDoorHeight;
             set
@@ -62,46 +62,46 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(InternalDoorHeight));
             }
         }
-        public string InternalDoorHeight
+        public int InternalDoorHeight
         {
-            get => (string.IsNullOrEmpty(_internalDoorHeight)) ? _externalDoorHeight : _internalDoorHeight;
+            get => _internalDoorHeight==0 ? _externalDoorHeight : _internalDoorHeight;
             set => SetProperty(ref _internalDoorHeight, value);
         }
-        public string ExternalWallSpacing
+        public int ExternalWallSpacing
         {
             get=>_externalWallSpacing;
             set=>SetProperty(ref _externalWallSpacing,value);
         }
-        public string InternalWallSpacing
+        public int InternalWallSpacing
         {
-            get => string.IsNullOrEmpty(_internalWallSpacing) ? _externalWallSpacing : _internalWallSpacing;
+            get => _internalWallSpacing==0 ? _externalWallSpacing : _internalWallSpacing;
             set
             {
-                if (value == _externalWallSpacing )
+                if (value == _externalWallSpacing)
                 {
-                    value = null;
+                    value = 0;
                 }
                 SetProperty(ref _internalWallSpacing, value);
             } 
         }
-        public string ExternalWallThickness
+        public int ExternalWallThickness
         {
             get=>_externalWallThickness;
             set=>SetProperty(ref _externalWallThickness,value);
         }
-        public string InternalWallThickness
+        public int InternalWallThickness
         {
-            get => string.IsNullOrEmpty(_internalWallThickness) ? _externalWallThickness : _internalWallThickness;
+            get => _internalWallThickness==0 ? _externalWallThickness : _internalWallThickness;
             set => SetProperty(ref _internalWallThickness, value);
         }
-        public string ExternalWallTimberDepth 
+        public int ExternalWallTimberDepth 
         { 
             get=>_externalWallTimberDepth;
             set => SetProperty(ref _externalWallTimberDepth, value);
         }
-        public string InternalWallTimberDepth
+        public int InternalWallTimberDepth
         {
-            get => string.IsNullOrEmpty(_internalWallTimberDepth) ? _externalWallTimberDepth : _internalWallTimberDepth;
+            get => _internalWallTimberDepth==0 ? _externalWallTimberDepth : _internalWallTimberDepth;
 
             set => SetProperty(ref _internalWallTimberDepth, value);
         }
@@ -146,8 +146,8 @@ namespace AppModels.ResponsiveData
         }
         public int RaisedCeilingHeight
         {
-            get=>_raisedCeilingHeight;
-            set=>SetProperty(ref _raisedCeilingHeight,value);
+            get => _raisedCeilingHeight;
+            set => SetProperty(ref _raisedCeilingHeight, value);
         }
         public double RoofPitch
         {
@@ -176,11 +176,12 @@ namespace AppModels.ResponsiveData
 
         public GlobalWallInfo()
         {
-            ExternalDoorHeight = "2100";
-            ExternalWallThickness = "90";
-            ExternalWallTimberDepth = "35";
+            WallHeight = 2440;
+            ExternalDoorHeight = 2100;
+            ExternalWallThickness = 90;
+            ExternalWallTimberDepth = 35;
             ExternalWallTimberGrade = "MGP10";
-            ExternalWallSpacing = "450";
+            ExternalWallSpacing = 450;
             RoofFrameType = RoofFrameType.Truss;
             NoggingMethod = NoggingMethodType.AsWall;
             GlobalExternalWallInfo = new BasicWallInfor(this,WallType.LBW);

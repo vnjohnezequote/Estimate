@@ -9,9 +9,9 @@ namespace AppModels.Interaface
         IGlobalWallInfo GlobalWallInfo { get; }
         WallType WallType { get; }
 
-        string WallThickness { get; }
-        string Depth { get; }
+        int WallThickness { get; }
+        int Depth { get; }
         string TimberGrade { get; }
-        string WallSpacing { get; }
+        int WallSpacing { get; }
     }
 }

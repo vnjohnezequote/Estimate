@@ -104,14 +104,16 @@ namespace JobInfoModule.ViewModels
 
         #region Command
 
+
         /// <summary>
         /// Gets the create floor command.
         /// </summary>
         public ICommand CreateFloorCommand { get; private set; }
+        public ICommand OnResetNonLoabBWSpacing { get; private set; }
 
         #endregion
         #region Property
-        public List<string> WallSpacings { get; set; } = new List<string>(){"300","350","400","450","600"};
+        public List<int> WallSpacings { get; set; } = new List<int>(){300,350,400,450,600};
         public List<string> TimberGradeList { get; set; } = new List<string>(){ "MGP10", "MGP12", "F5" ,"F7","F17"};
         /// <summary>
         /// Gets or sets the job.

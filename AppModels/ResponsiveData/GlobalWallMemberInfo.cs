@@ -12,23 +12,23 @@ namespace AppModels.ResponsiveData
     public class GlobalWallMemberInfo : BindableBase,IWallMemberInfo
     {
         #region Field
-        protected string _thickness;
-        protected string _depth;
-        protected string _noItem;
+        protected int _thickness;
+        protected int _depth;
+        protected int _noItem;
         protected string _timberGrade;
         #endregion
         #region Property
         public IBasicWallInfo GlobalWallInfo { get; private set; }
         public IWallMemberInfo BaseMaterialInfo { get; private set; }
         public WallType WallType=>GlobalWallInfo.WallType;
-        public virtual string NoItem
+        public virtual int NoItem
         {
             get
             {
 
-                if (!string.IsNullOrEmpty(_noItem))
+                if (_noItem!=0)
                     return _noItem;
-                    return BaseMaterialInfo!=null ? BaseMaterialInfo.NoItem : "1";
+                    return BaseMaterialInfo!=null ? BaseMaterialInfo.NoItem : 1;
             } 
 
             set
@@ -37,11 +37,11 @@ namespace AppModels.ResponsiveData
                 CallBackPropertyChanged();
             } 
         }
-        public virtual string Thickness
+        public virtual int Thickness
         {
             get
             {
-                if (!string.IsNullOrEmpty(_thickness))
+                if (_thickness!=0)
                 {
                     return _thickness;
                 }
@@ -58,11 +58,11 @@ namespace AppModels.ResponsiveData
                 this.CallBackPropertyChanged();
             }
         }
-        public virtual string Depth
+        public virtual int Depth
         {
             get
             {
-                if (!string.IsNullOrEmpty(_depth))
+                if (_depth!=0)
                 {
                     return this._depth;
                 }
@@ -117,7 +117,7 @@ namespace AppModels.ResponsiveData
         }
 
         public WallMemberType MemberType { get; private set; }
-        public string Size => this.NoItem == "1" ? this.Thickness + "x" + this.Depth : this.NoItem + "/" + this.Thickness + "x" + this.Depth;
+        public string Size => this.NoItem == 1 ? this.Thickness + "x" + this.Depth : this.NoItem + "/" + this.Thickness + "x" + this.Depth;
         public string SizeGrade => this.Size + " " + this.TimberGrade;
 
         #endregion
