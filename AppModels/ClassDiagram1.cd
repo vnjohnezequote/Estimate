@@ -8,7 +8,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.AppData.LayerItem" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="22.75" Y="3.5" Width="1.5" />
+    <Position X="24.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BEIAMAAgECAIEAgAEAAAAAYAAAIJACQMIAAAgIAAAAA=</HashCode>
       <FileName>AppData\LayerItem.cs</FileName>
@@ -16,7 +16,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="AppModels.Comparer.WallTypeComparer" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="17.5" Y="6.5" Width="1.5" />
+    <Position X="19.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
       <FileName>Comparer\WallTypeComparer.cs</FileName>
@@ -38,7 +38,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.CustomEntity.LinearPathWall2D" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="19.25" Y="4.5" Width="1.5" />
+    <Position X="22.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAIAAAA=</HashCode>
       <FileName>CustomEntity\LinearPathWall2D.cs</FileName>
@@ -46,14 +46,14 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="AppModels.CustomEntity.PictureEntity" Collapsed="true">
-    <Position X="24.5" Y="4.5" Width="1.5" />
+    <Position X="14" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>CustomEntity\PictureEntity.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.CustomEntity.Wall2D" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="24.5" Y="5.5" Width="1.5" />
+    <Position X="12.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAIAAAA=</HashCode>
       <FileName>CustomEntity\Wall2D.cs</FileName>
@@ -90,7 +90,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.Factories.WallMemberFactory" Collapsed="true">
-    <Position X="12.25" Y="6.5" Width="1.5" />
+    <Position X="14" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Factories\WallMemberFactory.cs</FileName>
@@ -146,63 +146,63 @@
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.JobInfoPoco" Collapsed="true">
-    <Position X="15.75" Y="3.5" Width="1.5" />
+    <Position X="17.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AFAAAAALBAAAAQAIBQBAgAgAAA4EAAARQAgAAACEAAA=</HashCode>
       <FileName>PocoDataModel\JobInfoPoco.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.JobModelPoco" Collapsed="true">
-    <Position X="19.25" Y="3.5" Width="1.5" />
+    <Position X="21" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAEAAAAA=</HashCode>
       <FileName>PocoDataModel\JobModelPoco.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.JobWallDefaultInfoPoco" Collapsed="true">
-    <Position X="21" Y="3.5" Width="1.5" />
+    <Position X="22.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAEAAAAAAAAAAAAAAAAAABAEAAAAEAAAAAQFA=</HashCode>
       <FileName>PocoDataModel\JobWallDefaultInfoPoco.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.LayerItemPoco" Collapsed="true">
-    <Position X="24.5" Y="3.5" Width="1.5" />
+    <Position X="12.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>PocoDataModel\LayerItemPoco.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.LevelWallDefaultInfoPoco" Collapsed="true">
-    <Position X="15.75" Y="4.5" Width="1.5" />
+    <Position X="17.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAEAAAAAAAAAAAAAAAACEBAAAAAAEAAABAQEA=</HashCode>
       <FileName>PocoDataModel\LevelWallDefaultInfoPoco.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.LevelWallPoco" Collapsed="true">
-    <Position X="17.5" Y="4.5" Width="1.5" />
+    <Position X="21" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAAAAIAASMAAAAAAAAAABAAAAAIAAAEAAAAAAAAA=</HashCode>
       <FileName>PocoDataModel\LevelWallPoco.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.OpeningPoco" Collapsed="true">
-    <Position X="22.75" Y="4.5" Width="1.5" />
+    <Position X="12.25" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAABAAAEMAAAAAAAEQAAAAAAIAAAAAAAAAAAAE=</HashCode>
       <FileName>PocoDataModel\OpeningPoco.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.RlwCalcPoco" Collapsed="true">
-    <Position X="14" Y="5.5" Width="1.5" />
+    <Position X="17.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PocoDataModel\RlwCalcPoco.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.TimberBasePoco" Collapsed="true">
-    <Position X="19.25" Y="5.5" Width="1.5" />
+    <Position X="22.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAQCAAAABAABAAAEABBAAAAAAABAAAAgAAAAAAAAAAA=</HashCode>
       <FileName>PocoDataModel\TimberBasePoco.cs</FileName>
@@ -237,14 +237,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.WallStudPoco" Collapsed="true">
-    <Position X="14" Y="6.5" Width="1.5" />
+    <Position X="15.75" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAQAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
       <FileName>PocoDataModel\WallStudPoco.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.PocoDataModel.WallTypePoco" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="19.25" Y="6.5" Width="1.5" />
+    <Position X="21" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAQAAAAAAAAAAAQAAQAAAAAAAAAAgAA=</HashCode>
       <FileName>PocoDataModel\WallTypePoco.cs</FileName>
@@ -254,7 +254,7 @@
   <Class Name="AppModels.ResponsiveData.BasicWallInfor" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="14" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAAAAAAAABAAAAgABAAAAgAAAAAAAAAAE=</HashCode>
+      <HashCode>AgAAAAABAAAAAAAAAAABAAAAgADAAAAgAAAAAAAAAAE=</HashCode>
       <FileName>ResponsiveData\BasicWallInfor.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -318,7 +318,7 @@
   <Class Name="AppModels.ResponsiveData.GlobalWallDetailInfo" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="22.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAJABAAABAAQAABABAAkAAAAAACAAIAABgASAA=</HashCode>
+      <HashCode>AAAAAEAJABAAABAAAAABABAAkACAAAACAAIAABgASAA=</HashCode>
       <FileName>ResponsiveData\GlobalWallDetailInfo.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -326,27 +326,35 @@
   <Class Name="AppModels.ResponsiveData.GlobalWallInfo" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="24.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AFAOQAQIiEgAEEACIAAAQCEiAAOTAAAAAgFQBEpEAUg=</HashCode>
+      <HashCode>AlAOQAQIgEgAEFACIAAAQGEigAODAAAIAgFABkpEAUg=</HashCode>
       <FileName>ResponsiveData\GLobalWallInfo.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AppModels.ResponsiveData.IntegerDimension" Collapsed="true">
+  <Class Name="AppModels.ResponsiveData.GlobalWallMemberInfo" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="12.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAgABACABgIAAAAAAAAEAgABAAAChgAAACAAQAAA=</HashCode>
+      <FileName>ResponsiveData\GlobalWallMemberInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AppModels.ResponsiveData.IntegerDimension" Collapsed="true">
+    <Position X="14" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAggAAAIAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
       <FileName>ResponsiveData\IntegerDimension.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.JobInfo" Collapsed="true">
-    <Position X="14" Y="3.5" Width="1.5" />
+    <Position X="15.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAEIAAALhASCTYAIBIBSgAgAYAQEAAA9QIhACEGEBhw=</HashCode>
       <FileName>ResponsiveData\JobInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.JobModel" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="17.5" Y="3.5" Width="1.5" />
+    <Position X="19.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAACABAAAAAEAAAAA=</HashCode>
       <FileName>ResponsiveData\JobModel.cs</FileName>
@@ -354,43 +362,51 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="AppModels.ResponsiveData.LevelGlobalWallInfo" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="12.25" Y="4.5" Width="1.5" />
+    <Position X="14" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAAAEQACAAAAAAAAAIBADAiAQGTAAACAAFABEhACEg=</HashCode>
+      <HashCode>AgAEAAQAAEAAEFAAAAAAAGAqgQGDAAAIAAFABkBEQUg=</HashCode>
       <FileName>ResponsiveData\LevelGlobalWallInfo.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="AppModels.ResponsiveData.LevelWall" Collapsed="true">
-    <Position X="14" Y="4.5" Width="1.5" />
+    <Position X="15.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAEAAAAaAAWMgAAAAIAACABAAAAAYgAAkAAAAAIEAA=</HashCode>
+      <HashCode>AQAEAAAAaAAWMgAAAAIAACAFAAAAAYgAAkAAAAAIGAA=</HashCode>
       <FileName>ResponsiveData\LevelWall.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="AppModels.ResponsiveData.LevelWallDetailInfo" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAJABAAABAAAAABABAAkACAAAACAgIAABgASAA=</HashCode>
+      <FileName>ResponsiveData\LevelWallDetailInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
   <Class Name="AppModels.ResponsiveData.Opening" Collapsed="true">
-    <Position X="21" Y="4.5" Width="1.5" />
+    <Position X="24.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAABAAAEMAAAAAAAEQAAAAAAIQAAAAAAAACAAE=</HashCode>
       <FileName>ResponsiveData\Opening.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.RlwCalc" Collapsed="true">
-    <Position X="12.25" Y="5.5" Width="1.5" />
+    <Position X="15.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAFAAAAAAIABAQAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAABAAAAAAIABAQAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
       <FileName>ResponsiveData\RlwCalc.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.Shape" Collapsed="true">
-    <Position X="15.75" Y="5.5" Width="1.5" />
+    <Position X="19.25" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABACAgAAAAAAAAEAAABAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ResponsiveData\Shape.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.TimberBase" Collapsed="true">
-    <Position X="17.5" Y="5.5" Width="1.5" />
+    <Position X="21" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQKAAAAACABgAAAAAAAAAEAAABAAACggAAAAAAQAAA=</HashCode>
       <FileName>ResponsiveData\TimberBase.cs</FileName>
@@ -403,16 +419,8 @@
       <FileName>ResponsiveData\TimberWall.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AppModels.ResponsiveData.GlobalWallMemberInfo" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="7.25" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQIAgABACABgBAAAAAAAAEAAABAAAChgAAAAAAQAAA=</HashCode>
-      <FileName>ResponsiveData\GlobalWallMemberInfo.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
   <Class Name="AppModels.ResponsiveData.Treatment" Collapsed="true">
-    <Position X="22.75" Y="5.5" Width="1.5" />
+    <Position X="24.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ResponsiveData\Treatment.cs</FileName>
@@ -421,7 +429,7 @@
   <Class Name="AppModels.ResponsiveData.WallBase" Collapsed="true">
     <Position X="1.75" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAACAAAhCAoQAgADAABBgDABgECCAAACDAkTFAgBiQE=</HashCode>
+      <HashCode>IAACAEAhCAoQAgADAABBgDABgECCAAACDAkTFAgBiQE=</HashCode>
       <FileName>ResponsiveData\WallBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -452,7 +460,7 @@
   <Class Name="AppModels.ResponsiveData.WallMemberInfo" Collapsed="true">
     <Position X="0.5" Y="9.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAwIAgAAAAABgIAAAAgAAAAAAABAAAChgAAACAAQAAA=</HashCode>
+      <HashCode>AAwIAgAAAAABgIAAAAAAAAAAgABAAAChgAAACAAQAAA=</HashCode>
       <FileName>ResponsiveData\WallMemberInfo.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -479,14 +487,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.WallTempLength" Collapsed="true">
-    <Position X="15.75" Y="6.5" Width="1.5" />
+    <Position X="17.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAABCAQRAAAAAAAAABACAAAAAAAA=</HashCode>
       <FileName>ResponsiveData\WallTempLength.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.WindCategory" Collapsed="true">
-    <Position X="21" Y="6.5" Width="1.5" />
+    <Position X="22.75" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ResponsiveData\WindCategory.cs</FileName>
@@ -540,7 +548,7 @@
   <Interface Name="AppModels.Interaface.IBasicWallInfo" Collapsed="true">
     <Position X="12.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAAAAAAAABAAAAgABAAAAgAAAAAAAAAAE=</HashCode>
+      <HashCode>AAAAAAABAAAAAAAAAAABAAAAgADAAAAgAAAAAAAAAAE=</HashCode>
       <FileName>Interaface\IBasicWallInfo.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -568,14 +576,14 @@
   <Interface Name="AppModels.Interaface.IGlobalWallDetail" Collapsed="true">
     <Position X="19.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAEABAAAAAAAAAAABABAAgACAAAACAAAAAAgACAA=</HashCode>
       <FileName>Interaface\IGlobalWallDetail.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="AppModels.Interaface.IGlobalWallInfo" Collapsed="true">
     <Position X="21" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAQACAAAAAAAAAAAACACAAGBAAAAAAEABABAAEg=</HashCode>
+      <HashCode>AAAAAAQAAEAAEBAAAAAAAGACgAGBAAAIAAEABkBAAUg=</HashCode>
       <FileName>Interaface\IGlobalWallInfo.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -610,7 +618,7 @@
   <Interface Name="AppModels.Interaface.IWallMemberInfo" Collapsed="true">
     <Position X="15.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAgAAAAABAAAAAAAAAAAAAABAAAAhAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAgAAAAABAAAAAAAAAAAAgABAAAAhAAAAAAAAAAA=</HashCode>
       <FileName>Interaface\IWallMemberInfo.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -680,7 +688,7 @@
   <Enum Name="AppModels.Enums.WallMemberType" Collapsed="true">
     <Position X="14" Y="10.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAAAAAABABAAAAAAAAACAAAAAAgACAA=</HashCode>
+      <HashCode>AAAAAEABAAAAAEAAAAABABAAAAAAAAACAAAAAAgACAA=</HashCode>
       <FileName>Enums\WallMemberType.cs</FileName>
     </TypeIdentifier>
   </Enum>

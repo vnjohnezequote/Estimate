@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using AppModels.AppData;
 using AppModels.Enums;
+using AppModels.Factories;
 using AppModels.Interaface;
 using Prism.Mvvm;
 
@@ -115,8 +116,6 @@ namespace AppModels.ResponsiveData
         }
         public int IsHPitching { get; set; }
         public int HPitching { get; set; }
-        
-        
         public int StepDown
         {
             get
@@ -145,18 +144,24 @@ namespace AppModels.ResponsiveData
         }
 
         
-        public int IsNonLbWall { get; set; }
-        public WallMember RibbonPlate { get; set; }
-        public WallMember TopPlate { get; set; }
-        public WallMember BottomPlate { get; set; }
-        public WallStud Stud { get; set; }
-
+        public int IsNonLbWall { get; private set; }
+        public WallMember RibbonPlate { get; private set; }
+        public WallMember TopPlate { get; private set; }
+        public WallMember BottomPlate { get; private set; }
+        public WallStud Stud { get; private set; }
+        public WallNogging Nogging { get; private set; }
         #endregion
         #region Constructor
 
         public WallBase(int id ,IGlobalWallInfo globalWallInfo)
         {
-            
+            this.Id = id;
+            this.GlobalWallInfo = globalWallInfo;
+            //RibbonPlate = new WallMember(this,GlobalWallInfo.GlobalExtWallDetailInfo.RibbonPlate);
+            //TopPlate = new WallMember(this,GlobalWallInfo.GlobalExtWallDetailInfo.TopPlate);
+            //BottomPlate = new WallMember(this,GlobalWallInfo.GlobalExtWallDetailInfo.BottomPlate);
+            //Stud = new WallStud(this,GlobalWallInfo.GlobalExtWallDetailInfo.Stud);
+            //Nogging = new WallNogging(this,GlobalWallInfo.GlobalExtWallDetailInfo.Nogging);
         }
 
 
@@ -169,6 +174,7 @@ namespace AppModels.ResponsiveData
         {
             RaisePropertyChanged(nameof(WallSpacing));
             RaisePropertyChanged(nameof(WallThickness));
+            //RibbonPlate
         }
         #endregion
     }

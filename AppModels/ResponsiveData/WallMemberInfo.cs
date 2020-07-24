@@ -124,18 +124,27 @@ namespace AppModels.ResponsiveData
 
         private void WallMember_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(BaseMaterialInfo))
+            {
+             RaisePropertyChanged(nameof(NoItem));
+             RaisePropertyChanged(nameof(Thickness));
+             RaisePropertyChanged(nameof(Depth));
+             RaisePropertyChanged(nameof(TimberGrade));
+             RaisePropertyChanged(nameof(Size));
+            }
             NotifyPropertyChanged(e.PropertyName);
         }
 
         private void BaseMaterialInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             RaisePropertyChanged(e.PropertyName);
+            RaisePropertyChanged(nameof(Size));
         }
 
-        private void WallInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            RaisePropertyChanged(e.PropertyName);
-        }
+        //private void WallInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        //{
+        //    RaisePropertyChanged(e.PropertyName);
+        //}
 
 
 
