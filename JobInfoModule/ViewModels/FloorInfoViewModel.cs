@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Windows.Input;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using AppModels;
@@ -12,6 +13,12 @@ namespace JobInfoModule.ViewModels
 {
     public class FloorInfoViewModel : BaseFloorViewModelAware
     {
+        #region Property
+
+        public List<int> WallSpacings { get; set; } = new List<int>() { 300, 350, 400, 450, 600 };
+        public List<string> TimberGradeList { get; set; } = new List<string>() { "MGP10", "MGP12", "F5", "F7", "F17" };
+
+        #endregion
         #region Constructor
 
         /// <summary>

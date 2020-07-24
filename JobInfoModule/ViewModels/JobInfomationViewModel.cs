@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Windows;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
@@ -15,11 +16,11 @@ using Unity;
 
 namespace JobInfoModule.ViewModels
 {
-    public class JobInfomationViewModel : BaseViewModel, INavigationAware
+    public class JobInfomationViewModel : BaseViewModel,INavigationAware
     {
 		#region private member
         private Visibility _isDesignVisibility;
-		private JobModel _job;
+		//private JobModel _job;
         private ClientPoco _selectedClient;
 		
 		#endregion
@@ -31,26 +32,41 @@ namespace JobInfoModule.ViewModels
 		 public JobInfomationViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IJob jobModel)
             : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
-			this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.ChangeClient);
+            JobModel.Info.PropertyChanged += Info_PropertyChanged;
+            //this.LoadInformation();
+			//this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.ChangeClient);
         }
-		#endregion
-		
-		#region Public Member
-		/// <summary>
+
+        private void Info_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ClientName")
+            {
+                RaisePropertyChanged(nameof(IsDesignVisibility));
+            }
+        }
+        #endregion
+
+        #region Public Member
+        /// <summary>
         /// Gets or sets the is design visibility.
         /// </summary>
         public Visibility IsDesignVisibility
         {
-            get => this._isDesignVisibility;
-            set => this.SetProperty(ref this._isDesignVisibility, value);
+            get
+            {
+                if (string.IsNullOrEmpty(JobModel.Info.ClientName) || JobModel.Info.ClientName != "Prenail")
+                    return Visibility.Collapsed;
+                return Visibility.Visible;
+            }
+
             
         }
-		
-		public JobModel Job
-        {
-            get => this._job;
-            set => this.SetProperty(ref this._job, value);
-        }
+
+        //public JobModel Job
+        //{
+        //    get => this._job;
+        //    set => this.SetProperty(ref this._job, value);
+        //}
 
         public ClientPoco SelectedClient
         {
@@ -67,58 +83,62 @@ namespace JobInfoModule.ViewModels
         /// <param name="selectClient"></param>
         private void ChangeClient(ClientPoco selectClient)
         {
-            if (selectClient ==null)
-            {
-                this.IsDesignVisibility = Visibility.Collapsed;
-                return;
-            }
-            this.IsDesignVisibility = selectClient.Name == "Prenail" ? Visibility.Visible : Visibility.Collapsed;
-			//this.LoadInformation();
+            //this.LoadInformation();
         }
 		
 		public void OnNavigatedTo(NavigationContext navigationContext)
         {
-             //if (navigationContext.Parameters["JobDefaultInfo"] is JobModel job)
-             //{
-             //    this.JobDefaultInfo = job;
-             //}
-			
-             //this.LoadInformation();
+            //if (navigationContext.Parameters["JobModel"] is JobModel job)
+            //{
+            //    this.Job = job;
+            //}
+
+            this.LoadInformation();
         }
 		
 		public void LoadInformation()
 		{
-			//this.TranfersJob(JobInformationRegions.HJobInformation,nameof(HorizontalJobInfoView));
-			//this.TranfersJob(JobInformationRegions.MainWindInforRegion,nameof(WindCategoryView));
-			//this.TranfersJob(JobInformationRegions.MainRoofInfoRegion,nameof(RoofInfoView));
-			//if (this.JobDefaultInfo.Info.ClientName == "Prenail")
+			this.TranfersJob(JobInformationRegions.HJobInformation,nameof(JobInfoView));
+			this.TranfersJob(JobInformationRegions.MainWindInforRegion,nameof(WindCategoryView));
+			this.TranfersJob(JobInformationRegions.MainRoofInfoRegion,nameof(RoofInfoView));
+			//if (this.JobModel.Info.ClientName == "Prenail")
 			//{
-			//	this.TranfersJob(JobInformationRegions.MainDesignRegion,nameof(DesignInfoView));
+			this.TranfersJob(JobInformationRegions.MainDesignRegion,nameof(DesignInfoView));
 			//}
 			
-			//this.TranferFloorInfo(JobInformationRegions.MainFloorChooseRegion,nameof(LevelInfoView));
+			this.TranfersFloorInfo(JobInformationRegions.MainFloorChooseRegion,nameof(LevelInfoView));
 
 		}
 		private void TranfersJob(string regionName, string uriPath)
 		{
-            var parameters = new NavigationParameters {{"JobDefaultInfo", JobModel.Info}};
-            if (Job!=null)
-            {
-                this.RegionManager.RequestNavigate(regionName,uriPath,parameters);   
-            }
-		}
+            //var parameters = new NavigationParameters {{"JobDefaultInfo", JobModel.Info}};
+            //if (Job!=null)
+            //{
+            //    this.RegionManager.RequestNavigate(regionName,uriPath,parameters);   
+            //}
+            this.RegionManager.RequestNavigate(regionName, uriPath);
+        }
 		
-		private void TranferFloorInfo(string regionName, string uriPath)
+		private void TranfersFloorInfo(string regionName, string uriPath)
 		{
-			var parameters = new NavigationParameters {{"JobDefaultInfo", JobModel.Info}};
-			parameters.Add("Levels", JobModel.Levels);
-            if (Job.Info!=null && JobModel.Levels != null)
+            //var parameters = new NavigationParameters {{"JobDefaultInfo", JobModel.Info}};
+            //parameters.Add("Levels", JobModel.Levels);
+            //         if (Job.Info!=null && JobModel.Levels != null)
+            //         {
+            //             this.RegionManager.RequestNavigate(regionName,uriPath,parameters);   
+            //         }
+            var parameters = new NavigationParameters
             {
-                this.RegionManager.RequestNavigate(regionName,uriPath,parameters);   
+                { "JobDefaultInfo", this.JobModel.Info },
+                { "Levels", this.JobModel.Levels }
+            };
+            if (this.JobModel.Info != null && this.JobModel.Levels != null)
+            {
+                this.RegionManager.RequestNavigate(regionName, uriPath, parameters);
             }
-		}
-		
-		public bool IsNavigationTarget(NavigationContext navigationContext)
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
         {
             return true;
         }

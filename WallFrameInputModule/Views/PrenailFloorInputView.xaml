@@ -51,45 +51,46 @@
 				<StackPanel Orientation="Horizontal">
 					<!-- Job Information -->
 					<StackPanel>
-						<TextBlock Text="{Binding Title}" />
-						<StackPanel>
+						<materialDesign:ColorZone Mode="PrimaryDark" Padding="10">
+                            <TextBlock Text="{Binding Title}" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </materialDesign:ColorZone>
+                        
+						<StackPanel Margin="0 10 0 0">
 							<StackPanel Orientation="Horizontal">
-								<TextBox materialDesign:HintAssist.Hint="External Height" Text="{Binding Level.LevelInfo.WallHeight}" />
-								<TextBox materialDesign:HintAssist.Hint="External WallThickness" Text="{Binding Level.LevelInfo.ExternalWallThickness}" />
-								<TextBox materialDesign:HintAssist.Hint="External Wall Spacing" Text="{Binding Level.LevelInfo.ExternalWallSpacing.Size}"/>
+								<TextBox materialDesign:HintAssist.Hint="External Wall Height" Text="{Binding Level.LevelInfo.WallHeight}" />
+								<TextBox materialDesign:HintAssist.Hint="External WallThickness" Text="{Binding Level.LevelInfo.ExternalWallThickness}" Margin="10 0 0 0" />
+								<TextBox materialDesign:HintAssist.Hint="External Wall Spacing" Text="{Binding Level.LevelInfo.ExternalWallSpacing}" Margin="10 0 0 0"/>
 							</StackPanel>
-							<StackPanel Orientation="Horizontal">
-								<TextBox materialDesign:HintAssist.Hint="Internal Height" Text="{Binding Level.LevelInfo.InternalWallHeight}" />
-								<TextBox materialDesign:HintAssist.Hint="Internal WallThickness" Text="{Binding Level.LevelInfo.InternalWallThickness}" />
-								<TextBox materialDesign:HintAssist.Hint="Internal Wall Spacing" Text="{Binding Level.LevelInfo.InternalWallSpacing.Size}"/>
+							<StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+								<TextBox materialDesign:HintAssist.Hint="Internal Wall Height" Text="{Binding Level.LevelInfo.InternalWallHeight,Mode=OneWay}" />
+								<TextBox materialDesign:HintAssist.Hint="Internal WallThickness" Text="{Binding Level.LevelInfo.InternalWallThickness}" Margin="10 0 0 0" />
+								<TextBox materialDesign:HintAssist.Hint="Internal Wall Spacing" Text="{Binding Level.LevelInfo.InternalWallSpacing}" Margin="10 0 0 0"/>
 							</StackPanel>
-							<StackPanel Orientation="Horizontal">
-								<TextBox materialDesign:HintAssist.Hint="Roof Pitch" Text ="{Binding Level.LevelInfo.RoofPitch.Size}" />
-								<TextBox materialDesign:HintAssist.Hint="Lintel over 3.6" Text="{Binding Level.LintelLm}" />
-								<TextBox materialDesign:HintAssist.Hint="Step Down" Text="{Binding Level.LevelInfo.StepDown.Size}" />
-							</StackPanel>
+							<DockPanel Margin="0 10 0 0" HorizontalAlignment="Stretch">
+								<TextBox materialDesign:HintAssist.Hint="Ceiling Pitch" Text ="{Binding Level.LevelInfo.CeilingPitch,Mode=OneWay}" HorizontalAlignment="Stretch"/>
+								<TextBox materialDesign:HintAssist.Hint="Lintel over 3.6" Text="{Binding Level.LintelLm}" Margin="10 0 0 0"/>
+								<TextBox materialDesign:HintAssist.Hint="Step Down" Text="{Binding Level.LevelInfo.StepDown,Mode=OneWay}" Margin="10 0 0 0" HorizontalAlignment="Stretch"/>
+							</DockPanel>
 						</StackPanel>
 					</StackPanel>
 					<!-- Button -->
-					<StackPanel>
-						<Button Content="Reset Wall" />
+					<StackPanel Margin="50 10 0 0">
+                        <Button Content="Reset Wall" Style="{StaticResource MaterialDesignRaisedAccentButton}"/>
 						<Button Content="Sort" Command="{Binding WallInputSortCommand}"/>
-						<Button Content="Clear Length" />
-						<Button Content="Undo" />
+                        <Button Content="Undo" />
 						<Button Content="Check" />
 						<Button Content="Add" Command= "{Binding NewWallRowInputCommand}"/>
 						<Button Content="Delete" Command = "{Binding DeleteWallRowCommand}" CommandParameter = "{Binding ElementName = WallInput}"/>
-						<Button Content="Refresh Wall" Command="{Binding ReFreshWallCommand}"/>
-					</StackPanel>
+                    </StackPanel>
 					<!-- Report Button -->
-					<StackPanel>
+					<StackPanel Margin="50 10 0 0">
 
 						<Button Content="Single" />
 						<Button Content="Double Story" />
 						<Button Content="Three Story" />
 					</StackPanel>
 					<StackPanel>
-						<Button Content="Get Length" Command="{Binding LoadCSVFileCommand}"/>
+						<!--<Button Content="Get Length" Command="{Binding LoadCSVFileCommand}"/>-->
 					</StackPanel>
 				</StackPanel>
 				<StackPanel Orientation="Horizontal">

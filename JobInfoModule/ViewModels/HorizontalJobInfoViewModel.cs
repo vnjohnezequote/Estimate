@@ -34,7 +34,7 @@ namespace JobInfoModule.ViewModels
     /// <summary>
     /// The job info view model.
     /// </summary>
-    public class HorizontalJobInfoViewModel : BaseViewModelAware
+    public class HorizontalJobInfoViewModel : BaseJobInForViewModel
     {
         #region Private Member
 
@@ -48,9 +48,9 @@ namespace JobInfoModule.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="HorizontalJobInfoViewModel"/> class.
         /// </summary>
-        public HorizontalJobInfoViewModel()
-        {
-        }
+        //public HorizontalJobInfoViewModel() 
+        //{
+        //}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HorizontalJobInfoViewModel"/> class.
@@ -68,7 +68,7 @@ namespace JobInfoModule.ViewModels
             : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
             this.BuilderNameLostFocusCommand = new DelegateCommand<ComboBox>(this.OnAddBuilderNamesChanged, this.CanAddBuiderNameCanExcute);
-            this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SelectedClientReceive);
+            //this.EventAggregator.GetEvent<CustomerService>().Subscribe(this.SelectedClientReceive);
         }
 
         #endregion
@@ -114,14 +114,11 @@ namespace JobInfoModule.ViewModels
         #endregion
 
         #region Private Funtc
-
-        private void SelectedClientReceive(ClientPoco selectClient)
+        protected override void SelectedClientReceive(ClientPoco selectClient)
         {
-            if (selectClient == null)
-            {
-                return;
-            }
-            this.SelectClient = selectClient;
+            base.SelectedClientReceive(selectClient);
+            this.RaisePropertyChanged(nameof(IsBuilderEnable));
+            //this.RaisePropertyChanged(nameof(IsStickFrame));
             BuilderNamesReseive(selectClient.Builders);
         }
 
@@ -163,17 +160,17 @@ namespace JobInfoModule.ViewModels
             dataBase.UpdateClient(this.SelectClient);
         }
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
-            var db = this.UnityContainer.Resolve<ClientDataBase>();
-            if (string.IsNullOrEmpty(this.JobInfo.ClientName))
-            {
-                return;
-            }
-            this.SelectClient = db.GetClient(this.JobInfo.ClientName);
-            this.BuilderNamesReseive(this.SelectClient.Builders);
-        }
+        //public override void OnNavigatedTo(NavigationContext navigationContext)
+        //{
+        //    //base.OnNavigatedTo(navigationContext);
+        //    //var db = this.UnityContainer.Resolve<ClientDataBase>();
+        //    //if (string.IsNullOrEmpty(this.JobInfo.ClientName))
+        //    //{
+        //    //    return;
+        //    //}
+        //    //this.SelectClient = db.GetClient(this.JobInfo.ClientName);
+        //    //this.BuilderNamesReseive(this.SelectClient.Builders);
+        //}
 
         #endregion
 

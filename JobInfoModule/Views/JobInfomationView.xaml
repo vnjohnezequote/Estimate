@@ -8,8 +8,11 @@
              xmlns:local="clr-namespace:JobInfoModule.Views"
              xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
              xmlns:jobInforRegions="clr-namespace:DataType.Class;assembly=DataType"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DataContext="{d:DesignInstance viewModels:JobInfomationViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
+             Width="Auto"
+             HorizontalAlignment="Center"
              Style="{StaticResource MaterialDesignUserControl}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -19,12 +22,44 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <StackPanel>
-        <TextBlock Text="{Binding JobModel.ClientName}"></TextBlock>
-		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.HJobInformation}"/>
-		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainWindInforRegion}"/>
-		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainRoofInfoRegion}"/>
-		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainDesignRegion}"/>
-		<ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainFloorChooseRegion}"/>
+    <StackPanel Margin="20 0 20 0">
+        <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                  Mode="PrimaryMid" DockPanel.Dock="Top">
+            <TextBlock Text="{Binding JobModel.Info.ClientName}" HorizontalAlignment="Center" FontSize="22" />
+        </materialDesign:ColorZone>
+        <materialDesign:Card Background="{StaticResource MaterialDesignBackground}">
+            <StackPanel>
+                <Expander Header="Basic Job Info">
+                    <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.HJobInformation}"/>
+                </Expander>
+                <Expander Header="Wind Rate Info">
+                    <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainWindInforRegion}"/>
+                </Expander>
+                <Border
+                    Background="{DynamicResource MaterialDesignDivider}"
+                    Height="1"
+                    HorizontalAlignment="Stretch"
+                    SnapsToDevicePixels="True" />
+                <Expander Header="Roof Info">
+                    <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainRoofInfoRegion}"/>
+                </Expander>
+                <Border
+                    Background="{DynamicResource MaterialDesignDivider}"
+                    Height="1"
+                    HorizontalAlignment="Stretch"
+                    SnapsToDevicePixels="True" />
+                <Expander Header="Design Info" Visibility="{Binding IsDesignVisibility}">
+                    <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainDesignRegion}"/>
+                </Expander>
+                <Border
+                    Background="{DynamicResource MaterialDesignDivider}"
+                    Height="1"
+                    HorizontalAlignment="Stretch"
+                    SnapsToDevicePixels="True" Visibility="{Binding IsDesignVisibility}" />
+                <Expander Header="Wall Info">
+                    <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainFloorChooseRegion}"/>
+                </Expander>
+            </StackPanel>
+        </materialDesign:Card>
     </StackPanel>
 </UserControl>

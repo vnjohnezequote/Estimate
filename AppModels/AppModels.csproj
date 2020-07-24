@@ -192,6 +192,7 @@
     <Compile Include="ResponsiveData\BasicWallInfor.cs" />
     <Compile Include="ResponsiveData\GlobalWallDetailInfo.cs" />
     <Compile Include="ResponsiveData\GlobalWallMemberInfo.cs" />
+    <Compile Include="ResponsiveData\LevelWallDetailInfo.cs" />
     <Compile Include="ResponsiveData\Treatment.cs" />
     <Compile Include="ResponsiveData\Beam.cs" />
     <Compile Include="ResponsiveData\Bracing.cs" />

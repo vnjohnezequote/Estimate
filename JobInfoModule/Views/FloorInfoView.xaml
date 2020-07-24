@@ -31,39 +31,68 @@
                 <TextBlock Text="{Binding Level.TotalWallLength}" Padding="10 0 0 0"/>
             </materialDesign:ColorZone>
         </Grid>
-        
-            <Grid Margin="0 10 0 0">
-                <Grid.ColumnDefinitions>
+        <DockPanel Margin="0 10 0 0" HorizontalAlignment="Left">
+                <!--<Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                </Grid.ColumnDefinitions>-->
                 <TextBox materialDesign:HintAssist.Hint="Wall Height"
                          materialDesign:HintAssist.IsFloating="True"
                          Text="{Binding Level.LevelInfo.WallHeight}"
-                         TextChanged="WallHeightTextBox"/>
-                <ComboBox materialDesign:HintAssist.Hint="Load Bearing Wall Spacing"
+                         TextChanged="NumericTextBoxTextChanged"/>
+                <ComboBox Name="ExtLevelCmb"
+                          materialDesign:HintAssist.Hint="Load Bearing Wall Spacing"
                           materialDesign:HintAssist.IsFloating="True"
-                          ItemsSource="{Binding Level.LevelInfo.ExternalWallSpacing}"
+                          materialDesign:TextFieldAssist.HasClearButton="True"
+                          ItemsSource="{Binding WallSpacings}"
                           Padding="5"
-                          Grid.Column="2"
-                          SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExternalWallInfo.WallSpacing}"/>
-                <ComboBox materialDesign:HintAssist.Hint="None Load Bearing Wall Spacing"
+                          Margin="10 0 0 0"
+                          SelectedItem="{Binding Level.LevelInfo.ExternalWallSpacing}"
+                          Text="{Binding Level.LevelInfo.ExternalWallSpacing}"/>
+                <!--Hack Textbox Reset-->
+                <TextBox Name="HackLevelLbwCmb"
+                         TextChanged="NumericTextBoxTextChanged" 
+                         Visibility="Collapsed"
+                         Text="{Binding ElementName=ExtLevelCmb, Path=Text,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox Name="IntLevelCmb"
+                          materialDesign:HintAssist.Hint="None Load Bearing Wall Spacing"
                           materialDesign:HintAssist.IsFloating="True"
+                          materialDesign:TextFieldAssist.HasClearButton="True"
                           Padding="5"
-                          ItemsSource="{Binding Level.LevelInfo.InternalWallSpacing}"
-                          Grid.Column="4"
-                          SelectedItem="{Binding JobInfo.DefaultInfo.GlobalInternalWallInfo.WallSpacing}"/>
-            </Grid>
+                          ItemsSource="{Binding WallSpacings}"
+                          Margin="10 0 0 0"
+                          SelectedItem="{Binding Level.LevelInfo.InternalWallSpacing}"
+                          Text="{Binding Level.LevelInfo.InternalWallSpacing}"/>
+                <!--Hack Textbox Reset-->
+                <TextBox Name="HackLevelNLbwCmb"
+                         Visibility="Collapsed"
+                         TextChanged="NumericTextBoxTextChanged" 
+                         Text="{Binding ElementName=IntLevelCmb, Path=Text,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+
+        </DockPanel>
+        <DockPanel Margin="0 10 0 0" HorizontalAlignment="Left">
+            <TextBox materialDesign:HintAssist.Hint="External Wall Thickness"
+                         materialDesign:HintAssist.IsFloating="True"
+                         Text="{Binding Level.LevelInfo.ExternalWallThickness}"
+                         TextChanged="NumericTextBoxTextChanged"/>
+            <TextBox materialDesign:HintAssist.Hint="Internal Wall Thickness"
+                     Margin="10 0 0 0"
+                     materialDesign:HintAssist.IsFloating="True"
+                     Text="{Binding Level.LevelInfo.InternalWallThickness}"
+                     TextChanged="NumericTextBoxTextChanged"/>
+
+        </DockPanel>
         <Border
             Background="{DynamicResource MaterialDesignDivider}"
             Height="1"
+            Margin="0 10 0 0"
             HorizontalAlignment="Stretch"
             SnapsToDevicePixels="True" />
         <StackPanel Margin="0 10 0 0">
-            <Expander Header="Global Wall Info" IsExpanded="True">
+            <Expander Header="{Binding Level.LevelNameInfo}" IsExpanded="True">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -105,7 +134,7 @@
                         <Label Content="Top Plate" Grid.Row="2" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
                         <Label Content="Stud" Grid.Row="4" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
                         <Label Content="Bottom Plate" Grid.Row="6" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
-                        <Label Content="NoggingInfo" Grid.Row="8" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
+                        <Label Content="Nogging" Grid.Row="8" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
                         <Label Content="Trimmer" Grid.Row="10" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"/>
 
                         <!--Ribbon Plate-->
@@ -113,7 +142,7 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="0" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.RibbonPlate.NoItem}"
+                                                Value="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.RibbonPlate.NoItem}"
                                                 Background="Transparent"
                                                 HideUpDownButtons="True">
                             <mah:NumericUpDown.Resources>
@@ -140,19 +169,21 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  mah:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.RibbonPlate.Thickness}"/>
+                                 TextChanged="NumericTextBoxTextChanged"
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.RibbonPlate.Thickness}"/>
                         <TextBox Grid.Row="0" Grid.Column="8"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.RibbonPlate.Depth}"/>
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.RibbonPlate.Depth}"/>
                         <ComboBox Grid.Row="0" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.RibbonPlate.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.RibbonPlate.TimberGrade}"/>
+                                  Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.RibbonPlate.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.RibbonPlate.TimberGrade}"/>
 
                         <!--Top Plate-->
                         <!--<TextBox Grid.Row="2" Grid.Column="4"
@@ -163,7 +194,7 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="2" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.NoItem}"
+                                                Value="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.TopPlate.NoItem}"
                                                 Background="Transparent"
                                                 HideUpDownButtons="True">
                             <mah:NumericUpDown.Resources>
@@ -180,18 +211,20 @@
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  IsEnabled="False"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  mah:TextBoxHelper.ClearTextButton="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.Thickness}"/>
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.TopPlate.Thickness}"/>
                         <TextBox Grid.Row="2" Grid.Column="8"
                                  materialDesign:HintAssist.IsFloating="False"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.Depth}"/>
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.TopPlate.Depth}"/>
                         <ComboBox Grid.Row="2" Grid.Column="10"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.TimberGrade}"/>
+                                  Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.TopPlate.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.TopPlate.TimberGrade}"/>
 
                         <!--Stud-->
                         <!--<TextBox materialDesign:HintAssist.Hint="No of" 
@@ -203,7 +236,7 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="4" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.NoItem}"
+                                                Value="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Stud.NoItem}"
                                                 Background="Transparent"
                                                 HideUpDownButtons="True">
                             <mah:NumericUpDown.Resources>
@@ -221,17 +254,19 @@
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  mah:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.Thickness}"/>
+                                 TextChanged="NumericTextBoxTextChanged"
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Stud.Thickness}"/>
                         <TextBox Grid.Row="4" Grid.Column="8"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.Depth}"/>
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Stud.Depth}"/>
                         <ComboBox Grid.Row="4" Grid.Column="10"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.TimberGrade}"/>
+                                  Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Stud.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Stud.TimberGrade}"/>
 
                         <!--Bottom Plate-->
                         <!--<TextBox materialDesign:HintAssist.Hint="No of" 
@@ -243,7 +278,7 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="6" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.NoItem}"
+                                                Value="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.BottomPlate.NoItem}"
                                                 Background="Transparent"
                                                 HideUpDownButtons="True">
                             <mah:NumericUpDown.Resources>
@@ -258,23 +293,25 @@
                         </mah:NumericUpDown>
                         <TextBox Grid.Row="6" Grid.Column="6"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  mah:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.Thickness}"/>
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.BottomPlate.Thickness}"/>
                         <TextBox Grid.Row="6" Grid.Column="8"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.Depth}"/>
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.BottomPlate.Depth}"/>
                         <ComboBox Grid.Row="6" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.TimberGrade}"/>
+                                  Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.BottomPlate.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.BottomPlate.TimberGrade}"/>
 
                         <!--Nogging-->
                         <!--<TextBox materialDesign:HintAssist.Hint="No of" 
@@ -287,7 +324,7 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="8" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.NoItem}"
+                                                Value="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Nogging.NoItem}"
                                                 Background="Transparent" HideUpDownButtons="True"
                                                 IsEnabled="False">
                             <mah:NumericUpDown.Resources>
@@ -306,19 +343,21 @@
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  mah:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.Thickness}"/>
+                                 TextChanged="NumericTextBoxTextChanged"
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Nogging.Thickness}"/>
                         <TextBox Grid.Row="8" Grid.Column="8"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.Depth}"/>
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Nogging.Depth}"/>
                         <ComboBox Grid.Row="8" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.TimberGrade}"/>
+                                  Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Nogging.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Nogging.TimberGrade}"/>
                         <!--Trimmer-->
                         <!--<TextBox materialDesign:HintAssist.Hint="No of" 
                                  Grid.Row="10" Grid.Column="4"
@@ -331,7 +370,7 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="10" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.NoItem,Mode=TwoWay}"
+                                                Value="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Trimmer.NoItem,Mode=TwoWay}"
                                                 Background="Transparent"
                                                 HideUpDownButtons="True"
                                                 IsEnabled="False">
@@ -351,19 +390,21 @@
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  mah:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.Thickness}"/>
+                                 TextChanged="NumericTextBoxTextChanged"
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Trimmer.Thickness}"/>
                         <TextBox Grid.Row="10" Grid.Column="8"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.Depth}"/>
+                                 Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Trimmer.Depth}"/>
                         <ComboBox Grid.Row="10" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.TimberGrade}"/>
+                                  Text="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Trimmer.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalExtWallDetailInfo.Trimmer.TimberGrade}"/>
                     </Grid>
                     <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
@@ -399,7 +440,7 @@
                         <Label Content="Top Plate" Grid.Row="0" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right" />
                         <Label Content="Stud" Grid.Row="2" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"  />
                         <Label Content="Bottom Plate" Grid.Row="4" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right" />
-                        <Label Content="NoggingInfo" Grid.Row="6" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"  />
+                        <Label Content="Nogging" Grid.Row="6" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right"  />
                         <Label Content="Trimmer" Grid.Row="8" Grid.Column="2" Background="#FF0B0822" HorizontalContentAlignment="Right" />
                         <!--Internal Top Plate-->
                         <!--<TextBox Grid.Row="0" Grid.Column="4"
@@ -411,7 +452,7 @@
                         Maximum="4"
                         Interval="1"
                         Grid.Row="0" Grid.Column="4"
-                        Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.TopPlate.NoItem}"
+                        Value="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.TopPlate.NoItem}"
                         Background="Transparent"
                         HideUpDownButtons="True">
                             <mah:NumericUpDown.Resources>
@@ -430,19 +471,21 @@
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  mah:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.Thickness}" />
+                                 TextChanged="NumericTextBoxTextChanged"
+                                 Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.TopPlate.Thickness}" />
                         <TextBox Grid.Row="0" Grid.Column="8"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.Depth}" />
+                                 Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.TopPlate.Depth}" />
                         <ComboBox Grid.Row="0" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.TopPlate.TimberGrade}" />
+                                  Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.TopPlate.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.TopPlate.TimberGrade}" />
 
                         <!--Internal Stud-->
                         <!--<TextBox Grid.Row="2" Grid.Column="4"
@@ -454,7 +497,7 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="2" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Stud.NoItem}"
+                                                Value="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Stud.NoItem}"
                                                 Background="Transparent" HideUpDownButtons="True" >
                             <mah:NumericUpDown.Resources>
                                 <ResourceDictionary>
@@ -472,19 +515,21 @@
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  mah:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.Thickness}" />
+                                 TextChanged="NumericTextBoxTextChanged"
+                                 Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Stud.Thickness}" />
                         <TextBox Grid.Row="2" Grid.Column="8"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.Depth}"/>
+                                 Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Stud.Depth}"/>
                         <ComboBox Grid.Row="2" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Stud.TimberGrade}" />
+                                  Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Stud.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Stud.TimberGrade}" />
 
                         <!--Internal Bottom Plate-->
                         <!--<TextBox Grid.Row="4" Grid.Column="4"
@@ -496,7 +541,7 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="4" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.BottomPlate.NoItem}"
+                                                Value="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.BottomPlate.NoItem}"
                                                 Background="Transparent" HideUpDownButtons="True">
                             <mah:NumericUpDown.Resources>
                                 <ResourceDictionary>
@@ -514,19 +559,21 @@
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  mah:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.Thickness}" />
+                                 TextChanged="NumericTextBoxTextChanged"
+                                 Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.BottomPlate.Thickness}" />
                         <TextBox Grid.Row="4" Grid.Column="8"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.Depth}" />
+                                 Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.BottomPlate.Depth}" />
                         <ComboBox Grid.Row="4" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.BottomPlate.TimberGrade}" />
+                                  Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.BottomPlate.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.BottomPlate.TimberGrade}" />
 
                         <!--Internal Nogging-->
                         <!--<TextBox Grid.Row="6" Grid.Column="4"
@@ -538,7 +585,7 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="6" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Nogging.NoItem}"
+                                                Value="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Nogging.NoItem}"
                                                 Background="Transparent" HideUpDownButtons="True"
                                                 IsEnabled="False">
                             <mah:NumericUpDown.Resources>
@@ -553,23 +600,25 @@
                         </mah:NumericUpDown>
                         <TextBox Grid.Row="6" Grid.Column="6"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  mah:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.Thickness}" />
+                                 Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Nogging.Thickness}" />
                         <TextBox Grid.Row="6" Grid.Column="8"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.Depth}" />
+                                 Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Nogging.Depth}" />
                         <ComboBox Grid.Row="6" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Nogging.TimberGrade}" />
+                                  Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Nogging.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Nogging.TimberGrade}" />
 
                         <!--Internal Trimmer-->
                         <!--<TextBox Grid.Row="8" Grid.Column="4"
@@ -581,7 +630,7 @@
                                                 Maximum="4"
                                                 Interval="1"
                                                 Grid.Row="8" Grid.Column="4"
-                                                Value="{Binding JobInfo.DefaultInfo.GlobalExtWallDetailInfo.Trimmer.NoItem}"
+                                                Value="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Trimmer.NoItem}"
                                                 Background="Transparent" HideUpDownButtons="True" 
                                                 IsEnabled="False">
                             <mah:NumericUpDown.Resources>
@@ -596,23 +645,25 @@
                         </mah:NumericUpDown>
                         <TextBox Grid.Row="8" Grid.Column="6"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  mah:TextBoxHelper.ClearTextButton="False"
                                  IsEnabled="False"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Trimmer.Thickness}"/>
+                                 Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Trimmer.Thickness}"/>
                         <TextBox Grid.Row="8" Grid.Column="8"
                                  BorderThickness="1"
+                                 TextChanged="NumericTextBoxTextChanged"
                                  materialDesign:HintAssist.IsFloating="False"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Trimmer.Depth}" />
+                                 Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Trimmer.Depth}" />
                         <ComboBox Grid.Row="8" Grid.Column="10"
                                   BorderThickness="1"
                                   materialDesign:HintAssist.IsFloating="False"
                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                   ItemsSource="{Binding TimberGradeList}"
-                                  Text="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Trimmer.TimberGrade}"
-                                  SelectedItem="{Binding JobInfo.DefaultInfo.GlobalIntWallDetaiInfo.Trimmer.TimberGrade}"/>
+                                  Text="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Trimmer.TimberGrade}"
+                                  SelectedItem="{Binding Level.LevelInfo.GlobalIntWallDetailInfo.Trimmer.TimberGrade}"/>
                     </Grid>
                 </Grid>
             </Expander>
@@ -621,7 +672,7 @@
                     Height="1"
                     HorizontalAlignment="Stretch"
                     SnapsToDevicePixels="True" />
-            <Expander Header="GLobal Door Info" 
+            <Expander Header="{Binding Level.DoorNameInfo}" 
                       IsExpanded="True"
                       Background="Transparent">
                 <materialDesign:ColorZone Mode="Dark" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -639,40 +690,47 @@
                                     </ResourceDictionary>
                                 </Grid.Resources>-->
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBox materialDesign:HintAssist.Hint="External Door Height"
-                                         Text="{Binding JobInfo.DefaultInfo.ExternalDoorHeight}"
-                                         mah:TextBoxHelper.ClearTextButton="False"/>
+                                         Text="{Binding Level.LevelInfo.ExternalDoorHeight}"
+                                         TextChanged="NumericTextBoxTextChanged"
+                                         Width="Auto"/>
                             <!--<controls:NumericUpDown Minimum="1" Maximum="4" Interval="1"
                                                         Margin="10 0 0 0"
                                                         Value="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.NoItem }"/>-->
                             <TextBox materialDesign:HintAssist.Hint="Number of Jamb"
                                          Margin="10 0 0 0"
                                          Grid.Column="1"
-                                         Text="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.NoItem }"/>
+                                         Width="Auto"
+                                         TextChanged="NumericTextBoxTextChanged"
+                                         Text="{Binding Level.LevelInfo.GlobalDoorJambInfo.NoItem }"/>
                             <TextBox materialDesign:HintAssist.Hint="Depth of Jamb"
                                          Margin="10 0 0 0"
                                          Grid.Column="2"
-                                         Text="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.Depth}"/>
+                                         TextChanged="NumericTextBoxTextChanged"
+                                         Width="Auto"
+                                         Text="{Binding Level.LevelInfo.GlobalDoorJambInfo.Depth}"/>
                             <ComboBox materialDesign:HintAssist.Hint="Timber Grade Of Jamb"
                                           materialDesign:TextFieldAssist.HasClearButton="True"
                                           Margin="10 0 0 0"
                                           Grid.Column="3"
+                                          Width="Auto"
                                           Padding="5"
                                           ItemsSource="{Binding TimberGradeList}"
-                                          Text="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.TimberGrade}"
-                                          SelectedItem="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.TimberGrade}"/>
+                                          Text="{Binding Level.LevelInfo.GlobalDoorJambInfo.TimberGrade}"
+                                          SelectedItem="{Binding Level.LevelInfo.GlobalDoorJambInfo.TimberGrade}"/>
                         </Grid>
                         <TextBox materialDesign:HintAssist.Hint="Internal Door Height"
                                      materialDesign:TextFieldAssist.HasClearButton="True"
                                      materialDesign:HintAssist.IsFloating="True"
                                      Margin="0 10 0 0"
-                                     Text="{Binding JobInfo.DefaultInfo.InternalDoorHeight}"
-                                     />
+                                     Text="{Binding Level.LevelInfo.InternalDoorHeight}"
+                                     TextChanged="NumericTextBoxTextChanged"
+                                     Width="Auto" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </materialDesign:ColorZone>
 

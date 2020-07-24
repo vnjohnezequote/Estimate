@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using ApplicationInterfaceCore;
+using ApplicationService;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 
@@ -97,7 +98,7 @@ namespace JobInfoModule.ViewModels
             this.RegionManager = this.RegionManager.CreateRegionManager();
 
             this.CreateFloorCommand = new DelegateCommand<ListBox>(this.CreateFloorFunction);
-
+            EventAggregator.GetEvent<RefreshFloorEvent>().Subscribe(OnReFreshFloor);
         }
 
         #endregion
@@ -231,6 +232,17 @@ namespace JobInfoModule.ViewModels
         #endregion
         #region private Method
 
+        private void OnReFreshFloor(bool needRefresh)
+        {
+            if (needRefresh == true)
+            {
+                this.LoadFloorNumber();
+                if (this.Levels.Count!=0)
+                {
+                    this.SelectedIndex = this.Levels.Count - 1;
+                }
+            }
+        }
         /// <summary>
         /// The load cost delivery.
         /// </summary>

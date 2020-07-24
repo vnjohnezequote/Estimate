@@ -9,7 +9,7 @@ using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
 {
-    public class GlobalWallMemberInfo : BindableBase,IWallMemberInfo
+    public class GlobalWallMemberInfo : BindableBase, IWallMemberInfo
     {
         #region Field
         protected int _thickness;
@@ -20,38 +20,37 @@ namespace AppModels.ResponsiveData
         #region Property
         public IBasicWallInfo GlobalWallInfo { get; private set; }
         public IWallMemberInfo BaseMaterialInfo { get; private set; }
-        public WallType WallType=>GlobalWallInfo.WallType;
+        public WallType WallType => GlobalWallInfo.WallType;
         public virtual int NoItem
         {
             get
             {
-
-                if (_noItem!=0)
+                if (_noItem != 0)
                     return _noItem;
-                    return BaseMaterialInfo!=null ? BaseMaterialInfo.NoItem : 1;
-            } 
+                return BaseMaterialInfo?.NoItem ?? 1;
+            }
 
             set
             {
                 SetProperty(ref _noItem, value);
                 CallBackPropertyChanged();
-            } 
+            }
         }
         public virtual int Thickness
         {
             get
             {
-                if (_thickness!=0)
+                if (_thickness != 0)
                 {
                     return _thickness;
                 }
                 if (GlobalWallInfo.NoggingMethod == NoggingMethodType.AsGlobal && MemberType == WallMemberType.Nogging)
                 {
-                    return BaseMaterialInfo!=null ? BaseMaterialInfo.Thickness : GlobalWallInfo.WallThickness;
+                    return BaseMaterialInfo?.Thickness ?? GlobalWallInfo.WallThickness;
                 }
 
                 return GlobalWallInfo.WallThickness;
-            } 
+            }
             set
             {
                 this.SetProperty(ref this._thickness, value);
@@ -62,13 +61,13 @@ namespace AppModels.ResponsiveData
         {
             get
             {
-                if (_depth!=0)
+                if (_depth != 0)
                 {
                     return this._depth;
                 }
 
-                return BaseMaterialInfo!=null ? BaseMaterialInfo.Depth : GlobalWallInfo.Depth;
-            } 
+                return BaseMaterialInfo?.Depth ?? GlobalWallInfo.Depth;
+            }
             set
             {
                 this.SetProperty(ref this._depth, value);
@@ -84,8 +83,8 @@ namespace AppModels.ResponsiveData
                     return _timberGrade;
                 }
 
-                return BaseMaterialInfo !=null ? BaseMaterialInfo.TimberGrade : GlobalWallInfo.TimberGrade;
-            } 
+                return BaseMaterialInfo != null ? BaseMaterialInfo.TimberGrade : GlobalWallInfo.TimberGrade;
+            }
             set
             {
                 if (value == GlobalWallInfo.TimberGrade)
@@ -93,7 +92,7 @@ namespace AppModels.ResponsiveData
                     value = string.Empty;
                 }
 
-                if (BaseMaterialInfo!=null)
+                if (BaseMaterialInfo != null)
                 {
                     //if (MemberType == WallMemberType.Nogging && value == BaseMaterialInfo.TimberGrade)
                     //{
@@ -124,13 +123,13 @@ namespace AppModels.ResponsiveData
 
         #region Constructor
 
-        public GlobalWallMemberInfo(IBasicWallInfo globalWallInfo,WallMemberType memberType, IWallMemberInfo baseMaterialInfo =null)
+        public GlobalWallMemberInfo(IBasicWallInfo globalWallInfo, WallMemberType memberType, IWallMemberInfo baseMaterialInfo = null)
         {
             MemberType = memberType;
             this.GlobalWallInfo = globalWallInfo;
             BaseMaterialInfo = baseMaterialInfo;
             GlobalWallInfo.PropertyChanged += DefaultInfo_PropertyChanged;
-            if (BaseMaterialInfo!=null)
+            if (BaseMaterialInfo != null)
             {
                 BaseMaterialInfo.PropertyChanged += BaseMaterialInfo_PropertyChanged;
             }
@@ -143,7 +142,7 @@ namespace AppModels.ResponsiveData
 
         private void DefaultInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-           NotifyPropertyChanged(e.PropertyName);
+            NotifyPropertyChanged(e.PropertyName);
         }
 
         private void NotifyPropertyChanged(string propertyName)
@@ -172,7 +171,7 @@ namespace AppModels.ResponsiveData
         {
             this.RaisePropertyChanged(nameof(this.Size));
             this.RaisePropertyChanged(nameof(this.SizeGrade));
-           
+
         }
 
         #endregion

@@ -164,12 +164,12 @@ namespace AppModels.ResponsiveData
             get => this._roofFrameType == RoofFrameType.Truss ? _ceilingPitch : _roofPitch;
             set => SetProperty(ref _ceilingPitch, value);
         }
-        public IBasicWallInfo GlobalExternalWallInfo { get; set; }
-        public IBasicWallInfo GlobalInternalWallInfo { get; set; }
-        public GlobalWallDetailInfo GlobalExtWallDetailInfo { get; set; }
-        public GlobalWallDetailInfo GlobalIntWallDetaiInfo { get; set; }
-        public IWallMemberInfo GlobalNoggingInfo { get; set; }
-        public IWallMemberInfo GlobalDoorJambInfo { get; set; }
+        public IBasicWallInfo GlobalExternalWallInfo { get;private set; }
+        public IBasicWallInfo GlobalInternalWallInfo { get; private set; }
+        public IGlobalWallDetail GlobalExtWallDetailInfo { get;private set; }
+        public IGlobalWallDetail GlobalIntWallDetailInfo { get;private set; }
+        public IWallMemberInfo GlobalNoggingInfo { get;private set; }
+        public IWallMemberInfo GlobalDoorJambInfo { get;private set; }
         #endregion
 
         #region Constructor
@@ -182,15 +182,15 @@ namespace AppModels.ResponsiveData
             ExternalWallTimberDepth = 35;
             ExternalWallTimberGrade = "MGP10";
             ExternalWallSpacing = 450;
+            TrussSpacing = 600;
             RoofFrameType = RoofFrameType.Truss;
             NoggingMethod = NoggingMethodType.AsWall;
             GlobalExternalWallInfo = new BasicWallInfor(this,WallType.LBW);
             GlobalInternalWallInfo= new BasicWallInfor(this, WallType.NonLBW);
             GlobalNoggingInfo = new GlobalWallMemberInfo(GlobalInternalWallInfo,WallMemberType.Nogging);
             GlobalExtWallDetailInfo = new GlobalWallDetailInfo(GlobalExternalWallInfo,GlobalNoggingInfo);
-            GlobalIntWallDetaiInfo = new GlobalWallDetailInfo(GlobalInternalWallInfo, GlobalNoggingInfo);
+            GlobalIntWallDetailInfo = new GlobalWallDetailInfo(GlobalInternalWallInfo, GlobalNoggingInfo);
             GlobalDoorJambInfo = new GlobalWallMemberInfo(GlobalExternalWallInfo,WallMemberType.DoorJamb,GlobalExtWallDetailInfo.Stud);
-            TrussSpacing = 600;
             PropertyChanged += GlobalWallInfo_PropertyChanged;
         }
 

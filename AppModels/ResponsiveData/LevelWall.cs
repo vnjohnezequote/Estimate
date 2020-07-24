@@ -99,6 +99,10 @@ namespace AppModels.ResponsiveData
 
         #region Property
 
+        public string LevelNameInfo => LevelName + " Wall Infor";
+
+        public string DoorNameInfo => LevelName + " Door Infor";
+
         /// <summary>
         /// Gets or sets the level name.
         /// </summary>

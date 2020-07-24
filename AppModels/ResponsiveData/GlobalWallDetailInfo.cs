@@ -30,7 +30,7 @@ namespace AppModels.ResponsiveData
         public IWallMemberInfo TopPlate { get; private set; }
         public IWallMemberInfo Stud { get;private set; }
         public IWallMemberInfo BottomPlate { get;private set; }
-        public IWallMemberInfo NoggingInfo { get;private set; }
+        public IWallMemberInfo Nogging { get;private set; }
         public IWallMemberInfo Trimmer { get;private set; }
 
         #endregion
@@ -47,7 +47,7 @@ namespace AppModels.ResponsiveData
             TopPlate = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.TopPlate);
             Stud = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.Stud);
             BottomPlate = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.BottomPlate);
-            NoggingInfo = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.Nogging, globalNoggingInfo);
+            Nogging = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.Nogging, globalNoggingInfo);
             Trimmer = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.Trimmer, TopPlate);
         }
 

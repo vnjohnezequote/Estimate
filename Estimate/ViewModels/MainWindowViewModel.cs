@@ -196,7 +196,7 @@ namespace Estimate.ViewModels
             this.CustomerMenuSelectCommand = new DelegateCommand(this.OnCustomerMenuSelect);
             this.LoadDrawingWindowCommand = new DelegateCommand(this.LoadDrawingWindow);
             SaveJobCommand = new DelegateCommand(OnSaveJobCommand);
-            //JobModel.Info.PropertyChanged += Info_PropertyChanged;
+            JobModel.Info.PropertyChanged += Info_PropertyChanged;
             //this.EventAggregator.GetEvent<JobModelService>().Subscribe(this.OnChangeClient);
 
 
@@ -437,11 +437,11 @@ namespace Estimate.ViewModels
         /// </summary>
         private void LoadJobInfor()
         {
-            //var parameters = new NavigationParameters { { "JobDefaultInfo", JobDefaultInfo } };
-            //if (this.JobDefaultInfo != null)
-            //{
+            var parameters = new NavigationParameters {{ "JobModel",JobModel  }};
+            if (JobModel!=null)
+            {
                 this.RegionManager.RequestNavigate(MainWindowRegions.RightContentRegion, nameof(JobInfomationView));
-            //}
+            }
         }
 
         /// <summary>
@@ -451,6 +451,9 @@ namespace Estimate.ViewModels
         {
             var shell = this.UnityContainer.Resolve<BaseWindowService>();
             shell.ShowShell<NewJobWizardView>(true);
+            EventAggregator.GetEvent<RefreshFloorEvent>().Publish(true);
+
+
         }
 
         /// <summary>
@@ -665,12 +668,12 @@ namespace Estimate.ViewModels
         /// </summary>
         private void OnCustomerMenuSelect()
         {
-            //if (this.SelectedClient is null)
-            //{
-            //    return;
-            //}
-            //this.JobModel.Info.ClientName = this.SelectedClient.Name;
-            //this.EventAggregator.GetEvent<CustomerService>().Publish(this.SelectedClient);
+            if (this.SelectedClient is null)
+            {
+                return;
+            }
+            this.JobModel.Info.ClientName = this.SelectedClient.Name;
+            this.EventAggregator.GetEvent<CustomerService>().Publish(this.SelectedClient);
         }
 
         

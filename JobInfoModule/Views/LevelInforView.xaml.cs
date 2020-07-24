@@ -32,6 +32,17 @@ namespace JobInfoModule.Views
 
             }
 
+            //if (sender is ComboBox comboBox)
+            //{
+            //    if(!string.IsNullOrEmpty(comboBox.Text)) return;
+            //    comboBox.Text = "0";
+            //    //if (comboBox.Name != "HackNonLbwCmb") return;
+            //    //if (string.IsNullOrEmpty(this.NonLbwCmb.Text))
+            //    //{
+            //    //    NonLbwCmb.Text = "0";
+            //    //}
+            //}
+
        
         }
 

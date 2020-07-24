@@ -152,6 +152,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="RefreshFloorEvent.cs" />
     <Compile Include="RegionService.cs" />
     <Compile Include="RemoveLayerEventService.cs" />
     <Compile Include="TreatmentService.cs" />

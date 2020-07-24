@@ -26,7 +26,7 @@ namespace JobInfoModule.Views
             this.InitializeComponent();
         }
 
-        private void WallHeightTextBox(object sender, TextChangedEventArgs e)
+        private void NumericTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is TextBox textBox)
             {
@@ -34,13 +34,30 @@ namespace JobInfoModule.Views
                 textBox.Text = "0";
                 textBox.SelectAll();
 
+                if (textBox.Name == "HackLevelLbwCmb")
+                {
+                    if (string.IsNullOrEmpty(this.ExtLevelCmb.Text))
+                    {
+                        ExtLevelCmb.Text = "0";
+                    }
+                }
+                if (textBox.Name == "HackLevelNLbwCmb")
+                {
+                    if (string.IsNullOrEmpty(this.IntLevelCmb.Text))
+                    {
+                        IntLevelCmb.Text = "0";
+                    }
+                }
+
+
+
             }
 
-            if (sender is ComboBox comboBox)
-            {
-                if (!string.IsNullOrEmpty(comboBox.Text)) return;
-                comboBox.Text = "0";
-            }
+            //if (sender is ComboBox comboBox)
+            //{
+            //    if (!string.IsNullOrEmpty(comboBox.Text)) return;
+            //    comboBox.Text = "0";
+            //}
             
         }
     }
