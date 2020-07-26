@@ -94,19 +94,10 @@ namespace AppModels.ResponsiveData
 
                 if (BaseMaterialInfo != null)
                 {
-                    //if (MemberType == WallMemberType.Nogging && value == BaseMaterialInfo.TimberGrade)
-                    //{
-                    //    value = string.Empty;
-                    //}
-
-                    //if (MemberType == WallMemberType.Trimmer && value== BaseMaterialInfo.TimberGrade)
-                    //{
-                    //    value = string.Empty;
-                    //}
-                    if (value == BaseMaterialInfo.TimberGrade)
-                    {
-                        value = string.Empty;
-                    }
+                   if (value == BaseMaterialInfo.TimberGrade)
+                   {
+                       value = string.Empty;
+                   }
                 }
 
 

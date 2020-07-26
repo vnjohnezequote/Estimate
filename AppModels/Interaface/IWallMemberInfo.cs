@@ -10,7 +10,6 @@ namespace AppModels.Interaface
 {
     public interface IWallMemberInfo:INotifyPropertyChanged
     {
-        //IWallInfo WallInfo { get; }
         WallType WallType { get; }
         IWallMemberInfo BaseMaterialInfo { get; }
         int NoItem { get; }
@@ -18,5 +17,7 @@ namespace AppModels.Interaface
         int Depth { get; }
         string TimberGrade { get; }
         WallMemberType MemberType { get; }
+        string Size { get; }
+        string SizeGrade { get; }
     }
 }

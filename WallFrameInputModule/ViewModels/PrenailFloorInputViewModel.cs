@@ -13,6 +13,7 @@ using ApplicationInterfaceCore;
 using AppModels.CustomEntity;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.WallMemberData;
 using devDept.Eyeshot.Entities;
 
 namespace WallFrameInputModule.ViewModels
@@ -121,7 +122,7 @@ namespace WallFrameInputModule.ViewModels
             this.PropertyChanged += PrenailFloorInputViewModelPropertyChanged;
             this.WallThicknessList = new List<string> { "90", "70" };
             //this.CreateLayers();
-            this.WallInputLoadedCommand = new DelegateCommand<FrameworkElement>(this.InputControlLoaded);
+            //this.WallInputLoadedCommand = new DelegateCommand<FrameworkElement>(this.InputControlLoaded);
             this.NewWallRowInputCommand = new DelegateCommand(this.OnAddNewWallRow);
             this.DeleteWallRowCommand = new DelegateCommand<SfDataGrid>(this.OnDeleteWallRow);
             this.WallInputCellValueEndChangeCommand = new DelegateCommand<SfDataGrid>(this.OnWallInputCellValueEndChanged);
@@ -429,11 +430,11 @@ namespace WallFrameInputModule.ViewModels
         /// <param name="param">
         /// The param.
         /// </param>
-        private void InputControlLoaded(FrameworkElement param)
-        {
-            this.WallInputDataGrid = param.FindName("WallInput") as SfDataGrid;
-            this.WallInputDataGrid.CurrentCellEndEdit += this.WallInput_CurrentCellEndEdit;
-        }
+        //private void InputControlLoaded(FrameworkElement param)
+        //{
+        //    this.WallInputDataGrid = param.FindName("WallInput") as SfDataGrid;
+        //    //this.WallInputDataGrid.CurrentCellEndEdit += this.WallInput_CurrentCellEndEdit;
+        //}
 
         /// <summary>
         /// The level changed info.
@@ -523,32 +524,32 @@ namespace WallFrameInputModule.ViewModels
 
         private void WallInput_CurrentCellEndEdit(object sender, CurrentCellEndEditEventArgs e)
         {
-            var sfDataGrid = sender as SfDataGrid;
+            //var sfDataGrid = sender as SfDataGrid;
 
-            var currentRow = e.RowColumnIndex.RowIndex;
-            var rowData = sfDataGrid.GetRecordAtRowIndex(currentRow);
-            var currentWallLayer = (WallLayer)rowData;
+            //var currentRow = e.RowColumnIndex.RowIndex;
+            //var rowData = sfDataGrid.GetRecordAtRowIndex(currentRow);
+            //var currentWallLayer = (WallLayer)rowData;
 
-            if (sfDataGrid.CurrentColumn.MappingName == "TimberWallTypePoco")
-            {
-                this.ChangedWallThickness(currentWallLayer);
+            //if (sfDataGrid.CurrentColumn.MappingName == "TimberWallTypePoco")
+            //{
+            //    this.ChangedWallThickness(currentWallLayer);
 
-            }
-            if (sfDataGrid.CurrentColumn.MappingName == "WallThickness.Size")
-            {
-                this.ChangedWallThickness(currentWallLayer);
-            }
-            if (sfDataGrid.CurrentColumn.MappingName == "Stud.TimberMaterialInfo")
-            {
-                this.ChangeWallMemberByDefault(sfDataGrid);
-            }
+            //}
+            //if (sfDataGrid.CurrentColumn.MappingName == "WallThickness.Size")
+            //{
+            //    this.ChangedWallThickness(currentWallLayer);
+            //}
+            //if (sfDataGrid.CurrentColumn.MappingName == "Stud.TimberMaterialInfo")
+            //{
+            //    this.ChangeWallMemberByDefault(sfDataGrid);
+            //}
 
-            if (sfDataGrid.CurrentColumn.MappingName == "RibbonPlate.TimberMaterialInfo"
-                || sfDataGrid.CurrentColumn.MappingName == "TopPlate.TimberMaterialInfo"
-                || sfDataGrid.CurrentColumn.MappingName == "BottomPlate.TimberMaterialInfo")
-            {
-                this.ChangeDefaultMemberIs(sfDataGrid);
-            }
+            //if (sfDataGrid.CurrentColumn.MappingName == "RibbonPlate.TimberMaterialInfo"
+            //    || sfDataGrid.CurrentColumn.MappingName == "TopPlate.TimberMaterialInfo"
+            //    || sfDataGrid.CurrentColumn.MappingName == "BottomPlate.TimberMaterialInfo")
+            //{
+            //    this.ChangeDefaultMemberIs(sfDataGrid);
+            //}
 
             // this.OnWallInputSort();
 
@@ -562,26 +563,26 @@ namespace WallFrameInputModule.ViewModels
         /// </param>
         private void ChangeDefaultMemberIs(SfDataGrid wallInput)
         {
-            var currentRow = wallInput.SelectedIndex;
-            var currenLayer = this.Level.WallLayers[currentRow];
-            var timberRibbon = currenLayer.RibbonPlate;
-            var timberTopplate = currenLayer.TopPlate;
-            var timberBottomPlate = currenLayer.BottomPlate;
-            var timberStud = currenLayer.Stud;
-            if (timberRibbon.TimberMaterialInfo != null)
-            {
-                //timberRibbon.IsDefault = this.ChangeDefaultMemberInfo(timberRibbon, timberStud);
-            }
+            //var currentRow = wallInput.SelectedIndex;
+            //var currenLayer = this.Level.WallLayers[currentRow];
+            //var timberRibbon = currenLayer.RibbonPlate;
+            //var timberTopplate = currenLayer.TopPlate;
+            //var timberBottomPlate = currenLayer.BottomPlate;
+            //var timberStud = currenLayer.Stud;
+            //if (timberRibbon.TimberMaterialInfo != null)
+            //{
+            //    //timberRibbon.IsDefault = this.ChangeDefaultMemberInfo(timberRibbon, timberStud);
+            //}
 
-            if (timberTopplate.TimberMaterialInfo != null)
-            {
-                //timberTopplate.IsDefault = this.ChangeDefaultMemberInfo(timberTopplate, timberStud);
-            }
+            //if (timberTopplate.TimberMaterialInfo != null)
+            //{
+            //    //timberTopplate.IsDefault = this.ChangeDefaultMemberInfo(timberTopplate, timberStud);
+            //}
 
-            if (timberBottomPlate.TimberMaterialInfo != null)
-            {
-                //timberBottomPlate.IsDefault = this.ChangeDefaultMemberInfo(timberBottomPlate, timberStud);
-            }
+            //if (timberBottomPlate.TimberMaterialInfo != null)
+            //{
+            //    //timberBottomPlate.IsDefault = this.ChangeDefaultMemberInfo(timberBottomPlate, timberStud);
+            //}
 
 
         }
@@ -598,16 +599,16 @@ namespace WallFrameInputModule.ViewModels
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        private bool ChangeDefaultMemberInfo(WallMember currentTimberbase, WallStud currentStud)
-        {
-            if (currentStud.TimberMaterialInfo == null)
-            {
-                return false;
-            }
+        //private bool ChangeDefaultMemberInfo(WallMember currentTimberbase, WallStud currentStud)
+        //{
+        //    //if (currentStud.TimberMaterialInfo == null)
+        //    //{
+        //    //    return false;
+        //    //}
 
-            return currentTimberbase.TimberMaterialInfo.Thickness == currentStud.TimberMaterialInfo.Thickness && currentTimberbase.TimberMaterialInfo.Depth == currentStud.TimberMaterialInfo.Depth
-                   && currentTimberbase.TimberMaterialInfo.TimberGrade == currentStud.TimberMaterialInfo.TimberGrade;
-        }
+        //    //return currentTimberbase.TimberMaterialInfo.Thickness == currentStud.TimberMaterialInfo.Thickness && currentTimberbase.TimberMaterialInfo.Depth == currentStud.TimberMaterialInfo.Depth
+        //    //       && currentTimberbase.TimberMaterialInfo.TimberGrade == currentStud.TimberMaterialInfo.TimberGrade;
+        //}
 
         /// <summary>
         /// The change wall member by default.
@@ -700,25 +701,25 @@ namespace WallFrameInputModule.ViewModels
         /// <param name="wallInput">
         /// The wall input.
         /// </param>
-        private void ChangedWallThickness(WallLayer currentLayer)
-        {
-            this.ChangedStudThickness(currentLayer);
+        //private void ChangedWallThickness(WallLayer currentLayer)
+        //{
+        //    this.ChangedStudThickness(currentLayer);
 
-            if (currentLayer.RibbonPlate != null)
-            {
-                //currentLayer.RibbonPlate.TimberMaterialInfo = this.ChangedTimberPlateThickness("RibbonPlate", currentLayer, currentLayer.RibbonPlate, this.RibbonPlates);
-            }
+        //    if (currentLayer.RibbonPlate != null)
+        //    {
+        //        //currentLayer.RibbonPlate.TimberMaterialInfo = this.ChangedTimberPlateThickness("RibbonPlate", currentLayer, currentLayer.RibbonPlate, this.RibbonPlates);
+        //    }
 
-            if (currentLayer.TopPlate != null)
-            {
-                //currentLayer.TopPlate.TimberMaterialInfo = this.ChangedTimberPlateThickness("TopPlate", currentLayer, currentLayer.TopPlate, this.TopPlates);
-            }
+        //    if (currentLayer.TopPlate != null)
+        //    {
+        //        //currentLayer.TopPlate.TimberMaterialInfo = this.ChangedTimberPlateThickness("TopPlate", currentLayer, currentLayer.TopPlate, this.TopPlates);
+        //    }
 
-            if (currentLayer.BottomPlate != null)
-            {
-                //currentLayer.BottomPlate.TimberMaterialInfo = this.ChangedTimberPlateThickness("BottomPlate", currentLayer, currentLayer.BottomPlate, this.BottomPlates);
-            }
-        }
+        //    if (currentLayer.BottomPlate != null)
+        //    {
+        //        //currentLayer.BottomPlate.TimberMaterialInfo = this.ChangedTimberPlateThickness("BottomPlate", currentLayer, currentLayer.BottomPlate, this.BottomPlates);
+        //    }
+        //}
 
         /// <summary>
         /// The changed stud thickness.
@@ -729,25 +730,25 @@ namespace WallFrameInputModule.ViewModels
         /// <param name="currenLayer">
         /// The curren layer.
         /// </param>
-        private void ChangedStudThickness(WallLayer currenLayer)
-        {
-            if (currenLayer.Stud.TimberMaterialInfo == null)
-            {
-                return;
-            }
+        //private void ChangedStudThickness(WallLayer currenLayer)
+        //{
+        //    if (currenLayer.Stud.TimberMaterialInfo == null)
+        //    {
+        //        return;
+        //    }
 
-            var currentTimber = currenLayer.Stud;
-            //var filterStuds = this.Studs.SelectMany(x => x.Value).Where(x => x.Thickness == currenLayer.WallThickness.Size);
+        //    var currentTimber = currenLayer.Stud;
+        //    //var filterStuds = this.Studs.SelectMany(x => x.Value).Where(x => x.Thickness == currenLayer.WallThickness.Size);
 
-            //var selectedStud = filterStuds.FirstOrDefault(
-            //    x => x.Depth == currentTimber.TimberMaterialInfo.Depth && x.TimberGrade == currentTimber.TimberMaterialInfo.TimberGrade);
-            //if (selectedStud == null)
-            //{
-            //    return;
-            //}
+        //    //var selectedStud = filterStuds.FirstOrDefault(
+        //    //    x => x.Depth == currentTimber.TimberMaterialInfo.Depth && x.TimberGrade == currentTimber.TimberMaterialInfo.TimberGrade);
+        //    //if (selectedStud == null)
+        //    //{
+        //    //    return;
+        //    //}
 
-            //currenLayer.Stud.TimberMaterialInfo = selectedStud;
-        }
+        //    //currenLayer.Stud.TimberMaterialInfo = selectedStud;
+        //}
 
         /// <summary>
         /// The changed timber plate thickness.
@@ -790,10 +791,10 @@ namespace WallFrameInputModule.ViewModels
             }
 
             // return null if current wall member is nothing / not available
-            if (currentWallMember.TimberMaterialInfo == null)
-            {
-                return null;
-            }
+            //if (currentWallMember.TimberMaterialInfo == null)
+            //{
+            //    return null;
+            //}
 
             // if change from non LBW to LBW 
             //if (currentWallMember.TimberMaterialInfo.SizeGrade == "Nil")

@@ -23,6 +23,7 @@ namespace AppModels.ResponsiveData
 
         #region Property
         public WallType WallType => _globallWallInfo.WallType;
+        public int WallSpacing => GlobalWallInfo.WallSpacing;
         public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IBasicWallInfo GlobalWallInfo { get; private set; }
         public IGlobalWallDetail GlobalWallDetail { get; private set; }
@@ -40,6 +41,7 @@ namespace AppModels.ResponsiveData
         public LevelWallDetailInfo(IBasicWallInfo globalWallInfo, IGlobalWallDetail globalWallDetailInfo)
         {
             GlobalWallInfo = globalWallInfo;
+            GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
             GlobalWallDetail = globalWallDetailInfo;
             if (GlobalWallInfo.WallType == WallType.LBW)
             {
@@ -50,6 +52,14 @@ namespace AppModels.ResponsiveData
             BottomPlate = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.BottomPlate,GlobalWallDetail.BottomPlate);
             Nogging = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.Nogging,GlobalWallDetail.Nogging);
             Trimmer = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.Trimmer, TopPlate);
+        }
+
+        private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName=="WallSpacing")
+            {
+                RaisePropertyChanged(nameof(WallSpacing));
+            }
         }
 
 

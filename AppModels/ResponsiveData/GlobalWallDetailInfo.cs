@@ -32,6 +32,7 @@ namespace AppModels.ResponsiveData
         public IWallMemberInfo BottomPlate { get;private set; }
         public IWallMemberInfo Nogging { get;private set; }
         public IWallMemberInfo Trimmer { get;private set; }
+        public int WallSpacing => GlobalWallInfo.WallSpacing;
 
         #endregion
 
@@ -40,6 +41,7 @@ namespace AppModels.ResponsiveData
         public GlobalWallDetailInfo(IBasicWallInfo globalWallInfo,IWallMemberInfo globalNoggingInfo)
         {
             GlobalWallInfo = globalWallInfo;
+            GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
             if (GlobalWallInfo.WallType == WallType.LBW)
             {
                 RibbonPlate = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.RibbonPlate);
@@ -49,6 +51,14 @@ namespace AppModels.ResponsiveData
             BottomPlate = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.BottomPlate);
             Nogging = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.Nogging, globalNoggingInfo);
             Trimmer = new GlobalWallMemberInfo(globalWallInfo,WallMemberType.Trimmer, TopPlate);
+        }
+
+        private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName== "WallSpacing")
+            {
+                RaisePropertyChanged(nameof(WallSpacing));
+            }
         }
 
 

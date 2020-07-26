@@ -9,6 +9,7 @@ namespace AppModels.Interaface
         WallType WallType { get; }
         NoggingMethodType NoggingMethod { get; }
         IGlobalWallInfo GlobalWallInfo { get; }
+        IGlobalWallDetail GlobalWallDetailInfo { get; }
         int Id { get; }
         int WallThickness { get; }
         LayerItem WallColorLayer { get; }
@@ -26,5 +27,6 @@ namespace AppModels.Interaface
         bool IsRaisedCeiling { get; }
         int RaisedCeiling { get; }
         bool IsParallelWithRoofFrame { get;}
+        double WallLength { get; }
     }
 }

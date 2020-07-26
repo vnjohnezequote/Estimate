@@ -14,6 +14,7 @@ using AppModels.AppData;
 using AppModels.Enums;
 using AppModels.Factories;
 using AppModels.Interaface;
+using AppModels.ResponsiveData.WallMemberData;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -55,6 +56,9 @@ namespace AppModels.ResponsiveData
         }
         public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IGlobalWallInfo GlobalWallInfo { get; set; }
+
+        public IGlobalWallDetail GlobalWallDetailInfo => WallType == WallType.LBW ? GlobalWallInfo.GlobalExtWallDetailInfo : GlobalWallInfo.GlobalIntWallDetailInfo;
+
         public LayerItem WallColorLayer
         {
             get => this._wallColorLayer;
@@ -89,15 +93,7 @@ namespace AppModels.ResponsiveData
         }
         public int WallPitchingHeight
         {
-            get
-            {
-                if (_wallPitchingHeight==0)
-                {
-                    return _wallPitchingHeight;
-                }
-
-                return GlobalWallInfo.WallHeight;
-            }
+            get => _wallPitchingHeight==0 ? _wallPitchingHeight : GlobalWallInfo.WallHeight;
             set => this.SetProperty(ref this._wallPitchingHeight, value);
         }
         public int WallEndHeight { get; }
@@ -105,6 +101,7 @@ namespace AppModels.ResponsiveData
         public bool IsRakedWall { get; set; }
         public bool IsWallUnderFlatCeiling { get; set; }
         public bool IsParallelWithRoofFrame { get; set; }
+        public double WallLength { get; }
         public bool IsStepdown { get; set; }
         public bool IsRaisedCeiling { get; set; }
         public bool IsShorWall { get; set; }
@@ -145,11 +142,11 @@ namespace AppModels.ResponsiveData
 
         
         public int IsNonLbWall { get; private set; }
-        public WallMember RibbonPlate { get; private set; }
-        public WallMember TopPlate { get; private set; }
-        public WallMember BottomPlate { get; private set; }
-        public WallStud Stud { get; private set; }
-        public WallNogging Nogging { get; private set; }
+        public WallMemberBase RibbonPlate { get; private set; }
+        public WallMemberBase TopPlate { get; private set; }
+        public WallMemberBase BottomPlate { get; private set; }
+        public WallMemberBase Stud { get; private set; }
+        public WallMemberBase Nogging { get; private set; }
         #endregion
         #region Constructor
 
@@ -157,7 +154,7 @@ namespace AppModels.ResponsiveData
         {
             this.Id = id;
             this.GlobalWallInfo = globalWallInfo;
-            //RibbonPlate = new WallMember(this,GlobalWallInfo.GlobalExtWallDetailInfo.RibbonPlate);
+            //RibbonPlate = new WallMember(this);
             //TopPlate = new WallMember(this,GlobalWallInfo.GlobalExtWallDetailInfo.TopPlate);
             //BottomPlate = new WallMember(this,GlobalWallInfo.GlobalExtWallDetailInfo.BottomPlate);
             //Stud = new WallStud(this,GlobalWallInfo.GlobalExtWallDetailInfo.Stud);

@@ -21,7 +21,6 @@ namespace AppModels.Factories
                 case WallMemberType.Stud:
                 case WallMemberType.Trimmer:
                     return new WallMemberInfo(wallMemberInfo, wallMemberInfo.MemberType);
-                    break;
                 case WallMemberType.Nogging:
                     return new WallNoggingInfo(wallMemberInfo,wallInfo, wallMemberInfo.MemberType);
                 default:

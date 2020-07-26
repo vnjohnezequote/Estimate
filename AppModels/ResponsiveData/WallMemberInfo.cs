@@ -30,7 +30,7 @@ namespace AppModels.ResponsiveData
             {
                 if (_noItem==0)
                 {
-                    return BaseMaterialInfo == null ? 0 : BaseMaterialInfo.NoItem;
+                    return BaseMaterialInfo?.NoItem ?? 0;
                 }
                 return _noItem;
             }
@@ -43,7 +43,7 @@ namespace AppModels.ResponsiveData
             {
                 if (_thickness==0)
                 {
-                    return BaseMaterialInfo == null ? 0 : BaseMaterialInfo.Thickness;
+                    return BaseMaterialInfo?.Thickness ?? 0;
                 }
                 return _thickness;
             }
@@ -56,7 +56,7 @@ namespace AppModels.ResponsiveData
             {
                 if (_depth==0)
                 {
-                    return BaseMaterialInfo == null ? 0 : BaseMaterialInfo.Depth;
+                    return BaseMaterialInfo?.Depth ?? 0;
                 }
                 return _depth;
             }
@@ -95,13 +95,23 @@ namespace AppModels.ResponsiveData
                     return "Nil";
                 }
 
-                var result = Thickness + "x" + Depth + " " + TimberGrade;
+                var result = Thickness + "x" + Depth;
                 if (NoItem ==1)
                 {
                     return result;
                 }
 
                 return NoItem + "/" + result;
+            }
+        }
+        public string SizeGrade
+        {
+            get
+            {
+                if (BaseMaterialInfo == null)
+                    return "Nil";
+                return this.Size + " " + this.TimberGrade;
+
             }
         }
 

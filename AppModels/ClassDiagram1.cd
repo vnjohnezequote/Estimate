@@ -429,7 +429,7 @@
   <Class Name="AppModels.ResponsiveData.WallBase" Collapsed="true">
     <Position X="1.75" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAACAEAhCAoQAgADAABBgDABgECCAAACDAkTFAgBiQE=</HashCode>
+      <HashCode>IAACAEAhCAoQAgADAABBgDADgECCAAACDAkTFAgBiQE=</HashCode>
       <FileName>ResponsiveData\WallBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -445,14 +445,14 @@
   <Class Name="AppModels.ResponsiveData.WallMember" Collapsed="true">
     <Position X="0.75" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ResponsiveData\WallMember.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.WallMemberBase" Collapsed="true">
     <Position X="3" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAABAIAAAAgAAAAAAFAAAAAAAAAAAAAAAEA=</HashCode>
+      <HashCode>AAQIAgAAAAABAAAAAAgAAAAAgABAAAChgAAAAAAQAEA=</HashCode>
       <FileName>ResponsiveData\WallMemberBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -482,7 +482,7 @@
   <Class Name="AppModels.ResponsiveData.WallStud" Collapsed="true">
     <Position X="5.25" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>QAAAAgAABAABAAAAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
       <FileName>ResponsiveData\WallStud.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -546,7 +546,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="AppModels.Interaface.IBasicWallInfo" Collapsed="true">
-    <Position X="12.25" Y="7.75" Width="1.5" />
+    <Position X="4.75" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAABAAAAAAAAAAABAAAAgADAAAAgAAAAAAAAAAE=</HashCode>
       <FileName>Interaface\IBasicWallInfo.cs</FileName>
@@ -602,21 +602,21 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="AppModels.Interaface.IWallInfo" Collapsed="true">
-    <Position X="12.25" Y="8.5" Width="1.5" />
+    <Position X="12.25" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAhCAAAAgABAAAAACAAgECCAAAADAEBBAABAQE=</HashCode>
+      <HashCode>AAACAAAhCAAAAgABAAAAACACgECCAAAADAEBBAgBAQE=</HashCode>
       <FileName>Interaface\IWallInfo.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="AppModels.Interaface.IWallMember" Collapsed="true">
-    <Position X="14" Y="8.5" Width="1.5" />
+    <Position X="6.5" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAABAAAAAAAAAAAAABAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Interaface\IWallMember.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="AppModels.Interaface.IWallMemberInfo" Collapsed="true">
-    <Position X="15.75" Y="8.5" Width="1.5" />
+    <Position X="3" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAgAAAAABAAAAAAAAAAAAgABAAAAhAAAAAAAAAAA=</HashCode>
       <FileName>Interaface\IWallMemberInfo.cs</FileName>
