@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using AppModels.Enums;
+using AppModels.PocoDataModel;
 
 namespace AppModels.Interaface
 {
@@ -7,7 +8,7 @@ namespace AppModels.Interaface
     {
         NoggingMethodType NoggingMethod { get; }
         IGlobalWallInfo GlobalWallInfo { get; }
-        WallType WallType { get; }
+        WallTypePoco WallType { get; }
 
         int WallThickness { get; }
         int Depth { get; }

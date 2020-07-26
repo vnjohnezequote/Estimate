@@ -14,6 +14,7 @@ using AppModels.AppData;
 using AppModels.Enums;
 using AppModels.Factories;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using AppModels.ResponsiveData.WallMemberData;
 using Prism.Mvvm;
 
@@ -26,7 +27,7 @@ namespace AppModels.ResponsiveData
     {
         #region private field
 
-        private WallType _wallType= WallType.LBW;
+        //private WallTypePoco _wallType;
         private int _id;
         private int _ceilingPitch;
         private int _pitchingHeight;
@@ -45,19 +46,16 @@ namespace AppModels.ResponsiveData
             get => this._id;
             set => this.SetProperty(ref this._id, value);
         }
-        public WallType WallType
-        {
-            get => _wallType;
-            set
-            {
-                SetProperty(ref _wallType, value);
-                ChangeWallType();
-            }
-        }
+        public abstract WallTypePoco WallType { get; set; }
+        //{
+        //    get => _wallType;
+        //    set => SetProperty(ref _wallType, value);
+        //    //ChangeWallType();
+        //}
         public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IGlobalWallInfo GlobalWallInfo { get; set; }
 
-        public IGlobalWallDetail GlobalWallDetailInfo => WallType == WallType.LBW ? GlobalWallInfo.GlobalExtWallDetailInfo : GlobalWallInfo.GlobalIntWallDetailInfo;
+        public IGlobalWallDetail GlobalWallDetailInfo => WallType.IsLoadBearingWall ? GlobalWallInfo.GlobalExtWallDetailInfo : GlobalWallInfo.GlobalIntWallDetailInfo;
 
         public LayerItem WallColorLayer
         {
@@ -73,7 +71,7 @@ namespace AppModels.ResponsiveData
                     return _wallThickness;
                 }
 
-                return WallType == WallType.LBW ? GlobalWallInfo.ExternalWallThickness : GlobalWallInfo.InternalWallThickness;
+                return WallType.IsLoadBearingWall ? GlobalWallInfo.ExternalWallThickness : GlobalWallInfo.InternalWallThickness;
             }
             set => SetProperty(ref _wallThickness, value);
 
@@ -87,7 +85,7 @@ namespace AppModels.ResponsiveData
                     return _wallThickness;
                 }
 
-                return WallType == WallType.LBW ? GlobalWallInfo.ExternalWallSpacing : GlobalWallInfo.InternalWallSpacing;
+                return WallType.IsLoadBearingWall ? GlobalWallInfo.ExternalWallSpacing : GlobalWallInfo.InternalWallSpacing;
             }
             set => SetProperty(ref _wallThickness, value);
         }
@@ -145,20 +143,21 @@ namespace AppModels.ResponsiveData
         public WallMemberBase RibbonPlate { get; private set; }
         public WallMemberBase TopPlate { get; private set; }
         public WallMemberBase BottomPlate { get; private set; }
-        public WallMemberBase Stud { get; private set; }
+        public WallStud Stud { get; private set; }
         public WallMemberBase Nogging { get; private set; }
         #endregion
         #region Constructor
 
-        public WallBase(int id ,IGlobalWallInfo globalWallInfo)
+        public WallBase(int id ,IGlobalWallInfo globalWallInfo,WallTypePoco wallType)
         {
+            WallType = wallType;
             this.Id = id;
             this.GlobalWallInfo = globalWallInfo;
-            //RibbonPlate = new WallMember(this);
-            //TopPlate = new WallMember(this,GlobalWallInfo.GlobalExtWallDetailInfo.TopPlate);
-            //BottomPlate = new WallMember(this,GlobalWallInfo.GlobalExtWallDetailInfo.BottomPlate);
-            //Stud = new WallStud(this,GlobalWallInfo.GlobalExtWallDetailInfo.Stud);
-            //Nogging = new WallNogging(this,GlobalWallInfo.GlobalExtWallDetailInfo.Nogging);
+            RibbonPlate = new WallRibbonPlate(this);
+            TopPlate = new WallTopPlate(this);
+            BottomPlate = new WallBottomPlate(this);
+            Stud = new WallStud(this);
+            Nogging = new WallNogging(this);
         }
 
 

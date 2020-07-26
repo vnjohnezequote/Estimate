@@ -7,7 +7,7 @@ namespace AppModels.ResponsiveData.WallMemberData
     {
         public override int Thickness { get=>WallInfo.WallThickness; set{} }
 
-        public WallTopPlate(IWallInfo wallInfo, IWallMemberInfo baseMaterialInfo) : base(wallInfo)
+        public WallTopPlate(IWallInfo wallInfo) : base(wallInfo)
         {
             MemberType = WallMemberType.TopPlate;
         }

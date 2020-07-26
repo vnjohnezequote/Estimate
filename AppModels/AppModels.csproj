@@ -219,6 +219,7 @@
     <Compile Include="ResponsiveData\JobModel.cs" />
     <Compile Include="ResponsiveData\GLobalWallInfo.cs" />
     <Compile Include="ResponsiveData\LevelGlobalWallInfo.cs" />
+    <Compile Include="ResponsiveData\WallMemberData\WallBottomPlate.cs" />
     <Compile Include="ResponsiveData\WallMemberData\WallMemberBase.cs" />
     <Compile Include="ResponsiveData\WallMemberData\WallNogging.cs" />
     <Compile Include="ResponsiveData\WallNoggingInfo.cs" />

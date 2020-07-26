@@ -21,7 +21,7 @@ namespace AppModels.ResponsiveData.WallMemberData
             set => SetProperty(ref _thickness, value);
         }
 
-        public override WallMemberType MemberType { get; protected set; }
+        public sealed override WallMemberType MemberType { get; protected set; }
 
 
         public WallNogging(IWallInfo wallInfo) : base(wallInfo)

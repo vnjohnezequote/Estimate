@@ -3,6 +3,7 @@
 using System.ComponentModel;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -19,7 +20,7 @@ namespace AppModels.ResponsiveData
 
         #endregion
         #region Property
-        public WallType WallType { get; set; }
+        public WallTypePoco WallType { get; set; }
         //public IWallInfo WallInfo { get; set; }
         public IWallMemberInfo BaseMaterialInfo { get; set; }
         public WallMemberType MemberType { get; set; }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -20,7 +21,7 @@ namespace AppModels.ResponsiveData
         #region Property
         public IBasicWallInfo GlobalWallInfo { get; private set; }
         public IWallMemberInfo BaseMaterialInfo { get; private set; }
-        public WallType WallType => GlobalWallInfo.WallType;
+        public WallTypePoco WallType => GlobalWallInfo.WallType;
         public virtual int NoItem
         {
             get

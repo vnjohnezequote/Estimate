@@ -10,6 +10,7 @@
 
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -127,8 +128,8 @@ namespace AppModels.ResponsiveData
         public LevelGlobalWallInfo(IGlobalWallInfo defaultDefaultInfo)
         {
             this.GlobalWallInformation = defaultDefaultInfo;
-            GlobalExternalWallInfo = new BasicWallInfor(this, WallType.LBW);
-            GlobalInternalWallInfo = new BasicWallInfor(this, WallType.NonLBW);
+            GlobalExternalWallInfo = new BasicWallInfor(this, new WallTypePoco(){IsLoadBearingWall = true});
+            GlobalInternalWallInfo = new BasicWallInfor(this, new WallTypePoco(){IsLoadBearingWall = false});
             GlobalNoggingInfo = GlobalWallInformation.GlobalNoggingInfo;
             GlobalExtWallDetailInfo = new LevelWallDetailInfo(GlobalExternalWallInfo, GlobalWallInformation.GlobalExtWallDetailInfo);
             GlobalIntWallDetailInfo = new LevelWallDetailInfo(GlobalInternalWallInfo, GlobalWallInformation.GlobalIntWallDetailInfo);

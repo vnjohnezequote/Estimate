@@ -1,5 +1,6 @@
 ﻿using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.WallMemberData
@@ -16,7 +17,7 @@ namespace AppModels.ResponsiveData.WallMemberData
         #endregion
 
         #region Property
-        public WallType WallType => WallInfo.WallType;
+        public WallTypePoco WallType => WallInfo.WallType;
         public abstract WallMemberType MemberType { get;protected set; }
         public IWallInfo WallInfo { get; set; }
         public abstract IWallMemberInfo BaseMaterialInfo { get; }
@@ -106,8 +107,8 @@ namespace AppModels.ResponsiveData.WallMemberData
         protected WallMemberBase(IWallInfo wallInfo)
         {
             WallInfo = wallInfo;
-            WallInfo.PropertyChanged += WallInfo_PropertyChanged;
-            PropertyChanged += WallMemberBase_PropertyChanged;
+            //WallInfo.PropertyChanged += WallInfo_PropertyChanged;
+            //PropertyChanged += WallMemberBase_PropertyChanged;
         }
 
         protected virtual void WallMemberBase_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

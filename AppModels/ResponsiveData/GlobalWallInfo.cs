@@ -10,6 +10,7 @@
 using System;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -185,8 +186,8 @@ namespace AppModels.ResponsiveData
             TrussSpacing = 600;
             RoofFrameType = RoofFrameType.Truss;
             NoggingMethod = NoggingMethodType.AsWall;
-            GlobalExternalWallInfo = new BasicWallInfor(this,WallType.LBW);
-            GlobalInternalWallInfo= new BasicWallInfor(this, WallType.NonLBW);
+            GlobalExternalWallInfo = new BasicWallInfor(this,new WallTypePoco(){IsLoadBearingWall = true});
+            GlobalInternalWallInfo= new BasicWallInfor(this, new WallTypePoco(){IsLoadBearingWall = false});
             GlobalNoggingInfo = new GlobalWallMemberInfo(GlobalInternalWallInfo,WallMemberType.Nogging);
             GlobalExtWallDetailInfo = new GlobalWallDetailInfo(GlobalExternalWallInfo,GlobalNoggingInfo);
             GlobalIntWallDetailInfo = new GlobalWallDetailInfo(GlobalInternalWallInfo, GlobalNoggingInfo);

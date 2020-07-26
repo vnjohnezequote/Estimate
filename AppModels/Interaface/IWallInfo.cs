@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel;
 using AppModels.AppData;
 using AppModels.Enums;
+using AppModels.PocoDataModel;
 
 namespace AppModels.Interaface
 {
     public interface IWallInfo:INotifyPropertyChanged
     {
-        WallType WallType { get; }
+        WallTypePoco WallType { get; }
         NoggingMethodType NoggingMethod { get; }
         IGlobalWallInfo GlobalWallInfo { get; }
         IGlobalWallDetail GlobalWallDetailInfo { get; }

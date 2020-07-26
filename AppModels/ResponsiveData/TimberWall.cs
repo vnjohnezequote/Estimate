@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 
 namespace AppModels.ResponsiveData
 {
@@ -20,7 +21,8 @@ namespace AppModels.ResponsiveData
         #endregion
 
         #region Property
-        
+
+        public override WallTypePoco WallType { get; set; }
 
         /// <summary>
         /// Gets or sets the wall length.
@@ -39,7 +41,8 @@ namespace AppModels.ResponsiveData
 
         #endregion
 
-        public TimberWall(int id, IGlobalWallInfo globalWallInfo) : base(id, globalWallInfo)
+
+        public TimberWall(int id, IGlobalWallInfo globalWallInfo, WallTypePoco wallType) : base(id, globalWallInfo, wallType)
         {
         }
     }

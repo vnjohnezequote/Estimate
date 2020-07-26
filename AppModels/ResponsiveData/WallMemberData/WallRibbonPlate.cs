@@ -12,7 +12,7 @@ namespace AppModels.ResponsiveData.WallMemberData
             MemberType = WallMemberType.RibbonPlate;
         }
 
-        public override WallMemberType MemberType { get; protected set; }
+        public sealed override WallMemberType MemberType { get; protected set; }
         public override IWallMemberInfo BaseMaterialInfo => WallInfo.GlobalWallDetailInfo.TopPlate;
     }
 }

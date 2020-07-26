@@ -22,8 +22,8 @@ namespace AppModels.ResponsiveData
     public class WallLayer : WallBase, IComparable<WallLayer>
     {
 
-        //#region Private field
-
+        #region Private field
+        private WallTypePoco _wallType;
         ///// <summary>
         ///// The wall heights.
         ///// </summary>
@@ -85,7 +85,23 @@ namespace AppModels.ResponsiveData
         //private IntegerDimension _lastWallHeight;
 
 
-        //#endregion
+        #endregion
+
+        #region Property
+
+        public override WallTypePoco WallType
+        {
+            get=>_wallType;
+            set=>SetProperty(ref _wallType,value);
+        }
+        //{
+        //    get => _wallType;
+        //    set => SetProperty(ref _wallType, value);
+        //    //ChangeWallType();
+        //}
+
+
+        #endregion
 
         //#region Constructor
 
@@ -101,7 +117,7 @@ namespace AppModels.ResponsiveData
         ///// <param name="defaultInfo">
         ///// The default info.
         ///// </param>
-        public WallLayer(int wallId, IGlobalWallInfo globalWallInfo) : base(wallId,globalWallInfo)
+        public WallLayer(int wallId, IGlobalWallInfo globalWallInfo,WallTypePoco wallType) : base(wallId,globalWallInfo,wallType)
         {
         //    this.Id = wallId;
         //    //this.GlobalWallInfo = globalWallInfo;

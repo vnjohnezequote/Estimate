@@ -1,5 +1,6 @@
 ﻿using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -8,22 +9,22 @@ namespace AppModels.ResponsiveData
     {
         public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IGlobalWallInfo GlobalWallInfo { get; private set; }
-        public WallType WallType { get; }
-        public int WallSpacing => WallType == WallType.LBW
+        public WallTypePoco WallType { get; }
+        public int WallSpacing => WallType.IsLoadBearingWall
             ? GlobalWallInfo.ExternalWallSpacing
             : GlobalWallInfo.InternalWallSpacing;
 
-        public int WallThickness => WallType == WallType.LBW
+        public int WallThickness => WallType.IsLoadBearingWall
             ? GlobalWallInfo.ExternalWallThickness
             : GlobalWallInfo.InternalWallThickness;
-        public int Depth => WallType == WallType.LBW
+        public int Depth => WallType.IsLoadBearingWall
             ? GlobalWallInfo.ExternalWallTimberDepth
             : GlobalWallInfo.InternalWallTimberDepth;
-        public string TimberGrade=>WallType == WallType.LBW
+        public string TimberGrade=>WallType.IsLoadBearingWall
             ? GlobalWallInfo.ExternalWallTimberGrade
             : GlobalWallInfo.InternalWallTimberGrade;
 
-        public BasicWallInfor(IGlobalWallInfo globalWallInfo, WallType wallType)
+        public BasicWallInfor(IGlobalWallInfo globalWallInfo, WallTypePoco wallType)
         {
             WallType = wallType;
             GlobalWallInfo = globalWallInfo;

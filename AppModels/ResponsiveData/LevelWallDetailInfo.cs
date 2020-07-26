@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -22,7 +23,7 @@ namespace AppModels.ResponsiveData
         #endregion
 
         #region Property
-        public WallType WallType => _globallWallInfo.WallType;
+        public WallTypePoco WallType => _globallWallInfo.WallType;
         public int WallSpacing => GlobalWallInfo.WallSpacing;
         public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IBasicWallInfo GlobalWallInfo { get; private set; }
@@ -43,7 +44,7 @@ namespace AppModels.ResponsiveData
             GlobalWallInfo = globalWallInfo;
             GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
             GlobalWallDetail = globalWallDetailInfo;
-            if (GlobalWallInfo.WallType == WallType.LBW)
+            if (GlobalWallInfo.WallType.IsLoadBearingWall)
             {
                 RibbonPlate = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.RibbonPlate,GlobalWallDetail.RibbonPlate);
             }

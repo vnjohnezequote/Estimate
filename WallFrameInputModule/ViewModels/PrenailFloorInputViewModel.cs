@@ -11,6 +11,7 @@
 using System.Globalization;
 using ApplicationInterfaceCore;
 using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.WallMemberData;
@@ -372,14 +373,14 @@ namespace WallFrameInputModule.ViewModels
             }
             this._csvFilePath = result.File;
 
-            this.LoadCSVLength();
+            this.LoadCsvLength();
             this.LoadDataLength();
         }
 
         /// <summary>
         /// The load data length.
         /// </summary>
-        private void LoadCSVLength()
+        private void LoadCsvLength()
         {
             using (var reader = new StreamReader(this._csvFilePath))
             using (var csvFile = new CsvReader(reader, CultureInfo.InvariantCulture))
@@ -484,8 +485,8 @@ namespace WallFrameInputModule.ViewModels
         {
             this._startItemId = this.Level.WallLayers.Count + 1;
 
-            //var data = new WallLayer(this._startItemId, this.SelectedClient.WallTypes[0], this.Level.LevelInfo);
-            //this.Level.WallLayers.Add(data);
+            var data = new WallLayer(this._startItemId, this.Level.LevelInfo,this.SelectedClient.WallTypes[0]);
+            this.Level.WallLayers.Add(data);
         }
 
         /// <summary>
