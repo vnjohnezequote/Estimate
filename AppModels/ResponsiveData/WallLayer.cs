@@ -23,7 +23,7 @@ namespace AppModels.ResponsiveData
     {
 
         #region Private field
-        private WallTypePoco _wallType;
+        //private WallTypePoco _wallType;
         ///// <summary>
         ///// The wall heights.
         ///// </summary>
@@ -89,11 +89,11 @@ namespace AppModels.ResponsiveData
 
         #region Property
 
-        public override WallTypePoco WallType
-        {
-            get=>_wallType;
-            set=>SetProperty(ref _wallType,value);
-        }
+        //public override WallTypePoco WallType
+        //{
+        //    get=>_wallType;
+        //    set=>SetProperty(ref _wallType,value);
+        //}
         //{
         //    get => _wallType;
         //    set => SetProperty(ref _wallType, value);
@@ -362,8 +362,7 @@ namespace AppModels.ResponsiveData
         ///// </returns>
         public int CompareTo(WallLayer other)
         {
-            //return this.TimberWallTypePoco.CompareTo(other.TimberWallTypePoco);
-            return 0;
+            return this.WallType.CompareTo(other.WallType);
         }
 
         //#endregion

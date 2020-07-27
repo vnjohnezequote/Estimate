@@ -55,12 +55,27 @@ namespace AppModels.ResponsiveData
             set => SetProperty(ref _internalDoorHeight, value);
         }
 
-        public int StepDown => GlobalWallInformation.StepDown;
-        public int RaisedCeilingHeight => GlobalWallInformation.RaisedCeilingHeight;
+        public int StepDown
+        {
+            get=>GlobalWallInformation.StepDown;
+            set => GlobalWallInformation.StepDown = value;
+        }
+        public int RaisedCeilingHeight {
+            get=> GlobalWallInformation.RaisedCeilingHeight;
+            set => GlobalWallInformation.RaisedCeilingHeight = value;
+        } 
 
         public IGlobalWallInfo GlobalWallInformation { get; }
         public NoggingMethodType NoggingMethod => GlobalWallInformation.NoggingMethod;
-        public double CeilingPitch => GlobalWallInformation.CeilingPitch;
+
+        public double CeilingPitch
+        {
+            get=>GlobalWallInformation.CeilingPitch;
+            set
+            {
+                GlobalWallInformation.CeilingPitch = value;
+            }
+        } 
 
         public int ExternalWallSpacing
         {

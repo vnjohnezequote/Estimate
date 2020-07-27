@@ -42,25 +42,30 @@ namespace WallFrameInputModule.Helper
         /// </returns>
         public IEnumerable GetItemsSource(object record, object dataContext)
         {
-            //if (record == null)
-            //{
-            //    return null;
-            //}
+            if (record == null)
+            {
+                return null;
+            }
 
-            //var wallInfor = record as WallLayer;
-            //var wallThickness = wallInfor.WallThickness.Size;
-
-            //var viewModel = dataContext as PrenailFloorInputViewModel;
+            var wallInfor = record as WallLayer;
+            if (wallInfor == null)
+            {
+                return null;
+            }
+            var wallThickness = wallInfor.WallThickness;
 
             ////Returns ShipCity collection based on ShipCountry.
 
-            //if (viewModel != null && viewModel.SelectedClient.BottomPlates.ContainsKey(wallThickness.ToString()))
-            //{
-            //    List<TimberBase> bottomPlates = null;
-            //    viewModel.SelectedClient.BottomPlates.TryGetValue(wallThickness.ToString(), out bottomPlates);
-            //    return (bottomPlates ?? throw new InvalidOperationException()).ToList();
-            //}
-            return null;
+            if (!(dataContext is PrenailFloorInputViewModel viewModel) ||
+                !viewModel.SelectedClient.BottomPlates.ContainsKey(wallThickness.ToString())) return null;
+            viewModel.SelectedClient.BottomPlates.TryGetValue(wallThickness.ToString(), out var bottomPlates);
+            var result = new List<string>();
+            if (bottomPlates != null)
+            {
+                result.AddRange(bottomPlates.Select(bottomPlate => bottomPlate.SizeGrade));
+            }
+
+            return result;
         }
     }
 }

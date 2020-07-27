@@ -138,10 +138,10 @@ namespace DrawingModule.ViewModels
         public DrawingWindowViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IEntitiesManager entitiesManager,IJob jobModel)
             : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
-            var job = UnityContainer.Resolve<IJob>("GlobalJob");
-            if (job!=null)
+            
+            if (jobModel!=null)
             {
-                this.Levels = job.Levels;
+                this.Levels = jobModel.Levels;
             }
             _entitiesManager = entitiesManager;
             this.WindowLoadedCommand = new DelegateCommand<DrawingWindowView>(this.WindowLoaded);

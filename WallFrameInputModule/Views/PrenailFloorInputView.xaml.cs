@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AppModels.ResponsiveData;
 using Syncfusion.UI.Xaml.Grid;
 using WallFrameInputModule.ViewModels;
 
@@ -49,6 +50,38 @@ namespace WallFrameInputModule.Views
         private void WallInput_OnCurrentCellDropDownSelectionChanged(object sender, CurrentCellDropDownSelectionChangedEventArgs e)
         {
             _viewModel?.CalculatorWallLength();
+        }
+
+        private void WallInput_OnCurrentCellValidated(object sender, CurrentCellValidatedEventArgs e)
+        {
+            if (_viewModel== null)
+            {
+                return;
+            }
+
+            var column = e.Column;
+            if (column.MappingName != "Stud.SizeGrade")
+            {
+                return;
+            }
+            var dataGrid = sender as SfDataGrid;
+            var currendRow = e.RowData as WallLayer;
+            var oldData = e.OldValue as string;
+            if (currendRow.RibbonPlate.SizeGrade == oldData)
+            {
+                currendRow.RibbonPlate.SizeGrade = e.NewValue as string;
+            }
+
+            if (currendRow.TopPlate.SizeGrade == oldData)
+            {
+                currendRow.TopPlate.SizeGrade = e.NewValue as string;
+            }
+
+            if (currendRow.BottomPlate.SizeGrade == oldData)
+            {
+                currendRow.BottomPlate.SizeGrade = e.NewValue as string;
+            }
+
         }
     }
 }

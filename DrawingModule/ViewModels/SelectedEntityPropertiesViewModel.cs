@@ -84,10 +84,9 @@ namespace DrawingModule.ViewModels
             _entitiesManger = entitiesManager;
             this.RaisePropertyChanged(nameof(EntitiesManager));
             EntitiesManager.PropertyChanged += EntitiesManager_PropertyChanged;
-            var job = UnityContainer.Resolve<IJob>("GlobalJob");
-            if (job!=null)
+            if (jobModel!=null)
             {
-                this.Levels = job.Levels;
+                this.Levels = jobModel.Levels;
             }
            
         }

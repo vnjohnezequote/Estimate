@@ -230,10 +230,10 @@ namespace DrawingModule.ViewModels
             this._canvasDrawing = canvasDrawingView.CanvasDrawing;
             
             
-            var job = UnityContainer.Resolve<IJob>("GlobalJob");
-            if (job != null && job.Levels != null && job.Levels.Count > 0)
+            //var job = UnityContainer.Resolve<IJob>("GlobalJob");
+            if (JobModel != null && JobModel.Levels != null && JobModel.Levels.Count > 0)
             {
-                this.OnSelectedLevelChanged(job.Levels[0].LevelName);
+                this.OnSelectedLevelChanged(JobModel.Levels[0].LevelName);
             }
 
 

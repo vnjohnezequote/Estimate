@@ -16,6 +16,8 @@ using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData.WallMemberData;
+using devDept.Geometry;
+using OpenGL.Delegates;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -27,9 +29,9 @@ namespace AppModels.ResponsiveData
     {
         #region private field
 
-        //private WallTypePoco _wallType;
+        private WallTypePoco _wallType;
         private int _id;
-        private int _ceilingPitch;
+        private double _ceilingPitch;
         private int _pitchingHeight;
         private int _stepDown;
         private LayerItem _wallColorLayer;
@@ -37,7 +39,9 @@ namespace AppModels.ResponsiveData
         private int _wallSpacing;
         private int _wallPitchingHeight;
         private int _raisedCeiling;
-
+        private int _runLength;
+        private bool _isStepDown;
+        private bool _isRaisedCeiling;
         #endregion
 
         #region Property
@@ -46,13 +50,13 @@ namespace AppModels.ResponsiveData
             get => this._id;
             set => this.SetProperty(ref this._id, value);
         }
-        public abstract WallTypePoco WallType { get; set; }
-        //{
-        //    get => _wallType;
-        //    set => SetProperty(ref _wallType, value);
-        //    //ChangeWallType();
-        //}
-        public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
+        public virtual WallTypePoco WallType /*{ get; set; }*/
+        {
+            get => _wallType;
+            set => SetProperty(ref _wallType, value);
+        //ChangeWallType();
+        }
+    public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IGlobalWallInfo GlobalWallInfo { get; set; }
 
         public IGlobalWallDetail GlobalWallDetailInfo => WallType.IsLoadBearingWall ? GlobalWallInfo.GlobalExtWallDetailInfo : GlobalWallInfo.GlobalIntWallDetailInfo;
@@ -66,32 +70,47 @@ namespace AppModels.ResponsiveData
         {
             get
             {
-                if (_wallThickness==0)
+                if (_wallThickness!=0)
                 {
                     return _wallThickness;
                 }
 
                 return WallType.IsLoadBearingWall ? GlobalWallInfo.ExternalWallThickness : GlobalWallInfo.InternalWallThickness;
             }
-            set => SetProperty(ref _wallThickness, value);
+            set
+            {
+                if (value == GlobalWallDetailInfo.GlobalWallInfo.WallThickness)
+                {
+                    value = 0;
+                }
+                
+                SetProperty(ref _wallThickness, value);
+            } 
 
         }
         public int WallSpacing
         {
             get
             {
-                if (_wallSpacing==0)
+                if (_wallSpacing!=0)
                 {
-                    return _wallThickness;
+                    return _wallSpacing;
                 }
 
                 return WallType.IsLoadBearingWall ? GlobalWallInfo.ExternalWallSpacing : GlobalWallInfo.InternalWallSpacing;
             }
-            set => SetProperty(ref _wallThickness, value);
+            set
+            {
+                if (value == GlobalWallDetailInfo.GlobalWallInfo.WallSpacing)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _wallSpacing, value);
+            } 
         }
         public int WallPitchingHeight
         {
-            get => _wallPitchingHeight==0 ? _wallPitchingHeight : GlobalWallInfo.WallHeight;
+            get => _wallPitchingHeight!=0 ? _wallPitchingHeight : GlobalWallInfo.WallHeight;
             set => this.SetProperty(ref this._wallPitchingHeight, value);
         }
         public int WallEndHeight { get; }
@@ -100,17 +119,58 @@ namespace AppModels.ResponsiveData
         public bool IsWallUnderFlatCeiling { get; set; }
         public bool IsParallelWithRoofFrame { get; set; }
         public double WallLength { get; }
-        public bool IsStepdown { get; set; }
-        public bool IsRaisedCeiling { get; set; }
-        public bool IsShorWall { get; set; }
-        public int RunLength { get; set; }
-        public int CeilingPitch
+
+        public bool IsStepdown
         {
-            get => this._ceilingPitch;
+            get => _isStepDown;
+            set
+            {
+                SetProperty(ref _isStepDown, value);
+                RaisePropertyChanged(nameof(StepDown));
+            }
+        }
+
+        public bool IsRaisedCeiling
+        {
+            get => _isRaisedCeiling;
+            set
+            {
+                SetProperty(ref _isRaisedCeiling, value);
+                RaisePropertyChanged(nameof(RaisedCeiling));
+            }
+        }
+
+        public bool IsShorWall { get; set; }
+        public int RunLength 
+        { 
+            get=>_runLength;
+            set
+            {
+                SetProperty(ref _runLength, value);
+                RaisePropertyChanged(nameof(HPitching));
+            }
+        }
+        public double CeilingPitch
+        {
+            get => Math.Abs(_ceilingPitch) > 0.001 ? _ceilingPitch : GlobalWallInfo.CeilingPitch;
             set => this.SetProperty(ref this._ceilingPitch, value);
         }
         public int IsHPitching { get; set; }
-        public int HPitching { get; set; }
+
+        public int HPitching
+        {
+            get
+            {
+                if (RunLength > 0)
+                {
+                    return (int)(Math.Ceiling((RunLength * Math.Tan(Utility.DegToRad(CeilingPitch)))/5)*5);
+                    
+                }
+
+                return 0;
+            }
+
+        }
         public int StepDown
         {
             get
@@ -122,7 +182,14 @@ namespace AppModels.ResponsiveData
 
                 return _stepDown!=0 ?  _stepDown: GlobalWallInfo.StepDown;
             }
-            set => this.SetProperty(ref this._stepDown, value);
+            set
+            {
+                if (value == GlobalWallInfo.StepDown)
+                {
+                    value = 0;
+                }
+                this.SetProperty(ref this._stepDown, value);
+            }
         }
         public int RaisedCeiling
         {
@@ -135,11 +202,16 @@ namespace AppModels.ResponsiveData
 
                 return _raisedCeiling != 0 ? _raisedCeiling : GlobalWallInfo.RaisedCeilingHeight;
             }
-
+            set
+            {
+                if (value == GlobalWallInfo.RaisedCeilingHeight)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _raisedCeiling, value);
+            }
         }
 
-        
-        public int IsNonLbWall { get; private set; }
         public WallMemberBase RibbonPlate { get; private set; }
         public WallMemberBase TopPlate { get; private set; }
         public WallMemberBase BottomPlate { get; private set; }
@@ -153,16 +225,53 @@ namespace AppModels.ResponsiveData
             WallType = wallType;
             this.Id = id;
             this.GlobalWallInfo = globalWallInfo;
+            GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
             RibbonPlate = new WallRibbonPlate(this);
             TopPlate = new WallTopPlate(this);
             BottomPlate = new WallBottomPlate(this);
             Stud = new WallStud(this);
             Nogging = new WallNogging(this);
+            PropertyChanged += WallBase_PropertyChanged;
+            
+        }
+
+        private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CeilingPitch")
+            {
+                RaisePropertyChanged(nameof(CeilingPitch));
+                RaisePropertyChanged(nameof(HPitching));
+            }
+
+            if (e.PropertyName == "StepDown")
+            {
+                RaisePropertyChanged(nameof(StepDown));
+            }
+
+            if (e.PropertyName == "RaisedCeilingHeight")
+            {
+                RaisePropertyChanged(nameof(RaisedCeiling));
+            }
+
+            RaisePropertyChanged(nameof(WallPitchingHeight));
+            RaisePropertyChanged(nameof(WallThickness));
+            RaisePropertyChanged(nameof(WallSpacing));
+        }
+
+        protected virtual void WallBase_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "WallType")
+            {
+                RaisePropertyChanged(nameof(WallPitchingHeight));
+                RaisePropertyChanged(nameof(WallThickness));
+                RaisePropertyChanged(nameof(WallSpacing));
+                RaisePropertyChanged(nameof(WallHeight));
+            }
         }
 
 
         #endregion
-        
+
 
         #region Private Method
 

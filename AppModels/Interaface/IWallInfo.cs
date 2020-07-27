@@ -17,11 +17,10 @@ namespace AppModels.Interaface
         int WallPitchingHeight { get; }
         int WallEndHeight { get; }
         int WallHeight { get; }
-        bool IsRakedWall { get; }
         bool IsWallUnderFlatCeiling { get; }
         bool IsShorWall { get; }
         int RunLength { get; }
-        int CeilingPitch { get; }
+        double CeilingPitch { get; }
         int HPitching { get; }
         bool IsStepdown { get; }
         int StepDown { get; }

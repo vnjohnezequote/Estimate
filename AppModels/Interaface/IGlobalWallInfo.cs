@@ -8,7 +8,7 @@ namespace AppModels.Interaface
     {
         IGlobalWallInfo GlobalWallInformation { get; }
         NoggingMethodType NoggingMethod { get; }
-        double CeilingPitch { get; }
+        double CeilingPitch { get; set; }
         int ExternalDoorHeight { get; }
         int InternalDoorHeight { get; }
         int ExternalWallSpacing { get; }
@@ -16,8 +16,8 @@ namespace AppModels.Interaface
         int ExternalWallThickness { get; }
         int InternalWallThickness { get; }
         int WallHeight { get; }
-        int StepDown { get; }
-        int RaisedCeilingHeight { get; }
+        int StepDown { get; set; }
+        int RaisedCeilingHeight { get; set; }
         int ExternalWallTimberDepth { get; }
         int InternalWallTimberDepth { get; }
         string ExternalWallTimberGrade { get; }
