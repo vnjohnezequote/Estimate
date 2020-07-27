@@ -113,7 +113,7 @@ namespace AppModels.ResponsiveData
             get => _wallPitchingHeight!=0 ? _wallPitchingHeight : GlobalWallInfo.WallHeight;
             set => this.SetProperty(ref this._wallPitchingHeight, value);
         }
-        public int WallEndHeight { get; }
+        public int WallEndHeight => WallPitchingHeight + HPitching;
         public int WallHeight { get; }
         public bool IsRakedWall { get; set; }
         public bool IsWallUnderFlatCeiling { get; set; }
@@ -241,6 +241,7 @@ namespace AppModels.ResponsiveData
             {
                 RaisePropertyChanged(nameof(CeilingPitch));
                 RaisePropertyChanged(nameof(HPitching));
+                RaisePropertyChanged(nameof(WallEndHeight));
             }
 
             if (e.PropertyName == "StepDown")
@@ -256,6 +257,7 @@ namespace AppModels.ResponsiveData
             RaisePropertyChanged(nameof(WallPitchingHeight));
             RaisePropertyChanged(nameof(WallThickness));
             RaisePropertyChanged(nameof(WallSpacing));
+            RaisePropertyChanged(nameof(WallEndHeight));
         }
 
         protected virtual void WallBase_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -266,6 +268,7 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(WallThickness));
                 RaisePropertyChanged(nameof(WallSpacing));
                 RaisePropertyChanged(nameof(WallHeight));
+                RaisePropertyChanged(nameof(WallEndHeight));
             }
         }
 
@@ -275,12 +278,6 @@ namespace AppModels.ResponsiveData
 
         #region Private Method
 
-        private void ChangeWallType()
-        {
-            RaisePropertyChanged(nameof(WallSpacing));
-            RaisePropertyChanged(nameof(WallThickness));
-            //RibbonPlate
-        }
         #endregion
     }
 }
