@@ -362,7 +362,6 @@ namespace Estimate.ViewModels
                     TypeNameHandling = TypeNameHandling.Auto,
                     PreserveReferencesHandling = PreserveReferencesHandling.Objects,
                     Formatting = Formatting.Indented,
-                    NullValueHandling = NullValueHandling.Include
                 });
 
                 //AppModels.ResponsiveData.JobModel job = JsonConvert.DeserializeObject<JobModel>(Chuoiluu, new JsonSerializerSettings()
