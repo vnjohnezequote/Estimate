@@ -28,7 +28,11 @@ namespace AppModels.ResponsiveData
         {
             WallType = wallType;
             GlobalWallInfo = globalWallInfo;
-            GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
+            if (GlobalWallInfo!=null)
+            {
+                GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
+            }
+            
         }
 
         private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

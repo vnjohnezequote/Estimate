@@ -50,7 +50,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// The wall layers.
         /// </summary>
-        private ObservableCollection<WallLayer> _wallLayers;
+        private ObservableCollection<WallBase> _wallLayers;
 
         /// <summary>
         /// The _wall bracings.
@@ -88,7 +88,7 @@ namespace AppModels.ResponsiveData
         public LevelWall(IGlobalWallInfo jobInfo)
         {
             this.LevelInfo = new LevelGlobalWallInfo(jobInfo);
-            this.WallLayers = new ObservableCollection<WallLayer>();
+            this.WallLayers = new ObservableCollection<WallBase>();
             this.TimberWallBracings = new ObservableCollection<Bracing>();
             this.RoofBeams = new ObservableCollection<Beam>();
             this.Openings = new ObservableCollection<Opening>();
@@ -133,7 +133,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the layers.
         /// </summary>
-        public ObservableCollection<WallLayer> WallLayers
+        public ObservableCollection<WallBase> WallLayers
         {
             get => this._wallLayers;
             set => this.SetProperty(ref this._wallLayers, value);

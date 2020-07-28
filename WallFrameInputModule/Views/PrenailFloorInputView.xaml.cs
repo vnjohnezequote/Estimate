@@ -65,7 +65,7 @@ namespace WallFrameInputModule.Views
                 return;
             }
             var dataGrid = sender as SfDataGrid;
-            var currendRow = e.RowData as WallLayer;
+            var currendRow = e.RowData as PrenailWallLayer;
             var oldData = e.OldValue as string;
             if (currendRow.RibbonPlate.SizeGrade == oldData)
             {

@@ -294,6 +294,7 @@
                                                           CommandParameter="{Binding ElementName=QuickBar, Mode=OneWay}"/>
                     </interactions:EventTrigger>
                 </interactions:Interaction.Triggers>
+                <TextBox Text="{Binding Chuoiluu}"/>
             </Grid>
             <GridSplitter x:Name="QuickPanelGridSplitter" 
                           ResizeDirection="Columns" 

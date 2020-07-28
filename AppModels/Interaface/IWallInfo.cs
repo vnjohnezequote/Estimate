@@ -17,8 +17,11 @@ namespace AppModels.Interaface
         int WallPitchingHeight { get; }
         int WallEndHeight { get; }
         int WallHeight { get; }
-        bool IsWallUnderFlatCeiling { get; }
-        bool IsShorWall { get; }
+        int PrenailWallHeight { get; }
+        int StudHeight { get; }
+        bool IsWallUnderRakedArea { get; }
+        bool ForcedWallUnderRakedArea { get; }
+        bool IsShortWall { get; }
         int RunLength { get; }
         double CeilingPitch { get; }
         int HPitching { get; }
@@ -26,7 +29,7 @@ namespace AppModels.Interaface
         int StepDown { get; }
         bool IsRaisedCeiling { get; }
         int RaisedCeiling { get; }
-        bool IsParallelWithRoofFrame { get;}
         double WallLength { get; }
+        string WallName { get; }
     }
 }

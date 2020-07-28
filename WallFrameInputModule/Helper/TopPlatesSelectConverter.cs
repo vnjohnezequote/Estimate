@@ -47,7 +47,7 @@ namespace WallFrameInputModule.Helper
                 return null;
             }
 
-            var wallInfor = record as WallLayer;
+            var wallInfor = record as PrenailWallLayer;
             if (wallInfor == null)
             {
                 return null;

@@ -21,6 +21,7 @@ namespace AppModels.ResponsiveData.WallMemberData
 
         public WallBottomPlate(IWallInfo wallInfo) : base(wallInfo)
         {
+            MemberType = WallMemberType.BottomPlate;
         }
 
         public override WallMemberType MemberType { get; protected set; }

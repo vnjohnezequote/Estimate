@@ -429,18 +429,17 @@
   <Class Name="AppModels.ResponsiveData.WallBase">
     <Position X="7.75" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IgACAEAhCAoQAgADAABBgDgDgECCAAACDAkTFAgBiQE=</HashCode>
+      <HashCode>BgACAEAhCEpQAAQLAABBBDgDgECCAACi1EkRhCgAmUE=</HashCode>
       <FileName>ResponsiveData\WallBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="AppModels.ResponsiveData.WallLayer" Collapsed="true">
+  <Class Name="AppModels.ResponsiveData.PrenailWallLayer" Collapsed="true">
     <Position X="2.75" Y="9" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ResponsiveData\WallLayer.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ResponsiveData\PrenailWallLayer.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.ResponsiveData.WallMemberInfo" Collapsed="true">
     <Position X="0.5" Y="10.5" Width="1.5" />
@@ -625,7 +624,7 @@
   <Interface Name="AppModels.Interaface.IWallInfo" Collapsed="true">
     <Position X="13" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAhCAAAAgABAAAAACACgECCAAAADAEBBAgBAQE=</HashCode>
+      <HashCode>BAACAAAhCABAAAAJAAAABCACgECCAAAABAEBBAgAAUE=</HashCode>
       <FileName>Interaface\IWallInfo.cs</FileName>
     </TypeIdentifier>
   </Interface>

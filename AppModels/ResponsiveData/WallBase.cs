@@ -10,6 +10,7 @@
 using System;
 using System.Diagnostics;
 using System.Dynamic;
+using System.Windows.Media.Effects;
 using AppModels.AppData;
 using AppModels.Enums;
 using AppModels.Factories;
@@ -25,14 +26,13 @@ namespace AppModels.ResponsiveData
     /// <summary>
     /// The wall base.
     /// </summary>
-    public abstract class WallBase : BindableBase, IWallInfo
+    public abstract class WallBase : BindableBase, IWallInfo, IComparable<WallBase>
     {
         #region private field
 
         private WallTypePoco _wallType;
         private int _id;
         private double _ceilingPitch;
-        private int _pitchingHeight;
         private int _stepDown;
         private LayerItem _wallColorLayer;
         private int _wallThickness;
@@ -42,6 +42,10 @@ namespace AppModels.ResponsiveData
         private int _runLength;
         private bool _isStepDown;
         private bool _isRaisedCeiling;
+        private double _wallLength;
+        private bool _forcedWallUnderRakedArea;
+        private bool _isDesigned;
+        private int _typeID;
         #endregion
 
         #region Property
@@ -56,11 +60,9 @@ namespace AppModels.ResponsiveData
             set => SetProperty(ref _wallType, value);
         //ChangeWallType();
         }
-    public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
+        public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IGlobalWallInfo GlobalWallInfo { get; set; }
-
         public IGlobalWallDetail GlobalWallDetailInfo => WallType.IsLoadBearingWall ? GlobalWallInfo.GlobalExtWallDetailInfo : GlobalWallInfo.GlobalIntWallDetailInfo;
-
         public LayerItem WallColorLayer
         {
             get => this._wallColorLayer;
@@ -114,12 +116,79 @@ namespace AppModels.ResponsiveData
             set => this.SetProperty(ref this._wallPitchingHeight, value);
         }
         public int WallEndHeight => WallPitchingHeight + HPitching;
-        public int WallHeight { get; }
-        public bool IsRakedWall { get; set; }
-        public bool IsWallUnderFlatCeiling { get; set; }
-        public bool IsParallelWithRoofFrame { get; set; }
-        public double WallLength { get; }
+        public int WallHeight
+        {
+            get=>WallEndHeight + StepDown + RaisedCeiling;
+            set
+            {
+                var pitchingHeight = value - StepDown - RaisedCeiling - HPitching;
+                WallPitchingHeight = pitchingHeight;
+            }
+        }
+        public int PrenailWallHeight
+        {
+            get
+            {
+                if (WallType.IsLoadBearingWall)
+                {
+                    return WallHeight;
+                }
+                else
+                {
+                    if (WallType.IsRaked)
+                    {
+                        return WallHeight;
+                    }
 
+                    if (IsWallUnderRakedArea || ForcedWallUnderRakedArea)
+                    {
+                        return WallHeight;
+                    }
+                    return WallHeight - 35;
+                }
+            }
+        }
+        public int StickFrameWallHeight
+        {
+            get
+            {
+                if (WallType.IsRaked|| IsWallUnderRakedArea || ForcedWallUnderRakedArea)
+                {
+                    return StudHeight;
+                }
+
+                return WallHeight;
+            }
+        }
+        public int StudHeight
+        {
+            get
+            {
+                var tbtPlate = RibbonPlate.NoItem * RibbonPlate.Depth + TopPlate.NoItem * TopPlate.Depth +
+                               BottomPlate.NoItem * BottomPlate.Depth;
+                if (!WallType.IsLoadBearingWall && !IsShortWall)
+                {
+                    tbtPlate += 35;
+                }
+                var studHeight = WallHeight - tbtPlate;
+                if (WallType.IsRaked|| ForcedWallUnderRakedArea|| IsWallUnderRakedArea)
+                {
+                    studHeight = studHeight.RoundUpTo300();
+                }
+                return studHeight;
+            }
+        }
+        public bool IsWallUnderRakedArea => WallType.IsRaked || RunLength != 0;
+        public bool ForcedWallUnderRakedArea
+        {
+            get=>_forcedWallUnderRakedArea;
+            set
+            {
+                SetProperty(ref _forcedWallUnderRakedArea, value);
+                RaisePropertyChanged(nameof(StudHeight));
+            }
+        }
+        public double WallLength { get=>_wallLength; set=>SetProperty(ref _wallLength,value); }
         public bool IsStepdown
         {
             get => _isStepDown;
@@ -129,7 +198,6 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(StepDown));
             }
         }
-
         public bool IsRaisedCeiling
         {
             get => _isRaisedCeiling;
@@ -139,38 +207,49 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(RaisedCeiling));
             }
         }
+        public bool IsShortWall
+        {
+            get
+            {
+                if (WallType.IsLoadBearingWall)
+                {
+                    return false;
+                }
+                if (WallType.IsRaked )
+                {
+                    return false;
+                }
 
-        public bool IsShorWall { get; set; }
+                return WallHeight < GlobalWallInfo.WallHeight;
+            }
+        }
+        public bool IsNeedTobeDesign
+        {
+            get
+            {
+                if (WallType.IsLoadBearingWall)
+                {
+                    return WallHeight >= 2750 && !IsDesigned;
+                }
+
+                return false;
+            }
+        }
+        public int TypeId { get=>_typeID; set=>SetProperty(ref _typeID,value); }
+        public bool IsDesigned { get=>_isDesigned; set=>SetProperty(ref _isDesigned,value); }
         public int RunLength 
         { 
             get=>_runLength;
-            set
-            {
-                SetProperty(ref _runLength, value);
-                RaisePropertyChanged(nameof(HPitching));
-            }
+            set => SetProperty(ref _runLength, value);
         }
         public double CeilingPitch
         {
             get => Math.Abs(_ceilingPitch) > 0.001 ? _ceilingPitch : GlobalWallInfo.CeilingPitch;
             set => this.SetProperty(ref this._ceilingPitch, value);
         }
-        public int IsHPitching { get; set; }
-
-        public int HPitching
-        {
-            get
-            {
-                if (RunLength > 0)
-                {
-                    return (int)(Math.Ceiling((RunLength * Math.Tan(Utility.DegToRad(CeilingPitch)))/5)*5);
-                    
-                }
-
-                return 0;
-            }
-
-        }
+        public int HPitching =>
+            RunLength <= 0 ? 0 : (RunLength * Math.Tan(Utility.DegToRad(CeilingPitch))).RoundUpto5();
+        //(int)(Math.Ceiling((RunLength * Math.Tan(Utility.DegToRad(CeilingPitch))) / 5) * 5)
         public int StepDown
         {
             get
@@ -211,7 +290,7 @@ namespace AppModels.ResponsiveData
                 SetProperty(ref _raisedCeiling, value);
             }
         }
-
+        public string WallName => WallType.AliasName.Replace('_',' ') +" "+ PrenailWallHeight + "mm";
         public WallMemberBase RibbonPlate { get; private set; }
         public WallMemberBase TopPlate { get; private set; }
         public WallMemberBase BottomPlate { get; private set; }
@@ -219,11 +298,11 @@ namespace AppModels.ResponsiveData
         public WallMemberBase Nogging { get; private set; }
         #endregion
         #region Constructor
-
-        public WallBase(int id ,IGlobalWallInfo globalWallInfo,WallTypePoco wallType)
+        public WallBase(int id ,IGlobalWallInfo globalWallInfo,WallTypePoco wallType,int typeId = 1)
         {
             WallType = wallType;
             this.Id = id;
+            TypeId = typeId;
             this.GlobalWallInfo = globalWallInfo;
             GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
             RibbonPlate = new WallRibbonPlate(this);
@@ -232,9 +311,27 @@ namespace AppModels.ResponsiveData
             Stud = new WallStud(this);
             Nogging = new WallNogging(this);
             PropertyChanged += WallBase_PropertyChanged;
-            
+            RibbonPlate.PropertyChanged += WallPlate_PropertyChanged;
+            TopPlate.PropertyChanged += WallPlate_PropertyChanged;
+            BottomPlate.PropertyChanged += WallPlate_PropertyChanged;
         }
 
+        private void WallPlate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "NoItem" || e.PropertyName=="Depth")
+            {
+                RaisePropertyChanged(nameof(StudHeight));
+            }
+        }
+
+        #endregion
+
+
+        #region Private Method
+        public int CompareTo(WallBase other)
+        {
+            return this.WallType.CompareTo(other.WallType);
+        }
         private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CeilingPitch")
@@ -259,25 +356,61 @@ namespace AppModels.ResponsiveData
             RaisePropertyChanged(nameof(WallSpacing));
             RaisePropertyChanged(nameof(WallEndHeight));
         }
-
         protected virtual void WallBase_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "WallType")
+            switch (e.PropertyName)
             {
-                RaisePropertyChanged(nameof(WallPitchingHeight));
-                RaisePropertyChanged(nameof(WallThickness));
-                RaisePropertyChanged(nameof(WallSpacing));
-                RaisePropertyChanged(nameof(WallHeight));
-                RaisePropertyChanged(nameof(WallEndHeight));
+                case "WallType":
+                    //RaisePropertyChanged(nameof(IsShortWall));
+                    RaisePropertyChanged(nameof(IsWallUnderRakedArea));
+                    RaisePropertyChanged(nameof(WallPitchingHeight));
+                    RaisePropertyChanged(nameof(WallThickness));
+                    RaisePropertyChanged(nameof(WallSpacing));
+                    RaisePropertyChanged(nameof(WallEndHeight));
+                    RaisePropertyChanged(nameof(WallHeight));
+                    RaisePropertyChanged(nameof(IsNeedTobeDesign));
+                    RaisePropertyChanged(nameof(WallName));
+                    break;
+                case nameof(RunLength):
+                    RaisePropertyChanged(nameof(IsWallUnderRakedArea));
+                    RaisePropertyChanged(nameof(HPitching));
+                    RaisePropertyChanged(nameof(WallEndHeight));
+                    RaisePropertyChanged(nameof(WallHeight));
+                    break;
+                case nameof(StepDown):
+                    RaisePropertyChanged(nameof(WallHeight));
+                    break;
+                case nameof(RaisedCeiling):
+                    RaisePropertyChanged(nameof(WallHeight));
+                    break;
+                case nameof(WallHeight):
+                    //RaisePropertyChanged(nameof(IsShortWall));
+                    RaisePropertyChanged(nameof(PrenailWallHeight));
+                    RaisePropertyChanged(nameof(StickFrameWallHeight));
+                    RaisePropertyChanged(nameof(StudHeight));
+                    RaisePropertyChanged(nameof(IsNeedTobeDesign));
+                    RaisePropertyChanged(nameof(WallName));
+                    break;
+                case nameof(WallPitchingHeight):
+                    RaisePropertyChanged(nameof(WallEndHeight));
+                    RaisePropertyChanged(nameof(PrenailWallHeight));
+                    RaisePropertyChanged(nameof(StickFrameWallHeight));
+                    RaisePropertyChanged(nameof(StudHeight));
+                    RaisePropertyChanged(nameof(IsNeedTobeDesign));
+                    RaisePropertyChanged(nameof(WallName));
+                    break;
+                case nameof(ForcedWallUnderRakedArea):
+                    RaisePropertyChanged(nameof(StudHeight));
+                    RaisePropertyChanged(nameof(PrenailWallHeight));
+                    RaisePropertyChanged(nameof(StickFrameWallHeight));
+                    RaisePropertyChanged(nameof(WallName));
+                    break;
+                case nameof(IsDesigned):
+                    RaisePropertyChanged(nameof(IsNeedTobeDesign));
+                    break;
+                    
             }
         }
-
-
-        #endregion
-
-
-        #region Private Method
-
         #endregion
     }
 }

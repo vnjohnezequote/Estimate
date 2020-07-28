@@ -24,7 +24,19 @@ namespace AppModels.ResponsiveData
         #endregion
 
         #region Property
-        public WallTypePoco WallType => _globallWallInfo.WallType;
+        public WallTypePoco WallType {
+            get
+            {
+                if (_globallWallInfo!=null)
+                {
+                    return _globallWallInfo.WallType;
+                }
+
+                return null;
+
+            }
+           
+        } 
         public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IBasicWallInfo GlobalWallInfo { get; private set; }
         public IWallMemberInfo RibbonPlate { get; private set; }

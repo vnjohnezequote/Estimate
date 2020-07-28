@@ -47,7 +47,7 @@ namespace WallFrameInputModule.Helper
                 return null;
             }
 
-            var wallInfor = record as WallLayer;
+            var wallInfor = record as PrenailWallLayer;
             string wallKey = "LBW";
             if (!wallInfor.WallType.IsLoadBearingWall)
             {

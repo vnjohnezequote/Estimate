@@ -32,8 +32,8 @@ namespace AppModels.Comparer
         /// </returns>
        public int Compare(object x, object y)
         {
-            var objectA = (WallLayer)x;
-            var objectB = (WallLayer)y;
+            var objectA = (PrenailWallLayer)x;
+            var objectB = (PrenailWallLayer)y;
             if (objectA!= null && objectB!=null)
             {
                 //return objectA.TimberWallTypePoco.CompareTo(objectB.TimberWallTypePoco);    

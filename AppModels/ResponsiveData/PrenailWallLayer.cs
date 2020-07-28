@@ -19,7 +19,7 @@ namespace AppModels.ResponsiveData
     /// <summary>
     /// The wall layer.
     /// </summary>
-    public class WallLayer : WallBase, IComparable<WallLayer>
+    public class PrenailWallLayer : WallBase
     {
 
         #region Private field
@@ -106,7 +106,7 @@ namespace AppModels.ResponsiveData
         //#region Constructor
 
         ///// <summary>
-        ///// Initializes a new instance of the <see cref="WallLayer"/> class.
+        ///// Initializes a new instance of the <see cref="PrenailWallLayer"/> class.
         ///// </summary>
         ///// <param name="wallId">
         ///// The wall Id.
@@ -117,7 +117,7 @@ namespace AppModels.ResponsiveData
         ///// <param name="defaultInfo">
         ///// The default info.
         ///// </param>
-        public WallLayer(int wallId, IGlobalWallInfo globalWallInfo,WallTypePoco wallType) : base(wallId,globalWallInfo,wallType)
+        public PrenailWallLayer(int wallId, IGlobalWallInfo globalWallInfo,WallTypePoco wallType,int typeID=1) : base(wallId,globalWallInfo,wallType,typeID)
         {
         //    this.Id = wallId;
         //    //this.GlobalWallInfo = globalWallInfo;
@@ -360,10 +360,7 @@ namespace AppModels.ResponsiveData
         ///// <returns>
         ///// The <see cref="int"/>.
         ///// </returns>
-        public int CompareTo(WallLayer other)
-        {
-            return this.WallType.CompareTo(other.WallType);
-        }
+        
 
         //#endregion
 

@@ -162,6 +162,7 @@
     <Compile Include="Enums\WallMemberType.cs" />
     <Compile Include="Enums\WallType.cs" />
     <Compile Include="Factories\WallMemberFactory.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Interaface\IBasicWallInfo.cs" />
     <Compile Include="Interaface\IClientDatabase.cs" />
     <Compile Include="Interaface\IGlobalWallDetail.cs" />
@@ -241,7 +242,7 @@
     <Compile Include="ResponsiveData\WallMemberData\WallStud.cs" />
     <Compile Include="ResponsiveData\TimberBase.cs" />
     <Compile Include="ResponsiveData\WallBase.cs" />
-    <Compile Include="ResponsiveData\WallLayer.cs" />
+    <Compile Include="ResponsiveData\PrenailWallLayer.cs" />
     <Compile Include="ResponsiveData\LevelWall.cs" />
     <Compile Include="ResponsiveData\Opening.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

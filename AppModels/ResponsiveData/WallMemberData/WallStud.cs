@@ -30,7 +30,8 @@ namespace AppModels.ResponsiveData.WallMemberData
             set => SetProperty(ref _thickness, value);
         }
 
-        public int Height { get; set; }
+        public int Height => WallInfo.StudHeight;
+
         #endregion
         #region Constructor
         public WallStud(IWallInfo wallInfo) : base(wallInfo)
@@ -44,6 +45,11 @@ namespace AppModels.ResponsiveData.WallMemberData
             if (e.PropertyName=="WallThickness")
             {
                 RaisePropertyChanged(nameof(Thickness));
+            }
+
+            if (e.PropertyName == "StudHeight")
+            {
+                RaisePropertyChanged(nameof(Height));
             }
         }
         #endregion

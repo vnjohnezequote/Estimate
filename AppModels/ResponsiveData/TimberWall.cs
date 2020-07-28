@@ -33,7 +33,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the wall layer.
         /// </summary>
-        public WallLayer WallLayer
+        public PrenailWallLayer WallLayer
         {
             get;
             set;

@@ -91,7 +91,7 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         private string _csvFilePath;
 
-        private WallLayer _selectedWall;
+        private PrenailWallLayer _selectedWall;
         #endregion
 
         #region Constructor
@@ -149,7 +149,7 @@ namespace WallFrameInputModule.ViewModels
             get => _entitiesManager;
             set => SetProperty(ref _entitiesManager, value);
         }
-        public WallLayer SelectedWall
+        public PrenailWallLayer SelectedWall
         {
             get => _selectedWall;
             set => SetProperty(ref _selectedWall, value);
@@ -293,10 +293,6 @@ namespace WallFrameInputModule.ViewModels
 
         }
 
-
-
-
-
         #endregion
 
         #region Private method
@@ -437,8 +433,7 @@ namespace WallFrameInputModule.ViewModels
         private void OnAddNewWallRow()
         {
             this._startItemId = this.Level.WallLayers.Count + 1;
-
-            var data = new WallLayer(this._startItemId, this.Level.LevelInfo,this.SelectedClient.WallTypes[0]);
+            var data = new PrenailWallLayer(this._startItemId, this.Level.LevelInfo,this.SelectedClient.WallTypes[0]);
             this.Level.WallLayers.Add(data);
             SelectedWall = data;
         }
@@ -499,9 +494,9 @@ namespace WallFrameInputModule.ViewModels
         {
             if (this.Level.WallLayers.Count > 0)
             {
-                var tempData = new List<WallLayer>(this.Level.WallLayers);
+                var tempData = new List<WallBase>(this.Level.WallLayers);
                 tempData.Sort();
-                this.Level.WallLayers = new ObservableCollection<WallLayer>(tempData);
+                this.Level.WallLayers = new ObservableCollection<WallBase>(tempData);
 
                 // re Order ID
                 var startId = 1;

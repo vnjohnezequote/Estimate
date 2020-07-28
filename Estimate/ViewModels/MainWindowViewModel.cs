@@ -12,6 +12,7 @@ using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 using NewJobWizardModule.Views;
+using Newtonsoft.Json;
 
 namespace Estimate.ViewModels
 {
@@ -340,15 +341,34 @@ namespace Estimate.ViewModels
         /// <summary>
         /// Gets or sets the JobDefaultInfo
         /// </summary>
+
         #endregion
 
+        private string chuoiluu;
+
+        public string Chuoiluu
+        {
+            get => chuoiluu;
+            set => SetProperty(ref chuoiluu, value);
+        }
         private void OnSaveJobCommand()
         {
             if (this.JobModel != null)
             {
-                var fileName = JobModel.Info.JobLocation + @"\" + JobModel.Info.JobNumber + ".db";
+                var fileName = JobModel.Info.JobLocation + @"\" + JobModel.Info.JobNumber + ".json";
+                //string json = JsonConvert.SerializeObject(JobModel);
+                Chuoiluu = JsonConvert.SerializeObject(JobModel, new JsonSerializerSettings()
+                {
+                    TypeNameHandling = TypeNameHandling.Auto,
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                    Formatting = Formatting.Indented,
+                    NullValueHandling = NullValueHandling.Include
+                });
 
-                
+                //AppModels.ResponsiveData.JobModel job = JsonConvert.DeserializeObject<JobModel>(Chuoiluu, new JsonSerializerSettings()
+                //{
+                //    TypeNameHandling = TypeNameHandling.Auto,
+                //});
             }
         }
         /// <summary>
