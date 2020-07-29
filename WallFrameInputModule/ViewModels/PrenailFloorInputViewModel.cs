@@ -353,8 +353,8 @@ namespace WallFrameInputModule.ViewModels
             {
                 this.Level.RoofBeams = new ObservableCollection<Beam>();
             }
-            var newBeam = new Beam();
-            this.Level.RoofBeams.Add(newBeam);
+            //var newBeam = new Beam();
+            //this.Level.RoofBeams.Add(newBeam);
         }
 
         /// <summary>

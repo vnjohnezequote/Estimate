@@ -22,13 +22,6 @@ namespace AppModels.ResponsiveData
     public class GlobalWallInfo : BindableBase,IGlobalWallInfo
     {
         #region private Field
-        private int _trussSpacing;
-        private int _rafterSpacing;
-        private int _stepDown;
-        private double _roofPitch;
-        private double _ceilingPitch;
-        private RoofFrameType _roofFrameType;
-        private NoggingMethodType _noggingMethod;
         private int _externalDoorHeight;
         private int _internalDoorHeight;
         private int _externalWallSpacing;
@@ -40,19 +33,10 @@ namespace AppModels.ResponsiveData
         private string _externalWallTimberGrade;
         private string _internalWallTimberGrade;
         private int _wallHeight;
-        private int _raisedCeilingHeight;
-        private Suppliers _supplier;
-
         #endregion
 
         #region public Property
-
-        public Suppliers Supplier { get=>_supplier; set=>SetProperty(ref _supplier,value); }
-        public NoggingMethodType NoggingMethod
-        {
-            get => _noggingMethod;
-            set => SetProperty(ref _noggingMethod, value);
-        }
+        public JobInfo GlobalInfo { get; set; }
         public int WallHeight { 
             get=>_wallHeight;
             set => SetProperty(ref _wallHeight, value);
@@ -126,77 +110,8 @@ namespace AppModels.ResponsiveData
             get => string.IsNullOrEmpty(_internalWallTimberGrade) ? _externalWallTimberGrade : _internalWallTimberGrade;
 
             set => SetProperty(ref _internalWallTimberGrade, value);
-        } 
-        public RoofFrameType RoofFrameType
-        {
-            get=>_roofFrameType;
-            set
-            {
-                SetProperty(ref _roofFrameType, value);
-                RaisePropertyChanged(nameof(CeilingPitch));
-            }
-        }
-        public int TrussSpacing
-        {
-            get => this._trussSpacing;
-            set
-            {
-                this.SetProperty(ref this._trussSpacing, value);
-                RaisePropertyChanged(nameof(RafterSpacing));
-            } 
-        }
-        public int RafterSpacing
-        {
-            get => this._rafterSpacing == 0 ? _trussSpacing : this._rafterSpacing;
-            set => this.SetProperty(ref this._rafterSpacing, value);
-        }
-        public int StepDown
-        {
-            get => this._stepDown;
-            set => this.SetProperty(ref this._stepDown, value);
-        }
-        public int RaisedCeilingHeight
-        {
-            get => _raisedCeilingHeight;
-            set => SetProperty(ref _raisedCeilingHeight, value);
-        }
-        public double RoofPitch
-        {
-            get => this._roofPitch;
-            set
-            {
-                this.SetProperty(ref this._roofPitch, value);
-                this.RaisePropertyChanged(nameof(CeilingPitch));
-            } 
         }
         public IGlobalWallInfo GlobalWallInformation { get; private set; } =null;
-        public double CeilingPitch
-        {
-            get => this._roofFrameType == RoofFrameType.Truss ? _ceilingPitch : _roofPitch;
-            set => SetProperty(ref _ceilingPitch, value);
-        }
-        public int RoofOverHang
-        {
-            get => _roofOverHang;
-            set => SetProperty(ref _roofOverHang, value);
-        }
-        public bool QuoteCeilingBattent { get => _quoteCeilingBattent; set => SetProperty(ref _quoteCeilingBattent, value); }
-        public CeilingBattensType CeilingBattensType { get; set; } = CeilingBattensType.Timber;
-        public string Treatment
-        {
-            get => this._treatMent;
-            set => this.SetProperty(ref this._treatMent, value);
-        }
-        public string RoofMaterial
-        {
-            get => this._roofMaterial;
-            set => this.SetProperty(ref this._roofMaterial, value);
-        }
-        public int QuoteTolengthSize { get; set; } = 5400;
-        public bool JambBeamSupport { get; set; }
-
-        public bool NoggingsAndSillInLM { get; set; }
-        public bool UpToLength { get; set; }
         public IBasicWallInfo GlobalExternalWallInfo { get;private set; }
         public IBasicWallInfo GlobalInternalWallInfo { get; private set; }
         public IGlobalWallDetail GlobalExtWallDetailInfo { get;private set; }
@@ -207,8 +122,9 @@ namespace AppModels.ResponsiveData
 
         #region Constructor
 
-        public GlobalWallInfo()
+        public GlobalWallInfo(JobInfo globalInfo)
         {
+            GlobalInfo = globalInfo;
             WallHeight = 2440;
             ExternalDoorHeight = 2100;
             ExternalWallThickness = 90;
@@ -228,7 +144,7 @@ namespace AppModels.ResponsiveData
             GlobalDoorJambInfo = new GlobalWallMemberInfo(GlobalExternalWallInfo,WallMemberType.DoorJamb,GlobalExtWallDetailInfo.Stud);
             PropertyChanged += GlobalWallInfo_PropertyChanged;
         }
-
+       
         private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -248,44 +164,6 @@ namespace AppModels.ResponsiveData
 
             }
 
-
-        }
-        private void SetTieDown(string value)
-        {
-            switch (WindRate)
-            {
-                case "C2":
-                case "C3":
-                    if (value == "Direct")
-                    {
-                        value = null;
-                    }
-                    break;
-                case "N1":
-                case "N2":
-                    if (string.IsNullOrEmpty(BuilderName) && value == "1800")
-                    {
-                        value = null;
-                    }
-                    else if (BuilderName.Contains("Privium") && value == "1500")
-                    {
-                        value = null;
-                    }
-                    else if (value == "1800")
-                    {
-                        value = null;
-                    }
-
-                    break;
-                case "N3":
-                    if (value == "1200")
-                    {
-                        value = null;
-                    }
-                    break;
-            }
-
-            this.SetProperty(ref _tieDown, value);
 
         }
 

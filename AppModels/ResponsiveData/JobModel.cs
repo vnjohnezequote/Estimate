@@ -43,6 +43,7 @@ namespace AppModels.ResponsiveData
             get => this._inFor;
             set => this.SetProperty(ref this._inFor, value);
         }
+        public IGlobalWallInfo GlobalWallInfo { get; set; }
         /// <summary>
         /// Gets or sets the levels.
         /// </summary>
@@ -54,6 +55,7 @@ namespace AppModels.ResponsiveData
         public JobModel()
         {
             this.Info = new JobInfo();
+            GlobalWallInfo = new GlobalWallInfo(Info);
             this.Levels = new ObservableCollection<LevelWall>();
         }
 

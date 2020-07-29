@@ -19,187 +19,38 @@ namespace AppModels.ResponsiveData
     public class JobInfo : BindableBase
     {
         #region Field
-        /// <summary>
-        /// The job location.
-        /// </summary>
         private string _jobLocation;
-
-        /// <summary>
-        /// The clientPoco name.
-        /// </summary>
         private string _clientName;
-
-        /// <summary>
-        /// The job number.
-        /// </summary>
         private string _jobNumber;
-
-        /// <summary>
-        /// The builder name.
-        /// </summary>
-        private string _builderName;
-
-        /// <summary>
-        /// The unit number.
-        /// </summary>
         private string _unitNumber;
-
-        /// <summary>
-        /// The full address.
-        /// </summary>
         private string _fullAddress;
-
-        /// <summary>
-        /// The treatment.
-        /// </summary>
-        private string _treatMent;
-
-        /// <summary>
-        /// The roof type.
-        /// </summary>
-        private string _roofMaterial;
-
-
-        /// <summary>
-        /// The beam design infor.
-        /// </summary>
         private DesignInfor _beamDesignInfor;
-
-        /// <summary>
-        /// The frame design infor.
-        /// </summary>
         private DesignInfor _frameDesignInfor;
-
-        /// <summary>
-        /// The bracing design infor.
-        /// </summary>
         private DesignInfor _bracingDesignInfor;
-
-        /// <summary>
-        /// The plan issue date.
-        /// </summary>
         private DateTime _planIssueDate;
-
-        /// <summary>
-        /// The is engineer plan.
-        /// </summary>
         private bool _isEPlan;
-
-        /// <summary>
-        /// The is engineer.
-        /// </summary>
         private bool _isEngineer;
-
-        /// <summary>
-        /// The is bracing plan.
-        /// </summary>
         private bool _isBracingPlan;
-
+        private Suppliers _supplier;
+        private string _treatMent;
+        private string _roofMaterial;
         private string _windrate;
         private string _tieDown;
-        
         private bool _quoteCeilingBattent;
         private string _customer;
         private int _roofOverHang;
+        private string _builderName;
+        private int _trussSpacing;
+        private int _rafterSpacing;
+        private int _stepDown;
+        private double _roofPitch;
+        private double _ceilingPitch;
+        private RoofFrameType _roofFrameType;
+        private NoggingMethodType _noggingMethod;
+        private int _raisedCeilingHeight;
         #endregion
 
         #region Property
-
-        /// <summary>
-        /// Gets or sets the job default.
-        /// </summary>
-        public GlobalWallInfo GlobalWallInfo
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Gets or sets the job location.
-        /// </summary>
-        public string JobLocation
-        {
-            get => this._jobLocation;
-            set => this.SetProperty(ref this._jobLocation, value);
-        }
-        public string TieDown {
-            get => string.IsNullOrEmpty(_tieDown) ? this.GeneralTieDown() : _tieDown;
-            set => SetTieDown(value);
-        }
-
-        /// <summary>
-        /// Gets or sets the clientPoco name.
-        /// </summary>
-        public string ClientName
-        {
-            get => this._clientName;
-            set => this.SetProperty(ref this._clientName, value);
-        }
-
-        public string Customer
-        {
-            get => this._customer;
-            set => this.SetProperty(ref _customer, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the job number.
-        /// </summary>
-        public string JobNumber
-        {
-            get => this._jobNumber;
-            set => this.SetProperty(ref this._jobNumber, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the job address.
-        /// </summary>
-        public string JobAddress { get; set; }
-
-        /// <summary>
-        /// Gets or sets the sub address.
-        /// </summary>
-        public string SubAddress { get; set; }
-
-        /// <summary>
-        /// Gets or sets the full address.
-        /// </summary>
-        public string FullAddress
-        {
-            get => this._fullAddress;
-            set => this.SetProperty(ref this._fullAddress, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the builder name.
-        /// </summary>
-        public string BuilderName
-        {
-            get => this._builderName;
-            set => this.SetProperty(ref this._builderName, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the unit number.
-        /// </summary>
-        public string UnitNumber
-        {
-            get => this._unitNumber;
-            set => this.SetProperty(ref this._unitNumber, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the wind category.
-        /// </summary>
-        public string WindRate
-        {
-            get => _windrate;
-            set
-            {
-                SetProperty(ref _windrate, value);
-                RaisePropertyChanged(nameof(CheckWinRate));
-            }
-        }
-
         public bool CheckWinRate
         {
             get
@@ -209,87 +60,172 @@ namespace AppModels.ResponsiveData
                     return false;
                 }
 
-                return WindRate=="N2" || WindRate=="N3" || WindRate == "C1";
+                return WindRate == "N2" || WindRate == "N3" || WindRate == "C1";
             }
         }
-
-        /// <summary>
-        /// Gets or sets the total linear meter.
-        /// </summary>
+        public string Customer
+        {
+            get => this._customer;
+            set => this.SetProperty(ref _customer, value);
+        }
+        public string BuilderName
+        {
+            get => this._builderName;
+            set => this.SetProperty(ref this._builderName, value);
+        }
+        public Suppliers Supplier { get => _supplier; set => SetProperty(ref _supplier, value); }
+        public NoggingMethodType NoggingMethod
+        {
+            get => _noggingMethod;
+            set => SetProperty(ref _noggingMethod, value);
+        }
+        public string JobLocation
+        {
+            get => this._jobLocation;
+            set => this.SetProperty(ref this._jobLocation, value);
+        }
+        public string ClientName
+        {
+            get => this._clientName;
+            set => this.SetProperty(ref this._clientName, value);
+        }
+        public string JobNumber
+        {
+            get => this._jobNumber;
+            set => this.SetProperty(ref this._jobNumber, value);
+        }
+        public string JobAddress { get; set; }
+       public string SubAddress { get; set; }
+       public string FullAddress
+        {
+            get => this._fullAddress;
+            set => this.SetProperty(ref this._fullAddress, value);
+        }
+        public string WindRate
+        {
+            get => _windrate;
+            set
+            {
+                SetProperty(ref _windrate, value);
+                RaisePropertyChanged(nameof(CheckWinRate));
+            }
+        }
+        public string UnitNumber
+        {
+            get => this._unitNumber;
+            set => this.SetProperty(ref this._unitNumber, value);
+        }
         public int TotalLinearMeter { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date complete.
-        /// </summary>
         public DateTime CompleteDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the plan date.
-        /// </summary>
         public DateTime PlanIsueDate
         {
             get => this._planIssueDate;
             set => this.SetProperty(ref this._planIssueDate, value);
         }
-        /// <summary>
-        /// Gets or sets a value indicating whether is e plan.
-        /// </summary>
         public bool IsEPlan
         {
             get => this._isEPlan;
             set => this.SetProperty(ref this._isEPlan, value);
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is engineer.
-        /// </summary>
         public bool IsEngineer
         {
             get => this._isEngineer;
             set => this.SetProperty(ref this._isEngineer, value);
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is bracing plan.
-        /// </summary>
         public bool IsBracingPlan
         {
             get => this._isBracingPlan;
             set => this.SetProperty(ref this._isBracingPlan, value);
         }
-
-        /// <summary>
-        /// Gets or sets the issues info.
-        /// </summary>
         public string IssuesInfor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the notes.
-        /// </summary>
+        public bool QuoteCeilingBattent { get => _quoteCeilingBattent; set => SetProperty(ref _quoteCeilingBattent, value); }
+        public CeilingBattensType CeilingBattensType { get; set; } = CeilingBattensType.Timber;
+        public string Treatment
+        {
+            get => this._treatMent;
+            set => this.SetProperty(ref this._treatMent, value);
+        }
+        public string RoofMaterial
+        {
+            get => this._roofMaterial;
+            set => this.SetProperty(ref this._roofMaterial, value);
+        }
+        public string TieDown
+        {
+            get => string.IsNullOrEmpty(_tieDown) ? this.GeneralTieDown() : _tieDown;
+            set => SetTieDown(value);
+        }
+        public int QuoteTolengthSize { get; set; } = 5400;
+        public bool JambBeamSupport { get; set; }
+        public double CeilingPitch
+        {
+            get => this._roofFrameType == RoofFrameType.Truss ? _ceilingPitch : _roofPitch;
+            set => SetProperty(ref _ceilingPitch, value);
+        }
+        public int RoofOverHang
+        {
+            get => _roofOverHang;
+            set => SetProperty(ref _roofOverHang, value);
+        }
+        public bool NoggingsAndSillInLM { get; set; }
+        public bool UpToLength { get; set; }
         public DesignInfor FrameDesignInfor
         {
             get => this._frameDesignInfor;
             set => this.SetProperty(ref this._frameDesignInfor, value);
         }
-
-        /// <summary>
-        /// Gets or sets the beam design infor.
-        /// </summary>
         public DesignInfor BeamDesignInfor
         {
             get => this._beamDesignInfor;
             set => this.SetProperty(ref this._beamDesignInfor, value);
         }
-
-        /// <summary>
-        /// Gets or sets the bracing design infor.
-        /// </summary>
         public DesignInfor BracingDesignInfor
         {
             get => this._bracingDesignInfor;
             set => this.SetProperty(ref this._bracingDesignInfor, value);
         }
-
+        public RoofFrameType RoofFrameType
+        {
+            get => _roofFrameType;
+            set
+            {
+                SetProperty(ref _roofFrameType, value);
+                RaisePropertyChanged(nameof(CeilingPitch));
+            }
+        }
+        public int TrussSpacing
+        {
+            get => this._trussSpacing;
+            set
+            {
+                this.SetProperty(ref this._trussSpacing, value);
+                RaisePropertyChanged(nameof(RafterSpacing));
+            }
+        }
+        public int RafterSpacing
+        {
+            get => this._rafterSpacing == 0 ? _trussSpacing : this._rafterSpacing;
+            set => this.SetProperty(ref this._rafterSpacing, value);
+        }
+        public int StepDown
+        {
+            get => this._stepDown;
+            set => this.SetProperty(ref this._stepDown, value);
+        }
+        public int RaisedCeilingHeight
+        {
+            get => _raisedCeilingHeight;
+            set => SetProperty(ref _raisedCeilingHeight, value);
+        }
+        public double RoofPitch
+        {
+            get => this._roofPitch;
+            set
+            {
+                this.SetProperty(ref this._roofPitch, value);
+                this.RaisePropertyChanged(nameof(CeilingPitch));
+            }
+        }
         /// <summary>
         /// Gets or sets the excel notes.
         /// </summary>
@@ -310,44 +246,43 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public JobInfo()
         {
-            this.GlobalWallInfo = new GlobalWallInfo();
-            this.PropertyChanged += JobInfo_PropertyChanged;
+            //this.GlobalWallInfo = new GlobalWallInfo();
+            PropertyChanged += JobInfo_PropertyChanged;
         }
         #endregion
 
         #region Private Function
 
-       
-
         private void JobInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Customer))
+            switch (e.PropertyName)
             {
-                if (this.Customer == "Bunnings Hallam Frame And Truss")
+                case nameof(Customer):
                 {
-                    this.BuilderName = "Privium";
-                }
-            }
+                    if (this.Customer == "Bunnings Hallam Frame And Truss")
+                    {
+                        this.BuilderName = "Privium";
+                    }
 
-            if (e.PropertyName==nameof(BuilderName))
-            {
-                if (string.IsNullOrEmpty(BuilderName))
-                {
+                    break;
+                }
+                case nameof(BuilderName) when string.IsNullOrEmpty(BuilderName):
                     return;
-                }
-                if (BuilderName.Contains("Privium"))
+                case nameof(BuilderName):
                 {
-                    this.WindRate = "N2";
-                    this.Treatment = "Untreated";
-                }
-            }
+                    if (BuilderName.Contains("Privium"))
+                    {
+                        this.WindRate = "N2";
+                        this.Treatment = "Untreated";
+                    }
 
-            if (e.PropertyName==nameof(WindRate))
-            {
-                this.RaisePropertyChanged(nameof(TieDown));
+                    break;
+                }
+                case nameof(WindRate):
+                    this.RaisePropertyChanged(nameof(TieDown));
+                    break;
             }
         }
-
         private string GeneralTieDown()
         {
             switch (WindRate)
@@ -369,6 +304,45 @@ namespace AppModels.ResponsiveData
                     return string.Empty;
             }
         }
+        private void SetTieDown(string value)
+        {
+            switch (WindRate)
+            {
+                case "C2":
+                case "C3":
+                    if (value == "Direct")
+                    {
+                        value = null;
+                    }
+                    break;
+                case "N1":
+                case "N2":
+                    if (string.IsNullOrEmpty(BuilderName) && value == "1800")
+                    {
+                        value = null;
+                    }
+                    else if (BuilderName.Contains("Privium") && value == "1500")
+                    {
+                        value = null;
+                    }
+                    else if (value == "1800")
+                    {
+                        value = null;
+                    }
+
+                    break;
+                case "N3":
+                    if (value == "1200")
+                    {
+                        value = null;
+                    }
+                    break;
+            }
+
+            this.SetProperty(ref _tieDown, value);
+
+        }
+
         #endregion
 
         #region public Member

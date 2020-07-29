@@ -33,8 +33,8 @@ namespace AppModels.ResponsiveData
         
         #endregion
         #region public Property
-        public Suppliers Supplier => GlobalWallInformation.Supplier;
 
+        public JobInfo GlobalInfo { get; set; }
         public int WallHeight
         {
             get => _wallHeight == 0 ? GlobalWallInformation.WallHeight : _wallHeight;
@@ -46,10 +46,8 @@ namespace AppModels.ResponsiveData
                 }
                 this.SetProperty(ref this._wallHeight, value);
             }
-        } 
-
+        }
         public int InternalWallHeight => WallHeight - 35;
-
         public int ExternalDoorHeight
         {
             get => _externalDoorHeight != 0 ? _externalDoorHeight : GlobalWallInformation.ExternalDoorHeight;
@@ -74,26 +72,7 @@ namespace AppModels.ResponsiveData
                 SetProperty(ref _internalDoorHeight, value);
             }
         }
-
-        public int StepDown
-        {
-            get=>GlobalWallInformation.StepDown;
-            set => GlobalWallInformation.StepDown = value;
-        }
-        public int RaisedCeilingHeight {
-            get=> GlobalWallInformation.RaisedCeilingHeight;
-            set => GlobalWallInformation.RaisedCeilingHeight = value;
-        } 
-
         public IGlobalWallInfo GlobalWallInformation { get; }
-        public NoggingMethodType NoggingMethod => GlobalWallInformation.NoggingMethod;
-
-        public double CeilingPitch
-        {
-            get=>GlobalWallInformation.CeilingPitch;
-            set => GlobalWallInformation.CeilingPitch = value;
-        } 
-
         public int ExternalWallSpacing
         {
             get => _externalWallSpacing != 0 ? _externalWallSpacing : GlobalWallInformation.ExternalWallSpacing;
@@ -106,7 +85,6 @@ namespace AppModels.ResponsiveData
                 SetProperty(ref _externalWallSpacing, value);
             } 
         }
-
         public int InternalWallSpacing
         {
             get => _internalWallSpacing!=0 ? _internalWallSpacing : GlobalWallInformation.InternalWallSpacing;
@@ -119,7 +97,6 @@ namespace AppModels.ResponsiveData
                 SetProperty(ref _internalWallSpacing, value);
             } 
         }
-
         public int ExternalWallThickness
         {
             get => _extternalWallThickness!= 0 ? _extternalWallThickness : GlobalWallInformation.ExternalWallThickness;
@@ -132,7 +109,6 @@ namespace AppModels.ResponsiveData
                 SetProperty(ref _extternalWallThickness, value);
             } 
         }
-
         public int InternalWallThickness
         {
             get => _internalWallThickness!=0 ? _internalWallThickness : GlobalWallInformation.InternalWallThickness;
@@ -144,16 +120,11 @@ namespace AppModels.ResponsiveData
                 }
                 SetProperty(ref _internalWallThickness, value);
             }
-        } 
-
+        }
         public int ExternalWallTimberDepth => GlobalWallInformation.ExternalWallTimberDepth;
-
         public int InternalWallTimberDepth => GlobalWallInformation.InternalWallTimberDepth;
-
         public string ExternalWallTimberGrade => GlobalWallInformation.ExternalWallTimberGrade;
-
         public string InternalWallTimberGrade => GlobalWallInformation.InternalWallTimberGrade;
-
         public IBasicWallInfo GlobalExternalWallInfo { get;private set; }
         public IBasicWallInfo GlobalInternalWallInfo { get;private set; }
         public IGlobalWallDetail GlobalExtWallDetailInfo { get;private set; }

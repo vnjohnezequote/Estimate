@@ -117,7 +117,7 @@ namespace AppModels.PocoDataModel
         }
         public GlobalWallInfoPoco(GlobalWallInfo globalInfo)
         {
-            NoggingMethod = globalInfo.NoggingMethod;
+            //NoggingMethod = globalInfo.NoggingMethod;
             WallHeight = globalInfo.WallHeight;
             ExternalDoorHeight = globalInfo.ExternalDoorHeight;
             InternalDoorHeight = globalInfo.InternalDoorHeight;
@@ -129,13 +129,13 @@ namespace AppModels.PocoDataModel
             InternalWallTimberDepth = globalInfo.InternalWallTimberDepth;
             ExternalWallTimberGrade = globalInfo.ExternalWallTimberGrade;
             InternalWallTimberGrade = globalInfo.InternalWallTimberGrade;
-            RoofFrameType = globalInfo.RoofFrameType;
-            TrussSpacing = globalInfo.TrussSpacing;
-            RafterSpacing = globalInfo.RafterSpacing;
-            StepDown = globalInfo.StepDown;
-            RaisedCeilingHeight = globalInfo.RaisedCeilingHeight;
-            RoofPitch = globalInfo.RoofPitch;
-            CeilingPitch = globalInfo.CeilingPitch;
+            //RoofFrameType = globalInfo.RoofFrameType;
+            //TrussSpacing = globalInfo.TrussSpacing;
+            //RafterSpacing = globalInfo.RafterSpacing;
+            //StepDown = globalInfo.StepDown;
+            //RaisedCeilingHeight = globalInfo.RaisedCeilingHeight;
+            //RoofPitch = globalInfo.RoofPitch;
+            //CeilingPitch = globalInfo.CeilingPitch;
             GlobalExtWallDetailInfo = new GlobalWallDetailPoco(globalInfo.GlobalExtWallDetailInfo);
             GlobalIntWallDetailInfo = new GlobalWallDetailPoco(globalInfo.GlobalIntWallDetailInfo);
             GlobalNoggingInfo = new WallMemberBasePoco(globalInfo.GlobalNoggingInfo);
