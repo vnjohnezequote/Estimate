@@ -24,6 +24,7 @@ namespace AppModels.Interaface
         int InternalWallTimberDepth { get; }
         string ExternalWallTimberGrade { get; }
         string InternalWallTimberGrade { get; }
+        Suppliers Supplier { get; }
 
         IBasicWallInfo GlobalExternalWallInfo { get; }
         IBasicWallInfo GlobalInternalWallInfo { get; }

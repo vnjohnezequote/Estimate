@@ -33,6 +33,7 @@ namespace AppModels.ResponsiveData
         
         #endregion
         #region public Property
+        public Suppliers Supplier => GlobalWallInformation.Supplier;
 
         public int WallHeight
         {

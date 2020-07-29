@@ -103,7 +103,7 @@ namespace NewJobWizardModule.ViewModels
             //this.UnityContainer.RegisterInstance<IJob>("GlobalJob", JobDefaultInfo);
             /* create data test */
             this.Job.Info.JobNumber = "2220";
-            this.Job.Info.JobLocation = "test";
+            //this.Job.Info.JobLocation = "test";
             this.Job.Info.GlobalWallInfo.RoofPitch = 22.5;
             //this.JobInfo.Info.GlobalWallInfo.ExternalWallSpacing = 450;
             //this.JobInfo.Info.GlobalWallInfo.InternalWallSpacing = 600;

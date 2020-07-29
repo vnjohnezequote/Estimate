@@ -8,23 +8,29 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using AppModels.Enums;
+using AppModels.Interaface;
+using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
 {
     /// <summary>
     /// The opening.
     /// </summary>
-    public class Opening
+    public class Opening : BindableBase
     {
+        private WallBase _wallParent;
+        public WallBase WallParent
+        {
+            get=>_wallParent;
+            set=>SetProperty(ref _wallParent,value);
+        }
+        public IGlobalWallInfo GlobalWallInfo { get; set; }
+        public Suppliers Suppliers => GlobalWallInfo.Supplier;
+
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the opening type code.
-        /// </summary>
-        public string OpeningTypeCode { get; set; }
 
         /// <summary>
         /// Gets or sets the opening type.
@@ -59,16 +65,17 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the wall thickness.
         /// </summary>
-        public int WallThickness { get; set; }
+        public int WallThickness => WallParent.WallThickness;
 
         /// <summary>
         /// Gets or sets the lintel.
         /// </summary>
         public Beam Lintel { get; set; }
 
-        /// <summary>
-        /// Gets or sets the wall.
-        /// </summary>
-        public TimberWall Wall { get; set; }
+        public Opening(IGlobalWallInfo globalWallInfo)
+        {
+            this.GlobalWallInfo = globalWallInfo;
+            Lintel = new Beam(this,BeamType.Lintel);
+        }
     }
 }

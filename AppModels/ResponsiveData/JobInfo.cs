@@ -113,11 +113,6 @@ namespace AppModels.ResponsiveData
             get;
             set;
         }
-        public int RoofOverHang
-        {
-            get => _roofOverHang;
-            set => SetProperty(ref _roofOverHang, value);
-        }
         /// <summary>
         /// Gets or sets the job location.
         /// </summary>
@@ -130,7 +125,6 @@ namespace AppModels.ResponsiveData
             get => string.IsNullOrEmpty(_tieDown) ? this.GeneralTieDown() : _tieDown;
             set => SetTieDown(value);
         }
-        public Suppliers Supplier { get; set; }
 
         /// <summary>
         /// Gets or sets the clientPoco name.

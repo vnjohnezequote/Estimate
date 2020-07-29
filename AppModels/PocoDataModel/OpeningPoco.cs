@@ -15,10 +15,12 @@ namespace AppModels.PocoDataModel
     {
         [ProtoMember(1)]
         public int Id { get; set; }
+        public int ParentId{ get; set; }
         [ProtoMember(2)]
         public OpeningType OpeningType { get; set; }
         [ProtoMember(3)]
         public string Name { get; set; }
+        public string Location { get; set; }
         [ProtoMember(4)]
         public string FullName { get; set; }
         [ProtoMember(5)]

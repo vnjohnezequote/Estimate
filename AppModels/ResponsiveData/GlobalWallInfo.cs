@@ -41,11 +41,13 @@ namespace AppModels.ResponsiveData
         private string _internalWallTimberGrade;
         private int _wallHeight;
         private int _raisedCeilingHeight;
+        private Suppliers _supplier;
 
         #endregion
 
         #region public Property
 
+        public Suppliers Supplier { get=>_supplier; set=>SetProperty(ref _supplier,value); }
         public NoggingMethodType NoggingMethod
         {
             get => _noggingMethod;
@@ -172,6 +174,11 @@ namespace AppModels.ResponsiveData
         {
             get => this._roofFrameType == RoofFrameType.Truss ? _ceilingPitch : _roofPitch;
             set => SetProperty(ref _ceilingPitch, value);
+        }
+        public int RoofOverHang
+        {
+            get => _roofOverHang;
+            set => SetProperty(ref _roofOverHang, value);
         }
         public IBasicWallInfo GlobalExternalWallInfo { get;private set; }
         public IBasicWallInfo GlobalInternalWallInfo { get; private set; }
