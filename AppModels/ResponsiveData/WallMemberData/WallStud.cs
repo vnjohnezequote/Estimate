@@ -24,11 +24,7 @@ namespace AppModels.ResponsiveData.WallMemberData
 
         public sealed override WallMemberType MemberType { get; protected set; }
         public override IWallMemberInfo BaseMaterialInfo => WallInfo.GlobalWallDetailInfo.Stud;
-        public override int Thickness
-        {
-            get => WallInfo.WallThickness;
-            set => SetProperty(ref _thickness, value);
-        }
+        public override int Thickness { get => WallInfo.WallThickness; set {} }
 
         public int Height => WallInfo.StudHeight;
 

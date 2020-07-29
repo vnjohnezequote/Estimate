@@ -18,14 +18,12 @@ using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData.WallMemberData;
 using devDept.Geometry;
+using Newtonsoft.Json;
 using OpenGL.Delegates;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
 {
-    /// <summary>
-    /// The wall base.
-    /// </summary>
     public abstract class WallBase : BindableBase, IWallInfo, IComparable<WallBase>
     {
         #region private field
@@ -49,16 +47,16 @@ namespace AppModels.ResponsiveData
         #endregion
 
         #region Property
+
         public int Id
         {
             get => this._id;
             set => this.SetProperty(ref this._id, value);
         }
-        public virtual WallTypePoco WallType /*{ get; set; }*/
+        public virtual WallTypePoco WallType 
         {
             get => _wallType;
             set => SetProperty(ref _wallType, value);
-        //ChangeWallType();
         }
         public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IGlobalWallInfo GlobalWallInfo { get; set; }
@@ -113,7 +111,14 @@ namespace AppModels.ResponsiveData
         public int WallPitchingHeight
         {
             get => _wallPitchingHeight!=0 ? _wallPitchingHeight : GlobalWallInfo.WallHeight;
-            set => this.SetProperty(ref this._wallPitchingHeight, value);
+            set
+            {
+                if (value == GlobalWallInfo.WallHeight)
+                {
+                    value = 0;
+                }
+                this.SetProperty(ref this._wallPitchingHeight, value);
+            } 
         }
         public int WallEndHeight => WallPitchingHeight + HPitching;
         public int WallHeight
@@ -125,41 +130,7 @@ namespace AppModels.ResponsiveData
                 WallPitchingHeight = pitchingHeight;
             }
         }
-        public int PrenailWallHeight
-        {
-            get
-            {
-                if (WallType.IsLoadBearingWall)
-                {
-                    return WallHeight;
-                }
-                else
-                {
-                    if (WallType.IsRaked)
-                    {
-                        return WallHeight;
-                    }
-
-                    if (IsWallUnderRakedArea || ForcedWallUnderRakedArea)
-                    {
-                        return WallHeight;
-                    }
-                    return WallHeight - 35;
-                }
-            }
-        }
-        public int StickFrameWallHeight
-        {
-            get
-            {
-                if (WallType.IsRaked|| IsWallUnderRakedArea || ForcedWallUnderRakedArea)
-                {
-                    return StudHeight;
-                }
-
-                return WallHeight;
-            }
-        }
+        public abstract int FinalWallHeight { get; }
         public int StudHeight
         {
             get
@@ -245,7 +216,14 @@ namespace AppModels.ResponsiveData
         public double CeilingPitch
         {
             get => Math.Abs(_ceilingPitch) > 0.001 ? _ceilingPitch : GlobalWallInfo.CeilingPitch;
-            set => this.SetProperty(ref this._ceilingPitch, value);
+            set
+            {
+                if (Math.Abs(value - GlobalWallInfo.CeilingPitch) < 0.0001)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _ceilingPitch, value);
+            } 
         }
         public int HPitching =>
             RunLength <= 0 ? 0 : (RunLength * Math.Tan(Utility.DegToRad(CeilingPitch))).RoundUpto5();
@@ -290,7 +268,7 @@ namespace AppModels.ResponsiveData
                 SetProperty(ref _raisedCeiling, value);
             }
         }
-        public string WallName => WallType.AliasName.Replace('_',' ') +" "+ PrenailWallHeight + "mm";
+        public string WallName => WallType.AliasName.Replace('_',' ') +" "+ FinalWallHeight + "mm";
         public WallMemberBase RibbonPlate { get; private set; }
         public WallMemberBase TopPlate { get; private set; }
         public WallMemberBase BottomPlate { get; private set; }
@@ -315,7 +293,6 @@ namespace AppModels.ResponsiveData
             TopPlate.PropertyChanged += WallPlate_PropertyChanged;
             BottomPlate.PropertyChanged += WallPlate_PropertyChanged;
         }
-
         private void WallPlate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "NoItem" || e.PropertyName=="Depth")
@@ -323,10 +300,7 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(StudHeight));
             }
         }
-
         #endregion
-
-
         #region Private Method
         public int CompareTo(WallBase other)
         {
@@ -385,24 +359,21 @@ namespace AppModels.ResponsiveData
                     break;
                 case nameof(WallHeight):
                     //RaisePropertyChanged(nameof(IsShortWall));
-                    RaisePropertyChanged(nameof(PrenailWallHeight));
-                    RaisePropertyChanged(nameof(StickFrameWallHeight));
+                    RaisePropertyChanged(nameof(FinalWallHeight));
                     RaisePropertyChanged(nameof(StudHeight));
                     RaisePropertyChanged(nameof(IsNeedTobeDesign));
                     RaisePropertyChanged(nameof(WallName));
                     break;
                 case nameof(WallPitchingHeight):
                     RaisePropertyChanged(nameof(WallEndHeight));
-                    RaisePropertyChanged(nameof(PrenailWallHeight));
-                    RaisePropertyChanged(nameof(StickFrameWallHeight));
+                    RaisePropertyChanged(nameof(FinalWallHeight));
                     RaisePropertyChanged(nameof(StudHeight));
                     RaisePropertyChanged(nameof(IsNeedTobeDesign));
                     RaisePropertyChanged(nameof(WallName));
                     break;
                 case nameof(ForcedWallUnderRakedArea):
                     RaisePropertyChanged(nameof(StudHeight));
-                    RaisePropertyChanged(nameof(PrenailWallHeight));
-                    RaisePropertyChanged(nameof(StickFrameWallHeight));
+                    RaisePropertyChanged(nameof(FinalWallHeight));
                     RaisePropertyChanged(nameof(WallName));
                     break;
                 case nameof(IsDesigned):

@@ -9,6 +9,7 @@
 
 using System.Collections.ObjectModel;
 using AppModels.Interaface;
+using Newtonsoft.Json;
 using Prism.Mvvm;
 using ProtoBuf;
 
@@ -17,7 +18,6 @@ namespace AppModels.ResponsiveData
     /// <summary>
     /// The level wall.
     /// </summary>
-    [ProtoContract]
     public class LevelWall : BindableBase
     {
         #region private field
@@ -30,7 +30,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// The lintel lm.
         /// </summary>
-        private double? _lintelLm;
+        private double _lintelLm;
 
         /// <summary>
         /// The _total wall length.
@@ -40,7 +40,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// The _cost delivery.
         /// </summary>
-        private int? _costDelivery;
+        private int _costDelivery;
 
         /// <summary>
         /// The _roof beams.
@@ -92,7 +92,7 @@ namespace AppModels.ResponsiveData
             this.TimberWallBracings = new ObservableCollection<Bracing>();
             this.RoofBeams = new ObservableCollection<Beam>();
             this.Openings = new ObservableCollection<Opening>();
-            this.TempLengths = new ObservableCollection<WallTempLength>();
+            //this.TempLengths = new ObservableCollection<WallTempLength>();
         }
 
         #endregion
@@ -124,7 +124,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the lintel lm.
         /// </summary>
-        public double? LintelLm
+        public double LintelLm
         {
             get => this._lintelLm;
             set => this.SetProperty(ref this._lintelLm, value);
@@ -137,15 +137,6 @@ namespace AppModels.ResponsiveData
         {
             get => this._wallLayers;
             set => this.SetProperty(ref this._wallLayers, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the temp length.
-        /// </summary>
-        public ObservableCollection<WallTempLength> TempLengths
-        {
-            get => this._tempLength;
-            set => this.SetProperty(ref this._tempLength, value);
         }
 
         /// <summary>
@@ -165,7 +156,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the cost delivery.
         /// </summary>
-        public int? CostDelivery
+        public int CostDelivery
         {
             get => this._costDelivery;
             set => this.SetProperty(ref this._costDelivery, value);

@@ -11,6 +11,7 @@ using System;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using Newtonsoft.Json;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -26,7 +27,7 @@ namespace AppModels.ResponsiveData
         private int _stepDown;
         private double _roofPitch;
         private double _ceilingPitch;
-        public RoofFrameType _roofFrameType;
+        private RoofFrameType _roofFrameType;
         private NoggingMethodType _noggingMethod;
         private int _externalDoorHeight;
         private int _internalDoorHeight;
@@ -93,7 +94,14 @@ namespace AppModels.ResponsiveData
         public int InternalWallThickness
         {
             get => _internalWallThickness==0 ? _externalWallThickness : _internalWallThickness;
-            set => SetProperty(ref _internalWallThickness, value);
+            set
+            {
+                if (value == ExternalWallSpacing)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _internalWallThickness, value);
+            } 
         }
         public int ExternalWallTimberDepth 
         { 

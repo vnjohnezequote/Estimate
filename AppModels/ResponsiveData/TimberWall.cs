@@ -24,6 +24,8 @@ namespace AppModels.ResponsiveData
 
         public override WallTypePoco WallType { get; set; }
 
+        public override int FinalWallHeight { get; }
+
         /// <summary>
         /// Gets or sets the wall length.
         /// </summary>

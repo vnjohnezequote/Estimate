@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using Newtonsoft.Json;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -33,6 +34,10 @@ namespace AppModels.ResponsiveData
 
             set
             {
+                if (BaseMaterialInfo!=null && value == BaseMaterialInfo.NoItem)
+                {
+                    value = 0;
+                }
                 SetProperty(ref _noItem, value);
                 CallBackPropertyChanged();
             }
@@ -54,6 +59,17 @@ namespace AppModels.ResponsiveData
             }
             set
             {
+                if (GlobalWallInfo.NoggingMethod == NoggingMethodType.AsGlobal && MemberType == WallMemberType.Nogging)
+                {
+                    if (BaseMaterialInfo!= null && value == BaseMaterialInfo.Thickness)
+                    {
+                        value = 0;
+                    }
+                    else if (value == GlobalWallInfo.WallThickness)
+                    {
+                        value = 0;
+                    }
+                }
                 this.SetProperty(ref this._thickness, value);
                 this.CallBackPropertyChanged();
             }
@@ -71,6 +87,10 @@ namespace AppModels.ResponsiveData
             }
             set
             {
+                if (BaseMaterialInfo!=null && value == BaseMaterialInfo.Depth)
+                {
+                    value = 0;
+                }
                 this.SetProperty(ref this._depth, value);
                 this.CallBackPropertyChanged();
             }
@@ -110,33 +130,31 @@ namespace AppModels.ResponsiveData
         public WallMemberType MemberType { get; private set; }
         public string Size => this.NoItem == 1 ? this.Thickness + "x" + this.Depth : this.NoItem + "/" + this.Thickness + "x" + this.Depth;
         public string SizeGrade => this.Size + " " + this.TimberGrade;
-
         #endregion
 
         #region Constructor
-
         public GlobalWallMemberInfo(IBasicWallInfo globalWallInfo, WallMemberType memberType, IWallMemberInfo baseMaterialInfo = null)
         {
             MemberType = memberType;
             this.GlobalWallInfo = globalWallInfo;
             BaseMaterialInfo = baseMaterialInfo;
-            GlobalWallInfo.PropertyChanged += DefaultInfo_PropertyChanged;
+            if (GlobalWallInfo!=null)
+            {
+                GlobalWallInfo.PropertyChanged += DefaultInfo_PropertyChanged;
+            }
             if (BaseMaterialInfo != null)
             {
                 BaseMaterialInfo.PropertyChanged += BaseMaterialInfo_PropertyChanged;
             }
         }
-
         private void BaseMaterialInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             NotifyPropertyChanged(e.PropertyName);
         }
-
         private void DefaultInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             NotifyPropertyChanged(e.PropertyName);
         }
-
         private void NotifyPropertyChanged(string propertyName)
         {
             switch (propertyName)
@@ -158,7 +176,6 @@ namespace AppModels.ResponsiveData
 
             CallBackPropertyChanged();
         }
-
         protected virtual void CallBackPropertyChanged()
         {
             this.RaisePropertyChanged(nameof(this.Size));

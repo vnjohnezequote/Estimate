@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using Newtonsoft.Json;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -23,17 +24,7 @@ namespace AppModels.ResponsiveData
         #endregion
 
         #region Property
-        public WallTypePoco WallType {
-            get
-            {
-                if (_globallWallInfo!=null)
-                {
-                    return _globallWallInfo.WallType;
-                }
-
-                return null;
-            }
-    } 
+        public WallTypePoco WallType => GlobalWallInfo?.WallType;
         public int WallSpacing => GlobalWallInfo.WallSpacing;
         public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IBasicWallInfo GlobalWallInfo { get; private set; }
@@ -56,14 +47,15 @@ namespace AppModels.ResponsiveData
             GlobalWallDetail = globalWallDetailInfo;
             if (GlobalWallInfo.WallType.IsLoadBearingWall)
             {
-                RibbonPlate = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.RibbonPlate,GlobalWallDetail.RibbonPlate);
+                RibbonPlate = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.RibbonPlate, GlobalWallDetail.RibbonPlate);
             }
-            TopPlate = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.TopPlate,GlobalWallDetail.TopPlate);
+            TopPlate = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.TopPlate, GlobalWallDetail.TopPlate);
             Stud = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.Stud, GlobalWallDetail.Stud);
-            BottomPlate = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.BottomPlate,GlobalWallDetail.BottomPlate);
-            Nogging = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.Nogging,GlobalWallDetail.Nogging);
+            BottomPlate = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.BottomPlate, GlobalWallDetail.BottomPlate);
+            Nogging = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.Nogging, GlobalWallDetail.Nogging);
             Trimmer = new GlobalWallMemberInfo(globalWallInfo, WallMemberType.Trimmer, TopPlate);
         }
+            
 
         private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

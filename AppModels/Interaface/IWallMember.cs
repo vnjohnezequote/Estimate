@@ -1,7 +1,9 @@
 ﻿using AppModels.ResponsiveData;
+using Newtonsoft.Json;
 
 namespace AppModels.Interaface
 {
+    [JsonObject(IsReference = true)]
     public interface IWallMember
     {
         IWallMemberInfo TimberMaterialInfo { get; }

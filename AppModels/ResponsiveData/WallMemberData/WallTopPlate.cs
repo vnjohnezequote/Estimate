@@ -5,14 +5,25 @@ namespace AppModels.ResponsiveData.WallMemberData
 {
     public class WallTopPlate : WallMember
     {
-        public override int Thickness { get=>WallInfo.WallThickness; set{} }
+        #region MyRegion
 
+        public override int Thickness { get => WallInfo.WallThickness; set {} }
+        public sealed override WallMemberType MemberType { get; protected set; }
+        public override IWallMemberInfo BaseMaterialInfo => WallInfo.GlobalWallDetailInfo.TopPlate;
+
+        #endregion
+
+        #region Constructor
         public WallTopPlate(IWallInfo wallInfo) : base(wallInfo)
         {
             MemberType = WallMemberType.TopPlate;
         }
 
-        public sealed override WallMemberType MemberType { get; protected set; }
-        public override IWallMemberInfo BaseMaterialInfo => WallInfo.GlobalWallDetailInfo.TopPlate;
+
+        #endregion
+
+
+
+
     }
 }

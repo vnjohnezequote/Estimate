@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.PocoDataModel;
+using Newtonsoft.Json;
 
 namespace AppModels.Interaface
 {
+    [JsonObject(IsReference = true)]
     public interface IWallMemberInfo:INotifyPropertyChanged
     {
         WallTypePoco WallType { get; }

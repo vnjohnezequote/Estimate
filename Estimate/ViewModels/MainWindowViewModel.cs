@@ -11,6 +11,7 @@ using ApplicationInterfaceCore;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
+using LiteDB;
 using NewJobWizardModule.Views;
 using Newtonsoft.Json;
 
@@ -355,19 +356,27 @@ namespace Estimate.ViewModels
         {
             if (this.JobModel != null)
             {
-                var fileName = JobModel.Info.JobLocation + @"\" + JobModel.Info.JobNumber + ".json";
-                //string json = JsonConvert.SerializeObject(JobModel);
-                Chuoiluu = JsonConvert.SerializeObject(JobModel, new JsonSerializerSettings()
+                var fileName = JobModel.Info.JobLocation + @"\" + JobModel.Info.JobNumber + ".Db";
+                var jobSaved = new JobModelPoco(JobModel);
+                //using (var db = new LiteDatabase("filename=Clients.Db;upgrade=true"))
+                //{
+                //    var jobs = db.GetCollection<JobModel>("Jobs");
+                //    jobs.Insert((JobModel)JobModel);
+                //}
+                //Chuoiluu = JsonConvert.SerializeObject(jobSaved);
+                Chuoiluu = JsonConvert.SerializeObject(jobSaved, new JsonSerializerSettings()
                 {
-                    TypeNameHandling = TypeNameHandling.Auto,
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
                     Formatting = Formatting.Indented,
                 });
-
-                //AppModels.ResponsiveData.JobModel job = JsonConvert.DeserializeObject<JobModel>(Chuoiluu, new JsonSerializerSettings()
+                //Chuoiluu = JsonConvert.SerializeObject(JobModel, new JsonSerializerSettings()
                 //{
                 //    TypeNameHandling = TypeNameHandling.Auto,
+                //    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                //    ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                //    Formatting = Formatting.Indented,
                 //});
+
+                var jobOpen = JsonConvert.DeserializeObject<JobModelPoco>(Chuoiluu);
             }
         }
         /// <summary>

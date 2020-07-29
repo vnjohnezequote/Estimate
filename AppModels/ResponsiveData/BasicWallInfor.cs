@@ -1,28 +1,75 @@
 ﻿using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using Newtonsoft.Json;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
 {
     public class BasicWallInfor: BindableBase,IBasicWallInfo
     {
-        public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
-        public IGlobalWallInfo GlobalWallInfo { get; private set; }
-        public WallTypePoco WallType { get; }
-        public int WallSpacing => WallType.IsLoadBearingWall
-            ? GlobalWallInfo.ExternalWallSpacing
-            : GlobalWallInfo.InternalWallSpacing;
+        public NoggingMethodType NoggingMethod => GlobalWallInfo?.NoggingMethod ?? NoggingMethodType.AsWall;
 
-        public int WallThickness => WallType.IsLoadBearingWall
-            ? GlobalWallInfo.ExternalWallThickness
-            : GlobalWallInfo.InternalWallThickness;
-        public int Depth => WallType.IsLoadBearingWall
-            ? GlobalWallInfo.ExternalWallTimberDepth
-            : GlobalWallInfo.InternalWallTimberDepth;
-        public string TimberGrade=>WallType.IsLoadBearingWall
-            ? GlobalWallInfo.ExternalWallTimberGrade
-            : GlobalWallInfo.InternalWallTimberGrade;
+        public IGlobalWallInfo GlobalWallInfo { get; set; }
+        public WallTypePoco WallType { get; }
+
+        public int WallSpacing
+        {
+            get
+            {
+                if (GlobalWallInfo==null)
+                {
+                    return 0;
+                }
+                return WallType.IsLoadBearingWall
+                    ? GlobalWallInfo.ExternalWallSpacing
+                    : GlobalWallInfo.InternalWallSpacing;
+            }
+
+        }
+
+        public int WallThickness
+        {
+            get
+            {
+                if (GlobalWallInfo==null)
+                {
+                    return 0;
+                }
+
+                return WallType.IsLoadBearingWall
+                    ? GlobalWallInfo.ExternalWallThickness
+                    : GlobalWallInfo.InternalWallThickness;
+            }
+        }
+        public int Depth {
+            get
+            {
+                if (GlobalWallInfo==null)
+                {
+                    return 0;
+                }
+
+                return WallType.IsLoadBearingWall
+                    ? GlobalWallInfo.ExternalWallTimberDepth
+                    : GlobalWallInfo.InternalWallTimberDepth;
+            }
+            }
+
+        public string TimberGrade
+        {
+            get
+            {
+                if (GlobalWallInfo == null)
+                {
+                    return null;
+                }
+
+                return WallType.IsLoadBearingWall
+                    ? GlobalWallInfo.ExternalWallTimberGrade
+                    : GlobalWallInfo.InternalWallTimberGrade;
+            }
+        }
 
         public BasicWallInfor(IGlobalWallInfo globalWallInfo, WallTypePoco wallType)
         {

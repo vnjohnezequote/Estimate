@@ -12,6 +12,7 @@ using System.Globalization;
 using ApplicationInterfaceCore;
 using AppModels.CustomEntity;
 using AppModels.Enums;
+using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.WallMemberData;
@@ -375,57 +376,57 @@ namespace WallFrameInputModule.ViewModels
             }
             this._csvFilePath = result.File;
 
-            this.LoadCsvLength();
-            this.LoadDataLength();
+            //this.LoadCsvLength();
+            //this.LoadDataLength();
         }
 
         /// <summary>
         /// The load data length.
         /// </summary>
-        private void LoadCsvLength()
-        {
-            using (var reader = new StreamReader(this._csvFilePath))
-            using (var csvFile = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                var records = csvFile.GetRecords<WallTempLength>().ToList();
-                this.Level.TempLengths = new ObservableCollection<WallTempLength>(records);
-            }
-        }
+        //private void LoadCsvLength()
+        //{
+        //    using (var reader = new StreamReader(this._csvFilePath))
+        //    using (var csvFile = new CsvReader(reader, CultureInfo.InvariantCulture))
+        //    {
+        //        var records = csvFile.GetRecords<WallTempLength>().ToList();
+        //        //this.Level.TempLengths = new ObservableCollection<WallTempLength>(records);
+        //    }
+        //}
 
         /// <summary>
         /// The load data length.
         /// </summary>
-        private void LoadDataLength()
-        {
-            if (this.Level.WallLayers.Count <= 0 || this.Level.TempLengths.Count <= 0)
-            {
-                return;
-            }
-            foreach (var wallLayer in this.Level.WallLayers)
-            {
-                WallTempLength first = null;
-                foreach (var x in this.Level.TempLengths)
-                {
-                    if (x.Id != wallLayer.WallColorLayer.Name)
-                    {
-                        continue;
-                    }
+        //private void LoadDataLength()
+        //{
+        //    //if (this.Level.WallLayers.Count <= 0 || this.Level.TempLengths.Count <= 0)
+        //    //{
+        //    //    return;
+        //    //}
+        //    //foreach (var wallLayer in this.Level.WallLayers)
+        //    //{
+        //    //    WallTempLength first = null;
+        //    //    foreach (var x in this.Level.TempLengths)
+        //    //    {
+        //    //        if (x.Id != wallLayer.WallColorLayer.Name)
+        //    //        {
+        //    //            continue;
+        //    //        }
 
-                    first = x;
-                    break;
-                }
+        //    //        first = x;
+        //    //        break;
+        //    //    }
 
-                if (first == null)
-                {
-                    continue;
-                }
+        //    //    if (first == null)
+        //    //    {
+        //    //        continue;
+        //    //    }
 
-                var length =
-                    first.Length;
+        //    //    var length =
+        //    //        first.Length;
 
-                //wallLayer.TempLength = length / 1000;
-            }
-        }
+        //    //    //wallLayer.TempLength = length / 1000;
+        //    //}
+        //}
 
         /// <summary>
         /// The on add new wall row.
@@ -433,9 +434,10 @@ namespace WallFrameInputModule.ViewModels
         private void OnAddNewWallRow()
         {
             this._startItemId = this.Level.WallLayers.Count + 1;
-            var data = new PrenailWallLayer(this._startItemId, this.Level.LevelInfo,this.SelectedClient.WallTypes[0]);
+            var data = WallLayerFactory.CreateWallLayer(JobModel.Info.ClientName, _startItemId, this.Level.LevelInfo,
+                this.SelectedClient.WallTypes[0]);
             this.Level.WallLayers.Add(data);
-            SelectedWall = data;
+            //SelectedWall = data;
         }
 
 
@@ -506,20 +508,6 @@ namespace WallFrameInputModule.ViewModels
                     startId++;
                 }
             }
-        }
-
-        /// <summary>
-        /// The create layers.
-        /// </summary>
-        private void CreateLayers()
-        {
-            //this.Layers = new List<Layer>();
-            //var layer = new Layer("1", System.Drawing.Color.Red);
-            
-            //this.Layers.Add(layer);
-            //var layer2 = new Layer("2", System.Drawing.Color.LawnGreen);
-            
-            //this.Layers.Add(layer2);
         }
 
         #endregion

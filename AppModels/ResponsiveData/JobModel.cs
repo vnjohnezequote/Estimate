@@ -17,7 +17,6 @@ namespace AppModels.ResponsiveData
     /// <summary>
     /// The job model.
     /// </summary>
-    [ProtoContract]
     public class JobModel : BindableBase,IJob
     {
         #region Field

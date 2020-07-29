@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppModels.Enums;
+using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData;
 using ProtoBuf;
 

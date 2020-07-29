@@ -15,8 +15,7 @@ namespace AppModels.ResponsiveData.WallMemberData
         protected int _thickness;
         private int _depth;
         private string _timberGrade;
-        private string _sizeGrade;
-        
+
         #endregion
 
         #region Property
@@ -24,7 +23,6 @@ namespace AppModels.ResponsiveData.WallMemberData
         public abstract WallMemberType MemberType { get;protected set; }
         public IWallInfo WallInfo { get; set; }
         public abstract IWallMemberInfo BaseMaterialInfo { get; }
-
         public int NoItem
         {
             get
@@ -38,11 +36,14 @@ namespace AppModels.ResponsiveData.WallMemberData
             }
             set
             {
+                if (BaseMaterialInfo == null || value == BaseMaterialInfo.NoItem)
+                {
+                    value = 0;
+                }
                 SetProperty(ref _noItem, value);
                 RaisePropertyChanged(nameof(SizeGrade));
             } 
         }
-
         public abstract int Thickness { get; set; }
         public int Depth
         {
@@ -57,6 +58,10 @@ namespace AppModels.ResponsiveData.WallMemberData
             }
             set
             {
+                if (BaseMaterialInfo == null ||value == BaseMaterialInfo.Depth)
+                {
+                    value = 0;
+                }
                 SetProperty(ref _depth, value);
                 RaisePropertyChanged(nameof(SizeGrade));
             } 
@@ -82,7 +87,6 @@ namespace AppModels.ResponsiveData.WallMemberData
                 RaisePropertyChanged(nameof(SizeGrade));
             }
         }
-
         public string Size
         {
             get
@@ -133,16 +137,12 @@ namespace AppModels.ResponsiveData.WallMemberData
                     depth = Convert.ToInt32(words[1]);
                     grade = words[2];
                 }
-                //this.SetProperty(ref _noItem, item);
-                //this.SetProperty(ref _depth, depth);
-                //this.SetProperty(ref _timberGrade, grade);
                 NoItem = item;
                 Depth = depth;
                 TimberGrade = grade;
                 
             } 
         }
-
         #endregion
 
         #region Constructor
@@ -154,24 +154,8 @@ namespace AppModels.ResponsiveData.WallMemberData
             PropertyChanged += WallMemberBase_PropertyChanged;
         }
 
-        //private int GetItemNumberInString(string value)
-        //{
-        //    var pattern = @"^\d(?=\/)";
-        //    var result = 0;
-        //    foreach (var m in Regex.Matches(value, pattern))
-        //    {
-        //        result = Convert.ToInt32(m);
-                
-        //    }
-        //    return result;
-        //}
-
-        
-
         protected virtual void WallMemberBase_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            //RaisePropertyChanged(nameof(Size));
-            //RaisePropertyChanged(nameof(SizeGrade));
         }
 
         protected virtual void WallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

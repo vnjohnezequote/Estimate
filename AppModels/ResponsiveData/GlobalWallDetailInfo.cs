@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using Newtonsoft.Json;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -14,29 +15,17 @@ namespace AppModels.ResponsiveData
     public class GlobalWallDetailInfo : BindableBase,IGlobalWallDetail
     {
         #region Field
-        private IBasicWallInfo _globallWallInfo;
-        private IWallMemberInfo _ribbonPlate;
-        private IWallMemberInfo _topPlate;
-        private IWallMemberInfo _stud;
-        private IWallMemberInfo _bottomPlate;
-        private IWallMemberInfo _nogging;
-        private IWallMemberInfo _trimmer;
+        //private IBasicWallInfo _globallWallInfo;
+        //private IWallMemberInfo _ribbonPlate;
+        //private IWallMemberInfo _topPlate;
+        //private IWallMemberInfo _stud;
+        //private IWallMemberInfo _bottomPlate;
+        //private IWallMemberInfo _nogging;
+        //private IWallMemberInfo _trimmer;
         #endregion
 
         #region Property
-        public WallTypePoco WallType {
-            get
-            {
-                if (_globallWallInfo!=null)
-                {
-                    return _globallWallInfo.WallType;
-                }
-
-                return null;
-
-            }
-           
-        } 
+        public WallTypePoco WallType => GlobalWallInfo?.WallType;
         public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
         public IBasicWallInfo GlobalWallInfo { get; private set; }
         public IWallMemberInfo RibbonPlate { get; private set; }

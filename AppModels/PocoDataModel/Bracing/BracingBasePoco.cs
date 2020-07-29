@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProtoBuf;
+﻿using ProtoBuf;
 
-namespace AppModels.PocoDataModel
+namespace AppModels.PocoDataModel.Bracing
 {
     [ProtoContract]
     public class BracingBasePoco

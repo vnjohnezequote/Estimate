@@ -11,6 +11,7 @@
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using Newtonsoft.Json;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -36,23 +37,41 @@ namespace AppModels.ResponsiveData
         public int WallHeight
         {
             get => _wallHeight == 0 ? GlobalWallInformation.WallHeight : _wallHeight;
-            set => this.SetProperty(ref this._wallHeight, value);
-        }
+            set
+            {
+                if (value == GlobalWallInformation.WallHeight)
+                {
+                    value = 0;
+                }
+                this.SetProperty(ref this._wallHeight, value);
+            }
+        } 
 
-        public int InternalWallHeight
-        {
-            get => WallHeight - 35;
+        public int InternalWallHeight => WallHeight - 35;
 
-        }
         public int ExternalDoorHeight
         {
             get => _externalDoorHeight != 0 ? _externalDoorHeight : GlobalWallInformation.ExternalDoorHeight;
-            set => SetProperty(ref _externalDoorHeight, value);
+            set
+            {
+                if (value == GlobalWallInformation.ExternalDoorHeight)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _externalDoorHeight, value);
+            }
         }
         public int InternalDoorHeight
         {
             get => _internalDoorHeight !=0 ? _internalDoorHeight : GlobalWallInformation.InternalDoorHeight;
-            set => SetProperty(ref _internalDoorHeight, value);
+            set
+            {
+                if (value == GlobalWallInformation.InternalDoorHeight)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _internalDoorHeight, value);
+            }
         }
 
         public int StepDown
@@ -71,10 +90,7 @@ namespace AppModels.ResponsiveData
         public double CeilingPitch
         {
             get=>GlobalWallInformation.CeilingPitch;
-            set
-            {
-                GlobalWallInformation.CeilingPitch = value;
-            }
+            set => GlobalWallInformation.CeilingPitch = value;
         } 
 
         public int ExternalWallSpacing
@@ -106,14 +122,28 @@ namespace AppModels.ResponsiveData
         public int ExternalWallThickness
         {
             get => _extternalWallThickness!= 0 ? _extternalWallThickness : GlobalWallInformation.ExternalWallThickness;
-            set => SetProperty(ref _extternalWallThickness, value);
+            set
+            {
+                if (value == GlobalWallInformation.ExternalWallThickness)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _extternalWallThickness, value);
+            } 
         }
 
         public int InternalWallThickness
         {
             get => _internalWallThickness!=0 ? _internalWallThickness : GlobalWallInformation.InternalWallThickness;
-            set => SetProperty(ref _internalWallThickness, value);
-        }
+            set
+            {
+                if (value == GlobalWallInformation.InternalWallThickness)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _internalWallThickness, value);
+            }
+        } 
 
         public int ExternalWallTimberDepth => GlobalWallInformation.ExternalWallTimberDepth;
 
@@ -137,19 +167,24 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Initializes a new instance of the <see cref="LevelGlobalWallInfo"/> class.
         /// </summary>
-        /// <param name="defaultDefaultInfo">
+        /// <param name="globalWallInfo">
         /// The default info.
         /// </param>
-        public LevelGlobalWallInfo(IGlobalWallInfo defaultDefaultInfo)
+        public LevelGlobalWallInfo(IGlobalWallInfo globalWallInfo)
         {
-            this.GlobalWallInformation = defaultDefaultInfo;
+            this.GlobalWallInformation = globalWallInfo;
             GlobalExternalWallInfo = new BasicWallInfor(this, new WallTypePoco(){IsLoadBearingWall = true});
             GlobalInternalWallInfo = new BasicWallInfor(this, new WallTypePoco(){IsLoadBearingWall = false});
-            GlobalNoggingInfo = GlobalWallInformation.GlobalNoggingInfo;
-            GlobalExtWallDetailInfo = new LevelWallDetailInfo(GlobalExternalWallInfo, GlobalWallInformation.GlobalExtWallDetailInfo);
-            GlobalIntWallDetailInfo = new LevelWallDetailInfo(GlobalInternalWallInfo, GlobalWallInformation.GlobalIntWallDetailInfo);
-            GlobalDoorJambInfo = new GlobalWallMemberInfo(GlobalExternalWallInfo, WallMemberType.DoorJamb, GlobalWallInformation.GlobalDoorJambInfo);
-            this.InitializeLevelDefault();
+            if (GlobalWallInformation!=null)
+            {
+                GlobalNoggingInfo = GlobalWallInformation.GlobalNoggingInfo;
+                GlobalExtWallDetailInfo = new LevelWallDetailInfo(GlobalExternalWallInfo, GlobalWallInformation.GlobalExtWallDetailInfo);
+                GlobalIntWallDetailInfo = new LevelWallDetailInfo(GlobalInternalWallInfo, GlobalWallInformation.GlobalIntWallDetailInfo);
+                GlobalDoorJambInfo = new GlobalWallMemberInfo(GlobalExternalWallInfo, WallMemberType.DoorJamb, GlobalWallInformation.GlobalDoorJambInfo);
+                this.InitializeLevelDefault();
+            }
+            
+            
         }
         
 

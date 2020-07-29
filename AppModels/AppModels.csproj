@@ -92,6 +92,9 @@
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
@@ -161,7 +164,7 @@
     <Compile Include="Enums\Suppliers.cs" />
     <Compile Include="Enums\WallMemberType.cs" />
     <Compile Include="Enums\WallType.cs" />
-    <Compile Include="Factories\WallMemberFactory.cs" />
+    <Compile Include="Factories\WallLayerFactory.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Interaface\IBasicWallInfo.cs" />
     <Compile Include="Interaface\IClientDatabase.cs" />
@@ -171,30 +174,28 @@
     <Compile Include="Interaface\IWallMember.cs" />
     <Compile Include="Interaface\IWallMemberDetailInfo.cs" />
     <Compile Include="Interaface\IWallMemberInfo.cs" />
-    <Compile Include="PocoDataModel\BeamPoco.cs" />
-    <Compile Include="PocoDataModel\BracingBasePoco.cs" />
-    <Compile Include="PocoDataModel\BracingPoco.cs" />
+    <Compile Include="PocoDataModel\WallMemberData\BeamPoco.cs" />
+    <Compile Include="PocoDataModel\Bracing\BracingBasePoco.cs" />
+    <Compile Include="PocoDataModel\Bracing\BracingPoco.cs" />
     <Compile Include="PocoDataModel\DesignInfoPoco.cs" />
     <Compile Include="PocoDataModel\GenericBracingBasePoco.cs" />
     <Compile Include="PocoDataModel\GenericBracingPoco.cs" />
-    <Compile Include="PocoDataModel\JobWallDefaultInfoPoco.cs" />
+    <Compile Include="PocoDataModel\GlobalWallDetailPoco.cs" />
     <Compile Include="PocoDataModel\JobInfoPoco.cs" />
     <Compile Include="PocoDataModel\JobModelPoco.cs" />
     <Compile Include="PocoDataModel\LayerItemPoco.cs" />
-    <Compile Include="PocoDataModel\LevelWallDefaultInfoPoco.cs" />
+    <Compile Include="PocoDataModel\GlobalWallInfoPoco.cs" />
     <Compile Include="PocoDataModel\LevelWallPoco.cs" />
     <Compile Include="PocoDataModel\OpeningPoco.cs" />
     <Compile Include="PocoDataModel\RlwCalcPoco.cs" />
     <Compile Include="PocoDataModel\TimberBasePoco.cs" />
-    <Compile Include="PocoDataModel\TimberWallPoco.cs" />
-    <Compile Include="PocoDataModel\WallBasePoco.cs" />
     <Compile Include="PocoDataModel\WallLayerPoco.cs" />
-    <Compile Include="PocoDataModel\WallMemberBasePoco.cs" />
-    <Compile Include="PocoDataModel\WallStudPoco.cs" />
+    <Compile Include="PocoDataModel\WallMemberData\WallMemberBasePoco.cs" />
     <Compile Include="ResponsiveData\BasicWallInfor.cs" />
     <Compile Include="ResponsiveData\GlobalWallDetailInfo.cs" />
     <Compile Include="ResponsiveData\GlobalWallMemberInfo.cs" />
     <Compile Include="ResponsiveData\LevelWallDetailInfo.cs" />
+    <Compile Include="ResponsiveData\StickFrameWallLayer.cs" />
     <Compile Include="ResponsiveData\Treatment.cs" />
     <Compile Include="ResponsiveData\Beam.cs" />
     <Compile Include="ResponsiveData\Bracing.cs" />
@@ -223,7 +224,6 @@
     <Compile Include="ResponsiveData\WallMemberData\WallBottomPlate.cs" />
     <Compile Include="ResponsiveData\WallMemberData\WallMemberBase.cs" />
     <Compile Include="ResponsiveData\WallMemberData\WallNogging.cs" />
-    <Compile Include="ResponsiveData\WallNoggingInfo.cs" />
     <Compile Include="ResponsiveData\WallMemberData\WallRibbonPlate.cs" />
     <Compile Include="ResponsiveData\WallTempLength.cs" />
     <Compile Include="ResponsiveData\RlwCalc.cs" />
@@ -231,7 +231,6 @@
     <Compile Include="ResponsiveData\BracingBase.cs" />
     <Compile Include="CustomEntity\CustomTable.cs" />
     <Compile Include="CustomEntity\PictureEntity.cs" />
-    <Compile Include="ResponsiveData\WallMemberInfo.cs" />
     <Compile Include="ResponsiveData\WallMemberData\WallTopPlate.cs" />
     <Compile Include="ViewModelEntity\EntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVmBase.cs" />
