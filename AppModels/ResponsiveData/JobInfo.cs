@@ -212,34 +212,6 @@ namespace AppModels.ResponsiveData
                 return WindRate=="N2" || WindRate=="N3" || WindRate == "C1";
             }
         }
-        public bool QuoteCeilingBattent { get=>_quoteCeilingBattent; set=>SetProperty(ref _quoteCeilingBattent,value); }
-        public CeilingBattensType CeilingBattensType { get; set; } = CeilingBattensType.Timber;
-
-        public int QuoteTolengthSize { get; set; } = 5400;
-        public bool JambBeamSupport { get; set; }
-
-        public bool NoggingsAndSillInLM { get; set; }
-        public bool UpToLength { get; set; }
-        /// <summary>
-        /// Gets or sets the treatment.
-        /// </summary>
-        public string Treatment
-        {
-            get => this._treatMent;
-            set => this.SetProperty(ref this._treatMent, value);
-        }
-
-
-        /// <summary>
-        /// Gets or sets the roof type.
-        /// </summary>
-        public string RoofMaterial
-        {
-            get => this._roofMaterial;
-            set => this.SetProperty(ref this._roofMaterial, value);
-        }
-
-        
 
         /// <summary>
         /// Gets or sets the total linear meter.
@@ -340,52 +312,12 @@ namespace AppModels.ResponsiveData
         {
             this.GlobalWallInfo = new GlobalWallInfo();
             this.PropertyChanged += JobInfo_PropertyChanged;
-            Treatment = "Untreated";
-            RoofOverHang = 600;
-            //GlobalWallInfo.TrussSpacing = 600;
         }
         #endregion
 
         #region Private Function
 
-        private void SetTieDown(string value)
-        {
-            switch (WindRate)
-            {
-                case "C2":
-                case "C3":
-                    if (value =="Direct")
-                    {
-                        value = null;
-                    }
-                    break;
-                case "N1":
-                case "N2":
-                    if (string.IsNullOrEmpty(BuilderName) && value =="1800")
-                    {
-                        value = null;
-                    }
-                    else if (BuilderName.Contains("Privium") && value=="1500")
-                    {
-                        value = null;
-                    }
-                    else if(value =="1800")
-                    {
-                        value = null;
-                    }
-
-                    break;
-                case "N3":
-                    if (value == "1200")
-                    {
-                        value = null;
-                    }
-                    break;
-            }
-
-            this.SetProperty(ref _tieDown, value);
-
-        }
+       
 
         private void JobInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

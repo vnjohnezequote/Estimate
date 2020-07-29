@@ -180,6 +180,23 @@ namespace AppModels.ResponsiveData
             get => _roofOverHang;
             set => SetProperty(ref _roofOverHang, value);
         }
+        public bool QuoteCeilingBattent { get => _quoteCeilingBattent; set => SetProperty(ref _quoteCeilingBattent, value); }
+        public CeilingBattensType CeilingBattensType { get; set; } = CeilingBattensType.Timber;
+        public string Treatment
+        {
+            get => this._treatMent;
+            set => this.SetProperty(ref this._treatMent, value);
+        }
+        public string RoofMaterial
+        {
+            get => this._roofMaterial;
+            set => this.SetProperty(ref this._roofMaterial, value);
+        }
+        public int QuoteTolengthSize { get; set; } = 5400;
+        public bool JambBeamSupport { get; set; }
+
+        public bool NoggingsAndSillInLM { get; set; }
+        public bool UpToLength { get; set; }
         public IBasicWallInfo GlobalExternalWallInfo { get;private set; }
         public IBasicWallInfo GlobalInternalWallInfo { get; private set; }
         public IGlobalWallDetail GlobalExtWallDetailInfo { get;private set; }
@@ -201,6 +218,8 @@ namespace AppModels.ResponsiveData
             TrussSpacing = 600;
             RoofFrameType = RoofFrameType.Truss;
             NoggingMethod = NoggingMethodType.AsWall;
+            Treatment = "Untreated";
+            RoofOverHang = 600;
             GlobalExternalWallInfo = new BasicWallInfor(this,new WallTypePoco(){IsLoadBearingWall = true});
             GlobalInternalWallInfo= new BasicWallInfor(this, new WallTypePoco(){IsLoadBearingWall = false});
             GlobalNoggingInfo = new GlobalWallMemberInfo(GlobalInternalWallInfo,WallMemberType.Nogging);
@@ -229,6 +248,44 @@ namespace AppModels.ResponsiveData
 
             }
 
+
+        }
+        private void SetTieDown(string value)
+        {
+            switch (WindRate)
+            {
+                case "C2":
+                case "C3":
+                    if (value == "Direct")
+                    {
+                        value = null;
+                    }
+                    break;
+                case "N1":
+                case "N2":
+                    if (string.IsNullOrEmpty(BuilderName) && value == "1800")
+                    {
+                        value = null;
+                    }
+                    else if (BuilderName.Contains("Privium") && value == "1500")
+                    {
+                        value = null;
+                    }
+                    else if (value == "1800")
+                    {
+                        value = null;
+                    }
+
+                    break;
+                case "N3":
+                    if (value == "1200")
+                    {
+                        value = null;
+                    }
+                    break;
+            }
+
+            this.SetProperty(ref _tieDown, value);
 
         }
 
