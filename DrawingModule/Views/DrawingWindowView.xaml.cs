@@ -76,6 +76,7 @@ namespace DrawingModule.Views
             // If there are no sheets adds a default one to have a ready-to-use paper space.
             //if (drawings.Sheets.Count == 0)
             //    this.CanvasDrawing.AddDefaultSheet();
+            model1.LayersManager.SetLayerList(model1.Layers);
         }
 
         private void DrawingWindowView_Loaded(object sender, System.Windows.RoutedEventArgs e)
