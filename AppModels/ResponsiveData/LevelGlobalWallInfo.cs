@@ -34,7 +34,8 @@ namespace AppModels.ResponsiveData
         #endregion
         #region public Property
 
-        public JobInfo GlobalInfo { get; set; }
+        public JobInfo GlobalInfo => GlobalWallInformation?.GlobalInfo;
+
         public int WallHeight
         {
             get => _wallHeight == 0 ? GlobalWallInformation.WallHeight : _wallHeight;
@@ -145,6 +146,7 @@ namespace AppModels.ResponsiveData
         public LevelGlobalWallInfo(IGlobalWallInfo globalWallInfo)
         {
             this.GlobalWallInformation = globalWallInfo;
+            RaisePropertyChanged(nameof(GlobalInfo));
             GlobalExternalWallInfo = new BasicWallInfor(this, new WallTypePoco(){IsLoadBearingWall = true});
             GlobalInternalWallInfo = new BasicWallInfor(this, new WallTypePoco(){IsLoadBearingWall = false});
             if (GlobalWallInformation!=null)
@@ -155,14 +157,8 @@ namespace AppModels.ResponsiveData
                 GlobalDoorJambInfo = new GlobalWallMemberInfo(GlobalExternalWallInfo, WallMemberType.DoorJamb, GlobalWallInformation.GlobalDoorJambInfo);
                 this.InitializeLevelDefault();
             }
-            
-            
         }
-        
-
         #endregion
-        
-
         #region private Method
 
         private void InitializeLevelDefault()
@@ -174,39 +170,30 @@ namespace AppModels.ResponsiveData
         {
             switch (e.PropertyName)
             {
-                case "WallHeight":
+                case nameof(WallHeight):
                     RaisePropertyChanged(nameof(InternalWallHeight));
+                    RaisePropertyChanged(nameof(WallHeight));
                     break;
-                case "ExternalDoorHeight":
+                case nameof(ExternalDoorHeight):
                     RaisePropertyChanged(nameof(ExternalDoorHeight));
                     RaisePropertyChanged(nameof(InternalDoorHeight));
                     break;
-                case "InternalDoorHeight":
+                case nameof(InternalDoorHeight):
                     RaisePropertyChanged(nameof(InternalDoorHeight));
                     break;
-                case "ExternalWallSpacing":
+                case nameof(ExternalWallSpacing):
                     RaisePropertyChanged(nameof(ExternalWallSpacing));
                     RaisePropertyChanged(nameof(InternalWallSpacing));
                     break;
-                case "InternalWallSpacing":
+                case nameof(InternalWallSpacing):
                     RaisePropertyChanged(nameof(InternalWallSpacing));
                     break;
-                case "ExternalWallThickness":
+                case nameof(ExternalWallThickness):
                     RaisePropertyChanged(nameof(ExternalWallThickness));
                     RaisePropertyChanged(nameof(InternalWallThickness));
                     break;
-                case "InternalWallThickness":
+                case nameof(InternalWallThickness):
                     RaisePropertyChanged(nameof(InternalWallThickness));
-                    break;
-                case "StepDown":
-                    RaisePropertyChanged(nameof(StepDown));
-                    break;
-                case "RoofPitch":
-                case "CeilingPitch":
-                    RaisePropertyChanged(nameof(CeilingPitch));
-                    break;
-                case nameof(RaisedCeilingHeight):
-                    RaisePropertyChanged(nameof(RaisedCeilingHeight));
                     break;
                 case nameof(ExternalWallTimberDepth):
                     RaisePropertyChanged(nameof(ExternalWallTimberDepth));

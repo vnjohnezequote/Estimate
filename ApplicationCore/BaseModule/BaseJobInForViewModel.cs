@@ -22,6 +22,10 @@ namespace ApplicationCore.BaseModule
         private ClientPoco _selectedClient;
         public ClientPoco SelectedClient { get => _selectedClient; set => SetProperty(ref _selectedClient, value); }
 
+        protected BaseJobInForViewModel(): base()
+        {
+
+        }
         protected BaseJobInForViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IJob jobModel)
             : base(unityContainer, regionManager, eventAggregator, layerManager, jobModel)
         {

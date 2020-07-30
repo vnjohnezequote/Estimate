@@ -25,7 +25,7 @@ namespace AppModels.ResponsiveData
             set=>SetProperty(ref _wallParent,value);
         }
         public IGlobalWallInfo GlobalWallInfo { get; set; }
-        public Suppliers Suppliers => GlobalWallInfo.Supplier;
+        public Suppliers Suppliers => GlobalWallInfo.GlobalInfo.Supplier;
 
         /// <summary>
         /// Gets or sets the id.

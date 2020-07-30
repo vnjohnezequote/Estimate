@@ -8,7 +8,7 @@ namespace AppModels.ResponsiveData
 {
     public class BasicWallInfor: BindableBase,IBasicWallInfo
     {
-        public NoggingMethodType NoggingMethod => GlobalWallInfo?.NoggingMethod ?? NoggingMethodType.AsWall;
+        public NoggingMethodType NoggingMethod => GlobalWallInfo.GlobalInfo.NoggingMethod;
 
         public IGlobalWallInfo GlobalWallInfo { get; set; }
         public WallTypePoco WallType { get; }

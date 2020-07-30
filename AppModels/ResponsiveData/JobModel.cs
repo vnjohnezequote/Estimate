@@ -43,7 +43,7 @@ namespace AppModels.ResponsiveData
             get => this._inFor;
             set => this.SetProperty(ref this._inFor, value);
         }
-        public IGlobalWallInfo GlobalWallInfo { get; set; }
+        public GlobalWallInfo GlobalWallInfo { get; set; }
         /// <summary>
         /// Gets or sets the levels.
         /// </summary>

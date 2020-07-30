@@ -76,7 +76,7 @@
                     Command="{Binding JobLocationCommand}"/>
         <TextBox Margin="0 10 0 0"
             x:Name="TxtJobNumber"
-                 materialDesign:HintAssist.Hint="Project Name/JobInfoJobGlobalWallInformation Number"
+                 materialDesign:HintAssist.Hint="Project Name/Job Number"
                  Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
     </StackPanel>

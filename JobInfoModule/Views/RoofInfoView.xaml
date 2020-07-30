@@ -26,11 +26,11 @@
             <TextBox Margin="0 10 0 0"
                      x:Name="TxtRoofPitch"
                      materialDesign:HintAssist.Hint="Roof Pitch"
-                     Text="{Binding JobInfo.GlobalWallInfo.RoofPitch,UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding JobInfo.RoofPitch,UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Margin="0 10 0 0"
                      x:Name="TxtCeilingPitch"
                      materialDesign:HintAssist.Hint="Ceiling Pitch"
-                     Text="{Binding JobInfo.GlobalWallInfo.CeilingPitch}"/>
+                     Text="{Binding JobInfo.CeilingPitch}"/>
             <TextBox Margin="0 10 0 0"
                      x:Name="TxtRoofOverHang"
                      materialDesign:HintAssist.Hint="Roof OverHang"
@@ -47,8 +47,8 @@
                       materialDesign:HintAssist.Hint="Roof Frame Type"
                       HorizontalAlignment="Stretch"
                       ItemsSource="{Binding Source={StaticResource RoofFrameTypes}}"
-                      SelectedItem="{Binding JobInfo.GlobalWallInfo.RoofFrameType}"
-                      SelectedValue="{Binding JobInfo.GlobalWallInfo.RoofFrameType}"
+                      SelectedItem="{Binding JobInfo.RoofFrameType}"
+                      SelectedValue="{Binding JobInfo.RoofFrameType}"
                       materialDesign:TextFieldAssist.HasClearButton="True"
                       materialDesign:TextFieldAssist.HasOutlinedTextField="True"/>
 
@@ -57,13 +57,13 @@
                       materialDesign:HintAssist.Hint="Truss Spacing"
                       IsEnabled="{Binding IsTrussSpacingEnable}"
                       ItemsSource="{Binding TrussSpacings}"
-                      SelectedItem="{Binding JobInfo.GlobalWallInfo.TrussSpacing}"/>
+                      SelectedItem="{Binding JobInfo.TrussSpacing}"/>
             <ComboBox Margin="0 10 0 0"
                       x:Name="RafterSpacingComboBox"
                       materialDesign:HintAssist.Hint="Rafter Spacing"
                       IsEnabled="{Binding IsRaterSpacingEnable}"
                       ItemsSource="{Binding RafterSpacings}"
-                      SelectedItem="{Binding JobInfo.GlobalWallInfo.RafterSpacing}"/>
+                      SelectedItem="{Binding JobInfo.RafterSpacing}"/>
         </StackPanel>
     </Grid>
 </UserControl>

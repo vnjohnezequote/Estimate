@@ -98,18 +98,13 @@ namespace NewJobWizardModule.ViewModels
         public NewJobWizardViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManger,IJob jobModel)
             : base(unityContainer, regionManager, eventAggregator,layerManger,jobModel)
         {
-            // delegate Loaded
-            this.Job = jobModel;
-            //this.UnityContainer.RegisterInstance<IJob>("GlobalJob", JobDefaultInfo);
-            /* create data test */
-            this.Job.Info.JobNumber = "2220";
-            //this.Job.Info.JobLocation = "test";
-            this.Job.Info.GlobalWallInfo.RoofPitch = 22.5;
-            //this.JobInfo.Info.GlobalWallInfo.ExternalWallSpacing = 450;
-            //this.JobInfo.Info.GlobalWallInfo.InternalWallSpacing = 600;
-            this.Job.Info.GlobalWallInfo.StepDown = 170;
+            this.JobModel.Info.JobNumber = "2220";
+            this.JobModel.Info.RoofPitch = 22.5;
+            this.JobModel.Info.StepDown = 170;
+            this.JobModel.Info.NoggingMethod = NoggingMethodType.AsWall;
+            this.JobModel.Info.RoofOverHang = 600;
 
-            this.CheckJob = new CheckJobInfo(this.Job.Info);
+            this.CheckJob = new CheckJobInfo(this.JobModel.Info);
 
             //this.NextTabCommand = new DelegateCommand(this.OnNextTab, this.CanNextTab);
 
@@ -190,11 +185,11 @@ namespace NewJobWizardModule.ViewModels
         /// <summary>
         /// Gets or sets the job.
         /// </summary>
-        public IJob Job
-        {
-            get => this._job;
-            set => this.SetProperty(ref this._job, value);
-        }
+        //public IJob Job
+        //{
+        //    get => this._job;
+        //    set => this.SetProperty(ref this._job, value);
+        //}
 
         /// <summary>
         /// Gets or sets the check job.
@@ -278,8 +273,8 @@ namespace NewJobWizardModule.ViewModels
         /// </param>
         private void TransferJob(string regionName, string uriPath)
         {
-            var parameters = new NavigationParameters { { "JobDefaultInfo", this.Job.Info } };
-            if (this.Job.Info != null)
+            var parameters = new NavigationParameters { { "JobDefaultInfo", this.JobModel.Info } };
+            if (this.JobModel.Info != null)
             {
                 this.RegionManager.RequestNavigate(regionName, uriPath, parameters);
             }
@@ -298,10 +293,10 @@ namespace NewJobWizardModule.ViewModels
         {
             var parameters = new NavigationParameters
                                  {
-                                     { "JobDefaultInfo", this.Job.Info }, 
-                                     { "Levels", this.Job.Levels }
+                                     { "JobDefaultInfo", this.JobModel.Info }, 
+                                     { "Levels", this.JobModel.Levels }
                                  };
-            if (this.Job.Info != null && this.Job.Levels != null)
+            if (this.JobModel.Info != null && this.JobModel.Levels != null)
             {
                 this.RegionManager.RequestNavigate(regionName, uriPath, parameters);
             }

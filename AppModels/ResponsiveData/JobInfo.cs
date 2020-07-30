@@ -48,20 +48,18 @@ namespace AppModels.ResponsiveData
         private RoofFrameType _roofFrameType;
         private NoggingMethodType _noggingMethod;
         private int _raisedCeilingHeight;
+        private CeilingBattensType _ceilingBattenType;
         #endregion
-
         #region Property
-        public bool CheckWinRate
+        public string JobLocation
         {
-            get
-            {
-                if (string.IsNullOrEmpty(WindRate))
-                {
-                    return false;
-                }
-
-                return WindRate == "N2" || WindRate == "N3" || WindRate == "C1";
-            }
+            get => this._jobLocation;
+            set => this.SetProperty(ref this._jobLocation, value);
+        }
+        public string ClientName
+        {
+            get => this._clientName;
+            set => this.SetProperty(ref this._clientName, value);
         }
         public string Customer
         {
@@ -73,21 +71,10 @@ namespace AppModels.ResponsiveData
             get => this._builderName;
             set => this.SetProperty(ref this._builderName, value);
         }
-        public Suppliers Supplier { get => _supplier; set => SetProperty(ref _supplier, value); }
-        public NoggingMethodType NoggingMethod
+        public Suppliers Supplier
         {
-            get => _noggingMethod;
-            set => SetProperty(ref _noggingMethod, value);
-        }
-        public string JobLocation
-        {
-            get => this._jobLocation;
-            set => this.SetProperty(ref this._jobLocation, value);
-        }
-        public string ClientName
-        {
-            get => this._clientName;
-            set => this.SetProperty(ref this._clientName, value);
+            get => _supplier;
+            set => SetProperty(ref _supplier, value);
         }
         public string JobNumber
         {
@@ -95,11 +82,16 @@ namespace AppModels.ResponsiveData
             set => this.SetProperty(ref this._jobNumber, value);
         }
         public string JobAddress { get; set; }
-       public string SubAddress { get; set; }
-       public string FullAddress
+        public string SubAddress { get; set; }
+        public string FullAddress
         {
             get => this._fullAddress;
             set => this.SetProperty(ref this._fullAddress, value);
+        }
+        public string UnitNumber
+        {
+            get => this._unitNumber;
+            set => this.SetProperty(ref this._unitNumber, value);
         }
         public string WindRate
         {
@@ -110,10 +102,17 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(CheckWinRate));
             }
         }
-        public string UnitNumber
+        public bool CheckWinRate
         {
-            get => this._unitNumber;
-            set => this.SetProperty(ref this._unitNumber, value);
+            get
+            {
+                if (string.IsNullOrEmpty(WindRate))
+                {
+                    return false;
+                }
+
+                return WindRate == "N2" || WindRate == "N3" || WindRate == "C1";
+            }
         }
         public int TotalLinearMeter { get; set; }
         public DateTime CompleteDate { get; set; }
@@ -138,28 +137,41 @@ namespace AppModels.ResponsiveData
             set => this.SetProperty(ref this._isBracingPlan, value);
         }
         public string IssuesInfor { get; set; }
-        public bool QuoteCeilingBattent { get => _quoteCeilingBattent; set => SetProperty(ref _quoteCeilingBattent, value); }
-        public CeilingBattensType CeilingBattensType { get; set; } = CeilingBattensType.Timber;
         public string Treatment
         {
             get => this._treatMent;
             set => this.SetProperty(ref this._treatMent, value);
-        }
-        public string RoofMaterial
-        {
-            get => this._roofMaterial;
-            set => this.SetProperty(ref this._roofMaterial, value);
         }
         public string TieDown
         {
             get => string.IsNullOrEmpty(_tieDown) ? this.GeneralTieDown() : _tieDown;
             set => SetTieDown(value);
         }
-        public int QuoteTolengthSize { get; set; } = 5400;
-        public bool JambBeamSupport { get; set; }
+        public string RoofMaterial
+        {
+            get => this._roofMaterial;
+            set => this.SetProperty(ref this._roofMaterial, value);
+        }
+        public double RoofPitch
+        {
+            get => this._roofPitch;
+            set
+            {
+                this.SetProperty(ref this._roofPitch, value);
+                this.RaisePropertyChanged(nameof(CeilingPitch));
+            }
+        }
         public double CeilingPitch
         {
-            get => this._roofFrameType == RoofFrameType.Truss ? _ceilingPitch : _roofPitch;
+            get
+            {
+                if (Math.Abs(_ceilingPitch) > 0.0001)
+                {
+                    return _ceilingPitch;
+                }
+
+                return RoofFrameType == RoofFrameType.Truss ? _ceilingPitch : _roofPitch;
+            } 
             set => SetProperty(ref _ceilingPitch, value);
         }
         public int RoofOverHang
@@ -167,22 +179,10 @@ namespace AppModels.ResponsiveData
             get => _roofOverHang;
             set => SetProperty(ref _roofOverHang, value);
         }
-        public bool NoggingsAndSillInLM { get; set; }
-        public bool UpToLength { get; set; }
-        public DesignInfor FrameDesignInfor
+        public NoggingMethodType NoggingMethod
         {
-            get => this._frameDesignInfor;
-            set => this.SetProperty(ref this._frameDesignInfor, value);
-        }
-        public DesignInfor BeamDesignInfor
-        {
-            get => this._beamDesignInfor;
-            set => this.SetProperty(ref this._beamDesignInfor, value);
-        }
-        public DesignInfor BracingDesignInfor
-        {
-            get => this._bracingDesignInfor;
-            set => this.SetProperty(ref this._bracingDesignInfor, value);
+            get => _noggingMethod;
+            set => SetProperty(ref _noggingMethod, value);
         }
         public RoofFrameType RoofFrameType
         {
@@ -207,25 +207,46 @@ namespace AppModels.ResponsiveData
             get => this._rafterSpacing == 0 ? _trussSpacing : this._rafterSpacing;
             set => this.SetProperty(ref this._rafterSpacing, value);
         }
-        public int StepDown
-        {
-            get => this._stepDown;
-            set => this.SetProperty(ref this._stepDown, value);
-        }
         public int RaisedCeilingHeight
         {
             get => _raisedCeilingHeight;
             set => SetProperty(ref _raisedCeilingHeight, value);
         }
-        public double RoofPitch
+        public bool NoggingsAndSillInLM { get; set; }
+        public bool UpToLength { get; set; }
+        public int QuoteTolengthSize { get; set; } = 5400;
+        public bool JambBeamSupport { get; set; }
+        public bool QuoteCeilingBattent
         {
-            get => this._roofPitch;
-            set
-            {
-                this.SetProperty(ref this._roofPitch, value);
-                this.RaisePropertyChanged(nameof(CeilingPitch));
-            }
+            get => _quoteCeilingBattent;
+            set => SetProperty(ref _quoteCeilingBattent, value);
         }
+        public CeilingBattensType CeilingBattensType
+        {
+            get => _ceilingBattenType;
+            set => SetProperty(ref _ceilingBattenType, value);
+        }
+        public DesignInfor FrameDesignInfor
+        {
+            get => this._frameDesignInfor;
+            set => this.SetProperty(ref this._frameDesignInfor, value);
+        }
+        public DesignInfor BeamDesignInfor
+        {
+            get => this._beamDesignInfor;
+            set => this.SetProperty(ref this._beamDesignInfor, value);
+        }
+        public DesignInfor BracingDesignInfor
+        {
+            get => this._bracingDesignInfor;
+            set => this.SetProperty(ref this._bracingDesignInfor, value);
+        }
+        public int StepDown
+        {
+            get => this._stepDown;
+            set => this.SetProperty(ref this._stepDown, value);
+        }
+
         /// <summary>
         /// Gets or sets the excel notes.
         /// </summary>
@@ -258,26 +279,26 @@ namespace AppModels.ResponsiveData
             switch (e.PropertyName)
             {
                 case nameof(Customer):
-                {
-                    if (this.Customer == "Bunnings Hallam Frame And Truss")
                     {
-                        this.BuilderName = "Privium";
-                    }
+                        if (this.Customer == "Bunnings Hallam Frame And Truss")
+                        {
+                            this.BuilderName = "Privium";
+                        }
 
-                    break;
-                }
+                        break;
+                    }
                 case nameof(BuilderName) when string.IsNullOrEmpty(BuilderName):
                     return;
                 case nameof(BuilderName):
-                {
-                    if (BuilderName.Contains("Privium"))
                     {
-                        this.WindRate = "N2";
-                        this.Treatment = "Untreated";
-                    }
+                        if (BuilderName.Contains("Privium"))
+                        {
+                            this.WindRate = "N2";
+                            this.Treatment = "Untreated";
+                        }
 
-                    break;
-                }
+                        break;
+                    }
                 case nameof(WindRate):
                     this.RaisePropertyChanged(nameof(TieDown));
                     break;

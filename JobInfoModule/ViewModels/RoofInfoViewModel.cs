@@ -43,12 +43,12 @@ namespace JobInfoModule.ViewModels
         }
 
         public bool IsTrussSpacingEnable =>
-            this.JobInfo.GlobalWallInfo.RoofFrameType == RoofFrameType.Truss ||
-            this.JobInfo.GlobalWallInfo.RoofFrameType == RoofFrameType.TrussAndRafter;
+            this.JobInfo.RoofFrameType == RoofFrameType.Truss ||
+            this.JobInfo.RoofFrameType == RoofFrameType.TrussAndRafter;
 
         public bool IsRaterSpacingEnable =>
-        this.JobInfo.GlobalWallInfo.RoofFrameType == RoofFrameType.Rafter ||
-        this.JobInfo.GlobalWallInfo.RoofFrameType == RoofFrameType.TrussAndRafter;
+        this.JobInfo.RoofFrameType == RoofFrameType.Rafter ||
+        this.JobInfo.RoofFrameType == RoofFrameType.TrussAndRafter;
         #endregion
 
         #region Constructor
@@ -72,7 +72,7 @@ namespace JobInfoModule.ViewModels
             ILayerManager layerManager,IJob jobModel)
             : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
-            this.JobInfo.GlobalWallInfo.PropertyChanged += JobDefault_PropertyChanged;
+            this.JobInfo.PropertyChanged += JobDefault_PropertyChanged;
         }
 
         private void JobDefault_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

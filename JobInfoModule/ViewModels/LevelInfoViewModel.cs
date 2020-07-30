@@ -88,6 +88,8 @@ namespace JobInfoModule.ViewModels
         /// <param name="eventAggregator">
         /// The event aggregator.
         /// </param>
+        /// <param name="layerManager"></param>
+        /// <param name="jobModel"></param>
         public LevelInfoViewModel(
             IUnityContainer unityContainer,
             IRegionManager regionManager,
@@ -96,7 +98,6 @@ namespace JobInfoModule.ViewModels
             : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             this.RegionManager = this.RegionManager.CreateRegionManager();
-
             this.CreateFloorCommand = new DelegateCommand<ListBox>(this.CreateFloorFunction);
             EventAggregator.GetEvent<RefreshFloorEvent>().Subscribe(OnReFreshFloor);
         }
@@ -321,7 +322,7 @@ namespace JobInfoModule.ViewModels
 
                 for (var i = 0; i < stepIn; i++)
                 {
-                    var level = new LevelWall(this.JobInfo.GlobalWallInfo);
+                    var level = new LevelWall(this.JobModel.GlobalWallInfo);
                     level.LevelName = this._floorNames[levelNameIndex];
 
                     /* this is for testing */

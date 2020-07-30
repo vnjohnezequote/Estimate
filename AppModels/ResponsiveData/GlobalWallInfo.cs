@@ -22,6 +22,7 @@ namespace AppModels.ResponsiveData
     public class GlobalWallInfo : BindableBase,IGlobalWallInfo
     {
         #region private Field
+        private JobInfo _globalInfo;
         private int _externalDoorHeight;
         private int _internalDoorHeight;
         private int _externalWallSpacing;
@@ -36,8 +37,13 @@ namespace AppModels.ResponsiveData
         #endregion
 
         #region public Property
-        public JobInfo GlobalInfo { get; set; }
-        public int WallHeight { 
+        public JobInfo GlobalInfo
+        { 
+            get=>_globalInfo;
+            set => SetProperty(ref _globalInfo, value);
+        }
+        public int WallHeight 
+        { 
             get=>_wallHeight;
             set => SetProperty(ref _wallHeight, value);
         }
@@ -131,11 +137,6 @@ namespace AppModels.ResponsiveData
             ExternalWallTimberDepth = 35;
             ExternalWallTimberGrade = "MGP10";
             ExternalWallSpacing = 450;
-            TrussSpacing = 600;
-            RoofFrameType = RoofFrameType.Truss;
-            NoggingMethod = NoggingMethodType.AsWall;
-            Treatment = "Untreated";
-            RoofOverHang = 600;
             GlobalExternalWallInfo = new BasicWallInfor(this,new WallTypePoco(){IsLoadBearingWall = true});
             GlobalInternalWallInfo= new BasicWallInfor(this, new WallTypePoco(){IsLoadBearingWall = false});
             GlobalNoggingInfo = new GlobalWallMemberInfo(GlobalInternalWallInfo,WallMemberType.Nogging);
@@ -161,7 +162,6 @@ namespace AppModels.ResponsiveData
                 case nameof(ExternalWallTimberGrade):
                     RaisePropertyChanged(nameof(InternalWallTimberGrade));
                     break;
-
             }
 
 

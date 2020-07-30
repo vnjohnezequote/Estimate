@@ -6,6 +6,7 @@ namespace AppModels.Interaface
     public interface IJob
     {
         JobInfo Info { get; }
+        GlobalWallInfo GlobalWallInfo { get; }
         ObservableCollection<LevelWall> Levels { get; }
     }
 }

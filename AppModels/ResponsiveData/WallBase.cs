@@ -58,7 +58,7 @@ namespace AppModels.ResponsiveData
             get => _wallType;
             set => SetProperty(ref _wallType, value);
         }
-        public NoggingMethodType NoggingMethod => GlobalWallInfo.NoggingMethod;
+        public NoggingMethodType NoggingMethod => GlobalWallInfo.GlobalInfo.NoggingMethod;
         public IGlobalWallInfo GlobalWallInfo { get; set; }
         public IGlobalWallDetail GlobalWallDetailInfo => WallType.IsLoadBearingWall ? GlobalWallInfo.GlobalExtWallDetailInfo : GlobalWallInfo.GlobalIntWallDetailInfo;
         public LayerItem WallColorLayer
@@ -159,7 +159,12 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(StudHeight));
             }
         }
-        public double WallLength { get=>_wallLength; set=>SetProperty(ref _wallLength,value); }
+
+        public double WallLength
+        {
+            get=>_wallLength;
+            set=>SetProperty(ref _wallLength,value);
+        }
         public bool IsStepdown
         {
             get => _isStepDown;
@@ -215,10 +220,10 @@ namespace AppModels.ResponsiveData
         }
         public double CeilingPitch
         {
-            get => Math.Abs(_ceilingPitch) > 0.001 ? _ceilingPitch : GlobalWallInfo.CeilingPitch;
+            get => Math.Abs(_ceilingPitch) > 0.001 ? _ceilingPitch : GlobalWallInfo.GlobalInfo.CeilingPitch;
             set
             {
-                if (Math.Abs(value - GlobalWallInfo.CeilingPitch) < 0.0001)
+                if (Math.Abs(value - GlobalWallInfo.GlobalInfo.CeilingPitch) < 0.0001)
                 {
                     value = 0;
                 }
@@ -237,11 +242,11 @@ namespace AppModels.ResponsiveData
                     return 0;
                 }
 
-                return _stepDown!=0 ?  _stepDown: GlobalWallInfo.StepDown;
+                return _stepDown!=0 ?  _stepDown: GlobalWallInfo.GlobalInfo.StepDown;
             }
             set
             {
-                if (value == GlobalWallInfo.StepDown)
+                if (value == GlobalWallInfo.GlobalInfo.StepDown)
                 {
                     value = 0;
                 }
@@ -257,11 +262,11 @@ namespace AppModels.ResponsiveData
                     return 0;
                 }
 
-                return _raisedCeiling != 0 ? _raisedCeiling : GlobalWallInfo.RaisedCeilingHeight;
+                return _raisedCeiling != 0 ? _raisedCeiling : GlobalWallInfo.GlobalInfo.RaisedCeilingHeight;
             }
             set
             {
-                if (value == GlobalWallInfo.RaisedCeilingHeight)
+                if (value == GlobalWallInfo.GlobalInfo.RaisedCeilingHeight)
                 {
                     value = 0;
                 }
@@ -282,7 +287,7 @@ namespace AppModels.ResponsiveData
             this.Id = id;
             TypeId = typeId;
             this.GlobalWallInfo = globalWallInfo;
-            GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
+            GlobalWallInfo.GlobalInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
             RibbonPlate = new WallRibbonPlate(this);
             TopPlate = new WallTopPlate(this);
             BottomPlate = new WallBottomPlate(this);
@@ -308,21 +313,19 @@ namespace AppModels.ResponsiveData
         }
         private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "CeilingPitch")
+            switch (e.PropertyName)
             {
-                RaisePropertyChanged(nameof(CeilingPitch));
-                RaisePropertyChanged(nameof(HPitching));
-                RaisePropertyChanged(nameof(WallEndHeight));
-            }
-
-            if (e.PropertyName == "StepDown")
-            {
-                RaisePropertyChanged(nameof(StepDown));
-            }
-
-            if (e.PropertyName == "RaisedCeilingHeight")
-            {
-                RaisePropertyChanged(nameof(RaisedCeiling));
+                case nameof(CeilingPitch):
+                    RaisePropertyChanged(nameof(CeilingPitch));
+                    RaisePropertyChanged(nameof(HPitching));
+                    RaisePropertyChanged(nameof(WallEndHeight));
+                    break;
+                case nameof(StepDown):
+                    RaisePropertyChanged(nameof(StepDown));
+                    break;
+                case "RaisedCeilingHeight":
+                    RaisePropertyChanged(nameof(RaisedCeiling));
+                    break;
             }
 
             RaisePropertyChanged(nameof(WallPitchingHeight));
@@ -366,6 +369,7 @@ namespace AppModels.ResponsiveData
                     break;
                 case nameof(WallPitchingHeight):
                     RaisePropertyChanged(nameof(WallEndHeight));
+                    RaisePropertyChanged(nameof(WallHeight));
                     RaisePropertyChanged(nameof(FinalWallHeight));
                     RaisePropertyChanged(nameof(StudHeight));
                     RaisePropertyChanged(nameof(IsNeedTobeDesign));

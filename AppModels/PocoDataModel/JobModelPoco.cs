@@ -14,9 +14,10 @@ namespace AppModels.PocoDataModel
     {
         [ProtoMember(1)]
         public JobInfoPoco Info { get; set; }
-        [ProtoMember(2)]
+        [ProtoMember(2)] 
+        public GlobalWallInfoPoco GlobalWallInfo { get; set; }
+        [ProtoMember(3)]
         public List<LevelWallPoco> Levels { get; set; }
-
         public JobModelPoco()
         {
 
@@ -24,6 +25,7 @@ namespace AppModels.PocoDataModel
         public JobModelPoco(IJob jobModel)
         {
             Info = new JobInfoPoco(jobModel.Info);
+            GlobalWallInfo = new GlobalWallInfoPoco(jobModel.GlobalWallInfo);
             InitializerLevel(jobModel.Levels.ToList());
         }
 
