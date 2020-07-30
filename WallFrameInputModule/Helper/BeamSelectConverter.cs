@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Openings;
 
 namespace WallFrameInputModule.Helper
 {

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using AppModels.Enums;
+using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 using Newtonsoft.Json;
 
@@ -27,6 +28,8 @@ namespace AppModels.Interaface
         IGlobalWallDetail GlobalIntWallDetailInfo { get;  }
         IWallMemberInfo GlobalNoggingInfo { get;  }
         IWallMemberInfo GlobalDoorJambInfo { get;  }
+
+        void LoadWallGlobalInfo(GlobalWallInfoPoco globalInfo);
 
 
     }

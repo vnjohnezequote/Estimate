@@ -212,7 +212,19 @@ namespace AppModels.ResponsiveData
             }
         }
 
-
+        public void LoadWallGlobalInfo(GlobalWallInfoPoco globalInfo)
+        {
+            WallHeight = globalInfo.WallHeight;
+            ExternalDoorHeight = globalInfo.ExternalDoorHeight;
+            InternalDoorHeight = globalInfo.InternalDoorHeight;
+            ExternalWallSpacing = globalInfo.ExternalWallSpacing;
+            InternalWallSpacing = globalInfo.InternalWallSpacing;
+            ExternalWallThickness = globalInfo.ExternalWallThickness;
+            InternalWallThickness = globalInfo.InternalWallThickness;
+            GlobalExtWallDetailInfo.LoadWallDetailInfo(globalInfo.GlobalExtWallDetailInfo);
+            GlobalIntWallDetailInfo.LoadWallDetailInfo(globalInfo.GlobalIntWallDetailInfo);
+            GlobalDoorJambInfo.LoadMemberInfo(globalInfo.GlobalDoorJambInfo);
+        }
 
 
         #endregion

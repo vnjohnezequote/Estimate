@@ -67,7 +67,7 @@ namespace DrawingModule.Views
             if (!(e.WorkUnit is ReadFileAsyncWithDrawings)) return;
             var rfa = (ReadFileAsyncWithDrawings)e.WorkUnit;
             rfa.AddToScene(model1);
-            model1.SetView(viewType.Trimetric, true, false);
+            //model1.SetView(viewType.Trimetric, true, false);
             var drawings = this.CanvasDrawing.PaperSpace;
 
             model1.Units = rfa.Units;

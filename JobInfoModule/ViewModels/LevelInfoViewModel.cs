@@ -100,6 +100,7 @@ namespace JobInfoModule.ViewModels
             this.RegionManager = this.RegionManager.CreateRegionManager();
             this.CreateFloorCommand = new DelegateCommand<ListBox>(this.CreateFloorFunction);
             EventAggregator.GetEvent<RefreshFloorEvent>().Subscribe(OnReFreshFloor);
+            //JobModel.Levels.CollectionChanged += Levels_CollectionChanged;
         }
 
         #endregion
@@ -204,6 +205,13 @@ namespace JobInfoModule.ViewModels
             }
         }
 
+        //private void Levels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    this.RegionManager.Regions["FloorInfoRegion"].RemoveAll();
+        //    this.RegionManager.Regions["DeliveryRegion"].RemoveAll();
+        //    LoadCostDelivery();
+        //    LoadFloorNumber();
+        //}
         /// <summary>
         /// The is navigation target.
         /// </summary>

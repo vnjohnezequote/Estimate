@@ -16,6 +16,7 @@ using AppModels.Enums;
 using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData.WallMemberData;
 using devDept.Geometry;
 using Newtonsoft.Json;
@@ -43,7 +44,7 @@ namespace AppModels.ResponsiveData
         private double _wallLength;
         private bool _forcedWallUnderRakedArea;
         private bool _isDesigned;
-        private int _typeID;
+        private int _typeId;
         #endregion
 
         #region Property
@@ -53,7 +54,7 @@ namespace AppModels.ResponsiveData
             get => this._id;
             set => this.SetProperty(ref this._id, value);
         }
-        public virtual WallTypePoco WallType 
+        public WallTypePoco WallType 
         {
             get => _wallType;
             set => SetProperty(ref _wallType, value);
@@ -159,7 +160,6 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(StudHeight));
             }
         }
-
         public double WallLength
         {
             get=>_wallLength;
@@ -211,7 +211,7 @@ namespace AppModels.ResponsiveData
                 return false;
             }
         }
-        public int TypeId { get=>_typeID; set=>SetProperty(ref _typeID,value); }
+        public int TypeId { get=>_typeId; set=>SetProperty(ref _typeId,value); }
         public bool IsDesigned { get=>_isDesigned; set=>SetProperty(ref _isDesigned,value); }
         public int RunLength 
         { 
@@ -385,6 +385,31 @@ namespace AppModels.ResponsiveData
                     break;
                     
             }
+        }
+
+        public void LoadWallInfo(WallLayerPoco wall)
+        {
+            //Id = wall.Id;
+            TypeId = wall.TypeId;
+            //WallType = wall.WallType;
+            WallColorLayer = wall.WallColorLayer;
+            WallThickness = wall.WallThickness;
+            WallSpacing = wall.WallSpacing;
+            WallPitchingHeight = wall.WallPitchingHeight;
+            ForcedWallUnderRakedArea = wall.ForcedWallUnderRakedArea;
+            WallLength = wall.WallLength;
+            IsStepdown = wall.IsStepdown;
+            IsRaisedCeiling = wall.IsRaisedCeiling;
+            IsDesigned = wall.IsDesigned;
+            RunLength = wall.RunLength;
+            CeilingPitch = wall.CeilingPitch;
+            StepDown = wall.StepDown;
+            RaisedCeiling = wall.RaisedCeiling;
+            RibbonPlate.LoadMemberInfo(wall.RibbonPlate);
+            TopPlate.LoadMemberInfo(wall.TopPlate);
+            Stud.LoadMemberInfo(wall.Stud);
+            BottomPlate.LoadMemberInfo(wall.BottomPlate);
+            Nogging.LoadMemberInfo(wall.Nogging);
         }
         #endregion
     }

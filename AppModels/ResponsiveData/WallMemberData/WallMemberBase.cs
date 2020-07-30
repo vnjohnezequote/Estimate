@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Windows;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using AppModels.PocoDataModel.WallMemberData;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.WallMemberData
@@ -143,6 +145,7 @@ namespace AppModels.ResponsiveData.WallMemberData
                 
             } 
         }
+
         #endregion
 
         #region Constructor
@@ -173,7 +176,13 @@ namespace AppModels.ResponsiveData.WallMemberData
             RaisePropertyChanged(nameof(SizeGrade));
         }
 
-
+        public virtual void LoadMemberInfo(WallMemberBasePoco wallMember)
+        {
+            NoItem = wallMember.NoItem;
+            Thickness = wallMember.Thickness;
+            Depth = wallMember.Depth;
+            TimberGrade = wallMember.TimberGrade;
+        }
 
 
         #endregion

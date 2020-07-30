@@ -76,14 +76,15 @@
 		</DockPanel>
 		<!-- Tool Bar -->
 		<DockPanel Grid.Row="1"
-					Background="{StaticResource DarkBackGround}"
-                    >
-			<Button Content="{materialDesign:PackIcon VectorLine}" Command="{Binding DrawLineCommand}" />
-			<Button Content="{materialDesign:PackIcon RectangleOutline}" Margin="5 0 0 0" Command="{Binding DrawRectangleCommand}"/>
-			<Button Content="{materialDesign:PackIcon RayStartArrow}" Margin="5 0 0 0" Command="{Binding DrawRayCommand}"/>
-			<Button Content="{materialDesign:PackIcon RayVertex}" Margin="5 0 0 0" Command="{Binding DrawXlineCommand}"/>
-			<Button Content ="{materialDesign:PackIcon ArrowExpandHorizontal}" Margin="5 0 0 0" Command="{Binding DrawLinearDimCommand}"/>
-			<Button Content="{materialDesign:PackIcon ArrowExpandHorizontal}" Margin="5 0 0 0" Command="{Binding DrawAlignDimCommand}" RenderTransformOrigin="0.5,0.5">
+					Background="{StaticResource DarkBackGround}">
+            <Button Content="{materialDesign:PackIcon Export}" Command="{Binding ExportDWGCommand}" Margin="40 0 0 0"/>
+			<Button Content="{materialDesign:PackIcon Import}" Command="{Binding ImportDWGCommand}" Margin="10 0 0 0"/>
+            <Button Content="{materialDesign:PackIcon VectorLine}" Command="{Binding DrawLineCommand}" Margin="10 0 0 0" />
+			<Button Content="{materialDesign:PackIcon RectangleOutline}" Margin="10 0 0 0" Command="{Binding DrawRectangleCommand}" />
+			<Button Content="{materialDesign:PackIcon RayStartArrow}" Margin="10 0 0 0" Command="{Binding DrawRayCommand}"/>
+			<Button Content="{materialDesign:PackIcon RayVertex}" Margin="10 0 0 0" Command="{Binding DrawXlineCommand}"/>
+			<Button Content ="{materialDesign:PackIcon ArrowExpandHorizontal}" Margin="10 0 0 0" Command="{Binding DrawLinearDimCommand}"/>
+			<Button Content="{materialDesign:PackIcon ArrowExpandHorizontal}" Margin="10 0 0 0" Command="{Binding DrawAlignDimCommand}" RenderTransformOrigin="0.5,0.5">
 				<Button.RenderTransform>
 					<TransformGroup>
 						<ScaleTransform/>

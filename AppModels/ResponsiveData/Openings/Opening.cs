@@ -11,7 +11,7 @@ using AppModels.Enums;
 using AppModels.Interaface;
 using Prism.Mvvm;
 
-namespace AppModels.ResponsiveData
+namespace AppModels.ResponsiveData.Openings
 {
     /// <summary>
     /// The opening.
@@ -70,12 +70,12 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the lintel.
         /// </summary>
-        public Beam Lintel { get; set; }
+        public LintelBeam Lintel { get; set; }
 
         public Opening(IGlobalWallInfo globalWallInfo)
         {
             this.GlobalWallInfo = globalWallInfo;
-            Lintel = new Beam(this,BeamType.Lintel);
+            //Lintel = new Beam(this,BeamType.Lintel);
         }
     }
 }

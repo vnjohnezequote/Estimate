@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AppModels.PocoDataModel.Bracing;
 using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Openings;
 using ProtoBuf;
 
 namespace AppModels.PocoDataModel

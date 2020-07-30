@@ -18,5 +18,6 @@ namespace AppModels.Interaface
         IWallMemberInfo BottomPlate { get; }
         IWallMemberInfo Nogging { get;}
         IWallMemberInfo Trimmer { get; }
+        void LoadWallDetailInfo(GlobalWallDetailPoco globalWallDetailInfo);
     }
 }

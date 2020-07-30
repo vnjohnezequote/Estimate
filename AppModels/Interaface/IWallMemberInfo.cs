@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.PocoDataModel;
+using AppModels.PocoDataModel.WallMemberData;
 using Newtonsoft.Json;
 
 namespace AppModels.Interaface
@@ -22,5 +23,7 @@ namespace AppModels.Interaface
         WallMemberType MemberType { get; }
         string Size { get; }
         string SizeGrade { get; }
+
+        void LoadMemberInfo(WallMemberBasePoco wallMember);
     }
 }

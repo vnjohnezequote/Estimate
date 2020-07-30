@@ -22,8 +22,6 @@ namespace AppModels.ResponsiveData
 
         #region Property
 
-        public override WallTypePoco WallType { get; set; }
-
         public override int FinalWallHeight { get; }
 
         /// <summary>

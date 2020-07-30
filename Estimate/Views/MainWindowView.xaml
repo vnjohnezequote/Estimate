@@ -16,6 +16,7 @@
         xmlns:mainWindowRegions ="clr-namespace:DataType.Class;assembly=DataType"
         xmlns:wallFrameInput ="clr-namespace:WallFrameInputModule.Views;assembly=WallFrameInputModule"
         xmlns:applicationConverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
+        xmlns:controls1="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
         x:Class="Estimate.Views.MainWindowView"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
@@ -113,220 +114,224 @@
     </controls:FlatWindow.Triggers>
     <!-- Main Body -->
     <Grid>
-        <Grid.RowDefinitions>
-            <!--The Title Panel-->
-            <RowDefinition x:Name="TitlePanel" Height="auto" />
-            <!-- The ToolBar Panel-->
-            <RowDefinition x:Name="ToolBarPanel" Height="auto"/>
-            <!-- The Splitter -->
-            <RowDefinition Height="{Binding SplitterSize, FallbackValue=1, Mode=OneWay}"/>
-            <!--The Main Body Panel-->
-            <RowDefinition x:Name="MainBodyPanel" />
-        </Grid.RowDefinitions>
-        <!-- Title Bar-->
-        <DockPanel Grid.Row="0" Background="{StaticResource BlackBackGround}">
-            <StackPanel VerticalAlignment="Center">
-                <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.LogoButtonRegion}" />
-            </StackPanel>
-            <StackPanel >
-                <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.MenuRegion}"/>
-            </StackPanel>
-            <StackPanel >
-                <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.WindowControlRegion}" />
-            </StackPanel>
-        </DockPanel>
-        <!-- Tool Bar -->
-        <StackPanel Grid.Row="1" Background="{StaticResource DarkBackGround}" Orientation="Horizontal">
-            <Button Content="{materialDesign:PackIcon ContentSave}" Margin="15 0 0 0" Command="{Binding SaveJobCommand}" />
-            <Button Content="Load Drawing Window"
+        <materialDesign:DialogHost Identifier="mainDialogHost" DialogTheme="Dark">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <!--The Title Panel-->
+                    <RowDefinition x:Name="TitlePanel" Height="auto" />
+                    <!-- The ToolBar Panel-->
+                    <RowDefinition x:Name="ToolBarPanel" Height="auto"/>
+                    <!-- The Splitter -->
+                    <RowDefinition Height="{Binding SplitterSize, FallbackValue=1, Mode=OneWay}"/>
+                    <!--The Main Body Panel-->
+                    <RowDefinition x:Name="MainBodyPanel" />
+                </Grid.RowDefinitions>
+                <!-- Title Bar-->
+                <DockPanel Grid.Row="0" Background="{StaticResource BlackBackGround}">
+                    <StackPanel VerticalAlignment="Center">
+                        <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.LogoButtonRegion}" />
+                    </StackPanel>
+                    <StackPanel >
+                        <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.MenuRegion}"/>
+                    </StackPanel>
+                    <StackPanel >
+                        <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.WindowControlRegion}" />
+                    </StackPanel>
+                </DockPanel>
+                <!-- Tool Bar -->
+                <StackPanel Grid.Row="1" Background="{StaticResource DarkBackGround}" Orientation="Horizontal">
+                    <Button Content="{materialDesign:PackIcon OpenInApp}" Margin="15 0 0 0" Command="{Binding OpenJobCommand}"/>
+                    <Button Content="{materialDesign:PackIcon ContentSave}" Margin="15 0 0 0" Command="{Binding SaveJobCommand}" />
+
+                    <Button Content="Load Drawing Window"
                     Command="{Binding LoadDrawingWindowCommand}"
                     Margin="15 0 0 0"/>
-        </StackPanel>
-        <!-- Splitter For ToolBar and Main Region -->
-        <Border Style="{StaticResource DarkBorder}"
+                </StackPanel>
+                <!-- Splitter For ToolBar and Main Region -->
+                <Border Style="{StaticResource DarkBorder}"
                 Height="1"
                 Grid.Row="2"/>
-        <!-- Program Region -->
-        <Grid x:Name="ProgramRegion" Grid.Row="3" Background="{StaticResource DarkBackGround}">
-            <Grid.ColumnDefinitions>
-                <!-- Left Panel -->
-                <ColumnDefinition x:Name="LeftPanel" Width="30"/>
-                <!-- Splitter -->
-                <ColumnDefinition Width="{Binding LeftPanelSplitterWidth, FallbackValue=1, Mode=OneWay}"/>
-                <!-- Quick Tool Panel -->
-                <ColumnDefinition x:Name="QuickPanel"
+                <!-- Program Region -->
+                <Grid x:Name="ProgramRegion" Grid.Row="3" Background="{StaticResource DarkBackGround}">
+                    <Grid.ColumnDefinitions>
+                        <!-- Left Panel -->
+                        <ColumnDefinition x:Name="LeftPanel" Width="30"/>
+                        <!-- Splitter -->
+                        <ColumnDefinition Width="{Binding LeftPanelSplitterWidth, FallbackValue=1, Mode=OneWay}"/>
+                        <!-- Quick Tool Panel -->
+                        <ColumnDefinition x:Name="QuickPanel"
                                   Width="0"
                                   MaxWidth="{Binding QuickPanelMaxWidth, Mode=OneWay}"/>
-                <!-- Splitter -->
-                <ColumnDefinition Width="{Binding SplitterSize, FallbackValue=1, Mode=Default}"/>
-                <!-- Main Content -->
-                <ColumnDefinition x:Name="MainPanel" Width="*" />
-                <!-- Splitter -->
-                <ColumnDefinition Width="{Binding SplitterSize, FallbackValue=1, Mode=Default}"/>
-                <!-- Properties Content -->
-                <ColumnDefinition x:Name="PropertyPanel"
+                        <!-- Splitter -->
+                        <ColumnDefinition Width="{Binding SplitterSize, FallbackValue=1, Mode=Default}"/>
+                        <!-- Main Content -->
+                        <ColumnDefinition x:Name="MainPanel" Width="*" />
+                        <!-- Splitter -->
+                        <ColumnDefinition Width="{Binding SplitterSize, FallbackValue=1, Mode=Default}"/>
+                        <!-- Properties Content -->
+                        <ColumnDefinition x:Name="PropertyPanel"
                                   Width="0"
                                   MaxWidth="{Binding PropertyPanelMaxWidth, Mode=OneWay}"/>
-                <!-- Splitter -->
-                <ColumnDefinition Width="{Binding RightPanelSplitterWidth, FallbackValue=1, Mode=Default}"/>
-                <!-- Right Panel -->
-                <ColumnDefinition x:Name="RightPanel" Width="30"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <!-- Main Region -->
-                <RowDefinition/>
-                <!-- Splitter -->
-                <RowDefinition Height="1"/>
-                <!-- Bottom Panel -->
-                <RowDefinition x:Name="BottomBarPanel"
+                        <!-- Splitter -->
+                        <ColumnDefinition Width="{Binding RightPanelSplitterWidth, FallbackValue=1, Mode=Default}"/>
+                        <!-- Right Panel -->
+                        <ColumnDefinition x:Name="RightPanel" Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <!-- Main Region -->
+                        <RowDefinition/>
+                        <!-- Splitter -->
+                        <RowDefinition Height="1"/>
+                        <!-- Bottom Panel -->
+                        <RowDefinition x:Name="BottomBarPanel"
                                Height="0"
                                MaxHeight="{Binding BottomPanelMaxHeight, Mode=OneWay}"/>
-            </Grid.RowDefinitions>
-            <!-- Left Panel -->
-            <materialDesign:ColorZone x:Name="LeftBar"
+                    </Grid.RowDefinitions>
+                    <!-- Left Panel -->
+                    <materialDesign:ColorZone x:Name="LeftBar"
                                       Mode="Dark"
                                       VerticalAlignment="Stretch"
                                       HorizontalAlignment="Stretch"
                                       Grid.Column="0">
-                <!-- Left Panel Resour -->
-                <!-- This region to set style for all element in Left Panel -->
-                <materialDesign:ColorZone.Resources>
-                    <ResourceDictionary>
-                        <ResourceDictionary.MergedDictionaries>
-                            <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/ListBoxStyle.xaml"/>
-                        </ResourceDictionary.MergedDictionaries>
-                        <Style TargetType="{x:Type materialDesign:PackIcon}"
+                        <!-- Left Panel Resour -->
+                        <!-- This region to set style for all element in Left Panel -->
+                        <materialDesign:ColorZone.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/ListBoxStyle.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                                <Style TargetType="{x:Type materialDesign:PackIcon}"
                                BasedOn="{StaticResource LeftPanelPackIconStyle}"/>
-                    </ResourceDictionary>
-                </materialDesign:ColorZone.Resources>
-                <materialDesign:ColorZone.Background>
-                    <StaticResource ResourceKey="DarkBackGround"/>
-                </materialDesign:ColorZone.Background>
-                <interactions:Interaction.Triggers>
-                    <interactions:EventTrigger EventName="SizeChanged">
-                        <interactions:InvokeCommandAction Command="{Binding PanelSizeChangedCommand, Mode=OneWay}"
+                            </ResourceDictionary>
+                        </materialDesign:ColorZone.Resources>
+                        <materialDesign:ColorZone.Background>
+                            <StaticResource ResourceKey="DarkBackGround"/>
+                        </materialDesign:ColorZone.Background>
+                        <interactions:Interaction.Triggers>
+                            <interactions:EventTrigger EventName="SizeChanged">
+                                <interactions:InvokeCommandAction Command="{Binding PanelSizeChangedCommand, Mode=OneWay}"
                                                           CommandParameter="{Binding ElementName=LeftBar, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <!-- Left Panel Button-->
-                        <RowDefinition/>
-                        <!-- Bottom Left Button -->
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <!-- Left Panel Button-->
-                    <StackPanel Grid.Row="0">
-                        <Button x:Name="ButtonCloseMenu"
+                            </interactions:EventTrigger>
+                        </interactions:Interaction.Triggers>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <!-- Left Panel Button-->
+                                <RowDefinition/>
+                                <!-- Bottom Left Button -->
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <!-- Left Panel Button-->
+                            <StackPanel Grid.Row="0">
+                                <Button x:Name="ButtonCloseMenu"
                                 Style="{StaticResource CrimsonButtonStyle}"
                                 Visibility="Collapsed"
                                 Command="{Binding CloseMenuCommand, Mode=OneWay}">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="AlphabetEBox"/>
-                                <TextBlock Text="Ezequote"/>
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="ButtonOpenMenu"
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="AlphabetEBox"/>
+                                        <TextBlock Text="Ezequote"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="ButtonOpenMenu"
                                 Command="{Binding OpenMenuCommand, Mode=OneWay}"
                                 Style="{StaticResource LeftPanelButtonStyle}">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="AlphabetE" />
-                                <TextBlock Text="Ezequote" />
-                            </StackPanel>
-                        </Button>
-                        <ListBox x:Name="CustomerMenu"
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="AlphabetE" />
+                                        <TextBlock Text="Ezequote" />
+                                    </StackPanel>
+                                </Button>
+                                <ListBox x:Name="CustomerMenu"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                  ItemsSource="{Binding Clients}"
                                  SelectedItem="{Binding SelectedClient, Mode=TwoWay}"
                                  SelectedIndex="{Binding SelectedClientIndex}">
-                            <ListBox.Resources>
-                                <Style TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Padding" Value="0"/>
-                                </Style>
-                            </ListBox.Resources>
-                            <interactions:Interaction.Triggers>
-                                <interactions:EventTrigger EventName="SelectionChanged">
-                                    <interactions:InvokeCommandAction Command="{Binding CustomerMenuSelectCommand, Mode=OneWay}"/>
-                                </interactions:EventTrigger>
-                            </interactions:Interaction.Triggers>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon x:Name="PackIcon"
+                                    <ListBox.Resources>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Padding" Value="0"/>
+                                        </Style>
+                                    </ListBox.Resources>
+                                    <interactions:Interaction.Triggers>
+                                        <interactions:EventTrigger EventName="SelectionChanged">
+                                            <interactions:InvokeCommandAction Command="{Binding CustomerMenuSelectCommand, Mode=OneWay}"/>
+                                        </interactions:EventTrigger>
+                                    </interactions:Interaction.Triggers>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon x:Name="PackIcon"
                                                                  Kind="{Binding ClientIcon, Converter={StaticResource StringToPackIconConverter}}"/>
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
-                    <!-- Bottom Left Button -->
-                    <Button x:Name="ButtonOpenBottomPanel"
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                            <!-- Bottom Left Button -->
+                            <Button x:Name="ButtonOpenBottomPanel"
                             Grid.Row="1"
                             Command="{Binding ExpanderBottomPanelCommand, Mode=OneWay}"
                             Style="{StaticResource LeftPanelButtonStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <Border Width="30" Height="30">
-                                <materialDesign:PackIcon Kind="ChevronDoubleUp"
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="30" Height="30">
+                                        <materialDesign:PackIcon Kind="ChevronDoubleUp"
                                                          Width="16"
                                                          Height="16"
                                                          VerticalAlignment="Center"
                                                          HorizontalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="Calculator"/>
-                        </StackPanel>
-                    </Button>
-                </Grid>
-            </materialDesign:ColorZone>
-            <Border Style="{StaticResource DarkBorder}"
+                                    </Border>
+                                    <TextBlock Text="Calculator"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </materialDesign:ColorZone>
+                    <Border Style="{StaticResource DarkBorder}"
                     Grid.Row="0" 
                     Grid.Column="1" 
                     Grid.RowSpan="3"/>
-            <!-- Quick Tool Panel -->
-            <Grid x:Name="QuickBar"
+                    <!-- Quick Tool Panel -->
+                    <Grid x:Name="QuickBar"
                   Grid.Row="0"
                   Grid.Column="2"
                   Background="{StaticResource DarkBackGround}"
                   HorizontalAlignment="Stretch">
-                <interactions:Interaction.Triggers>
-                    <interactions:EventTrigger EventName="SizeChanged">
-                        <interactions:InvokeCommandAction Command="{Binding PanelSizeChangedCommand, Mode=OneWay}" 
+                        <interactions:Interaction.Triggers>
+                            <interactions:EventTrigger EventName="SizeChanged">
+                                <interactions:InvokeCommandAction Command="{Binding PanelSizeChangedCommand, Mode=OneWay}" 
                                                           CommandParameter="{Binding ElementName=QuickBar, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>
-                <TextBox Text="{Binding Chuoiluu}"/>
-            </Grid>
-            <GridSplitter x:Name="QuickPanelGridSplitter" 
+                            </interactions:EventTrigger>
+                        </interactions:Interaction.Triggers>
+                        <TextBox Text="{Binding Chuoiluu}"/>
+                    </Grid>
+                    <GridSplitter x:Name="QuickPanelGridSplitter" 
                           ResizeDirection="Columns" 
                           Grid.Row="0" 
                           Grid.Column="3" 
                           Style="{StaticResource DarkGridSplitter}"/>
-            <!-- Main Content -->
-            <ScrollViewer Grid.Row="0"
+                    <!-- Main Content -->
+                    <ScrollViewer Grid.Row="0"
                           Grid.Column="4"
                           HorizontalScrollBarVisibility="Auto">
-                <Grid>
-                    <!-- Main Program Content Region -->
-                    <!-- Main Program Content Region -->
-                    <!-- Main Program Content Region -->
-                    <!-- Main Program Content Region -->
-                    <!-- Main Program Content Region -->
-                    <TabControl>
-                        <TabItem Header="Input">
-                            <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.MainRegion}" />
-                        </TabItem>
-                        <TabItem Header="OutPut">
-                            
-                        </TabItem>
+                        <Grid>
+                            <!-- Main Program Content Region -->
+                            <!-- Main Program Content Region -->
+                            <!-- Main Program Content Region -->
+                            <!-- Main Program Content Region -->
+                            <!-- Main Program Content Region -->
+                            <TabControl>
+                                <TabItem Header="Input">
+                                    <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.MainRegion}" />
+                                </TabItem>
+                                <TabItem Header="OutPut">
+
+                                </TabItem>
 
 
-                    </TabControl>
+                            </TabControl>
 
 
-                </Grid>
-            </ScrollViewer>
+                        </Grid>
+                    </ScrollViewer>
 
-            <GridSplitter x:Name="PropertyPanelGridSpitter" 
+                    <GridSplitter x:Name="PropertyPanelGridSpitter" 
                           ResizeDirection="Columns" 
                           ResizeBehavior="PreviousAndNext" 
                           Grid.Row="0" 
@@ -334,132 +339,134 @@
                           Grid.RowSpan="3" 
                           Style="{StaticResource DarkGridSplitter}" 
                           Panel.ZIndex="1">
-                <interactions:Interaction.Triggers>
-                    <interactions:EventTrigger EventName="DragDelta">
-                        <interactions:InvokeCommandAction Command="{Binding PropertyPanelGridSplitterDragDeltaCommand, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                    <interactions:EventTrigger EventName="DragCompleted">
-                        <interactions:InvokeCommandAction Command="{Binding PropertyPanelGridSplitterDragCompleteCommand, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                    <interactions:EventTrigger EventName="MouseDoubleClick">
-                        <interactions:InvokeCommandAction Command="{Binding ExpanderPropertyPanelCommand, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                    <interactions:EventTrigger EventName="MouseDown">
-                        <interactions:InvokeCommandAction Command="{Binding ExpanderPropertyPanelCommand, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>
-            </GridSplitter>
-            <!-- Properties Content -->
-            <ScrollViewer Grid.Row="0"
+                        <interactions:Interaction.Triggers>
+                            <interactions:EventTrigger EventName="DragDelta">
+                                <interactions:InvokeCommandAction Command="{Binding PropertyPanelGridSplitterDragDeltaCommand, Mode=OneWay}"/>
+                            </interactions:EventTrigger>
+                            <interactions:EventTrigger EventName="DragCompleted">
+                                <interactions:InvokeCommandAction Command="{Binding PropertyPanelGridSplitterDragCompleteCommand, Mode=OneWay}"/>
+                            </interactions:EventTrigger>
+                            <interactions:EventTrigger EventName="MouseDoubleClick">
+                                <interactions:InvokeCommandAction Command="{Binding ExpanderPropertyPanelCommand, Mode=OneWay}"/>
+                            </interactions:EventTrigger>
+                            <interactions:EventTrigger EventName="MouseDown">
+                                <interactions:InvokeCommandAction Command="{Binding ExpanderPropertyPanelCommand, Mode=OneWay}"/>
+                            </interactions:EventTrigger>
+                        </interactions:Interaction.Triggers>
+                    </GridSplitter>
+                    <!-- Properties Content -->
+                    <ScrollViewer Grid.Row="0"
                           Grid.Column="6"
                           Grid.RowSpan="3"
                           HorizontalScrollBarVisibility="Auto">
-                <Grid x:Name="PropertyBar"
+                        <Grid x:Name="PropertyBar"
                       HorizontalAlignment="Stretch">
-                    <interactions:Interaction.Triggers>
-                        <interactions:EventTrigger EventName="SizeChanged">
-                            <interactions:InvokeCommandAction Command="{Binding PanelSizeChangedCommand, Mode=OneWay}"
+                            <interactions:Interaction.Triggers>
+                                <interactions:EventTrigger EventName="SizeChanged">
+                                    <interactions:InvokeCommandAction Command="{Binding PanelSizeChangedCommand, Mode=OneWay}"
                                                               CommandParameter="{Binding ElementName=PropertyBar, Mode=OneWay}"/>
-                        </interactions:EventTrigger>
-                    </interactions:Interaction.Triggers>
-                    <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.RightContentRegion}" />
-                </Grid>
-            </ScrollViewer>
-            <Border Style="{StaticResource DarkBorder}"
+                                </interactions:EventTrigger>
+                            </interactions:Interaction.Triggers>
+                            <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.RightContentRegion}" />
+                        </Grid>
+                    </ScrollViewer>
+                    <Border Style="{StaticResource DarkBorder}"
                     Grid.Row="0"
                     Grid.Column="7"
                     Grid.RowSpan="3"
                     Panel.ZIndex="1"/>
-            <!-- Right Panel -->
-            <Grid Grid.Row="0" Grid.Column="8" Grid.RowSpan="3">
-                <StackPanel Background="{StaticResource DarkBackGround}">
-                    <Button x:Name="ButtonClosePropertyPanel"
+                    <!-- Right Panel -->
+                    <Grid Grid.Row="0" Grid.Column="8" Grid.RowSpan="3">
+                        <StackPanel Background="{StaticResource DarkBackGround}">
+                            <Button x:Name="ButtonClosePropertyPanel"
                             Content="{materialDesign:PackIcon ChevronDoubleRight}"
                             Style="{StaticResource CrimsonButtonStyle}"
                             Command="{Binding ExpanderPropertyPanelCommand, Mode=OneWay}"
                             Visibility="Collapsed"
                             HorizontalContentAlignment="Center"/>
-                    <Button x:Name="ButtonOpenPropertyPanel"
+                            <Button x:Name="ButtonOpenPropertyPanel"
                             Content="{materialDesign:PackIcon ChevronDoubleLeft}"
                             Command="{Binding ExpanderPropertyPanelCommand, Mode=OneWay}"
                             />
-                    <Button Content="{materialDesign:PackIcon InfoOutline}"/>
-                    <Button Content="{materialDesign:PackIcon Information}" Visibility="Collapsed"/>
-                    <Button Content="{materialDesign:PackIcon Edit}"/>
-                    <Button Content="{materialDesign:PackIcon EditOff}" Visibility="Collapsed"/>
-                    <Button Content="{materialDesign:PackIcon FolderOutline}"/>
-                    <Button Content="{materialDesign:PackIcon Folder}" Visibility="Collapsed"/>
-                    <Button Content="{materialDesign:PackIcon FilePdf}"/>
-                    <Button Content="{materialDesign:PackIcon FilePdfBox}" Visibility="Collapsed"/>
-                    <Button Content="{materialDesign:PackIcon ToolboxOutline}"/>
-                    <Button Content="{materialDesign:PackIcon Toolbox}" Visibility="Collapsed"/>
-                </StackPanel>
-            </Grid>
-            <GridSplitter x:Name="BottomPanelGridSplitter"
+                            <Button Content="{materialDesign:PackIcon InfoOutline}"/>
+                            <Button Content="{materialDesign:PackIcon Information}" Visibility="Collapsed"/>
+                            <Button Content="{materialDesign:PackIcon Edit}"/>
+                            <Button Content="{materialDesign:PackIcon EditOff}" Visibility="Collapsed"/>
+                            <Button Content="{materialDesign:PackIcon FolderOutline}"/>
+                            <Button Content="{materialDesign:PackIcon Folder}" Visibility="Collapsed"/>
+                            <Button Content="{materialDesign:PackIcon FilePdf}"/>
+                            <Button Content="{materialDesign:PackIcon FilePdfBox}" Visibility="Collapsed"/>
+                            <Button Content="{materialDesign:PackIcon ToolboxOutline}"/>
+                            <Button Content="{materialDesign:PackIcon Toolbox}" Visibility="Collapsed"/>
+                        </StackPanel>
+                    </Grid>
+                    <GridSplitter x:Name="BottomPanelGridSplitter"
                           Grid.Row="1"
                           Grid.Column="0"
                           Grid.ColumnSpan="6"
                           Style="{StaticResource DarkGridSplitter}">
-                <interactions:Interaction.Triggers>
-                    <interactions:EventTrigger EventName="MouseDoubleClick">
-                        <interactions:InvokeCommandAction Command="{Binding ExpanderBottomPanelCommand, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                    <interactions:EventTrigger EventName="MouseDown">
-                        <interactions:InvokeCommandAction Command="{Binding ExpanderBottomPanelCommand, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                    <interactions:EventTrigger EventName="DragDelta">
-                        <interactions:InvokeCommandAction Command="{Binding BottomPanelGridSplitterDragDeltaCommand, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                    <interactions:EventTrigger EventName="DragCompleted">
-                        <interactions:InvokeCommandAction Command="{Binding BottomPanelGridSplitterDragCompleteCommand, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>
-            </GridSplitter>
-            <!-- Bottom Panel -->
-            <Grid x:Name="BottomBar"
+                        <interactions:Interaction.Triggers>
+                            <interactions:EventTrigger EventName="MouseDoubleClick">
+                                <interactions:InvokeCommandAction Command="{Binding ExpanderBottomPanelCommand, Mode=OneWay}"/>
+                            </interactions:EventTrigger>
+                            <interactions:EventTrigger EventName="MouseDown">
+                                <interactions:InvokeCommandAction Command="{Binding ExpanderBottomPanelCommand, Mode=OneWay}"/>
+                            </interactions:EventTrigger>
+                            <interactions:EventTrigger EventName="DragDelta">
+                                <interactions:InvokeCommandAction Command="{Binding BottomPanelGridSplitterDragDeltaCommand, Mode=OneWay}"/>
+                            </interactions:EventTrigger>
+                            <interactions:EventTrigger EventName="DragCompleted">
+                                <interactions:InvokeCommandAction Command="{Binding BottomPanelGridSplitterDragCompleteCommand, Mode=OneWay}"/>
+                            </interactions:EventTrigger>
+                        </interactions:Interaction.Triggers>
+                    </GridSplitter>
+                    <!-- Bottom Panel -->
+                    <Grid x:Name="BottomBar"
                   Grid.Row="2"
                   Grid.Column="0"
                   Grid.ColumnSpan="6"
                   Background="{StaticResource DarkBackGround}"
                   VerticalAlignment="Stretch">
-                <interactions:Interaction.Triggers>
-                    <interactions:EventTrigger EventName="SizeChanged">
-                        <interactions:InvokeCommandAction Command="{Binding PanelSizeChangedCommand, Mode=OneWay}"
+                        <interactions:Interaction.Triggers>
+                            <interactions:EventTrigger EventName="SizeChanged">
+                                <interactions:InvokeCommandAction Command="{Binding PanelSizeChangedCommand, Mode=OneWay}"
                                                           CommandParameter="{Binding ElementName=BottomBar, Mode=OneWay}"/>
-                    </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>
-                <Grid.ColumnDefinitions>
-                    <!-- Bottom Button -->
-                    <ColumnDefinition x:Name="BottomButtonPanel" Width="30"/>
-                    <!-- Splitter -->
-                    <ColumnDefinition Width="1"/>
-                    <!-- Calculator Region -->
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <!-- Bottom Button Area-->
-                <StackPanel Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Button x:Name="ButtonCloseBottomPanel"
+                            </interactions:EventTrigger>
+                        </interactions:Interaction.Triggers>
+                        <Grid.ColumnDefinitions>
+                            <!-- Bottom Button -->
+                            <ColumnDefinition x:Name="BottomButtonPanel" Width="30"/>
+                            <!-- Splitter -->
+                            <ColumnDefinition Width="1"/>
+                            <!-- Calculator Region -->
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- Bottom Button Area-->
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Button x:Name="ButtonCloseBottomPanel"
                             Style="{StaticResource CrimsonButtonStyle}"
                             Command="{Binding ExpanderBottomPanelCommand, Mode=OneWay}">
-                        <StackPanel Orientation="Horizontal">
-                            <Border Height="30"
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Height="30"
                                     Width="30">
-                                <materialDesign:PackIcon Kind="ChevronDoubleDown"
+                                        <materialDesign:PackIcon Kind="ChevronDoubleDown"
                                                          VerticalAlignment="Center"
                                                          HorizontalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="Calculator" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="Calculator" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
-                    </Button>
-                </StackPanel>
-                <Border Style="{StaticResource DarkBorder}"
+                        <Border Style="{StaticResource DarkBorder}"
                         Grid.Column="1"/>
-                <materialDesign:ColorZone Grid.Column="2" Mode="Accent">
-                    <StackPanel>
-                        <Button Content="Test"/>
-                    </StackPanel>
-                </materialDesign:ColorZone>
+                        <materialDesign:ColorZone Grid.Column="2" Mode="Accent">
+                            <StackPanel>
+                                <Button Content="Test"/>
+                            </StackPanel>
+                        </materialDesign:ColorZone>
+                    </Grid>
+                </Grid>
             </Grid>
-        </Grid>
+        </materialDesign:DialogHost>
     </Grid>
 </controls:FlatWindow>

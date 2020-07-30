@@ -59,7 +59,14 @@ namespace AppModels.ResponsiveData
         public int InternalDoorHeight
         {
             get => _internalDoorHeight==0 ? _externalDoorHeight : _internalDoorHeight;
-            set => SetProperty(ref _internalDoorHeight, value);
+            set
+            {
+                if (value == ExternalDoorHeight)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _internalDoorHeight, value);
+            } 
         }
         public int ExternalWallSpacing
         {
@@ -71,7 +78,7 @@ namespace AppModels.ResponsiveData
             get => _internalWallSpacing==0 ? _externalWallSpacing : _internalWallSpacing;
             set
             {
-                if (value == _externalWallSpacing)
+                if (value == ExternalWallSpacing)
                 {
                     value = 0;
                 }
@@ -88,7 +95,7 @@ namespace AppModels.ResponsiveData
             get => _internalWallThickness==0 ? _externalWallThickness : _internalWallThickness;
             set
             {
-                if (value == ExternalWallSpacing)
+                if (value == ExternalWallThickness)
                 {
                     value = 0;
                 }
@@ -104,7 +111,14 @@ namespace AppModels.ResponsiveData
         {
             get => _internalWallTimberDepth==0 ? _externalWallTimberDepth : _internalWallTimberDepth;
 
-            set => SetProperty(ref _internalWallTimberDepth, value);
+            set
+            {
+                if (value == ExternalWallTimberDepth)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _internalWallTimberDepth, value);
+            } 
         }
         public string ExternalWallTimberGrade
         {
@@ -115,7 +129,14 @@ namespace AppModels.ResponsiveData
         {
             get => string.IsNullOrEmpty(_internalWallTimberGrade) ? _externalWallTimberGrade : _internalWallTimberGrade;
 
-            set => SetProperty(ref _internalWallTimberGrade, value);
+            set
+            {
+                if (value == ExternalWallTimberGrade)
+                {
+                    value = null;
+                }
+                SetProperty(ref _internalWallTimberGrade, value);
+            }
         }
         public IGlobalWallInfo GlobalWallInformation { get; private set; } =null;
         public IBasicWallInfo GlobalExternalWallInfo { get;private set; }
@@ -163,8 +184,25 @@ namespace AppModels.ResponsiveData
                     RaisePropertyChanged(nameof(InternalWallTimberGrade));
                     break;
             }
+        }
 
-
+        public void LoadWallGlobalInfo(GlobalWallInfoPoco globalInfo)
+        {
+            WallHeight = globalInfo.WallHeight;
+            ExternalDoorHeight = globalInfo.ExternalDoorHeight;
+            InternalDoorHeight = globalInfo.InternalDoorHeight;
+            ExternalWallSpacing = globalInfo.ExternalWallSpacing;
+            InternalWallSpacing = globalInfo.InternalWallSpacing;
+            ExternalWallThickness = globalInfo.ExternalWallThickness;
+            InternalWallThickness = globalInfo.InternalWallThickness;
+            ExternalWallTimberDepth = globalInfo.ExternalWallTimberDepth;
+            InternalWallTimberDepth = globalInfo.InternalWallTimberDepth;
+            ExternalWallTimberGrade = globalInfo.ExternalWallTimberGrade;
+            InternalWallTimberGrade = globalInfo.InternalWallTimberGrade;
+            GlobalNoggingInfo.LoadMemberInfo(globalInfo.GlobalNoggingInfo);
+            GlobalExtWallDetailInfo.LoadWallDetailInfo(globalInfo.GlobalExtWallDetailInfo);
+            GlobalIntWallDetailInfo.LoadWallDetailInfo(globalInfo.GlobalIntWallDetailInfo);
+            GlobalDoorJambInfo.LoadMemberInfo(globalInfo.GlobalDoorJambInfo);
         }
 
         #endregion

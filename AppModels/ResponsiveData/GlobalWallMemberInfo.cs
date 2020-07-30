@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using AppModels.PocoDataModel.WallMemberData;
 using Newtonsoft.Json;
 using Prism.Mvvm;
 
@@ -70,6 +71,10 @@ namespace AppModels.ResponsiveData
                         value = 0;
                     }
                 }
+                else if(value == GlobalWallInfo.WallThickness )
+                {
+                    value = 0;
+                }
                 this.SetProperty(ref this._thickness, value);
                 this.CallBackPropertyChanged();
             }
@@ -91,6 +96,10 @@ namespace AppModels.ResponsiveData
                 {
                     value = 0;
                 }
+                else if (value == GlobalWallInfo.Depth)
+                {
+                    value = 0;
+                }
                 this.SetProperty(ref this._depth, value);
                 this.CallBackPropertyChanged();
             }
@@ -108,19 +117,17 @@ namespace AppModels.ResponsiveData
             }
             set
             {
-                if (value == GlobalWallInfo.TimberGrade)
+                if (BaseMaterialInfo != null)
+                {
+                    if (value == BaseMaterialInfo.TimberGrade)
+                    {
+                        value = string.Empty;
+                    }
+                } 
+                else if (value == GlobalWallInfo.TimberGrade)
                 {
                     value = string.Empty;
                 }
-
-                if (BaseMaterialInfo != null)
-                {
-                   if (value == BaseMaterialInfo.TimberGrade)
-                   {
-                       value = string.Empty;
-                   }
-                }
-
 
                 this.SetProperty(ref this._timberGrade, value);
                 CallBackPropertyChanged();
@@ -130,6 +137,7 @@ namespace AppModels.ResponsiveData
         public WallMemberType MemberType { get; private set; }
         public string Size => this.NoItem == 1 ? this.Thickness + "x" + this.Depth : this.NoItem + "/" + this.Thickness + "x" + this.Depth;
         public string SizeGrade => this.Size + " " + this.TimberGrade;
+
         #endregion
 
         #region Constructor
@@ -181,6 +189,14 @@ namespace AppModels.ResponsiveData
             this.RaisePropertyChanged(nameof(this.Size));
             this.RaisePropertyChanged(nameof(this.SizeGrade));
 
+        }
+
+        public void LoadMemberInfo(WallMemberBasePoco wallMember)
+        {
+            NoItem = wallMember.NoItem;
+            Depth = wallMember.Depth;
+            Thickness = wallMember.Thickness;
+            TimberGrade = wallMember.TimberGrade;
         }
 
         #endregion

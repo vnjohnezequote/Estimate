@@ -9,6 +9,7 @@
 
 using System;
 using AppModels.Enums;
+using AppModels.PocoDataModel;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -362,6 +363,48 @@ namespace AppModels.ResponsiveData
 
             this.SetProperty(ref _tieDown, value);
 
+        }
+
+        public void LoadJobInfo(JobInfoPoco info)
+        {
+            JobLocation = info.JobLocation;
+            ClientName = info.ClientName;
+            Customer = info.Customer;
+            BuilderName = info.BuilderName;
+            Supplier = info.Supplier;
+            JobNumber = info.JobNumber;
+            JobAddress = info.JobAddress;
+            SubAddress = info.SubAddress;
+            FullAddress = info.FullAddress;
+            UnitNumber = info.UnitNumber;
+            WindRate = info.WindRate;
+            TotalLinearMeter = info.TotalLinearMeter;
+            CompleteDate = info.CompleteDate;
+            PlanIsueDate = info.PlanIsueDate;
+            IsEPlan = info.IsEPlan;
+            IsEngineer = info.IsEngineer;
+            IsBracingPlan = info.IsBracingPlan;
+            Treatment = info.Treatment;
+            TieDown = info.TieDown;
+            RoofMaterial = info.RoofMaterial;
+            RoofPitch = info.RoofPitch;
+            CeilingPitch = info.CeilingPitch;
+            RoofOverHang = info.RoofOverHang;
+            NoggingMethod = info.NoggingMethod;
+            RoofFrameType = info.RoofFrameType;
+            TrussSpacing = info.TrussSpacing;
+            RafterSpacing = info.RafterSpacing;
+            RaisedCeilingHeight = info.RaisedCeilingHeight;
+            NoggingsAndSillInLM = info.NoggingsAndSillInLM;
+            UpToLength = info.UpToLength;
+            QuoteTolengthSize = info.QuoteTolengthSize;
+            JambBeamSupport = info.JambBeamSupport;
+            QuoteCeilingBattent = info.QuoteCeilingBattent;
+            CeilingBattensType = info.CeilingBattensType;
+            FrameDesignInfor = info.FrameDesignInfor;
+            BeamDesignInfor = info.BeamDesignInfor;
+            BracingDesignInfor = info.BracingDesignInfor;
+            StepDown = info.StepDown;
         }
 
         #endregion

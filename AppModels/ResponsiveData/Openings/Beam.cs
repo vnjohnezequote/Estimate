@@ -7,33 +7,42 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Security.RightsManagement;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using AppModels.Enums;
+using AppModels.Interaface;
 using Prism.Mvvm;
 
-namespace AppModels.ResponsiveData
+namespace AppModels.ResponsiveData.Openings
 {
     
 /// <summary>
     /// The beam.
     /// </summary>
-    public class Beam: BindableBase
+    public class Beam: BindableBase, IBeam
 {
         #region Field
-            private Opening _openingInfo;
-            private BeamType _beamType;
-            
-
+        private int _numberOfSupport;
+        private BeamType _beamType;
         #endregion
 
 
         #region Property
+        public ObservableCollection<LoadPointSupport> LoadPointSupports { get; set; } 
+            = new ObservableCollection<LoadPointSupport>();
+
+        public int NumberOfSupport
+        {
+            get => _numberOfSupport;
+            set => SetProperty(ref _numberOfSupport, value);
+        }
 
         public BeamType Type
         {
             get=>_beamType;
             private set=>SetProperty(ref _beamType,value);
         }
+
         private Suppliers suplier { get; }
         public int NoItem { get; set; }
         public int Depth { get; set; }
@@ -42,7 +51,7 @@ namespace AppModels.ResponsiveData
         public string Size { get;  }
         public string SizeGrade { get;set; }
 
-        public Opening OpeningInfo { get=>_openingInfo; set=>SetProperty(ref _openingInfo,value); }
+        
         /// <summary>
         /// Gets or sets the location.
         /// </summary>
@@ -67,9 +76,8 @@ namespace AppModels.ResponsiveData
 
         #region Constructor
 
-        public Beam(Opening openingInfo, BeamType beamType)
+        public Beam(BeamType beamType)
         {
-            OpeningInfo = openingInfo;
             Type = beamType;
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 
 namespace AppModels.Interaface
@@ -8,5 +9,7 @@ namespace AppModels.Interaface
         JobInfo Info { get; }
         GlobalWallInfo GlobalWallInfo { get; }
         ObservableCollection<LevelWall> Levels { get; }
+
+        void LoadJob(JobModelPoco jobOpen);
     }
 }

@@ -7,8 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using devDept.Geometry;
 using Prism.Mvvm;
 using ProtoBuf;
 
@@ -57,6 +61,24 @@ namespace AppModels.ResponsiveData
             this.Info = new JobInfo();
             GlobalWallInfo = new GlobalWallInfo(Info);
             this.Levels = new ObservableCollection<LevelWall>();
+        }
+
+        public void LoadJob(JobModelPoco jobLoaded)
+        {
+            Info.LoadJobInfo(jobLoaded.Info);
+            GlobalWallInfo.LoadWallGlobalInfo(jobLoaded.GlobalWallInfo);
+            LoadLevel(jobLoaded.Levels);
+        }
+
+        public void LoadLevel(List<LevelWallPoco> levels )
+        {
+            foreach (var levelWallPoco in levels)
+            {
+                var level = new LevelWall(GlobalWallInfo);
+                level.LoadLevelInfo(levelWallPoco);
+                Levels.Add(level);
+            }
+
         }
 
     }

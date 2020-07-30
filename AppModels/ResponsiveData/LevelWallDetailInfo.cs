@@ -35,6 +35,18 @@ namespace AppModels.ResponsiveData
         public IWallMemberInfo BottomPlate { get; private set; }
         public IWallMemberInfo Nogging { get; private set; }
         public IWallMemberInfo Trimmer { get; private set; }
+        public void LoadWallDetailInfo(GlobalWallDetailPoco globalWallDetailInfo)
+        {
+            if (GlobalWallDetail.WallType.IsLoadBearingWall)
+            {
+                RibbonPlate.LoadMemberInfo(globalWallDetailInfo.RibbonPlate);
+            }
+            TopPlate.LoadMemberInfo(globalWallDetailInfo.TopPlate);
+            Stud.LoadMemberInfo(globalWallDetailInfo.Stud);
+            BottomPlate.LoadMemberInfo(globalWallDetailInfo.BottomPlate);
+            Nogging.LoadMemberInfo(globalWallDetailInfo.Nogging);
+            Trimmer.LoadMemberInfo(globalWallDetailInfo.Trimmer);
+        }
 
         #endregion
 

@@ -271,7 +271,7 @@
 				<StackPanel Orientation="Horizontal">
 					<!-- Beam Input -->
 					<StackPanel>
-						<!--<syncfusion:SfDataGrid AllowDeleting="True"
+						<syncfusion:SfDataGrid AllowDeleting="True"
 										   AllowEditing="True"
 										   AutoGenerateColumns="False"
 										   ItemsSource="{Binding Level.RoofBeams}"
@@ -305,7 +305,7 @@
 													   MappingName="Length" />
 
 							</syncfusion:SfDataGrid.Columns>
-						</syncfusion:SfDataGrid>-->
+						</syncfusion:SfDataGrid>
 						<Button Content="Add Beam" Command="{Binding AddBeamCommand}"/>
 					</StackPanel>
 					<!-- generic Bracing Input -->

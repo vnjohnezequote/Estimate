@@ -9,13 +9,17 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
 using AppModels.AppData;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
+using devDept.Eyeshot;
+using devDept.Eyeshot.Translators;
 using DrawingModule.Views;
+using Microsoft.Win32;
 using CanvasDrawing = DrawingModule.CustomControl.CanvasControl.CanvasDrawing;
 
 namespace DrawingModule.ViewModels
@@ -93,6 +97,8 @@ namespace DrawingModule.ViewModels
         /// <summary>
         /// Gets the control loaded command.
         /// </summary>
+        public ICommand ExportDWGCommand { get; private set; }
+        public ICommand ImportDWGCommand { get; private set; }
         public ICommand WindowLoadedCommand { get; private set; }
         public ICommand DrawLineCommand { get; private set; }
         public ICommand DrawRectangleCommand { get; private set; }
@@ -145,6 +151,8 @@ namespace DrawingModule.ViewModels
             }
             _entitiesManager = entitiesManager;
             this.WindowLoadedCommand = new DelegateCommand<DrawingWindowView>(this.WindowLoaded);
+            ExportDWGCommand = new DelegateCommand(this.OnExportDWG);
+            ImportDWGCommand = new DelegateCommand(this.OnImportDWG);
             //this.DrawLineCommand = new DelegateCommand(this.OnDrawLine);
             //this.DrawRectangleCommand = new DelegateCommand(this.OnDrawRectangle);
             //this.DrawRayCommand = new DelegateCommand(this.OnDrawRay);
@@ -183,7 +191,77 @@ namespace DrawingModule.ViewModels
         /// <param name="rootGrid">
         /// The root grid.
         /// </param>
-       
+        private void OnExportDWG()
+        {
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter =
+                "CAD drawings (*.dwg)|*.dwg|Drawing Exchange Format (*.dxf)|*.dxf|3D PDF (*.pdf)|*.pdf";
+
+            saveFileDialog.Title = "Export";
+            saveFileDialog.AddExtension = true;
+            saveFileDialog.CheckPathExists = true;
+
+            var result = saveFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                //EnableControls(false);
+
+                WriteFileAsync wfa = null;
+                switch (saveFileDialog.FilterIndex)
+                {
+                    case 1:
+                    case 2:
+                        wfa = new WriteAutodesk(new WriteAutodeskParams(_drawingModel), saveFileDialog.FileName);
+                        break;
+                    case 3:
+                        wfa = new WritePDF(
+                            new WritePdfParams(_drawingModel, new Size(595, 842), new Rect(10, 10, 575, 822)),
+                            saveFileDialog.FileName);
+                        break;
+                }
+
+                _drawingModel.StartWork(wfa);
+            }
+        }
+
+        private void OnImportDWG()
+        {
+            //OpenFileDialog<ImportFileAddOn> importFileDialog = new OpenFileDialog<ImportFileAddOn>();
+            var openFileDialog = new OpenFileDialog();
+            var result = openFileDialog.ShowDialog();
+            if (result == true)
+            {
+                _drawingModel.Clear();
+                ReadAutodesk ra = new ReadAutodesk(openFileDialog.FileName);
+                _drawingModel.StartWork(ra);
+                _drawingModel.SetView(viewType.Top, true, true);
+
+            }
+
+            //importFileDialog.Filter =
+            //    "CAD drawings (*.dwg)|*.dwg|Drawing Exchange Format (*.dxf)|*.dxf|All compatible file types (*.*)|*.dwg;*.dxf";
+            //importFileDialog.Title = "Import";
+            //importFileDialog.Multiselect = false;
+            //importFileDialog.AddExtension = true;
+            //importFileDialog.CheckFileExists = true;
+            //importFileDialog.CheckPathExists = true;
+            //importFileDialog.FileDlgStartLocation = AddonWindowLocation.Right;
+            //importFileDialog.FileDlgDefaultViewMode = NativeMethods.FolderViewMode.Tiles;
+
+            //var result = importFileDialog.ShowDialog();
+
+            //if (result == true)
+            //{
+            //    _drawingModel.Clear();
+            //    _yAxisUp = importFileDialog.ChildWnd.YAxisUp;
+
+            //    ReadAutodesk ra = new ReadAutodesk(importFileDialog.FileName);
+            //    _drawingModel.StartWork(ra);
+            //}
+        }
 
         private void AddNewLayer(LayerItem newLayer)
         {

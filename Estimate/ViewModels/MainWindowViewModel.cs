@@ -7,13 +7,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.IO;
 using ApplicationInterfaceCore;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 using LiteDB;
+using MaterialDesignExtensions.Controls;
+using MaterialDesignThemes.Wpf;
 using NewJobWizardModule.Views;
 using Newtonsoft.Json;
+using Prism.Services.Dialogs;
+using JsonReader = Newtonsoft.Json.JsonReader;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
+using JsonWriter = Newtonsoft.Json.JsonWriter;
 
 namespace Estimate.ViewModels
 {
@@ -198,22 +205,16 @@ namespace Estimate.ViewModels
             this.CustomerMenuSelectCommand = new DelegateCommand(this.OnCustomerMenuSelect);
             this.LoadDrawingWindowCommand = new DelegateCommand(this.LoadDrawingWindow);
             SaveJobCommand = new DelegateCommand(OnSaveJobCommand);
+            OpenJobCommand = new DelegateCommand(OnOpenJobCommand);
             JobModel.Info.PropertyChanged += Info_PropertyChanged;
             //this.EventAggregator.GetEvent<JobModelService>().Subscribe(this.OnChangeClient);
 
 
         }
 
-        private void Info_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName== "ClientName")
-            {
-                this.OnChangeClient(JobModel.Info.ClientName);
-            }
-        }
-
         #region Property
 
+        public ICommand OpenJobCommand { get; private set; }
         /// <summary>
         /// Gets the window loaded command.
         /// </summary>
@@ -364,10 +365,21 @@ namespace Estimate.ViewModels
                 //    jobs.Insert((JobModel)JobModel);
                 //}
                 //Chuoiluu = JsonConvert.SerializeObject(jobSaved);
-                Chuoiluu = JsonConvert.SerializeObject(jobSaved, new JsonSerializerSettings()
+                //Chuoiluu = JsonConvert.SerializeObject(jobSaved, new JsonSerializerSettings()
+                //{
+                //    Formatting = Formatting.Indented,
+                //});
+                JsonSerializer serializer = new JsonSerializer()
                 {
                     Formatting = Formatting.Indented,
-                });
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+                using (var sw = new StreamWriter(fileName))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, jobSaved);
+                }
+                
                 //Chuoiluu = JsonConvert.SerializeObject(JobModel, new JsonSerializerSettings()
                 //{
                 //    TypeNameHandling = TypeNameHandling.Auto,
@@ -376,9 +388,44 @@ namespace Estimate.ViewModels
                 //    Formatting = Formatting.Indented,
                 //});
 
-                var jobOpen = JsonConvert.DeserializeObject<JobModelPoco>(Chuoiluu);
+                //var jobOpen = JsonConvert.DeserializeObject<JobModelPoco>(Chuoiluu);
             }
         }
+
+        private async void OnOpenJobCommand()
+        {
+            OpenFileDialogArguments dialogArgs = new OpenFileDialogArguments()
+            {
+                Width = 600,
+                Height = 400,
+                Filters = "All files|*.*|C# files|*.cs|XAML files|*.xaml"
+            };
+
+            OpenFileDialogResult result = await OpenFileDialog.ShowDialogAsync("mainDialogHost", dialogArgs);
+            if (result.Confirmed)
+            {
+                using (var stream = File.OpenRead(result.File))
+                {
+                    TextReader text = new StreamReader(stream);
+                    var jsonReader = new JsonTextReader(text);
+                    var serializer = new JsonSerializer();
+                    var jobOpen = serializer.Deserialize<JobModelPoco>(jsonReader);
+                    jobOpen.Info.JobLocation = result.FileInfo.DirectoryName;
+                    JobModel.LoadJob(jobOpen);
+                    EventAggregator.GetEvent<RefreshFloorEvent>().Publish(true);
+                }
+            }
+        }
+
+        private void Info_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ClientName")
+            {
+                this.OnChangeClient(JobModel.Info.ClientName);
+            }
+        }
+
+
         /// <summary>
         /// The load wall frame input.
         /// </summary>
@@ -480,8 +527,6 @@ namespace Estimate.ViewModels
             var shell = this.UnityContainer.Resolve<BaseWindowService>();
             shell.ShowShell<NewJobWizardView>(true);
             EventAggregator.GetEvent<RefreshFloorEvent>().Publish(true);
-
-
         }
 
         /// <summary>

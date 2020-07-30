@@ -15,6 +15,7 @@ using AppModels.Enums;
 using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Openings;
 using AppModels.ResponsiveData.WallMemberData;
 using devDept.Eyeshot.Entities;
 
@@ -349,10 +350,10 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         private void OnAddNewBeam()
         {
-            if (this.Level.RoofBeams == null)
-            {
-                this.Level.RoofBeams = new ObservableCollection<Beam>();
-            }
+            //if (this.Level.RoofBeams == null)
+            //{
+            //    this.Level.RoofBeams = new ObservableCollection<Beam>();
+            //}
             //var newBeam = new Beam();
             //this.Level.RoofBeams.Add(newBeam);
         }

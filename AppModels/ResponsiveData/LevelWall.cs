@@ -7,8 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using AppModels.Factories;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData.Openings;
 using Newtonsoft.Json;
 using Prism.Mvvm;
 using ProtoBuf;
@@ -188,6 +193,35 @@ namespace AppModels.ResponsiveData
             get => this._levelInfo;
             set => this.SetProperty(ref this._levelInfo, value);
         }
+
+        #endregion
+
+        #region Public Method
+
+        public void LoadLevelInfo(LevelWallPoco level)
+        {
+            LevelName = level.LevelName;
+            TotalWallLength = level.TotalWallLength;
+            LintelLm = level.LintelLm;
+            CostDelivery = level.CostDelivery;
+            LevelInfo.LoadWallGlobalInfo(level.LevelInfo);
+            this.InitializerWallLayers(level.WallLayers);
+            //this.InitializerTimberBracings(level.TimberWallBracings.ToList());
+            //this.InitializerGeneralBracings(level.GeneralBracings.ToList());
+            //this.InitializerRoofBeams(level.RoofBeams.ToList());
+            //this.InitializerOpenings(level.Openings.ToList());
+        }
+
+        private void InitializerWallLayers(List<WallLayerPoco> wallLayers)
+        {
+            foreach (var wallLayerPoco in wallLayers)
+            {
+                var wallLayer = WallLayerFactory.CreateWallLayer(LevelInfo.GlobalInfo.ClientName, wallLayerPoco.Id, LevelInfo, wallLayerPoco.WallType);
+                wallLayer.LoadWallInfo(wallLayerPoco);
+                WallLayers.Add(wallLayer);
+            }
+        }
+
 
         #endregion
     }
