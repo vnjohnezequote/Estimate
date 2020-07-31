@@ -153,6 +153,7 @@
     <Compile Include="AppData\ColorItem.cs" />
     <Compile Include="AppData\LayerItem.cs" />
     <Compile Include="CustomEntity\BeamLeader.cs" />
+    <Compile Include="CustomEntity\CustomEntitySurrogate\Wall2DSurrogate.cs" />
     <Compile Include="Enums\BeamType.cs" />
     <Compile Include="Enums\CeilingBattensType.cs" />
     <Compile Include="Enums\ClientNames.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Enums\WallMemberType.cs" />
     <Compile Include="Enums\WallType.cs" />
     <Compile Include="Factories\WallLayerFactory.cs" />
+    <Compile Include="FileSerializer\EzequoteFileSerializer.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Interaface\IBasicWallInfo.cs" />
     <Compile Include="Interaface\IBeam.cs" />

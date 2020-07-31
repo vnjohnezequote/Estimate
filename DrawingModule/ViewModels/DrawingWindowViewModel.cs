@@ -14,10 +14,12 @@ using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
 using AppModels.AppData;
+using AppModels.FileSerializer;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Translators;
+using devDept.Serialization;
 using DrawingModule.Views;
 using Microsoft.Win32;
 using CanvasDrawing = DrawingModule.CustomControl.CanvasControl.CanvasDrawing;
@@ -119,6 +121,8 @@ namespace DrawingModule.ViewModels
         public ICommand TrimCommand { get; private set; }
         public ICommand ExtendCommand { get; private set; }
         public ICommand FilletCommand { get; private set; }
+        public ICommand SaveCommand { get; private set; }
+        public ICommand OpenCommand { get; private set; }
         #endregion
         #region Constructor
 
@@ -153,6 +157,8 @@ namespace DrawingModule.ViewModels
             this.WindowLoadedCommand = new DelegateCommand<DrawingWindowView>(this.WindowLoaded);
             ExportDWGCommand = new DelegateCommand(this.OnExportDWG);
             ImportDWGCommand = new DelegateCommand(this.OnImportDWG);
+            SaveCommand = new DelegateCommand(this.OnSaveDrawing);
+            OpenCommand = new DelegateCommand(this.OnOpenDrawing);
             //this.DrawLineCommand = new DelegateCommand(this.OnDrawLine);
             //this.DrawRectangleCommand = new DelegateCommand(this.OnDrawRectangle);
             //this.DrawRayCommand = new DelegateCommand(this.OnDrawRay);
@@ -227,6 +233,44 @@ namespace DrawingModule.ViewModels
             }
         }
 
+        private void OnSaveDrawing()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter =
+                "CAD drawings (*.eye)|*.eye";
+
+            saveFileDialog.Title = "Saving File";
+            saveFileDialog.AddExtension = true;
+            saveFileDialog.CheckPathExists = true;
+            var result = saveFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+
+                WriteFile writeFile = new WriteFile(
+                    new WriteFileParams(_drawingModel)
+                    , saveFileDialog.FileName,
+                    new EzequoteFileSerializer()
+                );
+                _drawingModel.StartWork(writeFile);
+            }
+        }
+
+        private void OnOpenDrawing()
+        {
+
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "CAD drawings (*.eye)|*.eye";
+            var result = openFileDialog.ShowDialog();
+            if (result == true)
+            {
+                _drawingModel.Clear();
+                ReadFile readFile = new ReadFile(openFileDialog.FileName,new EzequoteFileSerializer());
+                _drawingModel.StartWork(readFile);
+            }
+
+        }
         private void OnImportDWG()
         {
             //OpenFileDialog<ImportFileAddOn> importFileDialog = new OpenFileDialog<ImportFileAddOn>();

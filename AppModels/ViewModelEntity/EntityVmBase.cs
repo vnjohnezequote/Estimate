@@ -41,6 +41,16 @@ namespace AppModels.ViewModelEntity
             }
         }
 
+        public colorMethodType ColorMethod
+        {
+            get => Entity?.ColorMethod ?? colorMethodType.byEntity;
+            set
+            {
+                if (Entity ==null) return;
+                Entity.ColorMethod = value;
+            }
+        }
+
         protected EntityVmBase(IEntity entity)
         {
             this.Entity = entity;

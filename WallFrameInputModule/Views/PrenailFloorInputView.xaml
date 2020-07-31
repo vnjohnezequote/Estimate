@@ -232,16 +232,14 @@
 														   Width="90"/>
                             <syncfusion:GridTextColumn HeaderText="Stud Height"
                                                        MappingName="StudHeight"/>
-                            <syncfusion:GridTextColumn
-						AllowEditing="False"
-						HeaderText="Length"
-						MappingName="WallLength" />
+                            <syncfusion:GridTextColumn AllowEditing="False"
+                                                       HeaderText="Length"
+                                                       MappingName="WallLength" />
 							<syncfusion:GridTextColumn HeaderText="Extra Length"
-											   MappingName="ExtraLength" />
-							<syncfusion:GridTextColumn
-						AllowEditing="False"
-						HeaderText="Temp Length"
-						MappingName="TempLength"/>
+                                                       MappingName="ExtraLength" />
+							<syncfusion:GridTextColumn AllowEditing="False"
+                                                       HeaderText="Temp Length"
+                                                       MappingName="TempLength"/>
 							<syncfusion:GridTemplateColumn MappingName="Delete Row"
 												   syncfusion:FocusManagerHelper.WantsKeyInput="True">
                                 <syncfusion:GridTemplateColumn.CellTemplate>

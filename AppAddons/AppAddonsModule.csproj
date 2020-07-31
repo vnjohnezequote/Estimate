@@ -113,6 +113,7 @@
     <Compile Include="DrawingTools\DrawText.cs" />
     <Compile Include="DrawingTools\DrawLinearDim.cs" />
     <Compile Include="DrawingTools\MTextTool.cs" />
+    <Compile Include="EditingTools\ConvertToWall2D.cs" />
     <Compile Include="EditingTools\CopyTool.cs" />
     <Compile Include="EditingTools\ExtendTool.cs" />
     <Compile Include="EditingTools\FilletTool.cs" />

@@ -329,7 +329,7 @@ namespace WallFrameInputModule.ViewModels
                        
                     }
 
-                    //levelWallLayer.TempLength = tempLength / 1000;
+                    levelWallLayer.TempLength = tempLength / 1000;
                 }
 
             }

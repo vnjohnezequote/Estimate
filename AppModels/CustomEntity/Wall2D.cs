@@ -4,9 +4,11 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Interaface;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot.Entities;
+using devDept.Serialization;
 
 namespace AppModels.CustomEntity
 {
@@ -29,11 +31,16 @@ namespace AppModels.CustomEntity
         {
             
         }
-
-
         public IEntityVm CreateEntityVm()
         {
             return new Wall2DVm(this);
         }
+        public override EntitySurrogate ConvertToSurrogate()
+        {
+            return new Wall2DSurrogate(this);
+        }
     }
+
+
+
 }

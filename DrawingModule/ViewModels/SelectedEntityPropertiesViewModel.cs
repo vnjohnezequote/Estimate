@@ -25,15 +25,8 @@ namespace DrawingModule.ViewModels
     public class SelectedEntityPropertiesViewModel : BaseViewModel
     {
         #region Private Field
-        //private ObservableCollection<string> hidePropertyItems = new ObservableCollection<string>();
         private IEntitiesManager _entitiesManger;
         private IEntityVm _selectedEntity;
-
-        //public ObservableCollection<string> HidePropertyItems
-        //{
-        //    get { return hidePropertyItems; }
-        //    set { hidePropertyItems = value; }
-        //}
         public IEntitiesManager EntitiesManager
         {
             get => _entitiesManger;
@@ -41,6 +34,7 @@ namespace DrawingModule.ViewModels
 
         public Visibility LayerVisibility => _selectedEntity==null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility ColorVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility ColorMethodVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility LevelVisibility
         {
             get
@@ -68,12 +62,13 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(LayerVisibility));
                 RaisePropertyChanged(nameof(ColorVisibility));
                 RaisePropertyChanged(nameof(LevelVisibility));
+                RaisePropertyChanged(nameof(ColorMethodVisibility));
             }
         }
         public ObservableCollection<LevelWall> Levels { get; private set; }
 
         #endregion
-        public SelectedEntityPropertiesViewModel()
+        public SelectedEntityPropertiesViewModel(): base()
         {
 
         }

@@ -22,7 +22,7 @@ namespace AppModels.PocoDataModel
         public int WallSpacing { get; set; }
         public int WallPitchingHeight { get; set; }
         public bool ForcedWallUnderRakedArea { get; set; }
-        public double WallLength { get; set; }
+        //public double WallLength { get; set; }
         public bool IsStepdown { get; set; }
         public bool IsRaisedCeiling { get; set; }
         public int TypeId { get; set; }
@@ -53,7 +53,7 @@ namespace AppModels.PocoDataModel
             WallSpacing = wall.WallSpacing;
             WallPitchingHeight = wall.WallPitchingHeight;
             ForcedWallUnderRakedArea = wall.ForcedWallUnderRakedArea;
-            WallLength = wall.WallLength;
+            //WallLength = wall.WallLength;
             IsStepdown = wall.IsStepdown;
             IsRaisedCeiling = wall.IsRaisedCeiling;
             IsDesigned = wall.IsDesigned;

@@ -565,7 +565,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="EventArgs\" />
   </ItemGroup>
   <ItemGroup>

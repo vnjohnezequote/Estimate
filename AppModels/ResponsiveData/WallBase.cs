@@ -45,6 +45,8 @@ namespace AppModels.ResponsiveData
         private bool _forcedWallUnderRakedArea;
         private bool _isDesigned;
         private int _typeId;
+        private double _tempLength;
+        private double _extraLength;
         #endregion
 
         #region Property
@@ -160,11 +162,6 @@ namespace AppModels.ResponsiveData
                 RaisePropertyChanged(nameof(StudHeight));
             }
         }
-        public double WallLength
-        {
-            get=>_wallLength;
-            set=>SetProperty(ref _wallLength,value);
-        }
         public bool IsStepdown
         {
             get => _isStepDown;
@@ -279,6 +276,18 @@ namespace AppModels.ResponsiveData
         public WallMemberBase BottomPlate { get; private set; }
         public WallStud Stud { get; private set; }
         public WallMemberBase Nogging { get; private set; }
+
+        public double TempLength
+        {
+            get=>_tempLength; 
+            set=>SetProperty(ref _tempLength,value);
+        }
+        public double ExtraLength { 
+            get => _extraLength; 
+            set => SetProperty(ref _extraLength, value);
+        }
+        public double WallLength => Math.Ceiling(TempLength + ExtraLength);
+
         #endregion
         #region Constructor
         public WallBase(int id ,IGlobalWallInfo globalWallInfo,WallTypePoco wallType,int typeId = 1)
@@ -383,6 +392,10 @@ namespace AppModels.ResponsiveData
                 case nameof(IsDesigned):
                     RaisePropertyChanged(nameof(IsNeedTobeDesign));
                     break;
+                case nameof(TempLength):
+                case nameof(ExtraLength):
+                    RaisePropertyChanged(nameof(WallLength));
+                    break;
                     
             }
         }
@@ -397,7 +410,7 @@ namespace AppModels.ResponsiveData
             WallSpacing = wall.WallSpacing;
             WallPitchingHeight = wall.WallPitchingHeight;
             ForcedWallUnderRakedArea = wall.ForcedWallUnderRakedArea;
-            WallLength = wall.WallLength;
+            //WallLength = wall.WallLength;
             IsStepdown = wall.IsStepdown;
             IsRaisedCeiling = wall.IsRaisedCeiling;
             IsDesigned = wall.IsDesigned;

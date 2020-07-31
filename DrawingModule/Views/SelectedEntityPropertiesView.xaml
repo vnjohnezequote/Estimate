@@ -11,6 +11,9 @@
              xmlns:pt="http://propertytools.org/wpf"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:applicationConverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
+             xmlns:entities="clr-namespace:devDept.Eyeshot.Entities;assembly=devDept.Eyeshot.Control.Wpf.v12"
              x:Class="DrawingModule.Views.SelectedEntityPropertiesView"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance {x:Type viewModels:SelectedEntityPropertiesViewModel}, IsDesignTimeCreatable=True}"
@@ -22,6 +25,13 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
                 <ResourceDictionary>
+                    <ObjectDataProvider x:Key="ColorMethods"
+                                        MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="entities:colorMethodType"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+
                     <applicationConverter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
                     <applicationConverter:ColorToColorConverter x:Key="ColorToColorConverter"/>
                     <applicationConverter:ColorToStringConverter x:Key="ColorToStringConverter"/>
@@ -29,22 +39,25 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-   
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" MinWidth="100"/>
-                <ColumnDefinition Width="1"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Layer" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LayerVisibility}"/>
-            <TextBlock Text="Color" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding ColorVisibility}"/>
-            <TextBlock Text="Level" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LevelVisibility}"/>
-            <GridSplitter Grid.Column="1"
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" MinWidth="100"/>
+            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Layer" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LayerVisibility}"/>
+        <TextBlock Text="Color" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding ColorVisibility}"/>
+        <TextBlock Text="Level" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LevelVisibility}"/>
+        <TextBlock Text="Color By" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding ColorMethodVisibility}"/>
+
+        <GridSplitter Grid.Column="1"
                           Grid.Row="0"
                           Grid.RowSpan="3"
                           ResizeDirection="Columns" 
@@ -87,6 +100,13 @@
                   DisplayMemberPath="LevelName"
                   SelectedValuePath="LevelName"
                   SelectedValue="{Binding Path= SelectedEntity.WallLevelName}"/>
-        </Grid>
-    
+        <ComboBox Grid.Row="3"
+                  Grid.Column="2"
+                  Style="{StaticResource MahApps.Styles.ComboBox}"
+                  Visibility="{Binding ColorMethodVisibility}"
+                  Margin="0 5 0 5"
+                  ItemsSource="{Binding Source={StaticResource ColorMethods}}"
+                  SelectedItem="{Binding Path=SelectedEntity.ColorMethod}"/>
+    </Grid>
+
 </UserControl>

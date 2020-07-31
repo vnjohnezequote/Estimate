@@ -9,6 +9,7 @@ namespace AppModels.Interaface
         IEntity Entity { get; }
         Color? Color { get; }
         string LayerName { get; }
+        colorMethodType ColorMethod { get; }
 
         void NotifyPropertiesChanged();
 

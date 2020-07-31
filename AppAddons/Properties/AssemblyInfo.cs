@@ -32,7 +32,7 @@ using DrawingModule.CommandClass;
 [assembly: CommandClass(typeof(TrimTool))]
 [assembly: CommandClass(typeof(ExtendTool))]
 [assembly: CommandClass(typeof(MTextTool))]
-
+[assembly: CommandClass(typeof(ConvertToWall2D))]
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.

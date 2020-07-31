@@ -113,7 +113,7 @@ namespace AppModels
                 var checkName = Layers.Any(layerCheck => layerCheck.Name == layer.Name);
                 if (checkName)
                 {
-                    return;
+                    continue;
                 }
                 var layerItem =
                     new LayerItem(layer)
@@ -209,8 +209,8 @@ namespace AppModels
                 {
                     if (e.OldItems!=null)
                     {
-                        var removeItem = e.NewItems[0] as LayerItem;
-                        RemoveCanvasLayer(removeItem);
+                        //var removeItem = e.NewItems[0] as LayerItem;
+                        //RemoveCanvasLayer(removeItem);
                     }
 
                     break;
