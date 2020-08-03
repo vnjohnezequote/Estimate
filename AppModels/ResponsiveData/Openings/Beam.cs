@@ -24,13 +24,23 @@ namespace AppModels.ResponsiveData.Openings
         #region Field
         private int _numberOfSupport;
         private BeamType _beamType;
+        private SupportType _pointSupportType;
+        //private IWallMemberInfo _globalSupportInfo;
         #endregion
 
 
         #region Property
+
+        public IWallMemberInfo GLobalSupportInfo { get; private set; }
+
         public ObservableCollection<LoadPointSupport> LoadPointSupports { get; set; } 
             = new ObservableCollection<LoadPointSupport>();
 
+        public SupportType PointSupportType
+        {
+            get=>_pointSupportType; 
+            set=>SetProperty(ref _pointSupportType,value);
+        }
         public int NumberOfSupport
         {
             get => _numberOfSupport;
@@ -43,7 +53,7 @@ namespace AppModels.ResponsiveData.Openings
             private set=>SetProperty(ref _beamType,value);
         }
 
-        private Suppliers suplier { get; }
+        public Suppliers Suplier { get; }
         public int NoItem { get; set; }
         public int Depth { get; set; }
         public int Thickness { get; set; }
@@ -76,9 +86,15 @@ namespace AppModels.ResponsiveData.Openings
 
         #region Constructor
 
-        public Beam(BeamType beamType)
+        public Beam(BeamType beamType, IWallMemberInfo gLobalSupportInfo)
         {
             Type = beamType;
+            GLobalSupportInfo = gLobalSupportInfo;
+        }
+
+        public void CreateSupport()
+        {
+
         }
 
         #endregion

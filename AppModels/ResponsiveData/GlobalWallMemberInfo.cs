@@ -162,6 +162,10 @@ namespace AppModels.ResponsiveData
         private void DefaultInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             NotifyPropertyChanged(e.PropertyName);
+            if (e.PropertyName == "NoggingMethod")
+            {
+                RaisePropertyChanged(nameof(Thickness));
+            }
         }
         private void NotifyPropertyChanged(string propertyName)
         {

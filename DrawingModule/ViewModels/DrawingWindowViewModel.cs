@@ -9,7 +9,9 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Timers;
 using System.Windows;
+using System.Windows.Forms.VisualStyles;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
@@ -53,6 +55,7 @@ namespace DrawingModule.ViewModels
         private bool _isDimByObject;
         private string _selectedLevel;
         private ObservableCollection<LevelWall> _levels;
+        private Timer _autoSaveTimer = new Timer(1 * 60 * 1000);
         #endregion
         #region public Property
 
@@ -123,6 +126,7 @@ namespace DrawingModule.ViewModels
         public ICommand FilletCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
         public ICommand OpenCommand { get; private set; }
+
         #endregion
         #region Constructor
 
@@ -159,6 +163,9 @@ namespace DrawingModule.ViewModels
             ImportDWGCommand = new DelegateCommand(this.OnImportDWG);
             SaveCommand = new DelegateCommand(this.OnSaveDrawing);
             OpenCommand = new DelegateCommand(this.OnOpenDrawing);
+            _autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
+            _autoSaveTimer.Start();
+
             //this.DrawLineCommand = new DelegateCommand(this.OnDrawLine);
             //this.DrawRectangleCommand = new DelegateCommand(this.OnDrawRectangle);
             //this.DrawRayCommand = new DelegateCommand(this.OnDrawRay);
@@ -183,11 +190,20 @@ namespace DrawingModule.ViewModels
 
         }
 
+        private void _autoSaveTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>
+            {//this refer to form in WPF application 
+                OnSaveDrawing();
+            }));
+            
+        }
+
         #endregion
 
-       
 
-       
+
+
 
         #region Private Function
 
@@ -235,6 +251,7 @@ namespace DrawingModule.ViewModels
 
         private void OnSaveDrawing()
         {
+            /*
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
             saveFileDialog.Filter =
@@ -255,6 +272,22 @@ namespace DrawingModule.ViewModels
                 );
                 _drawingModel.StartWork(writeFile);
             }
+            */
+            if (this.JobModel!=null)
+            {
+                var fileName = JobModel.Info.JobLocation+ "\\" + JobModel.Info.JobNumber + ".eye";
+                WriteFile writeFile = new WriteFile(
+                    new WriteFileParams(_drawingModel)
+                    , fileName,
+                    new EzequoteFileSerializer()
+                );
+                _drawingModel.StartWork(writeFile);
+            }
+        }
+
+        private void Autosave()
+        {
+
         }
 
         private void OnOpenDrawing()

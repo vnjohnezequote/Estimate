@@ -4,10 +4,12 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using System.Windows.Media.Media3D;
 using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Interaface;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot.Entities;
+using devDept.Geometry;
 using devDept.Serialization;
 
 namespace AppModels.CustomEntity
@@ -30,6 +32,11 @@ namespace AppModels.CustomEntity
         public Wall2D(Line another) : base(another)
         {
             
+        }
+
+        public Wall2D(Point3D start, Point3D end) : base(start, end)
+        {
+
         }
         public IEntityVm CreateEntityVm()
         {

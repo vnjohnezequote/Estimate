@@ -78,8 +78,20 @@ namespace AppModels.ResponsiveData
             if (GlobalWallInfo!=null)
             {
                 GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
+                if (GlobalWallInfo.GlobalInfo != null)
+                {
+                    GlobalWallInfo.GlobalInfo.PropertyChanged += GlobalInfo_PropertyChanged;
+                }
             }
-            
+
+        }
+
+        private void GlobalInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(NoggingMethod))
+            {
+                RaisePropertyChanged(nameof(NoggingMethod));
+            }
         }
 
         private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

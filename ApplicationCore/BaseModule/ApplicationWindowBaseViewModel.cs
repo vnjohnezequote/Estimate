@@ -61,7 +61,7 @@ namespace ApplicationCore.BaseModule
             : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             this.RegionManager = this.RegionManager.CreateRegionManager();
-            this.EventAggregator.GetEvent<JobModelService>().Subscribe(this.JobReceive);
+            //this.EventAggregator.GetEvent<JobModelService>().Subscribe(this.JobReceive);
         }
 
         #endregion
@@ -76,11 +76,11 @@ namespace ApplicationCore.BaseModule
         /// <summary>
         /// Gets or sets the job.
         /// </summary>
-        public JobModel Job
-        {
-            get => this.job;
-            set => this.SetProperty(ref this.job, value);
-        }
+        //public JobModel Job
+        //{
+        //    get => this.job;
+        //    set => this.SetProperty(ref this.job, value);
+        //}
 
         #endregion
 
@@ -92,13 +92,13 @@ namespace ApplicationCore.BaseModule
         /// <param name="job">
         /// The job.
         /// </param>
-        private void JobReceive(JobModel job)
-        {
-            if (job != null)
-            {
-                this.Job = job;
-            }
-        }
+        //private void JobReceive(JobModel job)
+        //{
+        //    if (job != null)
+        //    {
+        //        this.Job = job;
+        //    }
+        //}
 
         #endregion
     }

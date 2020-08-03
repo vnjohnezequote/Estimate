@@ -4,9 +4,66 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:JobInfoModule.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
+             d:DataContext="{d:DesignInstance viewModels:EnineerInfoViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <ObjectDataProvider x:Key="CeillingBattenTypes"
+                                MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:CeilingBattensType"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="Suppliers"
+                                MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:Suppliers"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="WallMemberTypes"
+                                MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:WallMemberType"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="MaterialTypes"
+                                MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:MaterialTypes"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel>
+        <materialDesign:ColorZone Mode="Dark">
+            <TextBlock Text="Global Engineer Information" FontSize="16"/>
+        </materialDesign:ColorZone>
+        <Syncfusion:SfDataGrid>
+            <Syncfusion:SfDataGrid.Columns>
+                <Syncfusion:GridComboBoxColumn HeaderText="Level Type" ItemsSource="{Binding LevelTypes}"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Supplier" ItemsSource="{Binding Source={StaticResource Suppliers}}"/>
+                <Syncfusion:GridTextColumn HeaderText="Engineer Name"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Member Type" ItemsSource="{Binding Source={StaticResource WallMemberTypes}}"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Material Type" ItemsSource="{Binding Source={StaticResource MaterialTypes}}"/>
+                <Syncfusion:GridTextColumn HeaderText="Min Size"/>
+                <Syncfusion:GridTextColumn HeaderText="Max Size"/>
+                <Syncfusion:GridTextColumn HeaderText="Qty"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Grade"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Size"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"/>
+            </Syncfusion:SfDataGrid.Columns>
+        </Syncfusion:SfDataGrid>
+    </StackPanel>
 </UserControl>

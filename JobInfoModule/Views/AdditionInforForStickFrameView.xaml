@@ -11,6 +11,7 @@
              xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
              xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
              mc:Ignorable="d" 
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              Style="{DynamicResource MaterialDesignUserControl}"
              d:DataContext="{d:DesignInstance viewModels:AdditionInforForStickFrameViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
@@ -28,6 +29,18 @@
                                 MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="appModelEnum:Suppliers"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="WallMemberTypes"
+                                MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:WallMemberType"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="MaterialTypes"
+                                MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:MaterialTypes"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
         </ResourceDictionary>

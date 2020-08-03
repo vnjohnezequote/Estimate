@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.IO;
+using System.Timers;
 using ApplicationInterfaceCore;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
@@ -162,6 +163,7 @@ namespace Estimate.ViewModels
         /// The max panel changed.
         /// </summary>
         private readonly Action _maxPanelChanged;
+        private Timer _autoSaveTimer = new Timer(1 * 60 * 1000);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
@@ -207,9 +209,21 @@ namespace Estimate.ViewModels
             SaveJobCommand = new DelegateCommand(OnSaveJobCommand);
             OpenJobCommand = new DelegateCommand(OnOpenJobCommand);
             JobModel.Info.PropertyChanged += Info_PropertyChanged;
+            _autoSaveTimer.Start();
+            _autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
             //this.EventAggregator.GetEvent<JobModelService>().Subscribe(this.OnChangeClient);
 
 
+        }
+
+        private void _autoSaveTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>
+            {//this refer to form in WPF application 
+                OnSaveJobCommand();
+            }));
+
+            
         }
 
         #region Property

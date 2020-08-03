@@ -9,6 +9,8 @@
         Nogging,
         Trimmer,
         DoorJamb,
-        Lintel
+        Lintel,
+        Post,
+        Beam,
     }
 }

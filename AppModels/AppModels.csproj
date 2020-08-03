@@ -157,6 +157,7 @@
     <Compile Include="Enums\BeamType.cs" />
     <Compile Include="Enums\CeilingBattensType.cs" />
     <Compile Include="Enums\ClientNames.cs" />
+    <Compile Include="Enums\MaterialTypes.cs" />
     <Compile Include="Enums\NoggingMethod.cs" />
     <Compile Include="Enums\OpeningType.cs" />
     <Compile Include="Enums\RoofFrameType.cs" />
@@ -174,6 +175,9 @@
     <Compile Include="Interaface\IClientDatabase.cs" />
     <Compile Include="Interaface\IGlobalWallDetail.cs" />
     <Compile Include="Interaface\IGlobalWallInfo.cs" />
+    <Compile Include="Interaface\ISupportMember.cs" />
+    <Compile Include="Interaface\ISupportInfo.cs" />
+    <Compile Include="Interaface\ITimberInfo.cs" />
     <Compile Include="Interaface\IWallInfo.cs" />
     <Compile Include="Interaface\IWallMember.cs" />
     <Compile Include="Interaface\IWallMemberDetailInfo.cs" />
@@ -196,12 +200,16 @@
     <Compile Include="PocoDataModel\WallLayerPoco.cs" />
     <Compile Include="PocoDataModel\WallMemberData\WallMemberBasePoco.cs" />
     <Compile Include="ResponsiveData\BasicWallInfor.cs" />
+    <Compile Include="ResponsiveData\EngineerMember\EngineerMemberInfo.cs" />
     <Compile Include="ResponsiveData\GlobalWallDetailInfo.cs" />
     <Compile Include="ResponsiveData\GlobalWallMemberInfo.cs" />
     <Compile Include="ResponsiveData\LevelWallDetailInfo.cs" />
+    <Compile Include="ResponsiveData\Openings\Jamb.cs" />
     <Compile Include="ResponsiveData\Openings\LintelBeam.cs" />
     <Compile Include="ResponsiveData\Openings\LoadPointSupport.cs" />
     <Compile Include="ResponsiveData\StickFrameWallLayer.cs" />
+    <Compile Include="ResponsiveData\SupportMemberMember.cs" />
+    <Compile Include="ResponsiveData\Supports.cs" />
     <Compile Include="ResponsiveData\Treatment.cs" />
     <Compile Include="ResponsiveData\Openings\Beam.cs" />
     <Compile Include="ResponsiveData\Bracing.cs" />

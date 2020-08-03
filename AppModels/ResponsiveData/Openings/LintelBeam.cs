@@ -34,5 +34,7 @@ namespace AppModels.ResponsiveData.Openings
         #endregion
 
 
+        public SupportType PointSupportType { get; }
+        public int NumberOfSupport { get; }
     }
 }

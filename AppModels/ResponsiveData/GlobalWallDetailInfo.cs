@@ -62,6 +62,11 @@ namespace AppModels.ResponsiveData
             {
                 RaisePropertyChanged(nameof(WallSpacing));
             }
+
+            if (e.PropertyName == nameof(NoggingMethod))
+            {
+                RaisePropertyChanged(nameof(NoggingMethod));
+            }
         }
 
         public void LoadWallDetailInfo(GlobalWallDetailPoco globalWallDetailInfo)

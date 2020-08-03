@@ -2,7 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
+using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
@@ -172,8 +174,23 @@ namespace AppAddons.EditingTools
                                 if ((t < trimmedCurve.Domain.t0 || t > trimmedCurve.Domain.t1)
                                     || Point3D.Distance(_trimPoint, trimmedCurve.PointAt(t)) > distSelected)
                                 {
-                                    var tempEntity = (Entity) trimmedCurve;
-                                    EntitiesManager.AddAndRefresh(tempEntity,tempEntity.LayerName);
+                                    
+                                    if (trimmedCurve is Line)
+                                    {
+                                        var wall2D = new Wall2D(trimmedCurve.StartPoint,trimmedCurve.EndPoint);
+                                        EntitiesManager.AddAndRefresh(wall2D, wall2D.LayerName);
+                                    }
+                                    else if(trimmedCurve is LinearPath linearPath)
+                                    {
+                                        var wall2D = new LinearPathWall2D(linearPath);
+                                        EntitiesManager.AddAndRefresh(wall2D, wall2D.LayerName);
+                                    }
+                                    else
+                                    {
+                                        var tempEntity = (Entity)trimmedCurve;
+                                        EntitiesManager.AddAndRefresh(tempEntity, tempEntity.LayerName);
+                                    }
+                                    
                                     success = true;
                                 }
                             }

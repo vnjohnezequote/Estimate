@@ -82,5 +82,6 @@
             <CheckBox Content="Engineer" IsChecked="{Binding JobInfo.IsEngineer}"/>
             <CheckBox Content="Bracing Plan" IsChecked="{Binding JobInfo.IsBracingPlan}"/>
         </DockPanel>
+        <local:EngineerInfoView/>
     </StackPanel>
 </UserControl>

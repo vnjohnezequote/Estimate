@@ -2,7 +2,8 @@
 {
     public enum SupportType
     {
-        Wall,
-        Post
+        Jamb,
+        Post,
+        SteelPost
     }
 }
