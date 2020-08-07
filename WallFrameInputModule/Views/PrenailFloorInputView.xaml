@@ -19,7 +19,8 @@
 	xmlns:helper="clr-namespace:WallFrameInputModule.Helper"
 	xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.WPF"
 	xmlns:modelCompare="clr-namespace:AppModels.Comparer;assembly=AppModels"
-	xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels">
+	xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
+    Loaded="PrenailFloorInputView_OnLoaded">
 	<!--d:DataContext="{d:DesignInstance {x:Type viewModels:PrenailFloorInputViewModel}, IsDesignTimeCreatable=True}"-->
 	<UserControl.Resources>
 		<ResourceDictionary>
@@ -269,7 +270,7 @@
 				<StackPanel Orientation="Horizontal">
 					<!-- Beam Input -->
 					<StackPanel>
-						<syncfusion:SfDataGrid AllowDeleting="True"
+                        <!--<syncfusion:SfDataGrid AllowDeleting="True"
 										   AllowEditing="True"
 										   AutoGenerateColumns="False"
 										   ItemsSource="{Binding Level.RoofBeams}"
@@ -304,11 +305,13 @@
 
 							</syncfusion:SfDataGrid.Columns>
 						</syncfusion:SfDataGrid>
-						<Button Content="Add Beam" Command="{Binding AddBeamCommand}"/>
-					</StackPanel>
+						<Button Content="Add Beam" Command="{Binding AddBeamCommand}"/>-->
+                        <local:StickFrameBeamAndLintelInputView x:Name="BeamInput"/>
+
+                    </StackPanel>
 					<!-- generic Bracing Input -->
 					<StackPanel>
-						<syncfusion:SfDataGrid AllowDeleting="True"
+						<!--<syncfusion:SfDataGrid AllowDeleting="True"
 										   AllowEditing="True"
 										   AutoGenerateColumns="False"
 										   ItemsSource="{Binding Level.GeneralBracings}"
@@ -330,9 +333,10 @@
 								<syncfusion:GridTextColumn HeaderText="Quantity"
 													   MappingName="Quantity" />
 							</syncfusion:SfDataGrid.Columns>
-						</syncfusion:SfDataGrid>
+						</syncfusion:SfDataGrid>-->
 
-						<!-- Bracing Input -->
+
+                        <!-- Bracing Input -->
 						<syncfusion:SfDataGrid AllowDeleting="True"
 										   AllowEditing="True"
 										   AutoGenerateColumns="False"

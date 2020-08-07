@@ -18,6 +18,7 @@ using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Openings;
 using AppModels.ResponsiveData.WallMemberData;
 using devDept.Eyeshot.Entities;
+using WallFrameInputModule.Views;
 
 namespace WallFrameInputModule.ViewModels
 {
@@ -291,7 +292,24 @@ namespace WallFrameInputModule.ViewModels
             this.Level.GeneralBracings = new ObservableCollection<GenericBracing>();
             var genericBracing = new GenericBracing { BracingInfo = new GenericBracingBase { Name = "MetalBrace" } };
             this.Level.GeneralBracings.Add(genericBracing);
+            //LoadBeamInput();
             //.WallLayers[1].WallColorLayer.Color
+
+        }
+
+        public void LoadBeamInput()
+        {
+             var parameters =
+                    new NavigationParameters
+                    {
+                        { "Level", this.Level },
+                        { "SelectedClient", this.SelectedClient }
+                    };
+                if (Level != null)
+                {
+                    this.RegionManager.RequestNavigate("BeamInputRegion", nameof(StickFrameBeamAndLintelInputView), parameters);
+                }
+            
 
         }
 

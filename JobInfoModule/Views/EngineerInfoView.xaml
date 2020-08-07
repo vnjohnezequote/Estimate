@@ -5,13 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:JobInfoModule.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
-             d:DataContext="{d:DesignInstance viewModels:EnineerInfoViewModel, IsDesignTimeCreatable=True}"
+             xmlns:helper="clr-namespace:JobInfoModule.Helper"
+             d:DataContext="{d:DesignInstance viewModels:EngineerInfoViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -43,6 +45,12 @@
                     <x:Type TypeName="appModelEnum:MaterialTypes"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+
+            <helper:EngineerGradeListConverter x:Key="EngineerGradeListConverter"/>
+
+
+
+
         </ResourceDictionary>
 
     </UserControl.Resources>
@@ -50,20 +58,54 @@
         <materialDesign:ColorZone Mode="Dark">
             <TextBlock Text="Global Engineer Information" FontSize="16"/>
         </materialDesign:ColorZone>
-        <Syncfusion:SfDataGrid>
+        <Syncfusion:SfDataGrid
+            ItemsSource="{Binding JobModel.EngineerMemberList}"
+            AllowDeleting="True"
+            AllowEditing="True"
+            AllowResizingColumns="True"
+            AllowResizingHiddenColumns ="True"
+            AutoGenerateColumns="False"
+            ColumnSizer="Auto"
+            EditTrigger="OnTap"
+            SelectionMode="Single"
+            SelectionUnit="Row">
+            <Syncfusion:SfDataGrid.Resources>
+                <Style TargetType="TextBox" />
+                <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+            </Syncfusion:SfDataGrid.Resources>
             <Syncfusion:SfDataGrid.Columns>
-                <Syncfusion:GridComboBoxColumn HeaderText="Level Type" ItemsSource="{Binding LevelTypes}"/>
-                <Syncfusion:GridComboBoxColumn HeaderText="Supplier" ItemsSource="{Binding Source={StaticResource Suppliers}}"/>
-                <Syncfusion:GridTextColumn HeaderText="Engineer Name"/>
-                <Syncfusion:GridComboBoxColumn HeaderText="Member Type" ItemsSource="{Binding Source={StaticResource WallMemberTypes}}"/>
-                <Syncfusion:GridComboBoxColumn HeaderText="Material Type" ItemsSource="{Binding Source={StaticResource MaterialTypes}}"/>
-                <Syncfusion:GridTextColumn HeaderText="Min Size"/>
-                <Syncfusion:GridTextColumn HeaderText="Max Size"/>
-                <Syncfusion:GridTextColumn HeaderText="Qty"/>
-                <Syncfusion:GridComboBoxColumn HeaderText="Grade"/>
-                <Syncfusion:GridComboBoxColumn HeaderText="Size"/>
-                <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Level Type"
+                                               ItemsSource="{Binding LevelTypes}"
+                                               MappingName="LevelType"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Supplier" 
+                                               ItemsSource="{Binding Source={StaticResource Suppliers}}"
+                                               MappingName="Supplier"/>
+                <Syncfusion:GridTextColumn HeaderText="Engineer Name"
+                                           MappingName="EngineerName"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Member Type"
+                                               ItemsSource="{Binding Source={StaticResource WallMemberTypes}}"
+                                               MappingName="MemberType"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Material Type"
+                                               ItemsSource="{Binding Source={StaticResource MaterialTypes}}"
+                                               MappingName="MaterialType"/>
+                <Syncfusion:GridTextColumn HeaderText="Min Size"
+                                           MappingName="MinSpan"/>
+                <Syncfusion:GridTextColumn HeaderText="Max Size"
+                                           MappingName="MaxSpan"/>
+                <Syncfusion:GridTextColumn HeaderText="Qty"
+                                           MappingName="NoItem"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Timber Grade"
+                                               MappingName="TimberGrade"
+                                               ItemsSource="{Binding TimberGradeList}"/>
+                <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"
+                                               MappingName="SizeGrade"
+                                               ItemsSourceSelector="{StaticResource EngineerGradeListConverter}"/>
+                <Syncfusion:GridTextColumn HeaderText="Real Size Grade"
+                                               MappingName="RealSizeGrade"/>
             </Syncfusion:SfDataGrid.Columns>
         </Syncfusion:SfDataGrid>
+        <Button Content="{materialDesign:PackIcon Add}" 
+                Command="{Binding CreateNewEngineerMemberCommand}"
+                Style="{StaticResource MahApps.Styles.Button }"/>
     </StackPanel>
 </UserControl>

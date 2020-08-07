@@ -32,29 +32,31 @@ namespace WallFrameInputModule.Views
     public partial class PrenailFloorInputView : UserControl
     {
         private readonly PrenailFloorInputViewModel _viewModel;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PrenailFloorInputView"/> class.
         /// </summary>
         public PrenailFloorInputView()
         {
-            
+
             this.InitializeComponent();
 
-            if (this.DataContext!=null)
+            if (this.DataContext != null)
             {
                 _viewModel = this.DataContext as PrenailFloorInputViewModel;
             }
         }
 
 
-        private void WallInput_OnCurrentCellDropDownSelectionChanged(object sender, CurrentCellDropDownSelectionChangedEventArgs e)
+        private void WallInput_OnCurrentCellDropDownSelectionChanged(object sender,
+            CurrentCellDropDownSelectionChangedEventArgs e)
         {
             _viewModel?.CalculatorWallLength();
         }
 
         private void WallInput_OnCurrentCellValidated(object sender, CurrentCellValidatedEventArgs e)
         {
-            if (_viewModel== null)
+            if (_viewModel == null)
             {
                 return;
             }
@@ -64,6 +66,7 @@ namespace WallFrameInputModule.Views
             {
                 return;
             }
+
             var dataGrid = sender as SfDataGrid;
             var currendRow = e.RowData as PrenailWallLayer;
             var oldData = e.OldValue as string;
@@ -82,6 +85,16 @@ namespace WallFrameInputModule.Views
                 currendRow.BottomPlate.SizeGrade = e.NewValue as string;
             }
 
+        }
+
+
+        private void PrenailFloorInputView_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (this._viewModel == null) return;
+            if (this.BeamInput.DataContext is StickFrameBeamAndLintelInputViewModel stickViewModel)
+            {
+                stickViewModel.LevelInfo = _viewModel.Level;
+            }
         }
     }
 }

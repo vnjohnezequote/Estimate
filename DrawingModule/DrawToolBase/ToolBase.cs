@@ -24,7 +24,7 @@ namespace DrawingModule.DrawToolBase
         public virtual double CurrentHeight { get; set; }
         public virtual double CurrentAngle { get; set; }
         public virtual double ScaleFactor { get; set; }
-
+        protected bool _isInit = false;
         public virtual string ToolMessage
         {
             get=>_toolMessage;
@@ -53,10 +53,25 @@ namespace DrawingModule.DrawToolBase
         public bool IsUsingSwitchMode { get; protected set; }
         public UnderMouseDrawingType EntityUnderMouseDrawingType { get; protected set; }
         public FocusType DefaultDynamicInputTextBoxToFocus { get; protected set; }
-        public IDynamicInputView DynamicInput => _dynamicInput;
+        
+        // Error here if click by mouse
+        public IDynamicInputView DynamicInput
+        {
+            get
+            {
+                if (_dynamicInput == null)
+                {
+                    return null;
+                }
+
+                return _dynamicInput;
+            }
+        } 
+
         protected ToolBase()
         {
             InitForToolBase();
+            _isInit = true;
         }
 
         private void InitForToolBase()

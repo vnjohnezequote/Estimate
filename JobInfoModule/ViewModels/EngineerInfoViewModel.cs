@@ -4,12 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.EngineerMember;
 using JobInfoModule.Views;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 using Unity;
@@ -18,24 +20,34 @@ namespace JobInfoModule.ViewModels
 {
     public class EngineerInfoViewModel: BaseJobInForViewModel
     {
-        public ObservableCollection<string> LevelTypes { get; } = new ObservableCollection<string>() { "Global" };
-        public ObservableCollection<string> TimberGrade { get; } = new ObservableCollection<string>(){"LVL","MGP10","MGP12","GL17C","F17","F27"};
+        #region Field
 
-        public ObservableCollection<EngineerMemberInfo> EngineerMemberList { get; } = new ObservableCollection<EngineerMemberInfo>();
+
+
+        #endregion
+
+        #region Properties
+
+
+
+        #endregion
+
+        #region ICommand
+        public ICommand CreateNewEngineerMemberCommand{ get; private set; }
+        
+
+        #endregion
+        public ObservableCollection<string> LevelTypes { get; } = new ObservableCollection<string>() { "Global" };
+        public ObservableCollection<string> TimberGradeList { get; } = new ObservableCollection<string>(){"LVL","MGP10","MGP12","GL17C","F17","F27"};
+        //public Dictionary<string, string> TimberGradeList { get; } = new Dictionary<string, string>();
+
+
         public EngineerInfoViewModel(IUnityContainer unityContainer, IRegionManager regionManager,
             IEventAggregator eventAggregator, ILayerManager layerManager, IJob jobModel) : base(unityContainer,
             regionManager, eventAggregator, layerManager, jobModel)
         {
             JobModel.Levels.CollectionChanged += Levels_CollectionChanged;
-            JobModel.Info.PropertyChanged += Info_PropertyChanged;
-        }
-
-        private void Info_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName =="Supplier")
-            {
-                RenameForLVLBeam(JobInfo.Supplier);
-            }
+            CreateNewEngineerMemberCommand = new DelegateCommand(OnCreateNewEngineerMemberCommand);
         }
 
         private void Levels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -49,20 +61,15 @@ namespace JobInfoModule.ViewModels
             }
         }
 
-        public void RenameForLVLBeam(Suppliers suplier)
+        private void OnCreateNewEngineerMemberCommand()
         {
-           
-            //foreach (var engineerMemberInfo in EngineerMemberList)
-            //{
-            //    if (engineerMemberInfo.TimberGrade == "LVL")
-            //    {
-            //        if (suplier == Suppliers.TILLINGS)
-            //        {
-            //            engineerMemberInfo.TimberGrade = "LVL15";
-            //        }
-
-            //    }
-            //}
+            var member = new EngineerMemberInfo(JobModel.Info)
+            {
+                MemberType = WallMemberType.Lintel,
+                MaterialType = MaterialTypes.Timber
+            };
+            JobModel.EngineerMemberList.Add(member);
         }
+        
     }
 }

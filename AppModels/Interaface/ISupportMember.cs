@@ -1,11 +1,12 @@
 ﻿using AppModels.Enums;
+using AppModels.ResponsiveData.EngineerMember;
 
 namespace AppModels.Interaface
 {
     public interface ISupportMember
     {
-        string Id { get; }
-        SupportType PointSupportType { get; }
-        ISupportInfo SupportInfo { get; }
+        string Id { get; set; }
+        SupportType PointSupportType { get; set; }
+        EngineerMemberInfo SupportInfo { get; set; }
     }
 }

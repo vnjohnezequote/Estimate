@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using AppModels.ResponsiveData.EngineerMember;
 using devDept.Geometry;
 using Prism.Mvvm;
 using ProtoBuf;
@@ -52,6 +53,8 @@ namespace AppModels.ResponsiveData
         /// Gets or sets the levels.
         /// </summary>
         public ObservableCollection<LevelWall> Levels { get => this._levels; set => this.SetProperty(ref this._levels, value); }
+        //public ObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
+        public MyObservableCollection<EngineerMemberInfo> EngineerMemberList { get; } = new MyObservableCollection<EngineerMemberInfo>();
         #endregion
         /// <summary>
         /// Initializes a new instance of the <see cref="JobModel"/> class.
@@ -60,6 +63,7 @@ namespace AppModels.ResponsiveData
         {
             this.Info = new JobInfo();
             GlobalWallInfo = new GlobalWallInfo(Info);
+            //EngineerMemberList = new ObservableCollection<EngineerMemberInfo>();
             this.Levels = new ObservableCollection<LevelWall>();
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.ResponsiveData.EngineerMember;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Openings
@@ -35,6 +36,6 @@ namespace AppModels.ResponsiveData.Openings
 
 
         public SupportType PointSupportType { get; }
-        public int NumberOfSupport { get; }
+        public EngineerMemberInfo SupportReference { get; }
     }
 }

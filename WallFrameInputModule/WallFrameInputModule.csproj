@@ -181,9 +181,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ViewModels\PrenailFloorInputViewModel.cs" />
+    <Compile Include="ViewModels\StickFrameBeamAndLintelInputViewModel.cs" />
     <Compile Include="ViewModels\WallFrameInputViewModel.cs" />
     <Compile Include="Views\PrenailFloorInputView.xaml.cs">
       <DependentUpon>PrenailFloorInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StickFrameBeamAndLintelInputView.xaml.cs">
+      <DependentUpon>StickFrameBeamAndLintelInputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WallFrameInputView.xaml.cs">
       <DependentUpon>WallFrameInputView.xaml</DependentUpon>
@@ -203,6 +207,10 @@
   <ItemGroup />
   <ItemGroup>
     <Page Include="Views\PrenailFloorInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StickFrameBeamAndLintelInputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

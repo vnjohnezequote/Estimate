@@ -150,7 +150,8 @@ namespace DrawingModule.CommandLine
 			HintItem hintItem = listBoxItem.DataContext as HintItem;
 			if (hintItem != null && hintItem.Command != null)
 			{
-				hintItem.Command.Execute(hintItem);
+				// need to fix this
+				//hintItem.Command.Execute(hintItem);
 			}
 		}
 

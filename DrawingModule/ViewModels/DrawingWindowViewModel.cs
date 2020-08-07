@@ -273,16 +273,16 @@ namespace DrawingModule.ViewModels
                 _drawingModel.StartWork(writeFile);
             }
             */
-            if (this.JobModel!=null)
-            {
-                var fileName = JobModel.Info.JobLocation+ "\\" + JobModel.Info.JobNumber + ".eye";
-                WriteFile writeFile = new WriteFile(
-                    new WriteFileParams(_drawingModel)
-                    , fileName,
-                    new EzequoteFileSerializer()
-                );
-                _drawingModel.StartWork(writeFile);
-            }
+            //if (this.JobModel!=null)
+            //{
+            //    var fileName = JobModel.Info.JobLocation+ "\\" + JobModel.Info.JobNumber + ".eye";
+            //    WriteFile writeFile = new WriteFile(
+            //        new WriteFileParams(_drawingModel)
+            //        , fileName,
+            //        new EzequoteFileSerializer()
+            //    );
+            //    _drawingModel.StartWork(writeFile);
+            //}
         }
 
         private void Autosave()

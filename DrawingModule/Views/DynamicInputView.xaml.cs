@@ -230,6 +230,12 @@ namespace DrawingModule.Views
                 //ContainerMessageDispatcher.Win32Message += OnContainerMessages;
                 //ComponentDispatcher.ThreadPreprocessMessage += OnKeyMessages;
             }
+            MouseDown += DynamicInputView_MouseDown;
+        }
+
+        private void DynamicInputView_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
         }
         #endregion
 

@@ -1,0 +1,156 @@
+﻿<UserControl x:Class="WallFrameInputModule.Views.StickFrameBeamAndLintelInputView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WallFrameInputModule.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:viewModels="clr-namespace:WallFrameInputModule.ViewModels"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance viewModels:StickFrameBeamAndLintelInputViewModel, IsDesignTimeCreatable=True}"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Name="LintelAndBeamInput">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <ObjectDataProvider x:Key="SupportTypes"
+                                MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:SupportType"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <!--<helper:EngineerGradeListConverter x:Key="EngineerGradeListConverter"/>-->
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <StackPanel>
+
+            <TextBlock Text="Lintel"/>
+            <Syncfusion:SfDataGrid
+                Name="WallInput"
+                AllowDeleting="True"
+                AllowEditing="True"
+                AllowResizingColumns="True"
+                AllowResizingHiddenColumns ="True"
+                AutoGenerateColumns="False"
+                ColumnSizer="Auto"
+                EditTrigger="OnTap"
+                SelectionUnit="Row"
+                ItemsSource="{Binding Beams}"
+                SelectedItem="{Binding SelectedBeam}">
+                <Syncfusion:SfDataGrid.Resources>
+                    <Style TargetType="TextBox"/>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                </Syncfusion:SfDataGrid.Resources>
+                <Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:GridTextColumn HeaderText="ID"
+                                               MappingName="Id"/>
+                    <Syncfusion:GridTextColumn HeaderText="Name"
+                                               MappingName="Name"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Engineer Reference"
+                                                   MappingName="EngineerMemberInfo"
+                                                   ItemsSource="{Binding JobModel.EngineerMemberList}"
+                                                   UseBindingValue="True">
+                        <syncfusion:GridComboBoxColumn.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock  Text="{Binding EngineerName}"/>
+                                    <TextBlock Text="{Binding RealSizeGrade}" Margin="10 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </syncfusion:GridComboBoxColumn.ItemTemplate>
+
+                    </Syncfusion:GridComboBoxColumn>
+                    <Syncfusion:GridTextColumn HeaderText="Span Length"
+                                               MappingName="SpanLength"/>
+                    <Syncfusion:GridTextColumn HeaderText="Extra Length"
+                                               MappingName="ExtraLength"/>
+                    <Syncfusion:GridTextColumn HeaderText="Quote Length"
+                                               MappingName="QuoteLength"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Support Reference"
+                                               MappingName="SupportReference"
+                                               ItemsSource="{Binding JobModel.EngineerMemberList}">
+                        <syncfusion:GridComboBoxColumn.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock  Text="{Binding EngineerName}"/>
+                                    <TextBlock Text="{Binding RealSizeGrade}" Margin="10 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </syncfusion:GridComboBoxColumn.ItemTemplate>
+                    </Syncfusion:GridComboBoxColumn>
+                    <Syncfusion:GridTextColumn HeaderText="Support Width"
+                                                   MappingName="TotalSupportWidth"/>
+                    <Syncfusion:GridTextColumn HeaderText="Support Height"
+                                               MappingName="SupportHeight"/>
+                    <Syncfusion:GridTextColumn HeaderText="Global TBT Thickness"
+                                               MappingName="GlobalThicknessTBT"/>
+                    
+                </Syncfusion:SfDataGrid.Columns>
+
+                <syncfusion:SfDataGrid.DetailsViewDefinition>
+                    <syncfusion:GridViewDefinition RelationalColumn="SupportPoints">
+                        <syncfusion:GridViewDefinition.DataGrid>
+                            <syncfusion:SfDataGrid AllowDeleting="True"
+                                                   AllowEditing="True"
+                                                   AllowResizingColumns="True"
+                                                   AllowResizingHiddenColumns ="True"
+                                                   AutoGenerateColumns="False"
+                                                   ColumnSizer="Auto"
+                                                   EditTrigger="OnTap"
+                                                   SelectionUnit="Row"
+                                                   Name="BeamSupportDataGrid">
+                                <Syncfusion:SfDataGrid.Resources>
+                                    <Style TargetType="TextBox"/>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                                </Syncfusion:SfDataGrid.Resources>
+                                <Syncfusion:SfDataGrid.Columns>
+                                    <Syncfusion:GridComboBoxColumn HeaderText="Support Type"
+                                                                   MappingName="PointSupportType"
+                                                                   ItemsSource="{Binding Source={StaticResource SupportTypes}}"/>
+                                    <Syncfusion:GridTextColumn HeaderText="Point Location"
+                                                                   MappingName="PointLocation"
+                                                                   IsReadOnly="True"/>
+                                    <Syncfusion:GridComboBoxColumn HeaderText="Reference Name"
+                                                                   MappingName="EngineerMemberInfo"
+                                                                   UseBindingValue="True">
+                                        <syncfusion:GridComboBoxColumn.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock  Text="{Binding EngineerName}"/>
+                                                    <TextBlock Text="{Binding RealSizeGrade}" Margin="10 0 0 0"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </syncfusion:GridComboBoxColumn.ItemTemplate>
+                                    </Syncfusion:GridComboBoxColumn>
+                                    <Syncfusion:GridTextColumn HeaderText="Support Height"
+                                                               MappingName="SupportHeight"
+                                                               IsReadOnly="True"/>
+                                </Syncfusion:SfDataGrid.Columns>
+                            </syncfusion:SfDataGrid>
+                        </syncfusion:GridViewDefinition.DataGrid>
+                    </syncfusion:GridViewDefinition>
+                </syncfusion:SfDataGrid.DetailsViewDefinition>
+            </Syncfusion:SfDataGrid>
+            <Button Content="{materialDesign:PackIcon Add}"
+                    Command="{Binding CreateNewBeamCommand}"
+                    Style="{StaticResource MahApps.Styles.Button }"/>
+            <Button Content="Add Support To Beam"
+                    Command="{Binding AddSupportToBeam}"
+                    Style="{StaticResource MahApps.Styles.Button }"/>
+            <Button Content="Auto input Beam"
+                    Command="{Binding AutoMathBeamWithEngineerBeamList}"
+                    Style="{StaticResource MahApps.Styles.Button}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
