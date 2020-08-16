@@ -38,6 +38,7 @@ namespace AppModels.Interaface
         int StepDown { get; }
         int RaisedCeiling { get; }
         string WallName { get; }
+        int NoggingLength { get; }
         WallMemberBase RibbonPlate { get; }
         WallMemberBase TopPlate { get; }
         WallMemberBase BottomPlate { get; }

@@ -50,7 +50,7 @@ namespace WallFrameInputModule.Helper
             }
 
             var beam = record as Beam;
-            var beamGrade = beam.BeamGrade;
+            var beamGrade = beam.TimberGrade;
             if (beamGrade == null)
             {
                 return null;

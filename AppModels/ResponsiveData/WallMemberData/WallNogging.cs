@@ -5,7 +5,7 @@ namespace AppModels.ResponsiveData.WallMemberData
 {
     public class WallNogging: WallMemberBase
     {
-        public int Length { get; set; }
+        public int Length => WallInfo?.NoggingLength ?? 0;
 
         public override IWallMemberInfo BaseMaterialInfo => WallInfo.GlobalWallDetailInfo.Nogging;
 
@@ -27,6 +27,14 @@ namespace AppModels.ResponsiveData.WallMemberData
         public WallNogging(IWallInfo wallInfo) : base(wallInfo)
         {
             MemberType = WallMemberType.Nogging;
+        }
+
+        protected override void WallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "NoggingLength")
+            {
+                RaisePropertyChanged(nameof(Length));
+            }
         }
     }
 }

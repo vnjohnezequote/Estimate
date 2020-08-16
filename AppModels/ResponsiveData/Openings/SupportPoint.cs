@@ -17,7 +17,7 @@ namespace AppModels.ResponsiveData.Openings
         #region Field
         private IBeam _supportMemberInfo;
         private SupportType? _pointSupportType = null;
-        private IWallInfo _wall;
+        private WallBase _wall;
         private EngineerMemberInfo _engineerMemberInfo;
         #endregion
 
@@ -63,7 +63,23 @@ namespace AppModels.ResponsiveData.Openings
 
             }
         }
-        public int SupportHeight { get; set; }
+
+        public int SupportHeight
+        {
+            get
+            {
+                if (PointSupportType == SupportType.Jamb)
+                {
+                    return SupportMemberInfor.RealSupportHeight;
+                }
+                else
+                {
+                    return SupportMemberInfor.SupportHeight;
+                }
+
+            }
+        }
+
         #region Properties
 
         public SupportType? PointSupportType
@@ -88,7 +104,7 @@ namespace AppModels.ResponsiveData.Openings
             }
         }
 
-        public IWallInfo Wall
+        public WallBase Wall
         {
             get => _wall;
             set => SetProperty(ref _wall, value);
@@ -112,6 +128,7 @@ namespace AppModels.ResponsiveData.Openings
                 case nameof(PointSupportType):
                 case nameof(EngineerMemberInfo):
                     RaisePropertyChanged(nameof(SupportWidth));
+                    RaisePropertyChanged(nameof(SupportHeight));
                     break;
             }
 
@@ -127,6 +144,9 @@ namespace AppModels.ResponsiveData.Openings
                     break;
                 case "SupportReference":
                     RaisePropertyChanged(nameof(EngineerMemberInfo));
+                    break;
+                case "RealSupportHeight":
+                    RaisePropertyChanged(nameof(SupportHeight));
                     break;
             }
         }

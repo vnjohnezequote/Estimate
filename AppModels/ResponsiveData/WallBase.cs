@@ -270,6 +270,22 @@ namespace AppModels.ResponsiveData
                 SetProperty(ref _raisedCeiling, value);
             }
         }
+        public int ThicknessTBT
+        {
+            get
+            {
+                var totalDepth = 0;
+                if (RibbonPlate!=null)
+                {
+                    totalDepth += RibbonPlate.Depth*RibbonPlate.NoItem;
+                }
+                totalDepth+= TopPlate.NoItem *TopPlate.Depth +BottomPlate.NoItem *BottomPlate.Depth;
+                return totalDepth;
+            }
+        }
+
+        public int NoggingLength => WallSpacing - Stud.NoItem * Stud.Depth;
+
         public string WallName => WallType.AliasName.Replace('_',' ') +" "+ FinalWallHeight + "mm";
         public WallMemberBase RibbonPlate { get; private set; }
         public WallMemberBase TopPlate { get; private set; }
@@ -306,12 +322,23 @@ namespace AppModels.ResponsiveData
             RibbonPlate.PropertyChanged += WallPlate_PropertyChanged;
             TopPlate.PropertyChanged += WallPlate_PropertyChanged;
             BottomPlate.PropertyChanged += WallPlate_PropertyChanged;
+            Stud.PropertyChanged += Stud_PropertyChanged;
         }
+
+        private void Stud_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "NoItem"|| e.PropertyName == "Depth")
+            {
+                RaisePropertyChanged(nameof(NoggingLength));
+            }
+        }
+
         private void WallPlate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "NoItem" || e.PropertyName=="Depth")
             {
                 RaisePropertyChanged(nameof(StudHeight));
+                RaisePropertyChanged(nameof(ThicknessTBT));
             }
         }
         #endregion
@@ -395,6 +422,9 @@ namespace AppModels.ResponsiveData
                 case nameof(TempLength):
                 case nameof(ExtraLength):
                     RaisePropertyChanged(nameof(WallLength));
+                    break;
+                case nameof(WallSpacing):
+                    RaisePropertyChanged(nameof(NoggingLength));
                     break;
                     
             }

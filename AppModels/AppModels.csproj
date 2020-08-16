@@ -166,6 +166,7 @@
     <Compile Include="Enums\StickFrameCustomers.cs" />
     <Compile Include="Enums\Suppliers.cs" />
     <Compile Include="Enums\SupportType.cs" />
+    <Compile Include="Enums\WallLocationTypes.cs" />
     <Compile Include="Enums\WallMemberType.cs" />
     <Compile Include="Enums\WallType.cs" />
     <Compile Include="Factories\WallLayerFactory.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="ResponsiveData\LevelWallDetailInfo.cs" />
     <Compile Include="ResponsiveData\Openings\Jamb.cs" />
     <Compile Include="ResponsiveData\Openings\LintelBeam.cs" />
+    <Compile Include="ResponsiveData\Openings\OpeningInfo.cs" />
     <Compile Include="ResponsiveData\Openings\SupportPoint.cs" />
     <Compile Include="ResponsiveData\StickFrameWallLayer.cs" />
     <Compile Include="ResponsiveData\Support\SupportMember.cs" />

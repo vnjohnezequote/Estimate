@@ -98,17 +98,43 @@
 						<Button Content="Three Story" />
 					</StackPanel>
 					<StackPanel>
-						<!--<Button Content="Get Length" Command="{Binding LoadCSVFileCommand}"/>-->
-					</StackPanel>
+						<TextBlock Text="Bracing Input"/>
+                        <syncfusion:SfDataGrid AllowDeleting="True"
+                                               AllowEditing="True"
+                                               AutoGenerateColumns="False"
+                                               ItemsSource="{Binding Level.TimberWallBracings}"
+                                               NavigationMode="Cell"
+                                               SelectionMode="Extended"
+                                               SelectionUnit="Any"
+                                               ColumnSizer="Auto"
+                                               EditorSelectionBehavior="SelectAll"
+                                               EditTrigger="OnTap"
+                                               HeaderRowHeight="0"
+                                               AddNewRowPosition="Bottom">
+                            <syncfusion:SfDataGrid.Resources>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
+                                <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                            </syncfusion:SfDataGrid.Resources>
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridComboBoxColumn 	MappingName="BracingInfo"
+                                                                DisplayMemberPath="Size"
+                                                                ItemsSource="{Binding SelectedClient.TimberBracingBases}"/>
+                                <syncfusion:GridTextColumn MappingName="Quantity" />
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
+                    </StackPanel>
 				</StackPanel>
-				<StackPanel Orientation="Horizontal">
+				<StackPanel Orientation="Vertical">
 					<StackPanel.Resources>
 						<Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
 							<Setter Property="Foreground" Value="{Binding WallColorLayer.Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
 						</Style>
 					</StackPanel.Resources>
 					<!-- Input Wall -->
-					<syncfusion:SfDataGrid
+                    <materialDesign:ColorZone Mode="Accent">
+                        <Label FontSize="18" Content="Wall Input" />
+                    </materialDesign:ColorZone>
+                    <syncfusion:SfDataGrid
 				Name="WallInput"
 				AllowDeleting="True"
 				AllowEditing="True"
@@ -337,29 +363,7 @@
 
 
                         <!-- Bracing Input -->
-						<syncfusion:SfDataGrid AllowDeleting="True"
-										   AllowEditing="True"
-										   AutoGenerateColumns="False"
-										   ItemsSource="{Binding Level.TimberWallBracings}"
-										   NavigationMode="Cell"
-										   SelectionMode="Extended"
-										   SelectionUnit="Any"
-										   ColumnSizer="Auto"
-										   EditorSelectionBehavior="SelectAll"
-										   EditTrigger="OnTap"
-										   HeaderRowHeight="0"
-										   AddNewRowPosition="Bottom">
-							<syncfusion:SfDataGrid.Resources>
-								<Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
-								<Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-							</syncfusion:SfDataGrid.Resources>
-							<syncfusion:SfDataGrid.Columns>
-								<syncfusion:GridComboBoxColumn 	MappingName="BracingInfo"
-															DisplayMemberPath="Size"
-															ItemsSource="{Binding SelectedClient.TimberBracingBases}"/>
-								<syncfusion:GridTextColumn MappingName="Quantity" />
-							</syncfusion:SfDataGrid.Columns>
-						</syncfusion:SfDataGrid>
+						
 					</StackPanel>
 					<StackPanel Orientation="Horizontal">
 						<Label Content="Total LM" />

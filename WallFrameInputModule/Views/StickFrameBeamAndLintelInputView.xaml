@@ -14,6 +14,8 @@
              d:DataContext="{d:DesignInstance viewModels:StickFrameBeamAndLintelInputViewModel, IsDesignTimeCreatable=True}"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
              xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
+             xmlns:applicationConverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
+             xmlns:helper="clr-namespace:JobInfoModule.Helper;assembly=JobInfoModule"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Name="LintelAndBeamInput">
@@ -28,16 +30,309 @@
                     <x:Type TypeName="appModelEnum:SupportType"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+            <ObjectDataProvider x:Key="MaterialTypes"
+                                MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:MaterialTypes"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="WallTypeLocations"
+                                MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:WallLocationTypes"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="OpeningTypes"
+                                MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:OpeningType"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <applicationConverter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+            <helper:EngineerGradeListConverter x:Key="EngineerGradeListConverter"/>
             <!--<helper:EngineerGradeListConverter x:Key="EngineerGradeListConverter"/>-->
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
         <StackPanel>
+            <StackPanel.Resources>
+                <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
+                    <Setter Property="Foreground" Value="{Binding WallReference.WallColorLayer.Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
+                </Style>
+            </StackPanel.Resources>
+            <materialDesign:ColorZone Mode="Accent">
+                <Label FontSize="18" Content="Door Schedules" />
+            </materialDesign:ColorZone>
 
-            <TextBlock Text="Lintel"/>
             <Syncfusion:SfDataGrid
-                Name="WallInput"
+                Name="DoorSchedulesInput"
+                AllowDeleting="True"
+                AllowEditing="True"
+                AllowResizingColumns="True"
+                AllowResizingHiddenColumns ="True"
+                ColumnSizer="Auto"
+                EditTrigger="OnTap"
+                SelectionUnit="Row"
+                ItemsSource="{Binding DoorSchedules}"
+                RowStyle="{StaticResource TextRowStyle}">
+                <Syncfusion:SfDataGrid.Resources>
+                    <Style TargetType="TextBox"/>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                </Syncfusion:SfDataGrid.Resources>
+                <Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:GridTextColumn HeaderText="Door Name"
+                                               MappingName="Name"/>
+                    <Syncfusion:GridTextColumn HeaderText="Height"
+                                               MappingName="Height"/>
+                    <Syncfusion:GridTextColumn HeaderText="Door Width"
+                                               MappingName="Width"/>
+                    <syncfusion:GridTemplateColumn MappingName="Delete Row"
+                                                   syncfusion:FocusManagerHelper.WantsKeyInput="True">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button  Content="Delete" syncfusion:FocusManagerHelper.FocusedElement="True" 
+                                         Command="{Binding Path=DataContext.DeleteWallRowCommand, ElementName=WallInput}"
+                                         CommandParameter="{Binding ElementName=WallInput}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Padding="5 0 5 0"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                </Syncfusion:SfDataGrid.Columns>
+            </Syncfusion:SfDataGrid>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="{materialDesign:PackIcon Add}"
+                        Command="{Binding CreateNewDoorScheduleCommand}"
+                        Style="{StaticResource MahApps.Styles.Button }"
+                        Margin="5 0 0 0"/>
+            </StackPanel>
+            <!-- Door Input-->
+            <materialDesign:ColorZone Mode="Accent">
+                <Label FontSize="18" Content="Door Input" />
+            </materialDesign:ColorZone>
+            <Syncfusion:SfDataGrid
+                Name="DoorInput"
+                AllowDeleting="True"
+                AllowEditing="True"
+                AllowResizingColumns="True"
+                AllowResizingHiddenColumns ="True"
+                AutoGenerateColumns="False"
+                ColumnSizer="Auto"
+                EditTrigger="OnTap"
+                SelectionUnit="Row"
+                ItemsSource="{Binding DoorAndWindowList}"
+                SelectedItem="{Binding SelectedDoor}"
+                RowStyle="{StaticResource TextRowStyle}">
+                <Syncfusion:SfDataGrid.Resources>
+                    <Style TargetType="TextBox"/>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                </Syncfusion:SfDataGrid.Resources>
+                <Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:GridTextColumn HeaderText="ID"
+                                               MappingName="Id"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Door/Window Name"
+                                                   MappingName="DoorWindowInfo"
+                                                   ItemsSource="{Binding DoorSchedules}">
+                        <syncfusion:GridComboBoxColumn.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock  Text="{Binding Name}" Foreground="{Binding WallColorLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </syncfusion:GridComboBoxColumn.ItemTemplate>
+                    </Syncfusion:GridComboBoxColumn>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Door/Window"
+                                                   MappingName="OpeningType"
+                                                   ItemsSource="{Binding Source={StaticResource OpeningTypes}}"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="External/Internal Door"
+                                                   MappingName="DoorTypeLocation"
+                                                   ItemsSource="{Binding Source={StaticResource WallTypeLocations}}"
+                                                   UseBindingValue="True"/>
+                    <Syncfusion:GridTextColumn HeaderText="Door Location"
+                                               MappingName="Location"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Wall Belong to"
+                                                   MappingName="WallReference"
+                                                   UseBindingValue="True"
+                                                   ItemsSource="{Binding LevelInfo.WallLayers}">
+                        <syncfusion:GridComboBoxColumn.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock  Text="{Binding WallType.AliasName}" Foreground="{Binding WallColorLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"/>
+                                    <TextBlock Text="{Binding WallSpacing}" Margin="10 0 0 0" Foreground="{Binding WallColorLayer.Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
+                                    <TextBlock Text="{Binding NoggingLength}" Margin="10 0 0 0" Foreground="{Binding WallColorLayer.Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
+                                    <TextBlock Text="{Binding FinalWallHeight}" Margin="10 0 0 0" Foreground="{Binding WallColorLayer.Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </syncfusion:GridComboBoxColumn.ItemTemplate>
+                    </Syncfusion:GridComboBoxColumn>
+
+                    <Syncfusion:GridTextColumn HeaderText="Door width"
+                                               MappingName="Width"/>
+                    <Syncfusion:GridTextColumn HeaderText="Door/Window Height"
+                                               MappingName="Height"/>
+                    <Syncfusion:GridTextColumn HeaderText="Door/Window Header Height"
+                                               MappingName="DoorHeaderHeight"/>
+                    <Syncfusion:GridCheckBoxColumn HeaderText="Is Door Under Lbw"
+                                                   MappingName="IsDoorUnderLbw"/>
+                    <Syncfusion:GridCheckBoxColumn HeaderText="Is Carvity Sliding Door"
+                                                   MappingName="IsDoorUnderLbw"/>
+                </Syncfusion:SfDataGrid.Columns>
+            </Syncfusion:SfDataGrid>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="{materialDesign:PackIcon Add}"
+                        Command="{Binding CreateNewOpeningCommand}"
+                        Margin="5 0 0 0"
+                        Style="{StaticResource MahApps.Styles.Button }"/>
+                <Button Content="Add Support To Lintel"
+                        Margin="5 0 0 0"
+                        Style="{StaticResource MahApps.Styles.Button }"/>
+                <Button Content="Auto Fill Lintel Material"
+                        Margin="5 0 0 0"
+                        Style="{StaticResource MahApps.Styles.Button}"/>
+            </StackPanel>
+            <!-- Lintel Input-->
+            <materialDesign:ColorZone Mode="Accent">
+                <Label FontSize="18" Content="Lintel Input" />
+            </materialDesign:ColorZone>
+            <Syncfusion:SfDataGrid
+                Name="LintelInput"
+                AllowDeleting="True"
+                AllowEditing="True"
+                AllowResizingColumns="True"
+                AllowResizingHiddenColumns ="True"
+                AutoGenerateColumns="False"
+                ColumnSizer="Auto"
+                EditTrigger="OnTap"
+                SelectionUnit="Row"
+                ItemsSource="{Binding Lintels}"
+                SelectedItem="{Binding SelectedLintel}"
+                RowStyle="{StaticResource TextRowStyle}">
+                <Syncfusion:SfDataGrid.Resources>
+                    <Style TargetType="TextBox"/>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                </Syncfusion:SfDataGrid.Resources>
+                <Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:GridTextColumn HeaderText="Door Id"
+                                               MappingName="OpeningInfo.Id"/>
+                    <Syncfusion:GridTextColumn HeaderText="Lintel Name"
+                                               MappingName="Name"/>
+                    <Syncfusion:GridTextColumn HeaderText="Door Location"
+                                               MappingName="OpeningInfo.Location"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Support Type"
+                                                   MappingName="PointSupportType"
+                                                   ItemsSource="{Binding Source={StaticResource SupportTypes}}"
+                                                   UseBindingValue="True"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Engineer Reference"
+                                                   MappingName="EngineerMemberInfo"
+                                                   ItemsSource="{Binding EngineerList}"
+                                                   UseBindingValue="True"
+                                                   IsHidden="{Binding EngineerReferenceVisibility}">
+                        <syncfusion:GridComboBoxColumn.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock  Text="{Binding EngineerName}"/>
+                                    <TextBlock Text="{Binding RealSizeGrade}" Margin="10 0 0 0"/>
+                                    <TextBlock Text="{Binding LevelType}" Margin="10 0 0 0"/>
+                                    <TextBlock Text="{Binding MemberType}" Margin="10 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </syncfusion:GridComboBoxColumn.ItemTemplate>
+                    </Syncfusion:GridComboBoxColumn>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Lintel Material Type"
+                                                   ItemsSource="{Binding Source={StaticResource MaterialTypes}}"
+                                                   MappingName="MaterialType"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Beam Grade"
+                                                   MappingName="TimberGrade"
+                                                   ItemsSource="{Binding TimberGradeList}"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"
+                                                   MappingName="SizeGrade"
+                                                   ItemsSourceSelector="{StaticResource EngineerGradeListConverter}"/>
+                    <Syncfusion:GridTextColumn HeaderText="Standard Door Jamb Support"
+                                               MappingName="StandardDoorJambSupport"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Support Reference"
+                                                   MappingName="SupportReference"
+                                                   ItemsSource="{Binding EngineerList}">
+                        <syncfusion:GridComboBoxColumn.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock  Text="{Binding EngineerName}"/>
+                                    <TextBlock Text="{Binding RealSizeGrade}" Margin="10 0 0 0"/>
+                                    <TextBlock Text="{Binding LevelType}" Margin="10 0 0 0"/>
+                                    <TextBlock Text="{Binding MemberType}" Margin="10 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </syncfusion:GridComboBoxColumn.ItemTemplate>
+                    </Syncfusion:GridComboBoxColumn>
+                    <Syncfusion:GridTextColumn HeaderText="Support Width"
+                                                   MappingName="TotalSupportWidth"/>
+                    <Syncfusion:GridTextColumn HeaderText="Support Height"
+                                               MappingName="SupportHeight"/>
+                    <Syncfusion:GridTextColumn HeaderText="Stud/Post Support Height"
+                                               MappingName="RealSupportHeight"/>
+                    <Syncfusion:GridTextColumn HeaderText="Global TBT Thickness"
+                                               MappingName="ThicknessTBT"/>
+                    <Syncfusion:GridTextColumn HeaderText="Extra Length"
+                                               MappingName="ExtraLength"/>
+                    <Syncfusion:GridTextColumn HeaderText="Quote Length"
+                                               MappingName="QuoteLength"/>
+                </Syncfusion:SfDataGrid.Columns>
+                <syncfusion:SfDataGrid.DetailsViewDefinition>
+                    <syncfusion:GridViewDefinition RelationalColumn="LoadPointSupports">
+                        <syncfusion:GridViewDefinition.DataGrid>
+                            <syncfusion:SfDataGrid AllowDeleting="True"
+                                                   AllowEditing="True"
+                                                   AllowResizingColumns="True"
+                                                   AllowResizingHiddenColumns ="True"
+                                                   AutoGenerateColumns="False"
+                                                   ColumnSizer="Auto"
+                                                   EditTrigger="OnTap"
+                                                   SelectionUnit="Row"
+                                                   Name="LintelSupportDataGrid">
+                                <Syncfusion:SfDataGrid.Resources>
+                                    <Style TargetType="TextBox"/>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                                </Syncfusion:SfDataGrid.Resources>
+                                <Syncfusion:SfDataGrid.Columns>
+                                    <Syncfusion:GridComboBoxColumn HeaderText="Support Type"
+                                                                   MappingName="PointSupportType"
+                                                                   ItemsSource="{Binding Source={StaticResource SupportTypes}}"/>
+                                    <Syncfusion:GridTextColumn HeaderText="Point Location"
+                                                                   MappingName="PointLocation"
+                                                                   IsReadOnly="True"/>
+                                    <Syncfusion:GridComboBoxColumn HeaderText="Reference Name"
+                                                                   MappingName="EngineerMemberInfo"
+                                                                   UseBindingValue="True">
+                                        <syncfusion:GridComboBoxColumn.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock  Text="{Binding EngineerName}"/>
+                                                    <TextBlock Text="{Binding RealSizeGrade}" Margin="10 0 0 0"/>
+                                                    <TextBlock Text="{Binding LevelType}" Margin="10 0 0 0"/>
+                                                    <TextBlock Text="{Binding MemberType}" Margin="10 0 0 0"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </syncfusion:GridComboBoxColumn.ItemTemplate>
+                                    </Syncfusion:GridComboBoxColumn>
+                                    <Syncfusion:GridTextColumn HeaderText="Support Height"
+                                                               MappingName="SupportHeight"
+                                                               IsReadOnly="True"/>
+                                </Syncfusion:SfDataGrid.Columns>
+                            </syncfusion:SfDataGrid>
+                        </syncfusion:GridViewDefinition.DataGrid>
+                    </syncfusion:GridViewDefinition>
+                </syncfusion:SfDataGrid.DetailsViewDefinition>
+            </Syncfusion:SfDataGrid>
+            <!-- Beam Input-->
+
+            <materialDesign:ColorZone Mode="Accent">
+                <Label FontSize="18" Content="Beam Input" />
+            </materialDesign:ColorZone>
+            <Syncfusion:SfDataGrid
+                Name="BeamInput"
                 AllowDeleting="True"
                 AllowEditing="True"
                 AllowResizingColumns="True"
@@ -47,7 +342,8 @@
                 EditTrigger="OnTap"
                 SelectionUnit="Row"
                 ItemsSource="{Binding Beams}"
-                SelectedItem="{Binding SelectedBeam}">
+                SelectedItem="{Binding SelectedBeam}"
+                RowStyle="{StaticResource TextRowStyle}">
                 <Syncfusion:SfDataGrid.Resources>
                     <Style TargetType="TextBox"/>
                     <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
@@ -57,34 +353,63 @@
                                                MappingName="Id"/>
                     <Syncfusion:GridTextColumn HeaderText="Name"
                                                MappingName="Name"/>
+                    <Syncfusion:GridTextColumn HeaderText="Beam Location"
+                                               MappingName="Location"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Support Type"
+                                                   MappingName="PointSupportType"
+                                                   ItemsSource="{Binding Source={StaticResource SupportTypes}}"
+                                                   UseBindingValue="True"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Engineer Reference"
                                                    MappingName="EngineerMemberInfo"
-                                                   ItemsSource="{Binding JobModel.EngineerMemberList}"
-                                                   UseBindingValue="True">
+                                                   ItemsSource="{Binding EngineerList}"
+                                                   UseBindingValue="True"
+                                                   IsHidden="{Binding EngineerReferenceVisibility}">
                         <syncfusion:GridComboBoxColumn.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock  Text="{Binding EngineerName}"/>
                                     <TextBlock Text="{Binding RealSizeGrade}" Margin="10 0 0 0"/>
+                                    <TextBlock Text="{Binding LevelType}" Margin="10 0 0 0"/>
+                                    <TextBlock Text="{Binding MemberType}" Margin="10 0 0 0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </syncfusion:GridComboBoxColumn.ItemTemplate>
 
                     </Syncfusion:GridComboBoxColumn>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Material Type"
+                                                   ItemsSource="{Binding Source={StaticResource MaterialTypes}}"
+                                                   MappingName="MaterialType"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Beam Grade"
+                                                   MappingName="TimberGrade"
+                                                   ItemsSource="{Binding TimberGradeList}"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"
+                                                   MappingName="SizeGrade"
+                                                   ItemsSourceSelector="{StaticResource EngineerGradeListConverter}"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Wall Reference"
+                                                   MappingName="WallReference"
+                                                   UseBindingValue="True"
+                                                   ItemsSource="{Binding LevelInfo.WallLayers}">
+                        <syncfusion:GridComboBoxColumn.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock  Text="{Binding WallType.AliasName}" Foreground="{Binding WallColorLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"/>
+                                    <TextBlock Text="{Binding FinalWallHeight}" Margin="10 0 0 0" Foreground="{Binding WallColorLayer.Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </syncfusion:GridComboBoxColumn.ItemTemplate>
+                    </Syncfusion:GridComboBoxColumn>
                     <Syncfusion:GridTextColumn HeaderText="Span Length"
                                                MappingName="SpanLength"/>
-                    <Syncfusion:GridTextColumn HeaderText="Extra Length"
-                                               MappingName="ExtraLength"/>
-                    <Syncfusion:GridTextColumn HeaderText="Quote Length"
-                                               MappingName="QuoteLength"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Support Reference"
-                                               MappingName="SupportReference"
-                                               ItemsSource="{Binding JobModel.EngineerMemberList}">
+                                                   MappingName="SupportReference"
+                                                   ItemsSource="{Binding EngineerList}">
                         <syncfusion:GridComboBoxColumn.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock  Text="{Binding EngineerName}"/>
                                     <TextBlock Text="{Binding RealSizeGrade}" Margin="10 0 0 0"/>
+                                    <TextBlock Text="{Binding LevelType}" Margin="10 0 0 0"/>
+                                    <TextBlock Text="{Binding MemberType}" Margin="10 0 0 0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </syncfusion:GridComboBoxColumn.ItemTemplate>
@@ -93,13 +418,18 @@
                                                    MappingName="TotalSupportWidth"/>
                     <Syncfusion:GridTextColumn HeaderText="Support Height"
                                                MappingName="SupportHeight"/>
+                    <Syncfusion:GridTextColumn HeaderText="Stud/Post Support Height"
+                                               MappingName="RealSupportHeight"/>
                     <Syncfusion:GridTextColumn HeaderText="Global TBT Thickness"
-                                               MappingName="GlobalThicknessTBT"/>
-                    
+                                               MappingName="ThicknessTBT"/>
+                    <Syncfusion:GridTextColumn HeaderText="Extra Length"
+                                               MappingName="ExtraLength"/>
+                    <Syncfusion:GridTextColumn HeaderText="Quote Length"
+                                               MappingName="QuoteLength"/>
                 </Syncfusion:SfDataGrid.Columns>
 
                 <syncfusion:SfDataGrid.DetailsViewDefinition>
-                    <syncfusion:GridViewDefinition RelationalColumn="SupportPoints">
+                    <syncfusion:GridViewDefinition RelationalColumn="LoadPointSupports">
                         <syncfusion:GridViewDefinition.DataGrid>
                             <syncfusion:SfDataGrid AllowDeleting="True"
                                                    AllowEditing="True"
@@ -129,6 +459,8 @@
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock  Text="{Binding EngineerName}"/>
                                                     <TextBlock Text="{Binding RealSizeGrade}" Margin="10 0 0 0"/>
+                                                    <TextBlock Text="{Binding LevelType}" Margin="10 0 0 0"/>
+                                                    <TextBlock Text="{Binding MemberType}" Margin="10 0 0 0"/>
                                                 </StackPanel>
                                             </DataTemplate>
                                         </syncfusion:GridComboBoxColumn.ItemTemplate>
@@ -142,15 +474,20 @@
                     </syncfusion:GridViewDefinition>
                 </syncfusion:SfDataGrid.DetailsViewDefinition>
             </Syncfusion:SfDataGrid>
-            <Button Content="{materialDesign:PackIcon Add}"
-                    Command="{Binding CreateNewBeamCommand}"
-                    Style="{StaticResource MahApps.Styles.Button }"/>
-            <Button Content="Add Support To Beam"
-                    Command="{Binding AddSupportToBeam}"
-                    Style="{StaticResource MahApps.Styles.Button }"/>
-            <Button Content="Auto input Beam"
-                    Command="{Binding AutoMathBeamWithEngineerBeamList}"
-                    Style="{StaticResource MahApps.Styles.Button}"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="{materialDesign:PackIcon Add}"
+                        Command="{Binding CreateNewBeamCommand}"
+                        Style="{StaticResource MahApps.Styles.Button }"
+                        Margin="5 0 0 0"/>
+                <Button Content="Add Support To Beam"
+                        Command="{Binding AddSupportToBeam}"
+                        Style="{StaticResource MahApps.Styles.Button }"
+                        Margin="5 0 0 0"/>
+                <Button Content="Auto Fill Beam Material"
+                        Command="{Binding AutoMathBeamWithEngineerBeamList}"
+                        Style="{StaticResource MahApps.Styles.Button}"
+                        Margin="5 0 0 0"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

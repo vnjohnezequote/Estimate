@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Openings;
 using JobInfoModule.ViewModels;
 using Syncfusion.UI.Xaml.Grid;
 
@@ -57,21 +59,36 @@ namespace JobInfoModule.Helper
                 "195x65 17C",
                 "195x85 17C",
             };
-            TimberList.Add("GL17C", gl17C);
+            TimberList.Add("17C", gl17C);
 
         }
         public IEnumerable GetItemsSource(object record, object dataContext)
         {
-            if (!(record is EngineerMemberInfo member))
+            switch (record)
             {
-                return null;
+                case ITimberInfo member when string.IsNullOrEmpty(member.TimberGrade):
+                    return null;
+                case ITimberInfo member:
+                {
+                    var grade = member.TimberGrade;
+                    if (!TimberList.ContainsKey(grade)) return null;
+                    TimberList.TryGetValue(grade, out var timberList);
+                    return timberList ?? null;
+                }
+                case Opening door when door.Lintel == null:
+                    return null;
+                case Opening door when string.IsNullOrEmpty(door.Lintel.TimberGrade):
+                    return null;
+                case Opening door:
+                {
+                    var grade = door.Lintel.TimberGrade;
+                    if (!TimberList.ContainsKey(grade)) return null;
+                    TimberList.TryGetValue(grade, out var timberList);
+                    return timberList ?? null;
+                }
+                default:
+                    return null;
             }
-
-            if (string.IsNullOrEmpty(member.TimberGrade)) return null;
-            var grade = member.TimberGrade;
-            if(!TimberList.ContainsKey(grade)) return null;
-            TimberList.TryGetValue(grade, out var timberList);
-            return timberList ?? null;
         }
     }
 }

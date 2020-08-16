@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Security.AccessControl;
@@ -21,13 +22,12 @@ namespace AppModels.ResponsiveData.Openings
 /// <summary>
     /// The beam.
     /// </summary>
-    public class Beam: BindableBase, IBeam
+    public class Beam: BindableBase, IBeam,ITimberInfo
 {
         #region Field
 
         private int _id;
         private string _name;
-        private int _numberOfSupport;
         private BeamType _beamType;
         private SupportType _pointSupportType;
         private int _spanLength;
@@ -35,17 +35,35 @@ namespace AppModels.ResponsiveData.Openings
         private EngineerMemberInfo _supportReference;
         private EngineerMemberInfo _engineerTimberInfo;
         private WallBase _wallReference;
-
+        private string _location;
         private int _supportHeight;
+        private int _noItem;
+
+        private string _timberGrade;
+
+        private string _size;
+
+        private string _sizeGrade;
+
+        private int _thickness;
+
+        private int _depth;
+
+        private MaterialTypes? _materialType = null;
         //private IWallMemberInfo _globalSupportInfo;
         #endregion
 
 
         #region Property
-
+       
+        public string Location
+        {
+            get => _location;
+            set => SetProperty(ref _location, value);
+        }
         public IWallMemberInfo GLobalSupportInfo { get; private set; }
 
-        public ObservableCollection<SupportPoint> LoadPointSupports { get; set; } 
+        public ObservableCollection<SupportPoint> LoadPointSupports { get;} 
             = new ObservableCollection<SupportPoint>();
 
         public SupportType PointSupportType
@@ -60,20 +78,11 @@ namespace AppModels.ResponsiveData.Openings
             private set=>SetProperty(ref _beamType,value);
         }
 
-        public Suppliers Supplier { get; }
+        public Suppliers Supplier => GlobalInfo.GlobalInfo.Supplier;
         public int Id { get=>_id; set=>SetProperty(ref _id,value); }
-        
-        /// <summary>
-        /// Gets or sets the location.
-        /// </summary>
-        public string Location { get; set; }
+    
 
-        /// <summary>
-        /// Gets or sets the beam grade.
-        /// </summary>
-        public string BeamGrade { get; set; }
-
-        /// <summary>
+       /// <summary>
         /// Gets or sets the beam name.
         /// </summary>
         public string Name {
@@ -105,7 +114,6 @@ namespace AppModels.ResponsiveData.Openings
                 RaisePropertyChanged(nameof(QuoteLength));
             }
         }
-
         public double ExtraLength
         {
             get=>_extraLength;
@@ -130,7 +138,6 @@ namespace AppModels.ResponsiveData.Openings
                 return (double)((SpanLength+supportWidth).RoundUpTo300()) / 1000 + ExtraLength;
             }
         }
-
         public int TotalSupportWidth
         {
             get
@@ -160,7 +167,6 @@ namespace AppModels.ResponsiveData.Openings
             get => _supportReference;
             set => SetProperty(ref _supportReference, value);
         }
-
         public int SupportHeight
         {
             get
@@ -175,6 +181,10 @@ namespace AppModels.ResponsiveData.Openings
                     return WallReference.FinalWallHeight;
                 }
 
+                if (GlobalInfo!=null)
+                {
+                    return GlobalInfo.WallHeight;
+                }
                 return 0;
             }
             set
@@ -187,25 +197,36 @@ namespace AppModels.ResponsiveData.Openings
                 SetProperty(ref _supportHeight, value);
             }
         }
-
         public int RealSupportHeight
+        {
+            get
+            {
+                if (PointSupportType == SupportType.Jamb)
+                {
+                    if (WallReference != null)
+                    {
+                        return WallReference.StudHeight;
+                    }
+
+                    return SupportHeight - ThicknessTBT;
+                }
+
+                if (WallReference !=null)
+                {
+                    return WallReference.FinalWallHeight;
+                }
+                return SupportHeight;
+                //GlobalInfo.GlobalExtWallDetailInfo.RibbonPlate.Depth
+            }
+        }
+        public int ThicknessTBT
         {
             get
             {
                 if (WallReference != null)
                 {
-                    return WallReference.StudHeight;
+                    return WallReference.ThicknessTBT;
                 }
-
-                return SupportHeight-GlobalThicknessTBT;
-                //GlobalInfo.GlobalExtWallDetailInfo.RibbonPlate.Depth
-            }
-        }
-
-        public int GlobalThicknessTBT
-        {
-            get
-            {
                 if (GlobalInfo!=null)
                 {
                     return GlobalInfo.GlobalExtWallDetailInfo.RibbonPlate.Depth *
@@ -219,12 +240,138 @@ namespace AppModels.ResponsiveData.Openings
                 return 105;
             }
         }
-
         public WallBase WallReference
         {
             get => _wallReference;
-            set => SetProperty(ref _wallReference,value);
+            set
+            {
+                value.PropertyChanged += Wall_PropertyChanged;
+                SetProperty(ref _wallReference, value);
+            } 
         }
+        public int NoItem
+        {
+            get
+            {
+                if (_noItem!=0)
+                {
+                    return _noItem;
+                }
+
+                return EngineerMemberInfo?.NoItem ?? 0;
+            }
+            set=>SetProperty(ref _noItem,value);
+        }
+        public int Thickness
+        {
+            get
+            {
+                if (_thickness!=0)
+                {
+                    return _thickness;
+                }
+
+                return EngineerMemberInfo?.Thickness ?? 0;
+            }
+            set => SetProperty(ref _thickness, value);
+        }
+        public int Depth
+        {
+            get
+            {
+                if (_depth!=0)
+                {
+                    return _depth;
+                }
+
+                return EngineerMemberInfo?.RealDepth ?? 0;
+            }
+            set => SetProperty(ref _depth, value);
+
+        }
+        public string Size
+        {
+            get
+            {
+                if (NoItem ==0)
+                {
+                    return "";
+                }
+                var result = Thickness + "x" + Depth;
+                if (NoItem == 1)
+                {
+                    return result;
+                }
+
+                return NoItem + "/" + result;
+            }
+        }
+        public MaterialTypes? MaterialType
+        {
+            get => _materialType ?? EngineerMemberInfo?.MaterialType;
+            set=>SetProperty(ref _materialType,value);
+        }
+        public virtual string SizeGrade
+        {
+            get
+            {
+                if (TimberGrade == "Steel"|| MaterialType == MaterialTypes.Steel)
+                    return "Steel";
+                return this.Size + " " + this.TimberGrade;
+
+            }
+            set
+            {
+                var item = 0;
+                var depth = 0;
+                var thickness = 0;
+                var grade = "";
+                switch (value)
+                {
+                    case null:
+                        return;
+                    case "Steel":
+                        NoItem = item;
+                        thickness = thickness;
+                        Depth = depth;
+                        TimberGrade = grade;
+                        return;
+                }
+
+                var words = value.Split(new char[] { '/', 'x', ' ' });
+                if (value.Contains("/"))
+                {
+                    item = Convert.ToInt32(words[0]);
+                    Thickness = Convert.ToInt32(words[1]);
+                    depth = Convert.ToInt32(words[2]);
+                    grade = words[3];
+
+                }
+                else
+                {
+                    item = 0;
+                    thickness = Convert.ToInt32(words[0]);
+                    depth = Convert.ToInt32(words[1]);
+                    grade = words[2];
+                }
+                NoItem = item;
+                Depth = depth;
+                Thickness = thickness;
+                TimberGrade = grade;
+
+            }
+        }
+        public string TimberGrade
+        {
+            get
+            {
+                if (MaterialType == MaterialTypes.Steel)
+                    return "Steel";
+                return EngineerMemberInfo != null ? EngineerMemberInfo.TimberGrade : _timberGrade;
+            }
+            set => SetProperty(ref _timberGrade, value);
+        }
+
         #endregion
 
         #region Constructor
@@ -233,6 +380,7 @@ namespace AppModels.ResponsiveData.Openings
         {
             Type = beamType;
             GlobalInfo = globalInfo;
+            GlobalInfo.PropertyChanged += GlobalInfo_PropertyChanged;
             GlobalInfo.GlobalExtWallDetailInfo.BottomPlate.PropertyChanged += PlatePropertiesChanged;
             GlobalInfo.GlobalExtWallDetailInfo.TopPlate.PropertyChanged += PlatePropertiesChanged;
             GlobalInfo.GlobalExtWallDetailInfo.RibbonPlate.PropertyChanged += PlatePropertiesChanged;
@@ -240,12 +388,32 @@ namespace AppModels.ResponsiveData.Openings
             InitializedBeamSupportPoint();
             //GLobalSupportInfo = gLobalSupportInfo;
         }
+        private void Wall_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "FinalWallHeight")
+            {
+                RaisePropertyChanged(nameof(SupportHeight));
+            }
+
+            if (e.PropertyName == "ThicknessTBT")
+            {
+                RaisePropertyChanged(nameof(ThicknessTBT));
+            }
+        }
+
+        private void GlobalInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "WallHeight")
+            {
+                RaisePropertyChanged(nameof(SupportHeight));
+            }
+        }
 
         private void PlatePropertiesChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Depth" || e.PropertyName == "NoItem")
             {
-                RaisePropertyChanged(nameof(GlobalThicknessTBT));
+                RaisePropertyChanged(nameof(ThicknessTBT));
                 RaisePropertyChanged(nameof(RealSupportHeight));
             }
         }
@@ -282,6 +450,31 @@ namespace AppModels.ResponsiveData.Openings
                 case nameof(SupportReference):
                     RaisePropertyChanged(nameof(QuoteLength));
                     RaisePropertyChanged(nameof(TotalSupportWidth));
+                    break;
+                case nameof(WallReference):
+                    RaisePropertyChanged(nameof(ThicknessTBT));
+                    RaisePropertyChanged(nameof(SupportHeight));
+                    RaisePropertyChanged(nameof(RealSupportHeight));
+                    break;
+                case nameof(SupportHeight):
+                    RaisePropertyChanged(nameof(RealSupportHeight));
+                    break;
+                case nameof(PointSupportType):
+                    RaisePropertyChanged(nameof(RealSupportHeight));
+                    break;
+                case nameof(EngineerMemberInfo):
+                    RaisePropertyChanged(nameof(NoItem));
+                    RaisePropertyChanged(nameof(Depth));
+                    RaisePropertyChanged(nameof(Thickness));
+                    RaisePropertyChanged(nameof(TimberGrade));
+                    RaisePropertyChanged(nameof(Size));
+                    RaisePropertyChanged(nameof(SizeGrade));
+                    RaisePropertyChanged(nameof(MaterialType));
+                    break;
+                case nameof(MaterialType):
+                    RaisePropertyChanged(nameof(TimberGrade));
+                    RaisePropertyChanged(nameof(SizeGrade));
+
                     break;
             }
         }

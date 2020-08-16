@@ -38,9 +38,8 @@ namespace JobInfoModule.ViewModels
 
         #endregion
         public ObservableCollection<string> LevelTypes { get; } = new ObservableCollection<string>() { "Global" };
-        public ObservableCollection<string> TimberGradeList { get; } = new ObservableCollection<string>(){"LVL","MGP10","MGP12","GL17C","F17","F27"};
-        //public Dictionary<string, string> TimberGradeList { get; } = new Dictionary<string, string>();
-
+        public ObservableCollection<string> TimberGradeList { get; } = new ObservableCollection<string>(){"LVL","MGP10","MGP12","17C","F17","F27","Steel"};
+        
 
         public EngineerInfoViewModel(IUnityContainer unityContainer, IRegionManager regionManager,
             IEventAggregator eventAggregator, ILayerManager layerManager, IJob jobModel) : base(unityContainer,
@@ -65,6 +64,7 @@ namespace JobInfoModule.ViewModels
         {
             var member = new EngineerMemberInfo(JobModel.Info)
             {
+                LevelType =  "Global",
                 MemberType = WallMemberType.Lintel,
                 MaterialType = MaterialTypes.Timber
             };
