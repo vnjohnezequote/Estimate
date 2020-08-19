@@ -312,6 +312,7 @@ namespace AppModels.ResponsiveData
             this.Id = id;
             TypeId = typeId;
             this.GlobalWallInfo = globalWallInfo;
+            this.GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged1;
             GlobalWallInfo.GlobalInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
             RibbonPlate = new WallRibbonPlate(this);
             TopPlate = new WallTopPlate(this);
@@ -323,6 +324,25 @@ namespace AppModels.ResponsiveData
             TopPlate.PropertyChanged += WallPlate_PropertyChanged;
             BottomPlate.PropertyChanged += WallPlate_PropertyChanged;
             Stud.PropertyChanged += Stud_PropertyChanged;
+        }
+
+        private void GlobalWallInfo_PropertyChanged1(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(GlobalWallInfo.ExternalWallSpacing):
+                case nameof(GlobalWallInfo.InternalWallSpacing):
+                    RaisePropertyChanged(nameof(WallSpacing));
+                    break;
+                case nameof(GlobalWallInfo.ExternalWallThickness):
+                case nameof(GlobalWallInfo.InternalWallThickness):
+                    RaisePropertyChanged(nameof(WallThickness));
+                    break;
+                case nameof(GlobalWallInfo.WallHeight):
+                    RaisePropertyChanged(nameof(WallPitchingHeight));
+                    break;
+
+            }
         }
 
         private void Stud_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

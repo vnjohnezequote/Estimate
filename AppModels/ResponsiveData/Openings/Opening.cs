@@ -31,6 +31,9 @@ namespace AppModels.ResponsiveData.Openings
         private LintelBeam _lintel;
         private OpeningInfo _doorWindowInfo;
         private OpeningType? _openingType = null;
+        private bool _isCavitySlidingDoor=false;
+        private DoorTypes _doorType;
+        private NumberOfDoors _doorNumberType;
 
         public WallBase WallReference
         {
@@ -61,7 +64,40 @@ namespace AppModels.ResponsiveData.Openings
         }
         public int NoDoor { get; set; }
         public bool IsGarageDoor { get; set; }
-        public bool IsCavitySlidingDoor { get; set; }
+
+        public DoorTypes DoorType
+        {
+            get => _doorType;
+            set => SetProperty(ref _doorType, value);
+
+        }
+
+        public NumberOfDoors DoorNumberType
+        {
+            get => _doorNumberType;
+            set => SetProperty(ref _doorNumberType, value);
+        }
+
+        public int DoorQty
+        {
+            get
+            {
+                switch (DoorNumberType)
+                {
+                    case NumberOfDoors.Single:
+                        return 1;
+                    case NumberOfDoors.Double:
+                        return 2;
+                    case NumberOfDoors.Triple:
+                        return 3;
+                    case NumberOfDoors.Quadruple:
+                        return 4;
+                    default:
+                        return 1;
+                }
+            }
+
+        }
         public WallLocationTypes DoorTypeLocation { get=>_doorTypeLocation; set=>SetProperty(ref _doorTypeLocation,value); }
         public IGlobalWallInfo GlobalWallInfo { get; set; }
         public Suppliers Suppliers => GlobalWallInfo.GlobalInfo.Supplier;
@@ -193,6 +229,14 @@ namespace AppModels.ResponsiveData.Openings
                 case nameof(WallReference):
                     RaisePropertyChanged(nameof(IsDoorUnderLbw));
                     RaisePropertyChanged(nameof(WallThickness));
+                    break;
+                case nameof(DoorWindowInfo):
+                    RaisePropertyChanged(nameof(Width));
+                    RaisePropertyChanged(nameof(Height));
+                    RaisePropertyChanged(nameof(OpeningType));
+                    break;
+                case nameof(DoorNumberType):
+                    RaisePropertyChanged(nameof(DoorNumberType));
                     break;
             }
         }

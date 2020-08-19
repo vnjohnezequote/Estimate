@@ -17,6 +17,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
+using Syncfusion.UI.Xaml.Grid;
 using Unity;
 
 namespace WallFrameInputModule.ViewModels
@@ -62,6 +63,7 @@ namespace WallFrameInputModule.ViewModels
         public ICommand AutoMathBeamWithEngineerBeamList { get; private set; }
         public ICommand CreateNewDoorScheduleCommand { get; private set; }
         public ICommand AddSupportToBeam { get; private set; }
+        public ICommand DeleteDoorShedulesRowCommand { get; private set; }
         public bool EngineerReferenceVisibility => JobModel.EngineerMemberList == null || JobModel.EngineerMemberList.Count == 0;
 
         #endregion
@@ -79,9 +81,19 @@ namespace WallFrameInputModule.ViewModels
             AutoMathBeamWithEngineerBeamList = new DelegateCommand(OnAutoMathBeamList);
             AddSupportToBeam = new DelegateCommand(OnAddSupportToBeam);
             CreateNewDoorScheduleCommand = new DelegateCommand(OnCreateNewDoorSchedule);
+            DeleteDoorShedulesRowCommand = new DelegateCommand<SfDataGrid>(OnDeletedDoorSchedulesItem);
             JobModel.EngineerMemberList.CollectionChanged += EngineerMemberList_CollectionChanged;
         }
 
+        private void OnDeletedDoorSchedulesItem(SfDataGrid doorSchedulesGrid)
+        {
+            var recordId = doorSchedulesGrid.SelectedIndex;
+            if (recordId < 0)
+            {
+                return;
+            }
+            this.DoorSchedules.RemoveAt(recordId);
+        }
         private void OnCreateNewDoorWindow()
         {
             this._startDoorId = DoorAndWindowList.Count + 1;
@@ -92,7 +104,7 @@ namespace WallFrameInputModule.ViewModels
 
         private void OnCreateNewDoorSchedule()
         {
-            var door = new OpeningInfo();
+            var door = new OpeningInfo(this.LevelInfo.LevelInfo);
             this.DoorSchedules.Add(door);
         }
 

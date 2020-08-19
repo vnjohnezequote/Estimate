@@ -157,6 +157,7 @@
     <Compile Include="Enums\BeamType.cs" />
     <Compile Include="Enums\CeilingBattensType.cs" />
     <Compile Include="Enums\ClientNames.cs" />
+    <Compile Include="Enums\DoorType.cs" />
     <Compile Include="Enums\LoadPointLocation.cs" />
     <Compile Include="Enums\MaterialTypes.cs" />
     <Compile Include="Enums\NoggingMethod.cs" />

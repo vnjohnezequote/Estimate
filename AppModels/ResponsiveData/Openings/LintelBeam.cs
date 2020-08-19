@@ -184,7 +184,7 @@ namespace AppModels.ResponsiveData.Openings
                 if (!string.IsNullOrEmpty(_noOfJambSupport)) return _noOfJambSupport;
                 if (OpeningInfo == null) return _noOfJambSupport;
                 var doorWidth = OpeningInfo.Width;
-                if (OpeningInfo.IsCavitySlidingDoor)
+                if (OpeningInfo.DoorType == DoorTypes.CavitySlidingDoor)
                 {
                     doorWidth = OpeningInfo.Width * 2 * OpeningInfo.NoDoor;
                 }
@@ -343,7 +343,7 @@ namespace AppModels.ResponsiveData.Openings
             } 
             set => SetProperty(ref _timberGrade, value);
         }
-        public int SpanLength => OpeningInfo.Width;
+        public int SpanLength => OpeningInfo.Width*OpeningInfo.DoorQty;
 
         public double ExtraLength
         {
@@ -358,15 +358,20 @@ namespace AppModels.ResponsiveData.Openings
         {
             get
             {
+                var cavityFactor = 1;
+                if (OpeningInfo.DoorType == DoorTypes.CavitySlidingDoor)
+                {
+                    cavityFactor = 2;
+                }
                 var supportWidth = 0;
                 if (LoadPointSupports == null || LoadPointSupports.Count < 2)
-                    return (double) ((SpanLength + supportWidth).RoundUpTo300()) / 1000 + ExtraLength;
+                    return (double) ((SpanLength*cavityFactor + supportWidth).RoundUpTo300()) / 1000 + ExtraLength;
                 for (var i = 0; i < 2; i++)
                 {
                     supportWidth += LoadPointSupports[i].SupportWidth;
                 }
 
-                return (double)((SpanLength + supportWidth).RoundUpTo300()) / 1000 + ExtraLength;
+                return (double)((SpanLength*cavityFactor + supportWidth).RoundUpTo300()) / 1000 + ExtraLength;
             }
         }
 
@@ -473,6 +478,13 @@ namespace AppModels.ResponsiveData.Openings
                 case "Width":
                     RaisePropertyChanged(nameof(StandardDoorJambSupport));
                     RaisePropertyChanged(nameof(SpanLength));
+                    RaisePropertyChanged(nameof(QuoteLength));
+                    break;
+                case nameof(OpeningInfo.DoorQty):
+                    RaisePropertyChanged(nameof(SpanLength));
+                    RaisePropertyChanged(nameof(QuoteLength));
+                    break;
+                case nameof(OpeningInfo.DoorType):
                     RaisePropertyChanged(nameof(QuoteLength));
                     break;
             }

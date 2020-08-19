@@ -48,6 +48,12 @@
                     <x:Type TypeName="appModelEnum:OpeningType"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+            <ObjectDataProvider x:Key="DoorTypes"
+                                MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="appModelEnum:DoorTypes"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
             <applicationConverter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
             <helper:EngineerGradeListConverter x:Key="EngineerGradeListConverter"/>
             <!--<helper:EngineerGradeListConverter x:Key="EngineerGradeListConverter"/>-->
@@ -87,13 +93,19 @@
                                                MappingName="Height"/>
                     <Syncfusion:GridTextColumn HeaderText="Door Width"
                                                MappingName="Width"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Door/Window"
+                                                   MappingName="DoorType"
+                                                   ItemsSource="{Binding Source={StaticResource OpeningTypes}}"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Door Type"
+                                                   MappingName="DoorTypeLocation"
+                                                   ItemsSource="{Binding Source={StaticResource WallTypeLocations}}"/>
                     <syncfusion:GridTemplateColumn MappingName="Delete Row"
                                                    syncfusion:FocusManagerHelper.WantsKeyInput="True">
                         <syncfusion:GridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button  Content="Delete" syncfusion:FocusManagerHelper.FocusedElement="True" 
-                                         Command="{Binding Path=DataContext.DeleteWallRowCommand, ElementName=WallInput}"
-                                         CommandParameter="{Binding ElementName=WallInput}"
+                                         Command="{Binding Path=DataContext.DeleteDoorShedulesRowCommand, ElementName=DoorSchedulesInput}"
+                                         CommandParameter="{Binding ElementName=DoorSchedulesInput}"
                                          HorizontalContentAlignment="Center"
                                          VerticalContentAlignment="Center"
                                          VerticalAlignment="Center"
@@ -169,7 +181,6 @@
                             </DataTemplate>
                         </syncfusion:GridComboBoxColumn.ItemTemplate>
                     </Syncfusion:GridComboBoxColumn>
-
                     <Syncfusion:GridTextColumn HeaderText="Door width"
                                                MappingName="Width"/>
                     <Syncfusion:GridTextColumn HeaderText="Door/Window Height"
@@ -178,8 +189,10 @@
                                                MappingName="DoorHeaderHeight"/>
                     <Syncfusion:GridCheckBoxColumn HeaderText="Is Door Under Lbw"
                                                    MappingName="IsDoorUnderLbw"/>
-                    <Syncfusion:GridCheckBoxColumn HeaderText="Is Carvity Sliding Door"
-                                                   MappingName="IsDoorUnderLbw"/>
+                    <Syncfusion:GridComboBoxColumn HeaderText="Door Type"
+                                                   MappingName="DoorType"
+                                                   ItemsSource="{Binding Source={StaticResource DoorTypes}}"/>
+                    
                 </Syncfusion:SfDataGrid.Columns>
             </Syncfusion:SfDataGrid>
             <StackPanel Orientation="Horizontal">
