@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppModels.Interaface;
+using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Openings;
 using ProtoBuf;
 
 namespace AppModels.PocoDataModel
@@ -18,6 +22,11 @@ namespace AppModels.PocoDataModel
         public GlobalWallInfoPoco GlobalWallInfo { get; set; }
         [ProtoMember(3)]
         public List<LevelWallPoco> Levels { get; set; }
+
+        public List<EngineerMemberInfoPoco> EngineerMemberList { get; set; }
+        public List<OpeningInfoPoco> DoorSchedules { get; set; }
+
+
         public JobModelPoco()
         {
 
@@ -26,17 +35,39 @@ namespace AppModels.PocoDataModel
         {
             Info = new JobInfoPoco(jobModel.Info);
             GlobalWallInfo = new GlobalWallInfoPoco(jobModel.GlobalWallInfo);
+            InitializerEngineerList(jobModel.EngineerMemberList.ToList());
+            InitializerDoorSchedules(jobModel.DoorSchedules.ToList());
             InitializerLevel(jobModel.Levels.ToList());
+            
         }
 
         private void InitializerLevel(List<LevelWall> levels)
         {
             Levels = new List<LevelWallPoco>();
-            foreach (var levelWall in levels)
+            foreach (var levelPoco in levels.Select(levelWall => new LevelWallPoco(levelWall)))
             {
-                var levelPoco = new LevelWallPoco(levelWall);
                 Levels.Add(levelPoco);
             }
+        }
+
+        private void InitializerEngineerList(List<EngineerMemberInfo> engineerMemberInfos)
+        {
+            EngineerMemberList=new List<EngineerMemberInfoPoco>();
+            foreach (var engineerMemberPoco in engineerMemberInfos.Select(engineerMemberInfo => new EngineerMemberInfoPoco(engineerMemberInfo)))
+            {
+                EngineerMemberList.Add(engineerMemberPoco);
+            }
+        }
+
+        private void InitializerDoorSchedules(List<OpeningInfo> doorSchedules)
+        {
+
+           DoorSchedules = new List<OpeningInfoPoco>();
+           foreach (var doorSchedule in doorSchedules)
+           {
+             var doorSchedulePoco = new OpeningInfoPoco(doorSchedule);   
+             DoorSchedules.Add(doorSchedulePoco);
+           }
         }
     }
 }

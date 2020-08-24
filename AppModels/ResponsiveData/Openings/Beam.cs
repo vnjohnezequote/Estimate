@@ -10,10 +10,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.PocoDataModel.Openings;
+using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Support;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Openings
@@ -29,7 +34,7 @@ namespace AppModels.ResponsiveData.Openings
         private int _id;
         private string _name;
         private BeamType _beamType;
-        private SupportType _pointSupportType;
+        private SupportType? _pointSupportType;
         private int _spanLength;
         private double _extraLength;
         private EngineerMemberInfo _supportReference;
@@ -48,7 +53,8 @@ namespace AppModels.ResponsiveData.Openings
         private int _thickness;
 
         private int _depth;
-
+        private Suppliers? _supplier;
+        private int _quantity;
         private MaterialTypes? _materialType = null;
         //private IWallMemberInfo _globalSupportInfo;
         #endregion
@@ -61,28 +67,75 @@ namespace AppModels.ResponsiveData.Openings
             get => _location;
             set => SetProperty(ref _location, value);
         }
-        public IWallMemberInfo GLobalSupportInfo { get; private set; }
+        //public IWallMemberInfo GLobalSupportInfo { get; private set; }
 
         public ObservableCollection<SupportPoint> LoadPointSupports { get;} 
             = new ObservableCollection<SupportPoint>();
-
-        public SupportType PointSupportType
+        public SupportType? PointSupportType
         {
-            get => _pointSupportType;
-            set => SetProperty(ref _pointSupportType, value);
-        }
+            get
+            {
+                if (_pointSupportType!=null)
+                {
+                    return (SupportType)_pointSupportType;
+                }
 
+                if (SupportReference!=null && SupportReference.MemberType == WallMemberType.Post)
+                {
+                    if (SupportReference.MaterialType == MaterialTypes.Steel)
+                    {
+                        return SupportType.SteelPost;
+                    }
+                    else
+                    {
+                        return SupportType.Post;
+                    }
+                }
+
+                return SupportType.Jamb;
+            }
+            set
+            {
+                if (SupportReference!=null && SupportReference.MemberType == WallMemberType.Post )
+                {
+                    if (SupportReference.MaterialType == MaterialTypes.Steel && value == SupportType.SteelPost)
+                    {
+                        value = null;
+                    }
+
+                    if (SupportReference.MaterialType == MaterialTypes.Timber && value==SupportType.Post)
+                    {
+                        value = null;
+                    }
+                }
+
+                if (SupportReference!=null && SupportReference.MemberType == WallMemberType.DoorJamb && value == SupportType.Jamb)
+                {
+                    value = null;
+                }
+                SetProperty(ref _pointSupportType, value);
+            } 
+        }
         public BeamType Type
         {
             get=>_beamType;
             private set=>SetProperty(ref _beamType,value);
         }
+        public Suppliers? Supplier
+        {
+            get => _supplier ?? GlobalInfo.GlobalInfo.Supplier;
+            set
+            {
+                if (GlobalInfo?.GlobalInfo != null && GlobalInfo.GlobalInfo.Supplier== value)
+                {
+                    value = null;
+                }
 
-        public Suppliers Supplier => GlobalInfo.GlobalInfo.Supplier;
+                SetProperty(ref _supplier, value);
+            }
+        }
         public int Id { get=>_id; set=>SetProperty(ref _id,value); }
-    
-
-       /// <summary>
+        /// <summary>
         /// Gets or sets the beam name.
         /// </summary>
         public string Name {
@@ -154,7 +207,7 @@ namespace AppModels.ResponsiveData.Openings
                 return supportWidth;
             }
         }
-        public int Quantity { get; set; }
+        public int Quantity { get=>_quantity; set=>SetProperty(ref _quantity,value); }
         public IGlobalWallInfo GlobalInfo { get; }
         public EngineerMemberInfo EngineerMemberInfo
         {
@@ -260,7 +313,15 @@ namespace AppModels.ResponsiveData.Openings
 
                 return EngineerMemberInfo?.NoItem ?? 0;
             }
-            set=>SetProperty(ref _noItem,value);
+            set
+            {
+                if (EngineerMemberInfo!=null && value == EngineerMemberInfo.NoItem)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _noItem, value);
+            }
+                
         }
         public int Thickness
         {
@@ -273,7 +334,14 @@ namespace AppModels.ResponsiveData.Openings
 
                 return EngineerMemberInfo?.Thickness ?? 0;
             }
-            set => SetProperty(ref _thickness, value);
+            set
+            {
+                if (EngineerMemberInfo!=null && value == EngineerMemberInfo.Thickness)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _thickness, value);
+            } 
         }
         public int Depth
         {
@@ -286,7 +354,14 @@ namespace AppModels.ResponsiveData.Openings
 
                 return EngineerMemberInfo?.RealDepth ?? 0;
             }
-            set => SetProperty(ref _depth, value);
+            set
+            {
+                if (EngineerMemberInfo!=null && value==EngineerMemberInfo.Depth)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _depth, value);
+            } 
 
         }
         public string Size
@@ -309,7 +384,15 @@ namespace AppModels.ResponsiveData.Openings
         public MaterialTypes? MaterialType
         {
             get => _materialType ?? EngineerMemberInfo?.MaterialType;
-            set=>SetProperty(ref _materialType,value);
+            set
+            {
+                if (EngineerMemberInfo!=null && EngineerMemberInfo.MaterialType == value)
+                {
+                    value = null;
+                }
+                SetProperty(ref _materialType, value);
+            }
+            
         }
         public virtual string SizeGrade
         {
@@ -367,9 +450,20 @@ namespace AppModels.ResponsiveData.Openings
             {
                 if (MaterialType == MaterialTypes.Steel)
                     return "Steel";
+                if (!string.IsNullOrEmpty(_timberGrade))
+                {
+                    return _timberGrade;
+                }
                 return EngineerMemberInfo != null ? EngineerMemberInfo.TimberGrade : _timberGrade;
             }
-            set => SetProperty(ref _timberGrade, value);
+            set
+            {
+                if (EngineerMemberInfo!=null && EngineerMemberInfo.TimberGrade == value)
+                {
+                    value = string.Empty;
+                }
+                SetProperty(ref _timberGrade, value);
+            } 
         }
 
         #endregion
@@ -481,7 +575,69 @@ namespace AppModels.ResponsiveData.Openings
 
         #endregion
 
+        public void LoadBeamInfo(BeamPoco beam, List<EngineerMemberInfo> engineerSchedules, List<WallBase> walls)
+        {
+            LoadPointSupportInfo(beam.LoadPointSupports, engineerSchedules);
+            LoadWallInfo(walls, beam);
+            LoadEngineerInfo(engineerSchedules, beam);
+            Location = beam.Location;
+            PointSupportType = beam.PointSupportType;
+            Type = beam.Type;
+            Supplier = beam.Suplier;
+            Id = beam.Id;
+            //Name = beam.Name;
+            SpanLength = beam.SpanLength;
+            ExtraLength = beam.ExtraLength;
+            Quantity = beam.Quantity;
+            NoItem = beam.NoItem;
+            Thickness = beam.Thickness;
+            Depth = beam.Depth;
+            MaterialType = beam.MaterialType;
+        }
 
-        
+        private void LoadEngineerInfo(List<EngineerMemberInfo> engineerSchedules, BeamPoco beam)
+        {
+            foreach (var engineerMemberInfo in engineerSchedules)
+            {
+                if (engineerMemberInfo.Id == beam.EngineerMemberId)
+                    this.EngineerMemberInfo = engineerMemberInfo;
+                if (engineerMemberInfo.Id == beam.SupportReferenceId)
+                {
+                    SupportReference = engineerMemberInfo;
+                }
+            }
+        }
+
+        private void LoadWallInfo(List<WallBase> wallList, BeamPoco beam)
+        {
+            foreach (var wallBase in wallList)
+            {
+                if (wallBase.Id == beam.WallReferenceID)
+                {
+                    this.WallReference = wallBase;
+                }
+            }
+        }
+
+        private void LoadPointSupportInfo(List<SupportPointPoco> supports,List<EngineerMemberInfo> engineerMemberInfos)
+        {
+            foreach (var supportPointPoco in supports)
+            {
+                var i = supports.IndexOf(supportPointPoco);
+                if (i ==0 || i==1)
+                {
+                    LoadPointSupports[i].LoadSupportPoint(supportPointPoco,engineerMemberInfos);
+                }
+                else
+                {
+                    var support = new SupportPoint(this,LoadPointLocation.MidPoint);
+                    support.LoadSupportPoint(supportPointPoco,engineerMemberInfos);
+                    LoadPointSupports.Add(support);
+                }
+            }
+            
+        }
+
+
 }
 }

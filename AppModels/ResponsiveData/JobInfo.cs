@@ -52,6 +52,7 @@ namespace AppModels.ResponsiveData
         private CeilingBattensType _ceilingBattenType;
         #endregion
         #region Property
+        public JobModel JobModel { get; set; }
         public string JobLocation
         {
             get => this._jobLocation;
@@ -266,9 +267,10 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Initializes a new instance of the <see cref="JobInfo"/> class.
         /// </summary>
-        public JobInfo()
+        public JobInfo(JobModel job)
         {
             //this.GlobalWallInfo = new GlobalWallInfo();
+            this.JobModel = job;
             PropertyChanged += JobInfo_PropertyChanged;
         }
         #endregion

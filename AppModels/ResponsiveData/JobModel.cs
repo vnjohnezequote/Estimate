@@ -12,7 +12,9 @@ using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Openings;
 using devDept.Geometry;
 using Prism.Mvvm;
 using ProtoBuf;
@@ -22,6 +24,7 @@ namespace AppModels.ResponsiveData
     /// <summary>
     /// The job model.
     /// </summary>
+    /// 
     public class JobModel : BindableBase,IJob
     {
         #region Field
@@ -55,15 +58,15 @@ namespace AppModels.ResponsiveData
         public ObservableCollection<LevelWall> Levels { get => this._levels; set => this.SetProperty(ref this._levels, value); }
         //public ObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
         public MyObservableCollection<EngineerMemberInfo> EngineerMemberList { get; } = new MyObservableCollection<EngineerMemberInfo>();
+        public ObservableCollection<OpeningInfo> DoorSchedules { get; } = new MyObservableCollection<OpeningInfo>();
         #endregion
         /// <summary>
         /// Initializes a new instance of the <see cref="JobModel"/> class.
         /// </summary>
         public JobModel()
         {
-            this.Info = new JobInfo();
+            this.Info = new JobInfo(this);
             GlobalWallInfo = new GlobalWallInfo(Info);
-            //EngineerMemberList = new ObservableCollection<EngineerMemberInfo>();
             this.Levels = new ObservableCollection<LevelWall>();
         }
 
@@ -71,10 +74,12 @@ namespace AppModels.ResponsiveData
         {
             Info.LoadJobInfo(jobLoaded.Info);
             GlobalWallInfo.LoadWallGlobalInfo(jobLoaded.GlobalWallInfo);
+            LoadEnginerList(jobLoaded.EngineerMemberList);
+            LoadDoorSchedules(jobLoaded.DoorSchedules);
             LoadLevel(jobLoaded.Levels);
         }
 
-        public void LoadLevel(List<LevelWallPoco> levels )
+        private void LoadLevel(List<LevelWallPoco> levels )
         {
             foreach (var levelWallPoco in levels)
             {
@@ -83,6 +88,27 @@ namespace AppModels.ResponsiveData
                 Levels.Add(level);
             }
 
+        }
+
+        private void LoadDoorSchedules(List<OpeningInfoPoco> doorSchedulePocos)
+        {
+            foreach (var doorSchedulePoco in doorSchedulePocos)
+            {
+                var doorSchedule = new OpeningInfo(GlobalWallInfo);
+                doorSchedule.LoadOpeningInfo(doorSchedulePoco);
+                DoorSchedules.Add(doorSchedule);
+            }
+
+        }
+
+        private void LoadEnginerList(List<EngineerMemberInfoPoco> engineerList)
+        {
+            foreach (var memberInfo  in engineerList)
+            {
+                var member = new EngineerMemberInfo(Info);
+                member.LoadMemberInfo(memberInfo);
+                EngineerMemberList.Add(member);
+            }
         }
 
     }

@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using AppModels.ResponsiveData.EngineerMember;
-using AppModels.ResponsiveData.WallMemberData;
 using Prism.Mvvm;
 
-namespace AppModels.ResponsiveData.Openings
+namespace AppModels.ResponsiveData.Support
 {
     public class SupportPoint : BindableBase
     {
         #region Field
         private IBeam _supportMemberInfo;
         private SupportType? _pointSupportType = null;
-        private WallBase _wall;
+        //private WallBase _wall;
         private EngineerMemberInfo _engineerMemberInfo;
         #endregion
 
         public IBeam SupportMemberInfor => _supportMemberInfo;
-        public LoadPointLocation PointLocation { get;}
+        public LoadPointLocation PointLocation { get; private set; }
         public EngineerMemberInfo EngineerMemberInfo
         {
             get
@@ -104,11 +100,11 @@ namespace AppModels.ResponsiveData.Openings
             }
         }
 
-        public WallBase Wall
-        {
-            get => _wall;
-            set => SetProperty(ref _wall, value);
-        }
+        //public WallBase Wall
+        //{
+        //    get => _wall;
+        //    set => SetProperty(ref _wall, value);
+        //}
         #endregion
 
         #region Constructor
@@ -150,6 +146,17 @@ namespace AppModels.ResponsiveData.Openings
                     break;
             }
         }
+
+        public void LoadSupportPoint(SupportPointPoco supportPoint,List<EngineerMemberInfo> engineerSchedules)
+        {
+            PointLocation = supportPoint.PointLocation;
+            foreach (var engineerMemberInfo in engineerSchedules.Where(engineerMemberInfo => engineerMemberInfo.Id == supportPoint.EngineerReferenceId))
+            {
+                this.EngineerMemberInfo = engineerMemberInfo;
+            }
+            PointSupportType = supportPoint.PointSupportType;
+        }
+        
         #endregion
 
 

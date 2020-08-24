@@ -29,11 +29,15 @@ namespace WallFrameInputModule.Views
             if (DataContext !=null && DataContext is StickFrameBeamAndLintelInputViewModel vm)
             {
                 _viewModel = vm;
+                (this.BeamSupportDataGrid.Columns["EngineerMemberInfo"] as GridComboBoxColumn).UseBindingValue = true;
 
                 (this.BeamSupportDataGrid.Columns["EngineerMemberInfo"] as GridComboBoxColumn).ItemsSource =
                     _viewModel.EngineerList;
+
+                (this.LintelSupportDataGrid.Columns["EngineerMemberInfo"] as GridComboBoxColumn).UseBindingValue = true;
                 (this.LintelSupportDataGrid.Columns["EngineerMemberInfo"] as GridComboBoxColumn).ItemsSource =
                     _viewModel.EngineerList;
+                
 
             }
             Loaded += StickFrameBeamAndLintelInputView_Loaded;

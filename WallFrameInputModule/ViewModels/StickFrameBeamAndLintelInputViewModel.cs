@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,14 +38,24 @@ namespace WallFrameInputModule.ViewModels
 
         #region Properties
         public LevelWall LevelInfo { get=>_levelInfo;
-            set => SetProperty(ref _levelInfo, value);
+            set
+            {
+                SetProperty(ref _levelInfo, value);
+                if (LevelInfo!=null)
+                {
+                    if (LevelInfo.Openings!=null)
+                    {
+                        LevelInfo.Openings.CollectionChanged += Openings_CollectionChanged;
+                    }
+                }
+            } 
         }
-        public ObservableCollection<Beam> Beams { get; } = new ObservableCollection<Beam>();
-        public ObservableCollection<OpeningInfo> DoorSchedules { get; } = new MyObservableCollection<OpeningInfo>();
+
+        //public ObservableCollection<Beam> Beams { get; } = new ObservableCollection<Beam>();
+        //public ObservableCollection<OpeningInfo> DoorSchedules { get; } = new MyObservableCollection<OpeningInfo>();
         public ObservableCollection<EngineerMemberInfo> EngineerList { get; }
-        public ObservableCollection<Opening> DoorAndWindowList { get; }
+        //public ObservableCollection<Opening> DoorAndWindowList { get; }
         public ObservableCollection<string> TimberGradeList { get; } = new ObservableCollection<string>() { "LVL", "MGP10", "MGP12", "17C", "F17", "F27","Steel" };
-        public ObservableCollection<LintelBeam> Lintels { get; }
 
         public Beam SelectedBeam
         {
@@ -64,6 +76,7 @@ namespace WallFrameInputModule.ViewModels
         public ICommand CreateNewDoorScheduleCommand { get; private set; }
         public ICommand AddSupportToBeam { get; private set; }
         public ICommand DeleteDoorShedulesRowCommand { get; private set; }
+        public ICommand DeleteOpeningRowCommand { get; private set; }
         public bool EngineerReferenceVisibility => JobModel.EngineerMemberList == null || JobModel.EngineerMemberList.Count == 0;
 
         #endregion
@@ -74,17 +87,47 @@ namespace WallFrameInputModule.ViewModels
             regionManager, eventAggregator, layerManager, jobModel)
         {
             EngineerList = new ObservableCollection<EngineerMemberInfo>();
-            DoorAndWindowList = new ObservableCollection<Opening>();
-            Lintels = new ObservableCollection<LintelBeam>();
+            //DoorAndWindowList = new ObservableCollection<Opening>();
             CreateNewBeamCommand = new DelegateCommand(OnCreateBeamCommand);
             CreateNewOpeningCommand = new DelegateCommand(OnCreateNewDoorWindow);
             AutoMathBeamWithEngineerBeamList = new DelegateCommand(OnAutoMathBeamList);
             AddSupportToBeam = new DelegateCommand(OnAddSupportToBeam);
             CreateNewDoorScheduleCommand = new DelegateCommand(OnCreateNewDoorSchedule);
             DeleteDoorShedulesRowCommand = new DelegateCommand<SfDataGrid>(OnDeletedDoorSchedulesItem);
+            DeleteOpeningRowCommand = new DelegateCommand<SfDataGrid>(OnDeletedOpening);
             JobModel.EngineerMemberList.CollectionChanged += EngineerMemberList_CollectionChanged;
+            
         }
 
+        private void Openings_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (var newItem in e.NewItems)
+                {
+                    if (newItem is Opening newDoor)
+                    {
+                        
+                        
+                    }
+                }
+            }
+        }
+
+        private void OnDeletedOpening(SfDataGrid openingGrid)
+        {
+            var recordId = openingGrid.SelectedIndex;
+            if (recordId < 0)
+            {
+                return;
+            }
+
+            if (LevelInfo.Lintels.Contains(LevelInfo.Openings[recordId].Lintel))
+            {
+                LevelInfo.Lintels.Remove(LevelInfo.Openings[recordId].Lintel);
+            }
+            LevelInfo.Openings.RemoveAt(recordId);
+        }
         private void OnDeletedDoorSchedulesItem(SfDataGrid doorSchedulesGrid)
         {
             var recordId = doorSchedulesGrid.SelectedIndex;
@@ -92,48 +135,68 @@ namespace WallFrameInputModule.ViewModels
             {
                 return;
             }
-            this.DoorSchedules.RemoveAt(recordId);
+            this.JobModel.DoorSchedules.RemoveAt(recordId);
         }
         private void OnCreateNewDoorWindow()
         {
-            this._startDoorId = DoorAndWindowList.Count + 1;
+            this._startDoorId = LevelInfo.Openings.Count + 1;
             var door = new Opening(this.LevelInfo.LevelInfo) { Id = _startDoorId };
-            door.PropertyChanged += Door_PropertyChanged;
-            DoorAndWindowList.Add(door);
+            LevelInfo.AddOpening(door);
+            //LevelInfo.LintelCollectionChangedEvent += LevelInfo_LintelCollectionChangedEvent;
+            //door.PropertyChanged += Door_PropertyChanged;
+            //LevelInfo.Openings.Add(door);
         }
+
+        //private void LevelInfo_LintelCollectionChangedEvent(object sender, EventArgs e)
+        //{
+        //    if (!(sender is Opening door)) return;
+        //    if (door.IsDoorUnderLbw && !Lintels.Contains(door.Lintel))
+        //    {
+        //        Lintels.Add(door.Lintel);
+        //        door.Lintel.Id = Lintels.IndexOf(door.Lintel) + 1;
+        //    }
+        //    else if (!door.IsDoorUnderLbw && Lintels.Contains(door.Lintel))
+        //    {
+        //        Lintels.Remove(door.Lintel);
+        //        var i = 1;
+        //        foreach (var lintelBeam in Lintels)
+        //        {
+        //            door.Lintel.Id = i;
+        //            i++;
+        //        }
+
+        //    }
+        //}
 
         private void OnCreateNewDoorSchedule()
         {
             var door = new OpeningInfo(this.LevelInfo.LevelInfo);
-            this.DoorSchedules.Add(door);
+            door.Id = JobModel.DoorSchedules.Count;
+            this.JobModel.DoorSchedules.Add(door);
         }
 
-        private void Door_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (sender is Opening door)
-            {
-                if (e.PropertyName == "IsDoorUnderLbw")
-                {
-                    if (door.IsDoorUnderLbw && !Lintels.Contains(door.Lintel))
-                    {
-                        Lintels.Add(door.Lintel);
-                        door.Lintel.Id = Lintels.IndexOf(door.Lintel)+1;
-                    }
-                    else if(!door.IsDoorUnderLbw && Lintels.Contains(door.Lintel))
-                    {
-                        Lintels.Remove(door.Lintel);
-                        var i = 1;
-                        foreach (var lintelBeam in Lintels)
-                        {
-                            door.Lintel.Id = i;
-                            i++;
-                        }
+        //private void Door_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    if (!(sender is Opening door)) return;
+        //    if (e.PropertyName != "IsDoorUnderLbw") return;
+        //    if (door.IsDoorUnderLbw && !Lintels.Contains(door.Lintel))
+        //    {
+        //        Lintels.Add(door.Lintel);
+        //        door.Lintel.Id = Lintels.IndexOf(door.Lintel)+1;
+        //    }
+        //    else if(!door.IsDoorUnderLbw && Lintels.Contains(door.Lintel))
+        //    {
+        //        Lintels.Remove(door.Lintel);
+        //        var i = 1;
+        //        foreach (var lintelBeam in Lintels)
+        //        {
+        //            door.Lintel.Id = i;
+        //            i++;
+        //        }
                         
-                    }
-                }
-            }
-            
-        }
+        //    }
+
+        //}
 
         public void InitEngineerList()
         {
@@ -159,7 +222,7 @@ namespace WallFrameInputModule.ViewModels
            
             InitEngineerList();
             
-            foreach (var beam in Beams)
+            foreach (var beam in LevelInfo.RoofBeams)
             {
                 beam.NotifyPropertyChanged();
             }
@@ -167,9 +230,9 @@ namespace WallFrameInputModule.ViewModels
 
         private void OnCreateBeamCommand()
         {
-            this._startBeamId = Beams.Count + 1;
+            this._startBeamId = LevelInfo.RoofBeams.Count + 1;
             var beam = new Beam(BeamType.RoofBeam,this.LevelInfo.LevelInfo){Id = _startBeamId};
-            Beams.Add(beam);
+            LevelInfo.RoofBeams.Add(beam);
         }
 
         private void OnAddSupportToBeam()
@@ -179,7 +242,7 @@ namespace WallFrameInputModule.ViewModels
 
         private void OnAutoMathBeamList()
         {
-            foreach (var beam in Beams)
+            foreach (var beam in LevelInfo.RoofBeams)
             {
                 foreach (var engineerBeam in EngineerList)
                 {

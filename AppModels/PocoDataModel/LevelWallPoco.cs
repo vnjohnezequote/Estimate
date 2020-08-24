@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppModels.PocoDataModel.Bracing;
+using AppModels.PocoDataModel.Openings;
 using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Openings;
@@ -125,11 +126,21 @@ namespace AppModels.PocoDataModel
         public void InitializerRoofBeams(List<Beam> roofBeams)
         {
             RoofBeams = new List<BeamPoco>();
+            foreach (var roofBeam in roofBeams)
+            {
+                var rBeam = new BeamPoco(roofBeam);
+                RoofBeams.Add(rBeam);
+            }
         }
 
         public void InitializerOpenings(List<Opening> openings)
         {
             Openings = new List<OpeningPoco>();
+            foreach (var opening in openings)
+            {
+                var openingPoco = new OpeningPoco(opening);
+                Openings.Add(openingPoco);
+            }
         }
     }
 }

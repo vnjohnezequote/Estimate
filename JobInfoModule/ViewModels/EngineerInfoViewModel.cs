@@ -67,7 +67,9 @@ namespace JobInfoModule.ViewModels
                 LevelType =  "Global",
                 MemberType = WallMemberType.Lintel,
                 MaterialType = MaterialTypes.Timber
+                
             };
+            member.Id = JobModel.EngineerMemberList.Count;
             JobModel.EngineerMemberList.Add(member);
         }
         

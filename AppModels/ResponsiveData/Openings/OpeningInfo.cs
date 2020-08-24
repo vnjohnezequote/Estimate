@@ -1,6 +1,7 @@
 ﻿using System;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel.Openings;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Openings
@@ -12,8 +13,14 @@ namespace AppModels.ResponsiveData.Openings
         private int _height;
         private OpeningType _doorType;
         private WallLocationTypes _doorTypeLocation;
+        private int _id;
 
         public IGlobalWallInfo GlobalWallInfo { get; set; }
+        public int Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
         public string Name
         {
             get => _name;
@@ -34,7 +41,21 @@ namespace AppModels.ResponsiveData.Openings
 
                 return DoorTypeLocation == WallLocationTypes.External ? GlobalWallInfo.ExternalDoorHeight : GlobalWallInfo.InternalDoorHeight;
             }
-            set => SetProperty(ref _height, value);
+            set
+            {
+                if (GlobalWallInfo!=null)
+                {
+                    switch (DoorTypeLocation)
+                    {
+                        case WallLocationTypes.External when value == GlobalWallInfo.ExternalDoorHeight:
+                        case WallLocationTypes.Internal when value==GlobalWallInfo.InternalDoorHeight:
+                            value = 0;
+                            break;
+                    }
+                }
+                
+                SetProperty(ref _height, value);
+            } 
         }
         public WallLocationTypes DoorTypeLocation { get => _doorTypeLocation; set => SetProperty(ref _doorTypeLocation, value); }
 
@@ -70,6 +91,17 @@ namespace AppModels.ResponsiveData.Openings
                     RaisePropertyChanged(nameof(Height));
                     break;
             }
+        }
+
+        public void LoadOpeningInfo(OpeningInfoPoco openingInfo)
+        {
+            Id = openingInfo.Id;
+            Name = openingInfo.Name;
+            Width = openingInfo.Width;
+            Height = openingInfo.Height;
+            DoorTypeLocation = openingInfo.DoorTypeLocation;
+            DoorType = openingInfo.DoorType;
+
         }
     }
 }

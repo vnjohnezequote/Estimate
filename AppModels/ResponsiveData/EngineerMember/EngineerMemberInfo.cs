@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Navigation;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using Prism.Mvvm;
 using ProtoBuf;
 
@@ -16,7 +17,7 @@ namespace AppModels.ResponsiveData.EngineerMember
     {
         #region Field
         private string _levelType;
-        private Suppliers _suplier;
+        private Suppliers? _suplier;
         private string _engineerName;
         private WallMemberType _memberType;
         private MaterialTypes _materialType;
@@ -26,15 +27,41 @@ namespace AppModels.ResponsiveData.EngineerMember
         private int _depth;
         private int _thickness;
         private string _timberGrade;
-
+        private int _id;
         #endregion
 
         #region Properties
+        public int Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
         public JobInfo GlobalInfor { get; }
 
         public string LevelType { get=>_levelType; set=>SetProperty(ref _levelType,value); }
 
-        public Suppliers Supplier => GlobalInfor.Supplier;
+        public Suppliers? Supplier {
+            get
+            {
+                if (_suplier != null)
+                    return _suplier;
+                if (GlobalInfor!=null)
+                {
+                    return GlobalInfor.Supplier;
+                }
+
+                return null;
+            }
+            set
+            {
+                if (GlobalInfor!=null && value== GlobalInfor.Supplier)
+                {
+                    value = null;
+                }
+
+                SetProperty(ref _suplier, value);
+            }
+    }
         public string EngineerName { get=>_engineerName; set=>SetProperty(ref _engineerName,value); }
         public WallMemberType MemberType { get=>_memberType; set=>SetProperty(ref _memberType,value); }
         public MaterialTypes MaterialType { get=>_materialType; set=>SetProperty(ref _materialType,value); }
@@ -195,7 +222,22 @@ namespace AppModels.ResponsiveData.EngineerMember
         #endregion
 
         #region Private Method
+        public void LoadMemberInfo(EngineerMemberInfoPoco memberInfo)
+        {
+            Id = memberInfo.Id;
+            Supplier = memberInfo.Supplier;
+            LevelType = memberInfo.LevelType;
+            EngineerName = memberInfo.EngineerName;
+            MemberType = memberInfo.MemberType;
+            MaterialType = memberInfo.MaterialType;
+            MinSpan = memberInfo.MinSpan;
+            MaxSpan = memberInfo.MaxSpan;
+            NoItem = memberInfo.NoItem;
+            Depth = memberInfo.Depth;
+            Thickness = memberInfo.Thickness;
+            TimberGrade = memberInfo.TimberGrade;
 
+        }
         private void EngineerMemberInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)

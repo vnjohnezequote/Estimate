@@ -9,8 +9,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData.EngineerMember;
+using Newtonsoft.Json.Bson;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Openings
@@ -24,7 +28,7 @@ namespace AppModels.ResponsiveData.Openings
         private string _noOfJambSupport;
         private int _id;
         private int _doorHeaderHeight;
-        private WallLocationTypes _doorTypeLocation;
+        private WallLocationTypes? _doorTypeLocation;
         private int _width;
         private int _height;
         private string _location;
@@ -34,6 +38,8 @@ namespace AppModels.ResponsiveData.Openings
         private bool _isCavitySlidingDoor=false;
         private DoorTypes _doorType;
         private NumberOfDoors _doorNumberType;
+        private int _noDoor;
+        private bool _isGarageDoor;
 
         public WallBase WallReference
         {
@@ -62,8 +68,8 @@ namespace AppModels.ResponsiveData.Openings
             }
             
         }
-        public int NoDoor { get; set; }
-        public bool IsGarageDoor { get; set; }
+        public int NoDoor { get=>_noDoor; set=>SetProperty(ref _noDoor,value); }
+        public bool IsGarageDoor { get=>_isGarageDoor; set=>SetProperty(ref _isGarageDoor,value); }
 
         public DoorTypes DoorType
         {
@@ -98,23 +104,39 @@ namespace AppModels.ResponsiveData.Openings
             }
 
         }
-        public WallLocationTypes DoorTypeLocation { get=>_doorTypeLocation; set=>SetProperty(ref _doorTypeLocation,value); }
+
+        public WallLocationTypes? DoorTypeLocation
+        {
+            get => _doorTypeLocation ?? DoorWindowInfo?.DoorTypeLocation;
+            set
+            {
+                if (DoorWindowInfo!=null && DoorWindowInfo.DoorTypeLocation== value)
+                {
+                    value = null;
+                }
+
+                SetProperty(ref _doorTypeLocation, value);
+            }
+        }
+
         public IGlobalWallInfo GlobalWallInfo { get; set; }
         public Suppliers Suppliers => GlobalWallInfo.GlobalInfo.Supplier;
         public int Id { get=>_id; set=>SetProperty(ref _id,value); }
 
-        public OpeningType OpeningType
+        public OpeningType? OpeningType
         {
             get
             {
                 if (_openingType != null)
                     return (OpeningType)_openingType;
-                if (DoorWindowInfo != null)
-                    return DoorWindowInfo.DoorType;
-                return OpeningType.Door;
+                return DoorWindowInfo?.DoorType ?? Enums.OpeningType.Door;
             }
             set
             {
+                if (DoorWindowInfo!=null && DoorWindowInfo.DoorType == value)
+                {
+                    value = null;
+                }
                 SetProperty(ref _openingType, value);
             }
         }
@@ -134,7 +156,14 @@ namespace AppModels.ResponsiveData.Openings
 
                 return DoorTypeLocation==WallLocationTypes.External ? GlobalWallInfo.ExternalDoorHeight : GlobalWallInfo.InternalDoorHeight;
             }
-            set=>SetProperty(ref _height,value);
+            set
+            {
+                if (DoorWindowInfo!=null && DoorWindowInfo.Height==value)
+                {
+                    value = 0;
+                }
+                SetProperty(ref _height, value);
+            }
         }
 
         public int Width
@@ -148,8 +177,13 @@ namespace AppModels.ResponsiveData.Openings
 
                 return DoorWindowInfo?.Width ?? 0;
             }
-            
-            set => SetProperty(ref _width, value);
+
+            set
+            {
+                if (DoorWindowInfo != null && DoorWindowInfo.Width == value)
+                    value = 0;
+                SetProperty(ref _width, value);
+            } 
         }
 
         public int DoorHeaderHeight
@@ -216,6 +250,9 @@ namespace AppModels.ResponsiveData.Openings
                 case nameof(DoorWindowInfo.DoorType):
                     RaisePropertyChanged(nameof(OpeningType));
                     break;
+                case nameof(DoorWindowInfo.DoorTypeLocation):
+                    RaisePropertyChanged(nameof(DoorTypeLocation));
+                    break;
             }
         }
 
@@ -234,6 +271,7 @@ namespace AppModels.ResponsiveData.Openings
                     RaisePropertyChanged(nameof(Width));
                     RaisePropertyChanged(nameof(Height));
                     RaisePropertyChanged(nameof(OpeningType));
+                    RaisePropertyChanged(nameof(DoorTypeLocation));
                     break;
                 case nameof(DoorNumberType):
                     RaisePropertyChanged(nameof(DoorNumberType));
@@ -243,9 +281,15 @@ namespace AppModels.ResponsiveData.Openings
 
         private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "ExternalDoorHeight" || e.PropertyName == "InternalDoorHeight")
+            switch (e.PropertyName)
             {
-                RaisePropertyChanged(nameof(DoorHeaderHeight));
+                case "ExternalDoorHeight":
+                case "InternalDoorHeight":
+                    RaisePropertyChanged(nameof(DoorHeaderHeight));
+                    break;
+                case nameof(DoorNumberType):
+                    RaisePropertyChanged(nameof(DoorQty));
+                    break;
             }
         }
 
@@ -259,6 +303,31 @@ namespace AppModels.ResponsiveData.Openings
                     RaisePropertyChanged(nameof(IsDoorUnderLbw));
                     break;
             }
+        }
+
+        public void LoadOpeningInfo(OpeningPoco openingInfo, List<OpeningInfo> doorSchedules,List<WallBase> walls,List<EngineerMemberInfo> engineerSchedules)
+        {
+            foreach (var doorSchedule in doorSchedules.Where(doorSchedule => doorSchedule.Id == openingInfo.DoorWindowInfoId))
+            {
+                this.DoorWindowInfo = doorSchedule;
+            }
+
+            foreach (var wallBase in walls.Where(wallBase => openingInfo.WallReferenceId == wallBase.Id))
+            {
+                WallReference = wallBase;
+            }
+            Id = openingInfo.Id;
+            NoDoor = openingInfo.NoDoor;
+            IsGarageDoor = openingInfo.IsGarageDoor;
+            DoorType = openingInfo.DoorType;
+            DoorNumberType = openingInfo.DoorNumberType;
+            DoorTypeLocation = openingInfo.DoorTypeLocation;
+            OpeningType = openingInfo.OpeningType;
+            Location = openingInfo.Location;
+            Height = openingInfo.Height;
+            Width = openingInfo.Width;
+            DoorHeaderHeight = openingInfo.DoorHeaderHeight;
+            Lintel.LoadLintelInfo(openingInfo.Lintel,engineerSchedules);
         }
     }
 }

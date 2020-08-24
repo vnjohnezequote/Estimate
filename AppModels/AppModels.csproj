@@ -185,7 +185,11 @@
     <Compile Include="Interaface\IWallMember.cs" />
     <Compile Include="Interaface\IWallMemberDetailInfo.cs" />
     <Compile Include="Interaface\IWallMemberInfo.cs" />
-    <Compile Include="PocoDataModel\WallMemberData\BeamPoco.cs" />
+    <Compile Include="PocoDataModel\EngineerMember\EngineerMemberInfoPoco.cs" />
+    <Compile Include="PocoDataModel\Openings\LintelBeamPoco.cs" />
+    <Compile Include="PocoDataModel\Openings\OpeningInfoPoco.cs" />
+    <Compile Include="PocoDataModel\SupportPointPoco.cs" />
+    <Compile Include="PocoDataModel\Openings\BeamPoco.cs" />
     <Compile Include="PocoDataModel\Bracing\BracingBasePoco.cs" />
     <Compile Include="PocoDataModel\Bracing\BracingPoco.cs" />
     <Compile Include="PocoDataModel\DesignInfoPoco.cs" />
@@ -211,10 +215,8 @@
     <Compile Include="ResponsiveData\Openings\Jamb.cs" />
     <Compile Include="ResponsiveData\Openings\LintelBeam.cs" />
     <Compile Include="ResponsiveData\Openings\OpeningInfo.cs" />
-    <Compile Include="ResponsiveData\Openings\SupportPoint.cs" />
+    <Compile Include="ResponsiveData\Support\SupportPoint.cs" />
     <Compile Include="ResponsiveData\StickFrameWallLayer.cs" />
-    <Compile Include="ResponsiveData\Support\SupportMember.cs" />
-    <Compile Include="ResponsiveData\Support\Supports.cs" />
     <Compile Include="ResponsiveData\Treatment.cs" />
     <Compile Include="ResponsiveData\Openings\Beam.cs" />
     <Compile Include="ResponsiveData\Bracing.cs" />

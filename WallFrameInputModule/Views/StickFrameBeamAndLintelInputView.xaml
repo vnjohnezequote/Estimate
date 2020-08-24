@@ -80,13 +80,15 @@
                 ColumnSizer="Auto"
                 EditTrigger="OnTap"
                 SelectionUnit="Row"
-                ItemsSource="{Binding DoorSchedules}"
+                ItemsSource="{Binding JobModel.DoorSchedules}"
                 RowStyle="{StaticResource TextRowStyle}">
                 <Syncfusion:SfDataGrid.Resources>
                     <Style TargetType="TextBox"/>
                     <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
                 </Syncfusion:SfDataGrid.Resources>
                 <Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:GridTextColumn HeaderText="Door Id"
+                                               MappingName="Id"/>
                     <Syncfusion:GridTextColumn HeaderText="Door Name"
                                                MappingName="Name"/>
                     <Syncfusion:GridTextColumn HeaderText="Height"
@@ -100,7 +102,8 @@
                                                    MappingName="DoorTypeLocation"
                                                    ItemsSource="{Binding Source={StaticResource WallTypeLocations}}"/>
                     <syncfusion:GridTemplateColumn MappingName="Delete Row"
-                                                   syncfusion:FocusManagerHelper.WantsKeyInput="True">
+                                                   syncfusion:FocusManagerHelper.WantsKeyInput="True"
+                                                   UseBindingValue="True">
                         <syncfusion:GridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button  Content="Delete" syncfusion:FocusManagerHelper.FocusedElement="True" 
@@ -136,7 +139,7 @@
                 ColumnSizer="Auto"
                 EditTrigger="OnTap"
                 SelectionUnit="Row"
-                ItemsSource="{Binding DoorAndWindowList}"
+                ItemsSource="{Binding LevelInfo.Openings}"
                 SelectedItem="{Binding SelectedDoor}"
                 RowStyle="{StaticResource TextRowStyle}">
                 <Syncfusion:SfDataGrid.Resources>
@@ -145,10 +148,12 @@
                 </Syncfusion:SfDataGrid.Resources>
                 <Syncfusion:SfDataGrid.Columns>
                     <Syncfusion:GridTextColumn HeaderText="ID"
-                                               MappingName="Id"/>
+                                               MappingName="Id"
+                                               UseBindingValue="True"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Door/Window Name"
+                                                   UseBindingValue="True"
                                                    MappingName="DoorWindowInfo"
-                                                   ItemsSource="{Binding DoorSchedules}">
+                                                   ItemsSource="{Binding JobModel.DoorSchedules}">
                         <syncfusion:GridComboBoxColumn.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -158,22 +163,24 @@
                         </syncfusion:GridComboBoxColumn.ItemTemplate>
                     </Syncfusion:GridComboBoxColumn>
                     <Syncfusion:GridComboBoxColumn HeaderText="Door/Window"
+                                                   UseBindingValue="True"
                                                    MappingName="OpeningType"
                                                    ItemsSource="{Binding Source={StaticResource OpeningTypes}}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="External/Internal Door"
+                                                   UseBindingValue="True"
                                                    MappingName="DoorTypeLocation"
-                                                   ItemsSource="{Binding Source={StaticResource WallTypeLocations}}"
-                                                   UseBindingValue="True"/>
+                                                   ItemsSource="{Binding Source={StaticResource WallTypeLocations}}"/>
                     <Syncfusion:GridTextColumn HeaderText="Door Location"
                                                MappingName="Location"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Wall Belong to"
-                                                   MappingName="WallReference"
                                                    UseBindingValue="True"
+                                                   MappingName="WallReference"
                                                    ItemsSource="{Binding LevelInfo.WallLayers}">
                         <syncfusion:GridComboBoxColumn.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock  Text="{Binding WallType.AliasName}" Foreground="{Binding WallColorLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"/>
+                                    <TextBlock  Text="{Binding WallThickness}" Foreground="{Binding WallColorLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"/>
+                                    <TextBlock  Text="{Binding WallType.AliasName}" Margin="10 0 0 0"  Foreground="{Binding WallColorLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"/>
                                     <TextBlock Text="{Binding WallSpacing}" Margin="10 0 0 0" Foreground="{Binding WallColorLayer.Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
                                     <TextBlock Text="{Binding NoggingLength}" Margin="10 0 0 0" Foreground="{Binding WallColorLayer.Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
                                     <TextBlock Text="{Binding FinalWallHeight}" Margin="10 0 0 0" Foreground="{Binding WallColorLayer.Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
@@ -190,9 +197,25 @@
                     <Syncfusion:GridCheckBoxColumn HeaderText="Is Door Under Lbw"
                                                    MappingName="IsDoorUnderLbw"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Door Type"
+                                                   UseBindingValue="True"
                                                    MappingName="DoorType"
                                                    ItemsSource="{Binding Source={StaticResource DoorTypes}}"/>
-                    
+                    <syncfusion:GridTemplateColumn MappingName="Delete Row"
+                                                   syncfusion:FocusManagerHelper.WantsKeyInput="True"
+                                                   UseBindingValue="True">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button  Content="Delete" syncfusion:FocusManagerHelper.FocusedElement="True" 
+                                         Command="{Binding Path=DataContext.DeleteOpeningRowCommand, ElementName=DoorInput}"
+                                         CommandParameter="{Binding ElementName=DoorInput}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Padding="5 0 5 0"/>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
                 </Syncfusion:SfDataGrid.Columns>
             </Syncfusion:SfDataGrid>
             <StackPanel Orientation="Horizontal">
@@ -221,7 +244,7 @@
                 ColumnSizer="Auto"
                 EditTrigger="OnTap"
                 SelectionUnit="Row"
-                ItemsSource="{Binding Lintels}"
+                ItemsSource="{Binding LevelInfo.Lintels}"
                 SelectedItem="{Binding SelectedLintel}"
                 RowStyle="{StaticResource TextRowStyle}">
                 <Syncfusion:SfDataGrid.Resources>
@@ -236,13 +259,13 @@
                     <Syncfusion:GridTextColumn HeaderText="Door Location"
                                                MappingName="OpeningInfo.Location"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Support Type"
+                                                   UseBindingValue="True"
                                                    MappingName="PointSupportType"
-                                                   ItemsSource="{Binding Source={StaticResource SupportTypes}}"
-                                                   UseBindingValue="True"/>
+                                                   ItemsSource="{Binding Source={StaticResource SupportTypes}}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Engineer Reference"
+                                                   UseBindingValue="True"
                                                    MappingName="EngineerMemberInfo"
                                                    ItemsSource="{Binding EngineerList}"
-                                                   UseBindingValue="True"
                                                    IsHidden="{Binding EngineerReferenceVisibility}">
                         <syncfusion:GridComboBoxColumn.ItemTemplate>
                             <DataTemplate>
@@ -256,17 +279,21 @@
                         </syncfusion:GridComboBoxColumn.ItemTemplate>
                     </Syncfusion:GridComboBoxColumn>
                     <Syncfusion:GridComboBoxColumn HeaderText="Lintel Material Type"
+                                                   UseBindingValue="True"
                                                    ItemsSource="{Binding Source={StaticResource MaterialTypes}}"
                                                    MappingName="MaterialType"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Beam Grade"
+                                                   UseBindingValue="True"
                                                    MappingName="TimberGrade"
                                                    ItemsSource="{Binding TimberGradeList}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"
+                                                   UseBindingValue="True"
                                                    MappingName="SizeGrade"
                                                    ItemsSourceSelector="{StaticResource EngineerGradeListConverter}"/>
                     <Syncfusion:GridTextColumn HeaderText="Standard Door Jamb Support"
                                                MappingName="StandardDoorJambSupport"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Support Reference"
+                                                   UseBindingValue="True"
                                                    MappingName="SupportReference"
                                                    ItemsSource="{Binding EngineerList}">
                         <syncfusion:GridComboBoxColumn.ItemTemplate>
@@ -350,11 +377,12 @@
                 AllowEditing="True"
                 AllowResizingColumns="True"
                 AllowResizingHiddenColumns ="True"
-                AutoGenerateColumns="False"
                 ColumnSizer="Auto"
                 EditTrigger="OnTap"
                 SelectionUnit="Row"
-                ItemsSource="{Binding Beams}"
+                AutoGenerateColumns="False"
+                AutoGenerateRelations="False"
+                ItemsSource="{Binding LevelInfo.RoofBeams}"
                 SelectedItem="{Binding SelectedBeam}"
                 RowStyle="{StaticResource TextRowStyle}">
                 <Syncfusion:SfDataGrid.Resources>
@@ -370,12 +398,12 @@
                                                MappingName="Location"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Support Type"
                                                    MappingName="PointSupportType"
-                                                   ItemsSource="{Binding Source={StaticResource SupportTypes}}"
-                                                   UseBindingValue="True"/>
+                                                   UseBindingValue="True"
+                                                   ItemsSource="{Binding Source={StaticResource SupportTypes}}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Engineer Reference"
+                                                   UseBindingValue="True"
                                                    MappingName="EngineerMemberInfo"
                                                    ItemsSource="{Binding EngineerList}"
-                                                   UseBindingValue="True"
                                                    IsHidden="{Binding EngineerReferenceVisibility}">
                         <syncfusion:GridComboBoxColumn.ItemTemplate>
                             <DataTemplate>
@@ -387,20 +415,24 @@
                                 </StackPanel>
                             </DataTemplate>
                         </syncfusion:GridComboBoxColumn.ItemTemplate>
-
                     </Syncfusion:GridComboBoxColumn>
+
+
                     <Syncfusion:GridComboBoxColumn HeaderText="Material Type"
-                                                   ItemsSource="{Binding Source={StaticResource MaterialTypes}}"
-                                                   MappingName="MaterialType"/>
+                                                   UseBindingValue="True"
+                                                   MappingName="MaterialType"
+                                                   ItemsSource="{Binding Source={StaticResource MaterialTypes}}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Beam Grade"
+                                                   UseBindingValue="True"
                                                    MappingName="TimberGrade"
                                                    ItemsSource="{Binding TimberGradeList}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"
+                                                   UseBindingValue="True"
                                                    MappingName="SizeGrade"
                                                    ItemsSourceSelector="{StaticResource EngineerGradeListConverter}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Wall Reference"
-                                                   MappingName="WallReference"
                                                    UseBindingValue="True"
+                                                   MappingName="WallReference"
                                                    ItemsSource="{Binding LevelInfo.WallLayers}">
                         <syncfusion:GridComboBoxColumn.ItemTemplate>
                             <DataTemplate>
@@ -414,6 +446,7 @@
                     <Syncfusion:GridTextColumn HeaderText="Span Length"
                                                MappingName="SpanLength"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Support Reference"
+                                                   UseBindingValue="True"
                                                    MappingName="SupportReference"
                                                    ItemsSource="{Binding EngineerList}">
                         <syncfusion:GridComboBoxColumn.ItemTemplate>
@@ -428,7 +461,7 @@
                         </syncfusion:GridComboBoxColumn.ItemTemplate>
                     </Syncfusion:GridComboBoxColumn>
                     <Syncfusion:GridTextColumn HeaderText="Support Width"
-                                                   MappingName="TotalSupportWidth"/>
+                                               MappingName="TotalSupportWidth"/>
                     <Syncfusion:GridTextColumn HeaderText="Support Height"
                                                MappingName="SupportHeight"/>
                     <Syncfusion:GridTextColumn HeaderText="Stud/Post Support Height"
@@ -459,6 +492,7 @@
                                 </Syncfusion:SfDataGrid.Resources>
                                 <Syncfusion:SfDataGrid.Columns>
                                     <Syncfusion:GridComboBoxColumn HeaderText="Support Type"
+                                                                   UseBindingValue="True"
                                                                    MappingName="PointSupportType"
                                                                    ItemsSource="{Binding Source={StaticResource SupportTypes}}"/>
                                     <Syncfusion:GridTextColumn HeaderText="Point Location"

@@ -2,6 +2,7 @@
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Openings;
 
 namespace AppModels.Interaface
 {
@@ -12,6 +13,7 @@ namespace AppModels.Interaface
         ObservableCollection<LevelWall> Levels { get; }
         //ObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
         MyObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
+        ObservableCollection<OpeningInfo> DoorSchedules { get; }
 
         void LoadJob(JobModelPoco jobOpen);
     }

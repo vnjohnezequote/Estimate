@@ -7,7 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Support;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Openings
@@ -30,6 +33,8 @@ namespace AppModels.ResponsiveData.Openings
         private string _timberGrade;
         private double _extraLength;
         private int _id;
+        private Suppliers? _supplier;
+        private SupportType? _pointSupportType;
 
         #endregion
 
@@ -50,8 +55,69 @@ namespace AppModels.ResponsiveData.Openings
                 SetProperty(ref _wallReference, value);
             }
         }
-        public Suppliers Supplier => OpeningInfo.Suppliers;
-        public SupportType PointSupportType { get; }
+        public Suppliers? Supplier {
+            get
+            {
+                if (_supplier!=null)
+                {
+                    return (Suppliers)_supplier;
+                }
+
+                if (EngineerMemberInfo?.Supplier != null)
+                {
+                    return (Suppliers)EngineerMemberInfo.Supplier;
+                }
+
+                return Suppliers.TILLINGS;
+
+            }
+            set
+            {
+                if (EngineerMemberInfo!=null && EngineerMemberInfo.Supplier!=null && EngineerMemberInfo.Supplier == value)
+                {
+                    value = null;
+                }
+
+                SetProperty(ref _supplier, value);
+            }
+        }
+        public SupportType? PointSupportType
+        {
+            get
+            {
+                if (_pointSupportType!=null)
+                {
+                    return _pointSupportType;
+                }
+
+                if (SupportReference!=null && SupportReference.MemberType == WallMemberType.Post)
+                {
+                    return SupportReference.MaterialType == MaterialTypes.Steel ? SupportType.SteelPost : SupportType.Post;
+                }
+
+                return SupportType.Jamb;
+
+            }
+            set
+            {
+                if (SupportReference != null && SupportReference.MemberType == WallMemberType.Post)
+                {
+                    switch (SupportReference.MaterialType)
+                    {
+                        case MaterialTypes.Steel when value == SupportType.SteelPost:
+                        case MaterialTypes.Timber when value == SupportType.Post:
+                            value = null;
+                            break;
+                    }
+                }
+
+                if (SupportReference != null && SupportReference.MemberType == WallMemberType.DoorJamb && value == SupportType.Jamb)
+                {
+                    value = null;
+                }
+
+            }
+        }
         public EngineerMemberInfo SupportReference
         {
             get => _supportReference;
@@ -219,7 +285,42 @@ namespace AppModels.ResponsiveData.Openings
                 }
 
             }
-            set => SetProperty(ref _noOfJambSupport, value);
+            set
+            {
+                var doorWidth = OpeningInfo.Width;
+                if (OpeningInfo.DoorType == DoorTypes.CavitySlidingDoor)
+                {
+                    doorWidth = OpeningInfo.Width * 2 * OpeningInfo.NoDoor;
+                }
+                if (OpeningInfo.IsGarageDoor && value == "5")
+                {
+                    value = string.Empty;
+                }
+                if (doorWidth < 2100 && value=="2")
+                {
+                    value = string.Empty;
+                }
+
+                else if (doorWidth < 3000 && value == "3")
+                {
+                    value = string.Empty;
+                }
+
+                else if (doorWidth < 4000 && value == "4")
+                {
+                    value = string.Empty;
+                }
+                else if (doorWidth < 5100 && value=="5")
+                {
+                    value = string.Empty;
+                }
+                else if(doorWidth>=5100 && value=="6")
+                {
+                    value = string.Empty;
+                }
+
+                SetProperty(ref _noOfJambSupport, value);
+            }
         }
         public int NoItem
         {
@@ -485,6 +586,15 @@ namespace AppModels.ResponsiveData.Openings
                     RaisePropertyChanged(nameof(QuoteLength));
                     break;
                 case nameof(OpeningInfo.DoorType):
+                    RaisePropertyChanged(nameof(SpanLength));
+                    RaisePropertyChanged(nameof(QuoteLength));
+                    break;
+                case nameof(OpeningInfo.NoDoor):
+                    RaisePropertyChanged(nameof(SpanLength));
+                    RaisePropertyChanged(nameof(QuoteLength));
+                    break;
+                case nameof(OpeningInfo.IsGarageDoor):
+                    RaisePropertyChanged(nameof(StandardDoorJambSupport));
                     RaisePropertyChanged(nameof(QuoteLength));
                     break;
             }
@@ -496,6 +606,54 @@ namespace AppModels.ResponsiveData.Openings
         private void Wall_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             
+        }
+
+        public void LoadLintelInfo(LintelBeamPoco lintel,List<EngineerMemberInfo> engineerSchedules)
+        {
+            foreach (var engineerMemberInfo in engineerSchedules)
+            {
+                if (engineerMemberInfo.Id == lintel.EngineerMemberInfoId)
+                {
+                    EngineerMemberInfo = engineerMemberInfo;
+                }
+
+                if (engineerMemberInfo.Id ==lintel.SupportReferenceId)
+                {
+                    SupportReference = engineerMemberInfo;
+                }
+            }
+            InitializerSupportPoints(lintel.LoadPointSupports,engineerSchedules);
+            Supplier = lintel.Supplier;
+            PointSupportType = lintel.PointSupportType;
+            SupportHeight = lintel.SupportHeight;
+            Id = lintel.Id;
+            Name = lintel.Name;
+            StandardDoorJambSupport = lintel.StandardDoorJambSupport;
+            NoItem = lintel.NoItem;
+            Thickness = lintel.Thickness;
+            Depth = lintel.Depth;
+            MaterialType = lintel.MaterialType;
+            TimberGrade = lintel.TimberGrade;
+            ExtraLength = lintel.ExtraLength;
+
+        }
+
+        private void InitializerSupportPoints(List<SupportPointPoco> supports,List<EngineerMemberInfo> engineerSchedules)
+        {
+            foreach (var supportPointPoco in supports)
+            {
+                var i = supports.IndexOf(supportPointPoco);
+                if (i == 0 || i == 1)
+                {
+                    LoadPointSupports[i].LoadSupportPoint(supportPointPoco, engineerSchedules);
+                }
+                else
+                {
+                    var support = new SupportPoint(this, LoadPointLocation.MidPoint);
+                    support.LoadSupportPoint(supportPointPoco, engineerSchedules);
+                    LoadPointSupports.Add(support);
+                }
+            }
         }
 
 
