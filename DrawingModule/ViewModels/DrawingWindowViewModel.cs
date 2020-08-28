@@ -20,6 +20,7 @@ using AppModels.FileSerializer;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using devDept.Eyeshot;
+using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Serialization;
 using DrawingModule.Views;
@@ -56,9 +57,14 @@ namespace DrawingModule.ViewModels
         private string _selectedLevel;
         private ObservableCollection<LevelWall> _levels;
         private Timer _autoSaveTimer = new Timer(1 * 60 * 1000);
+        private Entity _selectedEntity;
         #endregion
         #region public Property
-
+        public Entity SelectedEntity
+        {
+            get => _selectedEntity;
+            set => SetProperty(ref _selectedEntity, value);
+        }
         public ObservableCollection<LevelWall> Levels
         {
             get=>_levels;
@@ -163,8 +169,8 @@ namespace DrawingModule.ViewModels
             ImportDWGCommand = new DelegateCommand(this.OnImportDWG);
             SaveCommand = new DelegateCommand(this.OnSaveDrawing);
             OpenCommand = new DelegateCommand(this.OnOpenDrawing);
-            _autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
-            _autoSaveTimer.Start();
+            //_autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
+            //_autoSaveTimer.Start();
 
             //this.DrawLineCommand = new DelegateCommand(this.OnDrawLine);
             //this.DrawRectangleCommand = new DelegateCommand(this.OnDrawRectangle);
@@ -189,7 +195,6 @@ namespace DrawingModule.ViewModels
             this.IsOrthorMode = true;
 
         }
-
         private void _autoSaveTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>

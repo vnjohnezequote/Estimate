@@ -24,7 +24,6 @@ namespace AppModels.ResponsiveData
         private string _clientName;
         private string _jobNumber;
         private string _unitNumber;
-        private string _fullAddress;
         private DesignInfor _beamDesignInfor;
         private DesignInfor _frameDesignInfor;
         private DesignInfor _bracingDesignInfor;
@@ -50,6 +49,9 @@ namespace AppModels.ResponsiveData
         private NoggingMethodType _noggingMethod;
         private int _raisedCeilingHeight;
         private CeilingBattensType _ceilingBattenType;
+        private string _jobAddress;
+        private string _subAddress;
+
         #endregion
         #region Property
         public JobModel JobModel { get; set; }
@@ -83,12 +85,35 @@ namespace AppModels.ResponsiveData
             get => this._jobNumber;
             set => this.SetProperty(ref this._jobNumber, value);
         }
-        public string JobAddress { get; set; }
-        public string SubAddress { get; set; }
+        public string JobAddress {
+            get=>_jobAddress;
+            set
+            {
+                SetProperty(ref _jobAddress, value);
+                RaisePropertyChanged(nameof(FullAddress));
+            }
+
+        }
+
+        public string SubAddress
+        {
+            get=>_subAddress;
+            set
+            {
+                SetProperty(ref _subAddress, value);
+                RaisePropertyChanged(nameof(FullAddress));
+            }
+        }
         public string FullAddress
         {
-            get => this._fullAddress;
-            set => this.SetProperty(ref this._fullAddress, value);
+            get => JobAddress + ", " + SubAddress;
+            set
+            {
+                var jobAddresses = value.Split(',');
+                if (jobAddresses.Length == 0) return;
+                JobAddress = jobAddresses[0];
+                SubAddress = jobAddresses[1].Trim() + ", " + jobAddresses[2].Trim();
+            } 
         }
         public string UnitNumber
         {

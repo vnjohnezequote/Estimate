@@ -12,6 +12,7 @@ namespace AppModels.Interaface
         colorMethodType ColorMethod { get; }
 
         void NotifyPropertiesChanged();
-
+        double X { get; }
+        double Y { get; }
     }
 }

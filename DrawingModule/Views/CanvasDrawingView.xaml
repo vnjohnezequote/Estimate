@@ -90,7 +90,7 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Layout" Name="TabPaperSpace">
-                    <paperSpaceControl:PaperSpaceDrawing x:Name="PaperSpace"/>
+                <paperSpaceControl:PaperSpaceDrawing x:Name="PaperSpace" EntitiesSelectedChanged="PaperSpace_OnEntitiesSelectedChanged"/>
                 </TabItem>
             </TabControl>
             <Grid Row="0">

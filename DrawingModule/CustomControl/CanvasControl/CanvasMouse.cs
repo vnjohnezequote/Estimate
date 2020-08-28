@@ -148,7 +148,11 @@ namespace DrawingModule.CustomControl.CanvasControl
                 }
                 else
                 {
-                    this.ProcessMouseDownForSelectionTool(e, check);
+                    if (!GetToolBar().Contains(mousePosition))
+                    {
+                        this.ProcessMouseDownForSelectionTool(e, check);
+                    }
+                    
                 }
 
             }

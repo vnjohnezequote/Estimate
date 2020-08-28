@@ -51,22 +51,26 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+
         </Grid.RowDefinitions>
         <TextBlock Text="Layer" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LayerVisibility}"/>
         <TextBlock Text="Color" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding ColorVisibility}"/>
         <TextBlock Text="Level" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LevelVisibility}"/>
         <TextBlock Text="Color By" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding ColorMethodVisibility}"/>
-
+        <TextBlock Text="X" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" />
+        <TextBlock Text="Y" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" />
         <GridSplitter Grid.Column="1"
-                          Grid.Row="0"
-                          Grid.RowSpan="3"
-                          ResizeDirection="Columns" 
-                          ResizeBehavior="PreviousAndNext"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Stretch"
-                          Margin="-3 -3 -3 -3"
-                          BorderThickness="3"
-                          BorderBrush="Transparent"/>
+                      Grid.Row="0"
+                      Grid.RowSpan="3"
+                      ResizeDirection="Columns" 
+                      ResizeBehavior="PreviousAndNext"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Stretch"
+                      Margin="-3 -3 -3 -3"
+                      BorderThickness="3"
+                      BorderBrush="Transparent"/>
         <ComboBox Grid.Row="0"
                   Grid.Column="2"
                   Style="{StaticResource MahApps.Styles.ComboBox}"
@@ -107,6 +111,12 @@
                   Margin="0 5 0 5"
                   ItemsSource="{Binding Source={StaticResource ColorMethods}}"
                   SelectedItem="{Binding Path=SelectedEntity.ColorMethod}"/>
+        <TextBox Grid.Row="4"
+                 Grid.Column="2"
+                 Text="{Binding SelectedEntity.X}"/>
+        <TextBox Grid.Row="5"
+                 Grid.Column="2"
+                 Text="{Binding SelectedEntity.Y}"/>
     </Grid>
 
 </UserControl>

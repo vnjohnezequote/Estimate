@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
+using AppModels.ResponsiveData;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using devDept.Graphics;
+using DrawingModule.CustomControl.PaperSpaceControl;
 using DrawingModule.ViewModels;
 
 namespace DrawingModule.Views
@@ -49,6 +52,20 @@ namespace DrawingModule.Views
         private void TabControl1_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             Drawings drawings = CanvasDrawing.PaperSpace;
+            foreach (var canvasDrawingLineType in CanvasDrawing.CanvasDrawing.LineTypes)
+            {
+                if (!drawings.LineTypes.Contains(canvasDrawingLineType))
+                {
+                    drawings.LineTypes.Add(canvasDrawingLineType);
+                }
+            }
+            foreach (var canvasDrawingLayer in CanvasDrawing.CanvasDrawing.Layers)
+            {
+                if (!drawings.Layers.Contains(canvasDrawingLayer))
+                {
+                    drawings.Layers.Add(canvasDrawingLayer);
+                }
+            }
 
             if (this.CanvasDrawing.TabPaperSpace.IsSelected && drawings.Sheets.Count > 0)
             {
@@ -56,8 +73,16 @@ namespace DrawingModule.Views
 
                 // rebuilds all the "dirty" views for all sheets.
                 drawings.Rebuild(this.CanvasDrawing.CanvasDrawing, true, true);
+                //var sheet = CanvasDrawing.PaperSpace.GetActiveSheet() as CustomSheet;
+                //if (sheet != null)
+                //{
+                //   UpDateLayout();
+                //}
+                drawings.Entities.Regen();
+                drawings.Invalidate();
             }
         }
+        
 
         private void CanvasDrawing_WorkCompleted(object sender, WorkCompletedEventArgs e)
         {
@@ -73,9 +98,9 @@ namespace DrawingModule.Views
             model1.Units = rfa.Units;
             rfa.AddToDrawings(drawings);
 
-            // If there are no sheets adds a default one to have a ready-to-use paper space.
-            //if (drawings.Sheets.Count == 0)
-            //    this.CanvasDrawing.AddDefaultSheet();
+            //// If there are no sheets adds a default one to have a ready-to-use paper space.
+            if (drawings.Sheets.Count == 0)
+                this.CanvasDrawing.AddDefaultSheet();
             model1.LayersManager.SetLayerList(model1.Layers);
         }
 
@@ -100,16 +125,21 @@ namespace DrawingModule.Views
 
         protected override void OnContentRendered(System.EventArgs e)
         {
-            
-            ReadFile rf = new ReadFile("Crankcase.eye");
-            rf.DoWork();
+
+            //ReadFile rf = new ReadFile("Crankcase.eye");
+            //rf.DoWork();
             // sets the units of the model.
-                //this.CanvasDrawing.CanvasDrawing.Units = rf.Units;
-                this.CanvasDrawing.CanvasDrawing.Entities.Add(rf.Entities[0]);
-                if (this.CanvasDrawing.PaperSpace.Sheets.Count == 0)
+            //this.CanvasDrawing.CanvasDrawing.Units = rf.Units;
+            //this.CanvasDrawing.CanvasDrawing.Entities.Add(rf.Entities[0]);
+            if (this.CanvasDrawing.PaperSpace.Sheets.Count == 0)
+            {
+                foreach (var levelWall in _drawingWindowViewModel.Levels)
                 {
-                    CanvasDrawing.AddSheet("Sheet1", linearUnitsType.Millimeters, formatType.A4_LANDSCAPE_ISO);
-                    //CanvasDrawing.TestPaperSpace.LineTypes.ReplaceItem(new LinePattern(CanvasDrawing.HiddenSegmentsLineTypeName, new float[] { 0.8f, -0.4f }));
+                    
+                    CanvasDrawing.AddSheet(levelWall.LevelName, linearUnitsType.Millimeters, formatType.A4_LANDSCAPE_ISO, _drawingWindowViewModel.JobModel);
+                }
+                
+                //CanvasDrawing.TestPaperSpace.LineTypes.ReplaceItem(new LinePattern(CanvasDrawing.HiddenSegmentsLineTypeName, new float[] { 0.8f, -0.4f }));
             }
         }
         
@@ -165,5 +195,25 @@ namespace DrawingModule.Views
             base.OnPreviewKeyDown(e);
         }
 
+        private void UpdateLayoutClick(object sender, RoutedEventArgs e)
+        {
+           UpDateLayout();
+        }
+
+        private void UpDateLayout()
+        {
+            Sheet activeSheet = CanvasDrawing.PaperSpace.GetActiveSheet();
+
+            devDept.Eyeshot.Entities.View view = null;
+
+            view = new VectorView(100, 30, viewType.Top, 0.01, CanvasDrawing.GetViewName((CustomSheet)activeSheet, viewType.Front, false));
+
+
+            if (CanvasDrawing.PaperSpace.Blocks.Contains(view.BlockName))
+                CanvasDrawing.PaperSpace.Blocks.Remove(view.BlockName); // it removes also related block references.
+
+            view.Rebuild(CanvasDrawing.CanvasDrawing, activeSheet, CanvasDrawing.PaperSpace, true);
+
+        }
     }
 }

@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
+using ApplicationService;
 using AppModels;
 using AppModels.CustomEntity;
 using AppModels.DynamicObject;
+using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using AppModels.ViewModelEntity;
@@ -83,7 +85,15 @@ namespace DrawingModule.ViewModels
             {
                 this.Levels = jobModel.Levels;
             }
-           
+
+            this.EventAggregator.GetEvent<EntityService>().Subscribe(OnPaperSpaceSelectedChanged);
+
+        }
+
+        private void OnPaperSpaceSelectedChanged(Entity selEntity)
+        {
+            var entityFactory = new EntitiyVmFactory();
+            SelectedEntity = entityFactory.creatEntityVm(selEntity);
         }
 
         private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

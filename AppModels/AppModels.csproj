@@ -170,6 +170,7 @@
     <Compile Include="Enums\WallLocationTypes.cs" />
     <Compile Include="Enums\WallMemberType.cs" />
     <Compile Include="Enums\WallType.cs" />
+    <Compile Include="EventArg\EntityEventArgs.cs" />
     <Compile Include="Factories\WallLayerFactory.cs" />
     <Compile Include="FileSerializer\EzequoteFileSerializer.cs" />
     <Compile Include="Helper.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="ViewModelEntity\LinearPathVm.cs" />
     <Compile Include="ViewModelEntity\LinearPathWall2DVm.cs" />
     <Compile Include="ViewModelEntity\LineVm.cs" />
+    <Compile Include="ViewModelEntity\VectorViewVm.cs" />
     <Compile Include="ViewModelEntity\Wall2DVm.cs" />
     <Compile Include="ResponsiveData\WallMemberData\WallStud.cs" />
     <Compile Include="ResponsiveData\TimberBase.cs" />

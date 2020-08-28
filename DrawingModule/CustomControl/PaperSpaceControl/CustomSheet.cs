@@ -75,7 +75,7 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                 15.0,
                 15.0
             };
-            double[] tableWidths = new double[] { 42 };
+            double[] tableWidths = new double[] { 21,21 };
             double tableWidth = 0;
             foreach (var width in tableWidths)
             {
@@ -92,52 +92,183 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                 tableHeight += height;
             }
             tableWidths[0] *= unitsConversionFactor;
-            double textHeight = 3 * unitsConversionFactor;
+            double textHeight = 2.5 * unitsConversionFactor;
 
             Color myColor = Color.Black;
 
            //double textHeight = 1.3;
-            double attributeHeight = 3*unitsConversionFactor;
+            double attributeHeight = 2.3*unitsConversionFactor;
             //double height = 3.0 * unitsConversionFactor;
             //CustomTable table = new CustomTable(Plane.XY, 9, 1, tableHeights, columnsWidths, textHeight);
-            CustomTable table = new CustomTable(Plane.XY, 9, 1, tableHeights, tableWidths, textHeight);
+            CustomTable table = new CustomTable(Plane.XY, 9, 2, tableHeights, tableWidths, textHeight);
             table.HorzCellMargin = 0.9;
             table.VertCellMargin = 0.9;
-
+            table.MergeCells(0, 0, 0, 1);
+            table.MergeCells(1, 0, 1, 1);
+            table.MergeCells(2, 0, 2, 1);
+            table.MergeCells(3, 0, 3, 1);
+            table.MergeCells(4, 0, 4, 1);
+            table.MergeCells(5, 0, 5, 1);
+            table.MergeCells(6, 0, 6, 1);
+            table.MergeCells(7, 0, 7, 1);
             //table.Translate(pageWidth - 180, 40);
             table.Translate(pageWidth - tableWidth, tableHeight);
 
             //#region Cells texts + attributes
 
-            table.SetTextString(0, 0, "Wind Rate:");
-            table.SetAlignment(0, 0, Text.alignmentType.TopLeft);
+            table.SetTextString(0, 0, "Wind Rate = ");
+            table.SetAlignment(0, 0, Text.alignmentType.MiddleLeft);
             var baseAtributePoint = table.GetCenter(0, 0);
-            var basePoint2 = new Point3D(baseAtributePoint.X+5*pageSize.ScaleFactor*unitsConversionFactor,baseAtributePoint.Y);
+            var basePoint2 = new Point3D(baseAtributePoint.X*pageSize.ScaleFactor*unitsConversionFactor,baseAtributePoint.Y);
             lists.Add(new devDept.Eyeshot.Entities.Attribute(basePoint2, "WindRate", String.Empty, attributeHeight)
             {
-                Alignment = Text.alignmentType.MiddleCenter
+                Alignment = Text.alignmentType.MiddleLeft
             });
 
-            table.SetTextString(1, 0, "Roof TimberGrade:");
-            table.SetAlignment(1, 0, Text.alignmentType.TopLeft);
+            table.SetTextString(1, 0, "Roof Material = ");
+            table.SetAlignment(1, 0, Text.alignmentType.MiddleLeft);
             baseAtributePoint = table.GetCenter(1, 0);
-            basePoint2 = new Point3D(baseAtributePoint.X + 13 * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y);
+            basePoint2 = new Point3D((baseAtributePoint.X+4) + pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y);
             lists.Add(new devDept.Eyeshot.Entities.Attribute(basePoint2, "RoofMaterial", String.Empty, attributeHeight)
             {
-                Alignment = Text.alignmentType.MiddleCenter
+                Alignment = Text.alignmentType.MiddleLeft
             });
             table.SetTextString(3,0,"PLATE HAS BEEN DESIGNED AT ");
             table.SetAlignment(3, 0, Text.alignmentType.TopLeft);
-            table.SetTextHeight(3,0,2.3);
-            baseAtributePoint = table.GetBottomLeftCorner(3, 0);
-            basePoint2 = new Point3D((baseAtributePoint.X+5) * pageSize.ScaleFactor * unitsConversionFactor, (baseAtributePoint.Y+1.2)* pageSize.ScaleFactor*unitsConversionFactor);
-            lists.Add(new devDept.Eyeshot.Entities.Attribute(basePoint2, "TieDown", String.Empty, 2.3)
+            table.SetTextHeight(3,0,attributeHeight);
+            baseAtributePoint = table.GetCenter(3, 0);
+            basePoint2 = new Point3D((baseAtributePoint.X-15) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y);
+            lists.Add(new devDept.Eyeshot.Entities.Attribute(basePoint2, "TieDown", String.Empty, attributeHeight)
             {
-                Alignment = Text.alignmentType.BottomLeft
+                Alignment = Text.alignmentType.TopLeft
             });
 
-            //table.SetTextString(1, 0, "SUBTITLE:");
-            //table.SetAlignment(1, 0, Text.alignmentType.TopLeft);
+            baseAtributePoint = table.GetBottomLeftCorner(4, 0);
+            basePoint2 = new Point3D((baseAtributePoint.X+2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y-2);
+            Text text = new Text(basePoint2, "CLIENT", 2,Text.alignmentType.TopLeft);
+            text.Color = Color.Chartreuse;
+            text.ColorMethod = colorMethodType.byEntity;
+            lists.Add(text);
+            lists.Add(new devDept.Eyeshot.Entities.Attribute(new Point3D(basePoint2.X,basePoint2.Y-5), "Client", String.Empty, attributeHeight)
+            {
+                Alignment = Text.alignmentType.MiddleLeft
+            });
+
+            baseAtributePoint = table.GetBottomLeftCorner(5, 0);
+            basePoint2 = new Point3D((baseAtributePoint.X+2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y-2);
+            Text text2 = new Text(basePoint2, "PROJECT", 2, Text.alignmentType.TopLeft);
+            text2.Color = Color.Chartreuse;
+            text2.ColorMethod = colorMethodType.byEntity;
+            lists.Add(text2);
+            lists.Add(new devDept.Eyeshot.Entities.Attribute(new Point3D(basePoint2.X, basePoint2.Y - 5), "Address", String.Empty, attributeHeight)
+            {
+                Alignment = Text.alignmentType.MiddleLeft
+            });
+            lists.Add(new devDept.Eyeshot.Entities.Attribute(new Point3D(basePoint2.X, basePoint2.Y - 8.5), "City", String.Empty, attributeHeight)
+            {
+                Alignment = Text.alignmentType.MiddleLeft
+            });
+
+            baseAtributePoint = table.GetBottomLeftCorner(6, 0);
+            basePoint2 = new Point3D((baseAtributePoint.X + 2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y - 2);
+            Text text3 = new Text(basePoint2, "TITLE", 2, Text.alignmentType.TopLeft);
+            text3.Color = Color.Chartreuse;
+            text3.ColorMethod = colorMethodType.byEntity;
+            lists.Add(text3);
+
+            lists.Add(new devDept.Eyeshot.Entities.Attribute(new Point3D(basePoint2.X, basePoint2.Y - 5), "Title", String.Empty, attributeHeight)
+            {
+                Alignment = Text.alignmentType.MiddleLeft
+            });
+
+            var textHeigthProp = 1;
+            baseAtributePoint = table.GetBottomLeftCorner(7, 0);
+            basePoint2 = new Point3D((baseAtributePoint.X + 2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y - 1.25);
+            Text text4 = new Text(basePoint2, "DESIGNED BY", textHeigthProp, Text.alignmentType.TopLeft);
+            text4.Color = Color.Chartreuse;
+            text4.ColorMethod = colorMethodType.byEntity;
+            lists.Add(text4);
+            Line seperateLine = new Line(new Point3D(basePoint2.X,basePoint2.Y-2.5),new Point3D(basePoint2.X+17,basePoint2.Y-2.5));
+            seperateLine.ColorMethod = colorMethodType.byEntity;
+            seperateLine.Color = Color.DimGray;
+            lists.Add(seperateLine);
+
+            basePoint2 = new Point3D((baseAtributePoint.X + 2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y - 4.5);
+            Text text5 = new Text(basePoint2, "DRAWN BY", textHeigthProp, Text.alignmentType.TopLeft);
+            text5.Color = Color.Chartreuse;
+            text5.ColorMethod = colorMethodType.byEntity;
+            lists.Add(text5);
+
+
+            Line seperateLine2 = new Line(new Point3D(basePoint2.X, basePoint2.Y - 2.5), new Point3D(basePoint2.X + 17, basePoint2.Y - 2.5));
+            seperateLine2.ColorMethod = colorMethodType.byEntity;
+            seperateLine2.Color = Color.DimGray;
+            lists.Add(seperateLine2);
+
+            basePoint2 = new Point3D((baseAtributePoint.X + 2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y - 7.75);
+            Text text6 = new Text(basePoint2, "AUTHORISED", textHeigthProp, Text.alignmentType.TopLeft);
+            text6.Color = Color.Chartreuse;
+            text6.ColorMethod = colorMethodType.byEntity;
+            lists.Add(text6);
+
+            Line seperateLine3 = new Line(new Point3D(basePoint2.X, basePoint2.Y - 2.5), new Point3D(basePoint2.X + 17, basePoint2.Y - 2.5));
+            seperateLine3.ColorMethod = colorMethodType.byEntity;
+            seperateLine3.Color = Color.DimGray;
+            lists.Add(seperateLine3);
+
+            basePoint2 = new Point3D((baseAtributePoint.X + 2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y - 11);
+            Text text7 = new Text(basePoint2, "DATE", textHeigthProp, Text.alignmentType.TopLeft);
+            text7.Color = Color.Chartreuse;
+            text7.ColorMethod = colorMethodType.byEntity;
+            lists.Add(text7);
+
+            lists.Add(new devDept.Eyeshot.Entities.Attribute(new Point3D(basePoint2.X+1.5, basePoint2.Y - 2.25), "Date", String.Empty, textHeigthProp)
+            {
+                Alignment = Text.alignmentType.MiddleLeft
+            });
+
+            baseAtributePoint = table.GetBottomLeftCorner(7, 1);
+            basePoint2 = new Point3D((baseAtributePoint.X + 2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y - 1.25);
+            Text text8 = new Text(basePoint2, "SCALE", textHeigthProp, Text.alignmentType.TopLeft);
+            text8.Color = Color.Chartreuse;
+            text8.ColorMethod = colorMethodType.byEntity;
+            lists.Add(text8);
+
+            lists.Add(new devDept.Eyeshot.Entities.Attribute(new Point3D(basePoint2.X+5, basePoint2.Y - 2.25), "Scale", String.Empty, textHeigthProp*2)
+            {
+                Alignment = Text.alignmentType.MiddleLeft
+            });
+            Line seperateLine4 = new Line(new Point3D(basePoint2.X, basePoint2.Y - 4), new Point3D(basePoint2.X + 17, basePoint2.Y - 4));
+            seperateLine4.ColorMethod = colorMethodType.byEntity;
+            seperateLine4.Color = Color.DimGray;
+            lists.Add(seperateLine4);
+
+            basePoint2 = new Point3D((baseAtributePoint.X + 2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y - 6);
+            Text text9 = new Text(basePoint2, "JOB NO", textHeigthProp, Text.alignmentType.TopLeft);
+            text9.Color = Color.Chartreuse;
+            text9.ColorMethod = colorMethodType.byEntity;
+            lists.Add(text9);
+
+            lists.Add(new devDept.Eyeshot.Entities.Attribute(new Point3D(basePoint2.X, basePoint2.Y - 2.25), "JobNo", String.Empty, textHeigthProp)
+            {
+                Alignment = Text.alignmentType.MiddleLeft
+            });
+
+            Line seperateLine5 = new Line(new Point3D(basePoint2.X, basePoint2.Y - 4), new Point3D(basePoint2.X + 17, basePoint2.Y - 4));
+            seperateLine5.ColorMethod = colorMethodType.byEntity;
+            seperateLine5.Color = Color.DimGray;
+            lists.Add(seperateLine5);
+
+            basePoint2 = new Point3D((baseAtributePoint.X + 2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y - 10.75);
+            Text text10 = new Text(basePoint2, "DRAWING NO", textHeigthProp, Text.alignmentType.TopLeft);
+            text10.Color = Color.Chartreuse;
+            text10.ColorMethod = colorMethodType.byEntity;
+            lists.Add(text10);
+
+
+            //table.SetTextString(4, 0, "CLIENT:");
+            //table.SetAlignment(4, 0, Text.alignmentType.TopLeft);
+            //table.SetTextHeight(4,0,2);
 
             //lists.Add(new devDept.Eyeshot.Entities.Attribute(new Point3D(20, 25), "Subtitle", String.Empty, attributeHeight)
             //{
@@ -155,7 +286,27 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             //table.Translate(pageWidth - tableWidth, tableHeight);
             //table.SetTextString(0, 0, "TITLE:");
             //table.SetAlignment(0, 0, Text.alignmentType.TopLeft);
-            lists.Add(table);
+
+            //double[] tableHeights2 = new double[]
+            //{
+            //    15.0
+            //};
+            //double[] tableWidths2 = new double[] { 21,21 };
+            //double tableHeight2 = 0;
+            //foreach (var height in tableHeights2)
+            //{
+            //    tableHeight2 += height;
+            //}
+
+            //lists.Add(table);
+
+            //CustomTable table2 = new CustomTable(Plane.XY, 1, 2, tableHeights2, tableWidths2, textHeight);
+            //table2.HorzCellMargin = 0.9;
+            //table2.VertCellMargin = 0.9;
+
+            ////table.Translate(pageWidth - 180, 40);
+            //table2.Translate(pageWidth - tableWidth, tableHeight2);
+            //lists.Add(table2);
 
 
         }

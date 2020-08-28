@@ -3,35 +3,74 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Input;
+using AppDataBase.DataBase;
+using ApplicationInterfaceCore;
+using AppModels;
+using AppModels.EventArg;
 using devDept.Eyeshot;
 using devDept.Geometry;
+using devDept.Graphics;
 using DrawingModule.Application;
 using DrawingModule.CommandClass;
+using DrawingModule.CustomControl.CanvasControl;
 
 namespace DrawingModule.CustomControl.PaperSpaceControl
 {
     public class PaperSpaceDrawing: Drawings
     {
+        #region Dependence Property
+        
+        #endregion
+        #region Field
+
+        #endregion
+
+        #region Properties
+        #endregion
         public event DrawingToolChanged ToolChanged;
-        //private IDrawInteractive _currentTool;
-        //internal IDrawInteractive CurrentTool
-        //{
-        //    get => _currentTool;
-        //    private set
-        //    {
-        //        SetProperty(ref _currentTool, value);
-        //        ToolChanged?.Invoke(this, new ToolChangedArgs(value));
-        //    }
-        //}
         public ViewportList Viewports { get; }
         public int ActiveViewport { get; }
         public Point3D LastClickPoint { get; }
         public Plane DrawingPlane { get; }
+        public event EventHandler<EntityEventArgs> EntitiesSelectedChanged;
 
         #region Constructor
 
         public PaperSpaceDrawing()
         {
+
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            var mousePosition = RenderContextUtility.ConvertPoint(GetMousePosition(e));
+            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+            {
+                if (GetToolBar().Contains(mousePosition))
+                {
+                    base.OnMouseDown(e);
+
+                    return;
+                }
+                var index = GetEntityUnderMouseCursor(mousePosition);
+                if (index != -1)
+                {
+                    var view = Entities[index] as devDept.Eyeshot.Entities.View;
+                    if (view!=null)
+                    {
+                        view.Selected = true;
+                    }
+                    
+                    var selectedViewArg = new EntityEventArgs(view);
+                    if (EntitiesSelectedChanged != null)
+                        EntitiesSelectedChanged.Invoke(this, selectedViewArg);
+                }
+
+            }
+
+            base.OnMouseDown(e);
 
         }
 
@@ -52,6 +91,12 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             this.Focus();
             
         }
+        #endregion
+
+        #region private Method
+
+
+
         #endregion
         #region Implement INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -84,4 +129,5 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
         }
         #endregion
     }
+
 }

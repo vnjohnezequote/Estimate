@@ -16,7 +16,7 @@ namespace AppModels.Factories
             return new EntityVm(entity);
         }
 
-        public static LineVm CreateLiheLineVm(this Line line)
+        public static LineVm CreateLineVm(this Line line)
         {
             return new LineVm(line);
         }
@@ -24,6 +24,11 @@ namespace AppModels.Factories
         public static LinearPathVm CreateLinearPathVm(this LinearPath linearPath)
         {
             return new LinearPathVm(linearPath);
+        }
+
+        public static VectorViewVm CreateVectorViewVm(this VectorView vectorView)
+        {
+            return new VectorViewVm(vectorView);
         }
     }
 }

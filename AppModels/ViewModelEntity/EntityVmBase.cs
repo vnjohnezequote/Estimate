@@ -17,8 +17,6 @@ namespace AppModels.ViewModelEntity
     [Serializable]
     public abstract class EntityVmBase: BindableBase, IEntityVm
     {
-        //[Browsable(false)]
-        [Display(AutoGenerateField = false)]
         public IEntity Entity { get; }
         [PropertyGrid(NestedPropertyDisplayMode = NestedPropertyDisplayMode.None)]
         public Color? Color
@@ -50,6 +48,8 @@ namespace AppModels.ViewModelEntity
                 Entity.ColorMethod = value;
             }
         }
+        public virtual double X { get; set; }
+        public virtual double Y { get; set; }
 
         protected EntityVmBase(IEntity entity)
         {

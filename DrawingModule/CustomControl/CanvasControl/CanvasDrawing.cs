@@ -44,11 +44,6 @@ namespace DrawingModule.CustomControl.CanvasControl
     public partial class CanvasDrawing : Model, ICadDrawAble
     {
 
-        #region Delegate
-        private DrawInteractiveDelegate _drawInteractiveHandler;
-
-
-        #endregion
         #region Field
 
         public static readonly DependencyProperty ActiveLayerNameProperty =
@@ -73,11 +68,8 @@ namespace DrawingModule.CustomControl.CanvasControl
         private Point3D _currentPoint;
         private bool _isUserClicked = false;
         private Point3D _lastClickPoint;
-        //private System.Drawing.Point _currentMouseLocation;
-
+        
         private Point3D _basePoint;
-        //private 
-        //private List<Entity> _selectedEntities; 
 
         #endregion
 
