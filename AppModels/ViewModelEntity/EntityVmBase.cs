@@ -48,8 +48,6 @@ namespace AppModels.ViewModelEntity
                 Entity.ColorMethod = value;
             }
         }
-        public virtual double X { get; set; }
-        public virtual double Y { get; set; }
 
         protected EntityVmBase(IEntity entity)
         {

@@ -36,12 +36,12 @@ namespace DrawingModule.ViewModels
         private PaperSpaceDrawing _paperSpace;
         private CanvasDrawingView _canvasDrawingView;
         private string _activeLevel;
-        private Entity _selectedEntity;
+        private IEntityVm _selectedEntity;
 
         private DynamicInputViewModel  _dynamciInputViewModel;
         #endregion
         #region Properties
-        public Entity SelectedEntity
+        public IEntityVm SelectedEntity
         {
             get => _selectedEntity;
             set
@@ -50,9 +50,26 @@ namespace DrawingModule.ViewModels
                 if (this.EventAggregator!=null)
                 {
                     this.EventAggregator.GetEvent<EntityService>().Publish(SelectedEntity);
+                    if (SelectedEntity!=null)
+                    {
+                        SelectedEntity.PropertyChanged += SelectedEntity_PropertyChanged;
+                    }
                 }
             }
         }
+
+        private void SelectedEntity_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "X" || e.PropertyName == "Y")
+            {
+                if (_paperSpace!=null)
+                {
+                    _paperSpace.Entities.Regen();
+                    _paperSpace.Invalidate();
+                }
+            }
+        }
+
         public string ActiveLevel { get=>_activeLevel; set=>SetProperty(ref _activeLevel,value); }
         public bool IsCanvasMouseOn
         {

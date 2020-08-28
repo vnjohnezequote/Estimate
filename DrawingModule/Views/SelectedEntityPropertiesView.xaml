@@ -117,6 +117,7 @@
         <TextBox Grid.Row="5"
                  Grid.Column="2"
                  Text="{Binding SelectedEntity.Y}"/>
+
     </Grid>
 
 </UserControl>

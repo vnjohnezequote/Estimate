@@ -204,16 +204,28 @@ namespace DrawingModule.Views
         {
             Sheet activeSheet = CanvasDrawing.PaperSpace.GetActiveSheet();
 
-            devDept.Eyeshot.Entities.View view = null;
+            //devDept.Eyeshot.Entities.View view = null;
 
-            view = new VectorView(100, 30, viewType.Top, 0.01, CanvasDrawing.GetViewName((CustomSheet)activeSheet, viewType.Front, false));
+            //view = new VectorView(100, 30, viewType.Top, 0.01, CanvasDrawing.GetViewName((CustomSheet)activeSheet, viewType.Front, false));
+            foreach (var activeSheetEntity in activeSheet.Entities)
+            {
+                if (activeSheetEntity is VectorView vectorViews)
+                {
+                    vectorViews.Rebuild(CanvasDrawing.CanvasDrawing, activeSheet, CanvasDrawing.PaperSpace, true);
+                }
+            }
 
+            //if (CanvasDrawing.PaperSpace.Blocks.Contains(view.BlockName))
+            //    CanvasDrawing.PaperSpace.Blocks.Remove(view.BlockName); // it removes also related block references.
 
-            if (CanvasDrawing.PaperSpace.Blocks.Contains(view.BlockName))
-                CanvasDrawing.PaperSpace.Blocks.Remove(view.BlockName); // it removes also related block references.
+            //view.Rebuild(CanvasDrawing.CanvasDrawing, activeSheet, CanvasDrawing.PaperSpace, true);
 
-            view.Rebuild(CanvasDrawing.CanvasDrawing, activeSheet, CanvasDrawing.PaperSpace, true);
+        }
 
+        private void PrintLayoutClick(object sender, RoutedEventArgs e)
+        {
+            if (CanvasDrawing.PaperSpace.PageSetup(true, true, 0) == false) return;
+            CanvasDrawing.PaperSpace.PrintPreview(new System.Drawing.Size(800, 600));
         }
     }
 }

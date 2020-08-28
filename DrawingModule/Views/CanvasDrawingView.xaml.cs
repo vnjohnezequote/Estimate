@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using AppModels.EventArg;
+using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using devDept.Eyeshot;
@@ -347,7 +348,8 @@ namespace DrawingModule.Views
             
                     if (_viewModel != null)
                     {
-                        _viewModel.SelectedEntity =e.Item;
+                        var entityFactory = new EntitiyVmFactory();
+                        _viewModel.SelectedEntity = entityFactory.creatEntityVm(e.Item);
                     }
             
         }

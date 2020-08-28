@@ -83,6 +83,8 @@
             <Button Content="{materialDesign:PackIcon Import}" Command="{Binding ImportDWGCommand}" Margin="10 0 0 0" Style="{StaticResource MahApps.Styles.Button.MetroSquare}"/>
 
 			<Button Content="Update Layout" Click="UpdateLayoutClick"/>
+            <Button Content="Print Layout" Click="PrintLayoutClick"/>
+
             <Button Content="{materialDesign:PackIcon VectorLine}" Command="{Binding DrawLineCommand}" Margin="10 0 0 0" />
 			<Button Content="{materialDesign:PackIcon RectangleOutline}" Margin="10 0 0 0" Command="{Binding DrawRectangleCommand}" />
 			<Button Content="{materialDesign:PackIcon RayStartArrow}" Margin="10 0 0 0" Command="{Binding DrawRayCommand}"/>

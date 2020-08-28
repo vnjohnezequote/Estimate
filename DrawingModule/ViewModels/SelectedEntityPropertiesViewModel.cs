@@ -90,10 +90,9 @@ namespace DrawingModule.ViewModels
 
         }
 
-        private void OnPaperSpaceSelectedChanged(Entity selEntity)
+        private void OnPaperSpaceSelectedChanged(IEntityVm selEntity)
         {
-            var entityFactory = new EntitiyVmFactory();
-            SelectedEntity = entityFactory.creatEntityVm(selEntity);
+            SelectedEntity = selEntity;
         }
 
         private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
