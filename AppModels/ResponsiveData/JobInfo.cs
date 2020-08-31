@@ -370,7 +370,7 @@ namespace AppModels.ResponsiveData
                     {
                         value = null;
                     }
-                    else if (BuilderName.Contains("Privium") && value == "1500")
+                    else if (!string.IsNullOrEmpty(BuilderName) && BuilderName.Contains("Privium") && value == "1500")
                     {
                         value = null;
                     }

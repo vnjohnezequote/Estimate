@@ -59,31 +59,35 @@ namespace DrawingModule.Views
 
         private void Info_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var activeSheet = this.PaperSpace.GetActiveSheet();
-            var br = GetFormatBlockReference(activeSheet);
-            if (br != null)
+            foreach (var paperSpaceSheet in this.PaperSpace.Sheets)
             {
-                switch (e.PropertyName)
+                var br = GetFormatBlockReference(paperSpaceSheet);
+                if (br != null)
                 {
-                    case nameof(_viewModel.JobModel.Info.WindRate):
-                        br.Attributes["WindRate"].Value = _viewModel.JobModel.Info.WindRate;
-                        break;
-                    case nameof(_viewModel.JobModel.Info.RoofMaterial):
-                        br.Attributes["RoofMaterial"].Value = _viewModel.JobModel.Info.RoofMaterial;
-                        break;
-                    case nameof(_viewModel.JobModel.Info.TieDown):
-                        br.Attributes["TieDown"].Value = _viewModel.JobModel.Info.TieDown;
-                        break;
-                    case nameof(_viewModel.JobModel.Info.JobAddress):
-                    case nameof(_viewModel.JobModel.Info.SubAddress):
-                        br.Attributes["Address"].Value = _viewModel.JobModel.Info.JobAddress;
-                        br.Attributes["City"].Value = _viewModel.JobModel.Info.SubAddress;
-                        break;
-                    case nameof(_viewModel.JobModel.Info.JobNumber):
-                        br.Attributes["JobNo"].Value = _viewModel.JobModel.Info.JobNumber;
-                        break;
+                    switch (e.PropertyName)
+                    {
+                        case nameof(_viewModel.JobModel.Info.WindRate):
+                            br.Attributes["WindRate"].Value = _viewModel.JobModel.Info.WindRate;
+                            break;
+                        case nameof(_viewModel.JobModel.Info.RoofMaterial):
+                            br.Attributes["RoofMaterial"].Value = _viewModel.JobModel.Info.RoofMaterial;
+                            break;
+                        case nameof(_viewModel.JobModel.Info.TieDown):
+                            br.Attributes["TieDown"].Value = _viewModel.JobModel.Info.TieDown;
+                            break;
+                        case nameof(_viewModel.JobModel.Info.JobAddress):
+                        case nameof(_viewModel.JobModel.Info.SubAddress):
+                            br.Attributes["Address"].Value = _viewModel.JobModel.Info.JobAddress;
+                            br.Attributes["City"].Value = _viewModel.JobModel.Info.SubAddress;
+                            break;
+                        case nameof(_viewModel.JobModel.Info.JobNumber):
+                            br.Attributes["JobNo"].Value = _viewModel.JobModel.Info.JobNumber;
+                            break;
+                    }
                 }
             }
+            //var activeSheet = this.PaperSpace.GetActiveSheet();
+            
 
                
 
@@ -310,7 +314,7 @@ namespace DrawingModule.Views
             double unitsConversionFactor = Utility.GetLinearUnitsConversionFactor(linearUnitsType.Millimeters, sheet.Units);
 
             // adds Front vector view
-            var view = new VectorView(100 * unitsConversionFactor, 30 , viewType.Top, 0.01, GetViewName(sheet, viewType.Front,false));
+            var view = new VectorView(-100 * unitsConversionFactor, -300 , viewType.Top, 0.01, GetViewName(sheet, viewType.Front,false));
             //var view = new RasterView(7 * unitsConversionFactor, 100 * unitsConversionFactor, viewType.Top, 0.5, GetViewName(sheet, viewType.Top, true));
 
             view.ColorMethod = colorMethodType.byLayer;
@@ -351,7 +355,6 @@ namespace DrawingModule.Views
                         var entityFactory = new EntitiyVmFactory();
                         _viewModel.SelectedEntity = entityFactory.creatEntityVm(e.Item);
                     }
-            
         }
     }
 }

@@ -225,7 +225,13 @@ namespace DrawingModule.Views
         private void PrintLayoutClick(object sender, RoutedEventArgs e)
         {
             if (CanvasDrawing.PaperSpace.PageSetup(true, true, 0) == false) return;
-            CanvasDrawing.PaperSpace.PrintPreview(new System.Drawing.Size(800, 600));
+            //CanvasDrawing.PaperSpace.PrintPreview(new System.Drawing.Size(800, 600));
+            CanvasDrawing.PaperSpace.Print();
+            //if (CanvasDrawing.CanvasDrawing.PageSetup(true,true,0)==false) return;
+            //CanvasDrawing.CanvasDrawing.Print();
+            //CanvasDrawing.CanvasDrawing.
+
+
         }
     }
 }
