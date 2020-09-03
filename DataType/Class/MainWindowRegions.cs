@@ -38,5 +38,7 @@ namespace DataType.Class
         /// The window control region.
         /// </summary>
         public const string WindowControlRegion = nameof(WindowControlRegion);
+
+        public const string LeftContentRegion = nameof(LeftContentRegion);
     }
 }

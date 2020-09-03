@@ -34,7 +34,7 @@ namespace AppModels.ResponsiveData.Openings
         private double _extraLength;
         private int _id;
         private Suppliers? _supplier;
-        private SupportType? _pointSupportType;
+        private SupportType? _pointSupportType=null;
 
         #endregion
 

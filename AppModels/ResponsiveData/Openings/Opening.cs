@@ -25,7 +25,7 @@ namespace AppModels.ResponsiveData.Openings
     public class Opening : BindableBase
     {
         private WallBase _wallReference;
-        private string _noOfJambSupport;
+        //private string _noOfJambSupport;
         private int _id;
         private int _doorHeaderHeight;
         private WallLocationTypes? _doorTypeLocation;
@@ -35,7 +35,7 @@ namespace AppModels.ResponsiveData.Openings
         private LintelBeam _lintel;
         private OpeningInfo _doorWindowInfo;
         private OpeningType? _openingType = null;
-        private bool _isCavitySlidingDoor=false;
+        //private bool _isCavitySlidingDoor=false;
         private DoorTypes _doorType;
         private NumberOfDoors _doorNumberType;
         private int _noDoor;

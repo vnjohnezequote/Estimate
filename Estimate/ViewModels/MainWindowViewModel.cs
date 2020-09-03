@@ -132,7 +132,7 @@ namespace Estimate.ViewModels
         /// <summary>
         /// The clientPoco name.
         /// </summary>
-        private string _clientName;
+        //private string _clientName;
 
         /// <summary>
         /// The is job exist.
@@ -454,6 +454,7 @@ namespace Estimate.ViewModels
             if (this.JobModel != null)
             {
                 this.RegionManager.RequestNavigate(MainWindowRegions.MainRegion, nameof(WallFrameInputView), parameters);
+                this.RegionManager.RequestNavigate(MainWindowRegions.LeftContentRegion,nameof(SelectedWallPropertiesView));
             }
         }
 

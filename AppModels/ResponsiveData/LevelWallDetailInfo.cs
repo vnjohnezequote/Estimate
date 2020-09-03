@@ -14,13 +14,13 @@ namespace AppModels.ResponsiveData
     public class LevelWallDetailInfo: BindableBase,IGlobalWallDetail
     {
         #region Field
-        private IBasicWallInfo _globallWallInfo;
-        private IWallMemberInfo _ribbonPlate;
-        private IWallMemberInfo _topPlate;
-        private IWallMemberInfo _stud;
-        private IWallMemberInfo _bottomPlate;
-        private IWallMemberInfo _nogging;
-        private IWallMemberInfo _trimmer;
+        //private IBasicWallInfo _globallWallInfo;
+        //private IWallMemberInfo _ribbonPlate;
+        //private IWallMemberInfo _topPlate;
+        //private IWallMemberInfo _stud;
+        //private IWallMemberInfo _bottomPlate;
+        //private IWallMemberInfo _nogging;
+        //private IWallMemberInfo _trimmer;
         #endregion
 
         #region Property

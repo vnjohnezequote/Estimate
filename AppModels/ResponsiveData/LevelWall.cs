@@ -80,7 +80,7 @@ namespace AppModels.ResponsiveData
 		/// <summary>
 		/// The wall temp length.
 		/// </summary>
-		private ObservableCollection<WallTempLength> _tempLength;
+		//private ObservableCollection<WallTempLength> _tempLength;
 		
 		private ObservableCollection<GenericBracing> _generalBracing;
 

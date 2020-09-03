@@ -15,90 +15,89 @@
 	prism:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance viewModels:PrenailFloorInputViewModel, IsDesignTimeCreatable=True}"
 	xmlns:converter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
-	xmlns:customConverter="clr-namespace:ApplicationConverter.Base;assembly=ApplicationConverter"
-	xmlns:helper="clr-namespace:WallFrameInputModule.Helper"
+    xmlns:helper="clr-namespace:WallFrameInputModule.Helper"
 	xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.WPF"
 	xmlns:modelCompare="clr-namespace:AppModels.Comparer;assembly=AppModels"
 	xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
     Loaded="PrenailFloorInputView_OnLoaded">
-	<!--d:DataContext="{d:DesignInstance {x:Type viewModels:PrenailFloorInputViewModel}, IsDesignTimeCreatable=True}"-->
-	<UserControl.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
-				<ResourceDictionary>
-					<ObjectDataProvider x:Key="WallTypes"
+    <!--d:DataContext="{d:DesignInstance {x:Type viewModels:PrenailFloorInputViewModel}, IsDesignTimeCreatable=True}"-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
+                <ResourceDictionary>
+                    <ObjectDataProvider x:Key="WallTypes"
 										MethodName="GetValues" ObjectType="{x:Type system:Enum}">
-						<ObjectDataProvider.MethodParameters>
-							<x:Type TypeName="appModelEnum:WallType"/>
-						</ObjectDataProvider.MethodParameters>
-					</ObjectDataProvider>
-					<converter:IntToBooleanConverter x:Key="IntToBooleanConverter"/>
-					<converter:PitchingHeightToWallHeightConverter x:Key="PitchingToWallHeightConverter"/>
-					<converter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
-					<helper:WallStudSelectConverter x:Key="WallStudSelectConverter"/>
-					<helper:BottomPlatesSelectConverter x:Key="BottomPlatesSelectConverter"/>
-					<helper:TopPlatesSelectConverter x:Key="TopPlatesSelectConverter"/>
-					<helper:RibbonPlatesSelectConverter x:Key="RibbonPlatesSelectConverter"/>
-					<helper:BeamSelectConverter x:Key="BeamSelectConverter"/>
-					<modelCompare:WallTypeComparer x:Key="WallTypeComparer"/>
-				</ResourceDictionary>
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</UserControl.Resources>
-	<StackPanel x:Name="MainGridInput">
-		<interactions:Interaction.Triggers>
-			<interactions:EventTrigger EventName="Loaded">
-				<interactions:InvokeCommandAction Command="{Binding WallInputLoadedCommand}" CommandParameter="{Binding ElementName=MainGridInput}"/>
-			</interactions:EventTrigger>
-		</interactions:Interaction.Triggers>
-		<materialDesign:DialogHost Identifier="openFileDialogHost" DialogTheme="Dark">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="appModelEnum:WallType"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <converter:IntToBooleanConverter x:Key="IntToBooleanConverter"/>
+                    <converter:PitchingHeightToWallHeightConverter x:Key="PitchingToWallHeightConverter"/>
+                    <converter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+                    <helper:WallStudSelectConverter x:Key="WallStudSelectConverter"/>
+                    <helper:BottomPlatesSelectConverter x:Key="BottomPlatesSelectConverter"/>
+                    <helper:TopPlatesSelectConverter x:Key="TopPlatesSelectConverter"/>
+                    <helper:RibbonPlatesSelectConverter x:Key="RibbonPlatesSelectConverter"/>
+                    <helper:BeamSelectConverter x:Key="BeamSelectConverter"/>
+                    <modelCompare:WallTypeComparer x:Key="WallTypeComparer"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel x:Name="MainGridInput">
+        <interactions:Interaction.Triggers>
+            <interactions:EventTrigger EventName="Loaded">
+                <interactions:InvokeCommandAction Command="{Binding WallInputLoadedCommand}" CommandParameter="{Binding ElementName=MainGridInput}"/>
+            </interactions:EventTrigger>
+        </interactions:Interaction.Triggers>
+        <materialDesign:DialogHost Identifier="openFileDialogHost" DialogTheme="Dark">
 
-			<StackPanel>
-				<StackPanel Orientation="Horizontal">
-					<!-- Job Information -->
-					<StackPanel>
-						<materialDesign:ColorZone Mode="PrimaryDark" Padding="10">
-							<TextBlock Text="{Binding Title}" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-						</materialDesign:ColorZone>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <!-- Job Information -->
+                    <StackPanel>
+                        <materialDesign:ColorZone Mode="PrimaryDark" Padding="10">
+                            <TextBlock Text="{Binding Title}" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </materialDesign:ColorZone>
 
-						<StackPanel Margin="0 10 0 0">
-							<StackPanel Orientation="Horizontal">
-								<TextBox materialDesign:HintAssist.Hint="External Wall Height" Text="{Binding Level.LevelInfo.WallHeight}" />
-								<TextBox materialDesign:HintAssist.Hint="External WallThickness" Text="{Binding Level.LevelInfo.ExternalWallThickness}" Margin="10 0 0 0" />
-								<TextBox materialDesign:HintAssist.Hint="External Wall Spacing" Text="{Binding Level.LevelInfo.ExternalWallSpacing}" Margin="10 0 0 0"/>
-							</StackPanel>
-							<StackPanel Orientation="Horizontal" Margin="0 10 0 0">
-								<TextBox materialDesign:HintAssist.Hint="Internal Wall Height" Text="{Binding Level.LevelInfo.InternalWallHeight,Mode=OneWay}" />
-								<TextBox materialDesign:HintAssist.Hint="Internal WallThickness" Text="{Binding Level.LevelInfo.InternalWallThickness}" Margin="10 0 0 0" />
-								<TextBox materialDesign:HintAssist.Hint="Internal Wall Spacing" Text="{Binding Level.LevelInfo.InternalWallSpacing}" Margin="10 0 0 0"/>
-							</StackPanel>
-							<DockPanel Margin="0 10 0 0" HorizontalAlignment="Left" LastChildFill="True" >
-								<TextBox materialDesign:HintAssist.Hint="Ceiling Pitch" Text ="{Binding Level.LevelInfo.GlobalInfo.CeilingPitch}" HorizontalAlignment="Left" />
-								<TextBox materialDesign:HintAssist.Hint="Step Down" Text="{Binding Level.LevelInfo.GlobalInfo.StepDown}" Margin="10 0 0 0" HorizontalAlignment="Left"/>
-								<TextBox materialDesign:HintAssist.Hint="Raised Celing Height" Text="{Binding Level.LevelInfo.GlobalInfo.RaisedCeilingHeight}" Margin="10 0 0 0" HorizontalAlignment="Left"/>
-								<TextBox materialDesign:HintAssist.Hint="Lintel over 3.6" Text="{Binding Level.LintelLm}" Margin="10 0 0 0" />
-							</DockPanel>
-						</StackPanel>
-					</StackPanel>
-					<!-- Button -->
-					<StackPanel Margin="50 10 0 0">
-						<Button Content="Reset Wall" Style="{StaticResource MaterialDesignRaisedAccentButton}"/>
-						<Button Content="Sort" Command="{Binding WallInputSortCommand}"/>
-						<Button Content="Undo" />
-						<Button Content="Check" />
-						<Button Content="Add" Command= "{Binding NewWallRowInputCommand}"/>
-						<Button Content="Delete" Command = "{Binding DeleteWallRowCommand}" CommandParameter = "{Binding ElementName = WallInput}"/>
-					</StackPanel>
-					<!-- Report Button -->
-					<StackPanel Margin="50 10 0 0">
+                        <StackPanel Margin="0 10 0 0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox materialDesign:HintAssist.Hint="External Wall Height" Text="{Binding Level.LevelInfo.WallHeight}" />
+                                <TextBox materialDesign:HintAssist.Hint="External WallThickness" Text="{Binding Level.LevelInfo.ExternalWallThickness}" Margin="10 0 0 0" />
+                                <TextBox materialDesign:HintAssist.Hint="External Wall Spacing" Text="{Binding Level.LevelInfo.ExternalWallSpacing}" Margin="10 0 0 0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                                <TextBox materialDesign:HintAssist.Hint="Internal Wall Height" Text="{Binding Level.LevelInfo.InternalWallHeight,Mode=OneWay}" />
+                                <TextBox materialDesign:HintAssist.Hint="Internal WallThickness" Text="{Binding Level.LevelInfo.InternalWallThickness}" Margin="10 0 0 0" />
+                                <TextBox materialDesign:HintAssist.Hint="Internal Wall Spacing" Text="{Binding Level.LevelInfo.InternalWallSpacing}" Margin="10 0 0 0"/>
+                            </StackPanel>
+                            <DockPanel Margin="0 10 0 0" HorizontalAlignment="Left" LastChildFill="True" >
+                                <TextBox materialDesign:HintAssist.Hint="Ceiling Pitch" Text ="{Binding Level.LevelInfo.GlobalInfo.CeilingPitch}" HorizontalAlignment="Left" />
+                                <TextBox materialDesign:HintAssist.Hint="Step Down" Text="{Binding Level.LevelInfo.GlobalInfo.StepDown}" Margin="10 0 0 0" HorizontalAlignment="Left"/>
+                                <TextBox materialDesign:HintAssist.Hint="Raised Celing Height" Text="{Binding Level.LevelInfo.GlobalInfo.RaisedCeilingHeight}" Margin="10 0 0 0" HorizontalAlignment="Left"/>
+                                <TextBox materialDesign:HintAssist.Hint="Lintel over 3.6" Text="{Binding Level.LintelLm}" Margin="10 0 0 0" />
+                            </DockPanel>
+                        </StackPanel>
+                    </StackPanel>
+                    <!-- Button -->
+                    <StackPanel Margin="50 10 0 0">
+                        <Button Content="Reset Wall" Style="{StaticResource MaterialDesignRaisedAccentButton}"/>
+                        <Button Content="Sort" Command="{Binding WallInputSortCommand}"/>
+                        <Button Content="Undo" />
+                        <Button Content="Check" />
+                        <Button Content="Add" Command= "{Binding NewWallRowInputCommand}"/>
+                        <Button Content="Delete" Command = "{Binding DeleteWallRowCommand}" CommandParameter = "{Binding ElementName = WallInput}"/>
+                    </StackPanel>
+                    <!-- Report Button -->
+                    <StackPanel Margin="50 10 0 0">
 
-						<Button Content="Single" />
-						<Button Content="Double Story" />
-						<Button Content="Three Story" />
-					</StackPanel>
-					<StackPanel>
-						<TextBlock Text="Bracing Input"/>
+                        <Button Content="Single" />
+                        <Button Content="Double Story" />
+                        <Button Content="Three Story" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Bracing Input"/>
                         <syncfusion:SfDataGrid AllowDeleting="True"
                                                AllowEditing="True"
                                                AutoGenerateColumns="False"
@@ -123,63 +122,63 @@
                             </syncfusion:SfDataGrid.Columns>
                         </syncfusion:SfDataGrid>
                     </StackPanel>
-				</StackPanel>
-				<StackPanel Orientation="Vertical">
-					<StackPanel.Resources>
-						<Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
-							<Setter Property="Foreground" Value="{Binding WallColorLayer.Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
-						</Style>
-					</StackPanel.Resources>
-					<!-- Input Wall -->
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel.Resources>
+                        <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
+                            <Setter Property="Foreground" Value="{Binding WallColorLayer.Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <!-- Input Wall -->
                     <materialDesign:ColorZone Mode="Accent">
                         <Label FontSize="18" Content="Wall Input" />
                     </materialDesign:ColorZone>
-                    <syncfusion:SfDataGrid
-				Name="WallInput"
-				AllowDeleting="True"
-				AllowEditing="True"
-				AllowResizingColumns="True"
-				AllowResizingHiddenColumns ="True"
-				AutoGenerateColumns="False"
-				AllowSorting="False"
-				AllowTriStateSorting="True"
-				ColumnSizer="Auto"
-				EditorSelectionBehavior="SelectAll"
-				EditTrigger="OnTap"
-				ItemsSource="{Binding Level.WallLayers}"
-				NavigationMode="Cell"
-				SelectionMode="Extended"
-				SelectionUnit="Any"
-				RowStyle="{StaticResource TextRowStyle}"
-				CurrentCellDropDownSelectionChanged="WallInput_OnCurrentCellDropDownSelectionChanged"
-				CurrentCellValidated="WallInput_OnCurrentCellValidated">
-						<syncfusion:SfDataGrid.Resources>
-							<Style TargetType="TextBox" />
-							<Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-						</syncfusion:SfDataGrid.Resources>
-						<syncfusion:SfDataGrid.SortComparers>
-							<data:SortComparer Comparer="{StaticResource WallTypeComparer}" PropertyName="WallType" />
-						</syncfusion:SfDataGrid.SortComparers>
-						<!--<syncfusion:SfDataGrid.SortColumnDescriptions>
+                    <syncfusion:SfDataGrid Name="WallInput"
+                                           AllowDeleting="True"
+                                           AllowEditing="True"
+                                           AllowResizingColumns="True"
+                                           AllowResizingHiddenColumns ="True"
+                                           AutoGenerateColumns="False"
+                                           AllowSorting="False"
+                                           AllowTriStateSorting="True"
+                                           ColumnSizer="Auto"
+                                           EditorSelectionBehavior="SelectAll"
+                                           EditTrigger="OnTap"
+                                           ItemsSource="{Binding Level.WallLayers}"
+                                           NavigationMode="Cell"
+                                           SelectionMode="Extended"
+                                           SelectionUnit="Any"
+                                           RowStyle="{StaticResource TextRowStyle}"
+                                           CurrentCellDropDownSelectionChanged="WallInput_OnCurrentCellDropDownSelectionChanged"
+                                           CurrentCellValidated="WallInput_OnCurrentCellValidated"
+                                           SelectedItem="{Binding SelectedWall}">
+                        <syncfusion:SfDataGrid.Resources>
+                            <Style TargetType="TextBox" />
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                        </syncfusion:SfDataGrid.Resources>
+                        <syncfusion:SfDataGrid.SortComparers>
+                            <data:SortComparer Comparer="{StaticResource WallTypeComparer}" PropertyName="WallType" />
+                        </syncfusion:SfDataGrid.SortComparers>
+                        <!--<syncfusion:SfDataGrid.SortColumnDescriptions>
 					<syncfusion:SortColumnDescription ColumnName="TimberWallType" SortDirection="Ascending" />
 				</syncfusion:SfDataGrid.SortColumnDescriptions>-->
-						<!--<interactions:Interaction.Behaviors>
+                        <!--<interactions:Interaction.Behaviors>
 					<helper:WallStudSelectBehavior/>
 				</interactions:Interaction.Behaviors>-->
-						<syncfusion:SfDataGrid.Columns>
-							<syncfusion:GridNumericColumn AllowEditing="False"
+                        <syncfusion:SfDataGrid.Columns>
+                            <syncfusion:GridNumericColumn AllowEditing="False"
                                                           HeaderText="Item"
                                                           MappingName="Id"
                                                           ParsingMode = "int"
                                                           NumberDecimalDigits="0"
                                                           UseBindingValue="True"/>
-                            <syncfusion:GridNumericColumn AllowEditing="False"
+                            <!--<syncfusion:GridNumericColumn AllowEditing="False"
                                                           HeaderText="Type ID"
                                                           MappingName="TypeId"
                                                           ParsingMode = "int"
                                                           NumberDecimalDigits="0"
-                                                          UseBindingValue="True"/>
-                            <syncfusion:GridCheckBoxColumn HeaderText="Is Raked"
+                                                          UseBindingValue="True"/>-->
+                            <!--<syncfusion:GridCheckBoxColumn HeaderText="Is Raked"
                                                            MappingName="WallType.IsRaked"
                                                            AllowEditing="False"/>
 							<syncfusion:GridTextColumn HeaderText="Wall Pitching Height"
@@ -191,87 +190,88 @@
 													   MappingName="CeilingPitch" />
 							<syncfusion:GridTextColumn HeaderText="Pitching Height"
 													   MappingName="HPitching" 
-													   AllowEditing="False"/>
-							<!--<syncfusion:GridCheckBoxColumn HeaderText="IsRakedArea"
+													   AllowEditing="False"/>-->
+                            <!--<syncfusion:GridCheckBoxColumn HeaderText="IsRakedArea"
 												   MappingName="IsRakedArea"
 												   AllowEditing="False"/>-->
-							<syncfusion:GridCheckBoxColumn HeaderText="Is Step Down"
+                            <!--<syncfusion:GridCheckBoxColumn HeaderText="Is Step Down"
 														   MappingName="IsStepdown"/>
 							<syncfusion:GridTextColumn HeaderText="StepDown"
 													   MappingName="StepDown"/>
 							<syncfusion:GridCheckBoxColumn HeaderText="Is Raised Ceiling"
 														   MappingName="IsRaisedCeiling"/>
 							<syncfusion:GridTextColumn HeaderText="Raised Celing Height"
-													   MappingName="RaisedCeiling"/>
-                            <syncfusion:GridTextColumn HeaderText="Wall End Height"
-                                                       MappingName="WallEndHeight"/>
+													   MappingName="RaisedCeiling"/>-->
+                            <!--<syncfusion:GridTextColumn HeaderText="Wall End Height"
+                                                       MappingName="WallEndHeight"/>-->
                             <syncfusion:GridComboBoxColumn DisplayMemberPath="AliasName"
 														   HeaderText="Wall Type"
 														   ItemsSource="{Binding SelectedClient.WallTypes}"
 														   MappingName="WallType" 
 														   UseBindingValue="True"/>
-							<syncfusion:GridComboBoxColumn ItemsSource="{Binding LayerManager.Layers}"
+                            <syncfusion:GridComboBoxColumn ItemsSource="{Binding LayerManager.Layers}"
 														   HeaderText="Layer"
 														   MappingName="WallColorLayer"
-														   UseBindingValue="True">
-								<syncfusion:GridComboBoxColumn.ItemTemplate>
-									<DataTemplate>
-										<DockPanel>
-											<TextBlock Text="{Binding Name}" Foreground="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
-											<TextBlock Height="3" Width="50" Margin="5,0,0,0"  Background="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
-										</DockPanel>
-									</DataTemplate>
-								</syncfusion:GridComboBoxColumn.ItemTemplate>
-							</syncfusion:GridComboBoxColumn>
-                            <syncfusion:GridTextColumn HeaderText="Wall Height"
+														   UseBindingValue="True"
+                                                           Width="200">
+                                <syncfusion:GridComboBoxColumn.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <TextBlock Text="{Binding Name}" Foreground="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
+                                            <TextBlock Height="3" Width="50" Margin="5,0,0,0"  Background="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </syncfusion:GridComboBoxColumn.ItemTemplate>
+                            </syncfusion:GridComboBoxColumn>
+                            <!--<syncfusion:GridTextColumn HeaderText="Wall Height"
                                                        MappingName="WallHeight"
-                                                       UseBindingValue="True"/>
-                            <syncfusion:GridCheckBoxColumn HeaderText="Forced Wall Under Raked Area"
-                                                           MappingName="ForcedWallUnderRakedArea"/>
-                            <syncfusion:GridTextColumn HeaderText="Prenail Wall Height"
+                                                       UseBindingValue="True"/>-->
+                            <!--<syncfusion:GridCheckBoxColumn HeaderText="Forced Wall Under Raked Area"
+                                                           MappingName="ForcedWallUnderRakedArea"/>-->
+                            <syncfusion:GridTextColumn HeaderText="Quote Height"
                                                        MappingName="FinalWallHeight"/>
-                            <syncfusion:GridComboBoxColumn HeaderText="Wall Thickness"
+                            <syncfusion:GridComboBoxColumn HeaderText="Thickness"
                                                            MappingName="WallThickness"
                                                            ItemsSource="{Binding WallThicknessList}"
                                                            UseBindingValue="True"/>
-							<syncfusion:GridComboBoxColumn HeaderText="Wall Spacing"
+                            <syncfusion:GridComboBoxColumn HeaderText="Spacing"
 														   MappingName="WallSpacing"
 														   ItemsSource="{Binding WallSpacingList}"
 														   UseBindingValue="True"/>
-							<syncfusion:GridComboBoxColumn HeaderText="Ribbon Plate"
+                            <syncfusion:GridComboBoxColumn HeaderText="Ribbon Plate"
 														   ItemsSourceSelector="{StaticResource RibbonPlatesSelectConverter}"
 														   MappingName="RibbonPlate.SizeGrade"
 														   UseBindingValue="True"/>
-							<syncfusion:GridComboBoxColumn HeaderText="Top Plate"
+                            <syncfusion:GridComboBoxColumn HeaderText="Top Plate"
 														   ItemsSourceSelector="{StaticResource TopPlatesSelectConverter}"
 														   MappingName="TopPlate.SizeGrade"
 														   UseBindingValue="True"
 														   Width="90"/>
-							<syncfusion:GridComboBoxColumn HeaderText="Bottom Plate"
+                            <syncfusion:GridComboBoxColumn HeaderText="Bottom Plate"
 														   ItemsSourceSelector="{StaticResource BottomPlatesSelectConverter}"
 														   MappingName="BottomPlate.SizeGrade"
 														   UseBindingValue="True"
 														   Width="90"/>
-							<syncfusion:GridComboBoxColumn HeaderText="Stud"
+                            <syncfusion:GridComboBoxColumn HeaderText="Stud"
 														   ItemsSourceSelector="{StaticResource WallStudSelectConverter}"
 														   MappingName="Stud.SizeGrade"
 														   UseBindingValue="True"
 														   Width="90"/>
-                            <syncfusion:GridTextColumn HeaderText="Stud Height"
-                                                       MappingName="StudHeight"/>
+                            <!--<syncfusion:GridTextColumn HeaderText="Stud Height"
+                                                       MappingName="StudHeight"/>-->
                             <syncfusion:GridTextColumn AllowEditing="False"
                                                        HeaderText="Length"
                                                        MappingName="WallLength" />
-							<syncfusion:GridTextColumn HeaderText="Extra Length"
-                                                       MappingName="ExtraLength" />
-							<syncfusion:GridTextColumn AllowEditing="False"
+                            <!--<syncfusion:GridTextColumn HeaderText="Extra Length"
+                                                       MappingName="ExtraLength" />-->
+                            <!--<syncfusion:GridTextColumn AllowEditing="False"
                                                        HeaderText="Temp Length"
-                                                       MappingName="TempLength"/>
-							<syncfusion:GridTemplateColumn MappingName="Delete Row"
+                                                       MappingName="TempLength"/>-->
+                            <syncfusion:GridTemplateColumn MappingName="Delete Row"
 												   syncfusion:FocusManagerHelper.WantsKeyInput="True">
                                 <syncfusion:GridTemplateColumn.CellTemplate>
-									<DataTemplate>
-										<Button  Content="Delete" syncfusion:FocusManagerHelper.FocusedElement="True" 
+                                    <DataTemplate>
+                                        <Button  Content="Delete" syncfusion:FocusManagerHelper.FocusedElement="True" 
 										 Command="{Binding Path=DataContext.DeleteWallRowCommand, ElementName=WallInput}"
 										 CommandParameter="{Binding ElementName=WallInput}"
 										 HorizontalContentAlignment="Center"
@@ -279,23 +279,23 @@
 										 VerticalAlignment="Center"
 										 HorizontalAlignment="Center"
 										 Padding="5 0 5 0"/>
-									</DataTemplate>
-								</syncfusion:GridTemplateColumn.CellTemplate>
-							</syncfusion:GridTemplateColumn>
-                            <syncfusion:GridCheckBoxColumn HeaderText="Wall Need To Be Design"
+                                    </DataTemplate>
+                                </syncfusion:GridTemplateColumn.CellTemplate>
+                            </syncfusion:GridTemplateColumn>
+                            <!--<syncfusion:GridCheckBoxColumn HeaderText="Wall Need To Be Design"
                                                            MappingName="IsNeedTobeDesign"/>
                             <syncfusion:GridCheckBoxColumn HeaderText="Designed"
-                                                           MappingName="IsDesigned"/>
+                                                           MappingName="IsDesigned"/>-->
                             <syncfusion:GridTextColumn HeaderText="Wall Name"
                                                        MappingName="WallName" Width="200"/>
                         </syncfusion:SfDataGrid.Columns>
-					</syncfusion:SfDataGrid>
-					<!-- Input Length -->
-					<!--<syncfusion:SfDataGrid ItemsSource="{Binding Level.TempLengths}"></syncfusion:SfDataGrid>-->
-				</StackPanel>
-				<StackPanel Orientation="Horizontal">
-					<!-- Beam Input -->
-					<StackPanel>
+                    </syncfusion:SfDataGrid>
+                    <!-- Input Length -->
+                    <!--<syncfusion:SfDataGrid ItemsSource="{Binding Level.TempLengths}"></syncfusion:SfDataGrid>-->
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <!-- Beam Input -->
+                    <StackPanel>
                         <!--<syncfusion:SfDataGrid AllowDeleting="True"
 										   AllowEditing="True"
 										   AutoGenerateColumns="False"
@@ -335,9 +335,9 @@
                         <local:StickFrameBeamAndLintelInputView x:Name="BeamInput"/>
 
                     </StackPanel>
-					<!-- generic Bracing Input -->
-					<StackPanel>
-						<!--<syncfusion:SfDataGrid AllowDeleting="True"
+                    <!-- generic Bracing Input -->
+                    <StackPanel>
+                        <!--<syncfusion:SfDataGrid AllowDeleting="True"
 										   AllowEditing="True"
 										   AutoGenerateColumns="False"
 										   ItemsSource="{Binding Level.GeneralBracings}"
@@ -363,17 +363,17 @@
 
 
                         <!-- Bracing Input -->
-						
-					</StackPanel>
-					<StackPanel Orientation="Horizontal">
-						<Label Content="Total LM" />
-						<TextBlock>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Total LM" />
+                        <TextBlock>
 					<Run Text="100" />
-						</TextBlock>
-					</StackPanel>
-				</StackPanel>
-			</StackPanel>
-		</materialDesign:DialogHost>
-	</StackPanel>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:DialogHost>
+    </StackPanel>
 
 </UserControl>

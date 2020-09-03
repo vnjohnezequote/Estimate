@@ -241,15 +241,15 @@ namespace AppDataBase.DataBase
                 TimberBracingBases = this.CreatePrenailBracingList(),
                 WallTypes = new List<WallTypePoco>()
                                 {
-                                    new WallTypePoco() { Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "LB_External" },
-                                    new WallTypePoco() { Id = 1, IsLoadBearingWall = true, IsRaked = true, AliasName = "LB_ExtRaking" },
-                                    new WallTypePoco() { Id = 2, IsLoadBearingWall = true, IsRaked = false, AliasName = "LB_Internal" },
-                                    new WallTypePoco() { Id = 3, IsLoadBearingWall = true, IsRaked = false, AliasName = "LB_PartiWall" },
-                                    new WallTypePoco() { Id = 4, IsLoadBearingWall = true, IsRaked = true, AliasName = "LB_Raked_PartiWall" },
-                                    new WallTypePoco() { Id = 5, IsLoadBearingWall = false, IsRaked = false, AliasName = "NLB_Internal" },
-                                    new WallTypePoco() { Id = 6, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_IntRaking" },
-                                    new WallTypePoco() { Id = 7, IsLoadBearingWall = false, IsRaked = false, AliasName = "NLB_PartiWall" },
-                                    new WallTypePoco() { Id = 8, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_Raked_PartiWall" }
+                                    new WallTypePoco() { Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "LB_External",WallLocationType = WallLocationTypes.External},
+                                    new WallTypePoco() { Id = 1, IsLoadBearingWall = true, IsRaked = true, AliasName = "LB_ExtRaking", WallLocationType = WallLocationTypes.External},
+                                    new WallTypePoco() { Id = 2, IsLoadBearingWall = true, IsRaked = false, AliasName = "LB_Internal", WallLocationType = WallLocationTypes.Internal},
+                                    new WallTypePoco() { Id = 3, IsLoadBearingWall = true, IsRaked = false, AliasName = "LB_PartiWall", WallLocationType = WallLocationTypes.External },
+                                    new WallTypePoco() { Id = 4, IsLoadBearingWall = true, IsRaked = true, AliasName = "LB_Raked_PartiWall", WallLocationType = WallLocationTypes.External },
+                                    new WallTypePoco() { Id = 5, IsLoadBearingWall = false, IsRaked = false, AliasName = "NLB_Internal", WallLocationType = WallLocationTypes.Internal },
+                                    new WallTypePoco() { Id = 6, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_IntRaking", WallLocationType = WallLocationTypes.Internal },
+                                    new WallTypePoco() { Id = 7, IsLoadBearingWall = false, IsRaked = false, AliasName = "NLB_PartiWall", WallLocationType = WallLocationTypes.Internal },
+                                    new WallTypePoco() { Id = 8, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_Raked_PartiWall", WallLocationType = WallLocationTypes.Internal }
             }
             };
 

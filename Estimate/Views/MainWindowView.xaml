@@ -223,27 +223,27 @@
                             <!-- Left Panel Button-->
                             <StackPanel Grid.Row="0">
                                 <Button x:Name="ButtonCloseMenu"
-                                Style="{StaticResource CrimsonButtonStyle}"
-                                Visibility="Collapsed"
-                                Command="{Binding CloseMenuCommand, Mode=OneWay}">
+                                        Style="{StaticResource CrimsonButtonStyle}"
+                                        Visibility="Collapsed"
+                                        Command="{Binding CloseMenuCommand, Mode=OneWay}">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="AlphabetEBox"/>
                                         <TextBlock Text="Ezequote"/>
                                     </StackPanel>
                                 </Button>
                                 <Button x:Name="ButtonOpenMenu"
-                                Command="{Binding OpenMenuCommand, Mode=OneWay}"
-                                Style="{StaticResource LeftPanelButtonStyle}">
+                                        Command="{Binding OpenMenuCommand, Mode=OneWay}"
+                                        Style="{StaticResource LeftPanelButtonStyle}">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="AlphabetE" />
                                         <TextBlock Text="Ezequote" />
                                     </StackPanel>
                                 </Button>
                                 <ListBox x:Name="CustomerMenu"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                 ItemsSource="{Binding Clients}"
-                                 SelectedItem="{Binding SelectedClient, Mode=TwoWay}"
-                                 SelectedIndex="{Binding SelectedClientIndex}">
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         ItemsSource="{Binding Clients}"
+                                         SelectedItem="{Binding SelectedClient, Mode=TwoWay}"
+                                         SelectedIndex="{Binding SelectedClientIndex}">
                                     <ListBox.Resources>
                                         <Style TargetType="{x:Type ListBoxItem}">
                                             <Setter Property="Padding" Value="0"/>
@@ -267,9 +267,9 @@
                             </StackPanel>
                             <!-- Bottom Left Button -->
                             <Button x:Name="ButtonOpenBottomPanel"
-                            Grid.Row="1"
-                            Command="{Binding ExpanderBottomPanelCommand, Mode=OneWay}"
-                            Style="{StaticResource LeftPanelButtonStyle}">
+                                    Grid.Row="1"
+                                    Command="{Binding ExpanderBottomPanelCommand, Mode=OneWay}"
+                                    Style="{StaticResource LeftPanelButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
                                     <Border Width="30" Height="30">
                                         <materialDesign:PackIcon Kind="ChevronDoubleUp"
@@ -284,22 +284,23 @@
                         </Grid>
                     </materialDesign:ColorZone>
                     <Border Style="{StaticResource DarkBorder}"
-                    Grid.Row="0" 
-                    Grid.Column="1" 
-                    Grid.RowSpan="3"/>
+                            Grid.Row="0" 
+                            Grid.Column="1" 
+                            Grid.RowSpan="3"/>
                     <!-- Quick Tool Panel -->
                     <Grid x:Name="QuickBar"
-                  Grid.Row="0"
-                  Grid.Column="2"
-                  Background="{StaticResource DarkBackGround}"
-                  HorizontalAlignment="Stretch">
+                          Grid.Row="0"
+                          Grid.Column="2"
+                          Background="{StaticResource DarkBackGround}"
+                          HorizontalAlignment="Stretch">
                         <interactions:Interaction.Triggers>
                             <interactions:EventTrigger EventName="SizeChanged">
                                 <interactions:InvokeCommandAction Command="{Binding PanelSizeChangedCommand, Mode=OneWay}" 
                                                           CommandParameter="{Binding ElementName=QuickBar, Mode=OneWay}"/>
                             </interactions:EventTrigger>
                         </interactions:Interaction.Triggers>
-                        <TextBox Text="{Binding Chuoiluu}"/>
+                            <!-- Wall Properties Region -->
+                        <ContentControl prism:RegionManager.RegionName="{x:Static mainWindowRegions:MainWindowRegions.LeftContentRegion}" />
                     </Grid>
                     <GridSplitter x:Name="QuickPanelGridSplitter" 
                           ResizeDirection="Columns" 

@@ -181,10 +181,14 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ViewModels\PrenailFloorInputViewModel.cs" />
+    <Compile Include="ViewModels\SelectedWallPropertiesViewModel.cs" />
     <Compile Include="ViewModels\StickFrameBeamAndLintelInputViewModel.cs" />
     <Compile Include="ViewModels\WallFrameInputViewModel.cs" />
     <Compile Include="Views\PrenailFloorInputView.xaml.cs">
       <DependentUpon>PrenailFloorInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectedWallPropertiesView.xaml.cs">
+      <DependentUpon>SelectedWallPropertiesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StickFrameBeamAndLintelInputView.xaml.cs">
       <DependentUpon>StickFrameBeamAndLintelInputView.xaml</DependentUpon>
@@ -210,6 +214,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SelectedWallPropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StickFrameBeamAndLintelInputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -231,6 +239,10 @@
     <ProjectReference Include="..\ApplicationInterfaceCore\ApplicationInterfaceCore.csproj">
       <Project>{EA2CAAB1-EB61-4436-B30A-7F8D993B3414}</Project>
       <Name>ApplicationInterfaceCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationService\ApplicationService.csproj">
+      <Project>{cc18caa3-e47b-4197-b088-276b0f84fcf0}</Project>
+      <Name>ApplicationService</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppModels\AppModels.csproj">
       <Project>{abf31598-a0e5-49b6-8479-d27bdfec8e64}</Project>

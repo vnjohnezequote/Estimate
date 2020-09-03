@@ -161,6 +161,7 @@
     <Compile Include="RegionService.cs" />
     <Compile Include="RemoveLayerEventService.cs" />
     <Compile Include="TreatmentService.cs" />
+    <Compile Include="WallEventService.cs" />
     <Compile Include="WindCategoryService.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

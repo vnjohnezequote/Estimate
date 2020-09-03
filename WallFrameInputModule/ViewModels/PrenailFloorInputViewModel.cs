@@ -10,6 +10,7 @@
 
 using System.Globalization;
 using ApplicationInterfaceCore;
+using ApplicationService;
 using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.Factories;
@@ -155,7 +156,14 @@ namespace WallFrameInputModule.ViewModels
         public PrenailWallLayer SelectedWall
         {
             get => _selectedWall;
-            set => SetProperty(ref _selectedWall, value);
+            set
+            {
+              SetProperty(ref _selectedWall, value);
+              if (this.EventAggregator !=null)
+              {
+                  this.EventAggregator.GetEvent<WallEventService>().Publish(SelectedWall);
+              }
+            } 
         }
         /// <summary>
         /// Gets or sets the beam grade list.
@@ -178,38 +186,38 @@ namespace WallFrameInputModule.ViewModels
         /// <summary>
         /// Gets or sets the studs.
         /// </summary>
-        public Dictionary<string, List<TimberBase>> Studs
-        {
-            get => this._studs;
-            set => this.SetProperty(ref this._studs, value);
-        }
+        //public Dictionary<string, List<TimberBase>> Studs
+        //{
+        //    get => this._studs;
+        //    set => this.SetProperty(ref this._studs, value);
+        //}
 
-        /// <summary>
-        /// Gets or sets the ribbonplates.
-        /// </summary>
-        public Dictionary<string, List<TimberBase>> RibbonPlates
-        {
-            get => this._ribbonPlates;
-            set => this.SetProperty(ref this._ribbonPlates, value);
-        }
+        ///// <summary>
+        ///// Gets or sets the ribbonplates.
+        ///// </summary>
+        //public Dictionary<string, List<TimberBase>> RibbonPlates
+        //{
+        //    get => this._ribbonPlates;
+        //    set => this.SetProperty(ref this._ribbonPlates, value);
+        //}
 
-        /// <summary>
-        /// Gets or sets the ribbonplates.
-        /// </summary>
-        public Dictionary<string, List<TimberBase>> TopPlates
-        {
-            get => this._topPlates;
-            set => this.SetProperty(ref this._topPlates, value);
-        }
+        ///// <summary>
+        ///// Gets or sets the ribbonplates.
+        ///// </summary>
+        //public Dictionary<string, List<TimberBase>> TopPlates
+        //{
+        //    get => this._topPlates;
+        //    set => this.SetProperty(ref this._topPlates, value);
+        //}
 
-        /// <summary>
-        /// Gets or sets the ribbonplates.
-        /// </summary>
-        public Dictionary<string, List<TimberBase>> BottomPlates
-        {
-            get => this._bottomPlates;
-            set => this.SetProperty(ref this._bottomPlates, value);
-        }
+        ///// <summary>
+        ///// Gets or sets the ribbonplates.
+        ///// </summary>
+        //public Dictionary<string, List<TimberBase>> BottomPlates
+        //{
+        //    get => this._bottomPlates;
+        //    set => this.SetProperty(ref this._bottomPlates, value);
+        //}
 
         /// <summary>
         /// Gets or sets the wall thickness.

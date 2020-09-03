@@ -46,9 +46,9 @@ namespace AppModels.ResponsiveData.Openings
 
         private string _timberGrade;
 
-        private string _size;
+        //private string _size;
 
-        private string _sizeGrade;
+        //private string _sizeGrade;
 
         private int _thickness;
 
@@ -415,7 +415,7 @@ namespace AppModels.ResponsiveData.Openings
                         return;
                     case "Steel":
                         NoItem = item;
-                        thickness = thickness;
+                        Thickness = thickness;
                         Depth = depth;
                         TimberGrade = grade;
                         return;

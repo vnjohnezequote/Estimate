@@ -26,7 +26,7 @@ namespace AppModels.Interaface
         bool IsWallUnderRakedArea { get; }
         bool ForcedWallUnderRakedArea { get; }
         double WallLength { get; }
-        bool IsStepdown { get; }
+        bool IsStepDown { get; }
         bool IsRaisedCeiling { get; }
         bool IsShortWall { get; }
         bool IsNeedTobeDesign { get; }

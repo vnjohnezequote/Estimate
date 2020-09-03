@@ -54,7 +54,7 @@ namespace AppModels.PocoDataModel
             WallPitchingHeight = wall.WallPitchingHeight;
             ForcedWallUnderRakedArea = wall.ForcedWallUnderRakedArea;
             //WallLength = wall.WallLength;
-            IsStepdown = wall.IsStepdown;
+            IsStepdown = wall.IsStepDown;
             IsRaisedCeiling = wall.IsRaisedCeiling;
             IsDesigned = wall.IsDesigned;
             RunLength = wall.RunLength;

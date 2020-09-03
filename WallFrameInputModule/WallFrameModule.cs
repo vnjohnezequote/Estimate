@@ -19,6 +19,7 @@ namespace WallFrameInputModule
         {
             base.RegisterTypes(containerRegistry);
             containerRegistry.RegisterForNavigation<WallFrameInputView>();
+            containerRegistry.RegisterForNavigation<SelectedWallPropertiesView>();
             containerRegistry.RegisterForNavigation<PrenailFloorInputView>();
             containerRegistry.RegisterForNavigation<StickFrameBeamAndLintelInputView>();
 

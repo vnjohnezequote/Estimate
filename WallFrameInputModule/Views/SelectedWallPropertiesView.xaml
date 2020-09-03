@@ -1,0 +1,197 @@
+﻿<UserControl x:Class="WallFrameInputModule.Views.SelectedWallPropertiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WallFrameInputModule.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:viewModels="clr-namespace:WallFrameInputModule.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:applicationConverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance viewModels:SelectedWallPropertiesViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
+                <ResourceDictionary>
+                    <applicationConverter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Margin="20 0 20 0">
+                <materialDesign:ColorZone Mode="Accent" HorizontalContentAlignment="Center">
+                    <Label FontSize="18" Content="Wall Properties" />
+                </materialDesign:ColorZone>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBox materialDesign:HintAssist.Hint="Wall ID" Width="170"
+                         Text="{Binding SelectedWall.Id}"/>
+                    <TextBox materialDesign:HintAssist.Hint="Wall Type ID"
+                         Text="{Binding SelectedWall.TypeId}"
+                         Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBlock Text="Is Raking Wall" VerticalAlignment="Bottom" Width="170"/>
+                    <CheckBox IsChecked="{Binding SelectedWall.WallType.IsRaked}"
+                          Margin="15 0 0 0"
+                          VerticalAlignment="Bottom"/>
+                    <TextBox  materialDesign:HintAssist.Hint="Run Length"
+                          Text="{Binding SelectedWall.RunLength}"
+                          Margin="15 0 0 0"/>
+                    <TextBox materialDesign:HintAssist.Hint="Ceiling Pitch"
+                         Text="{Binding SelectedWall.CeilingPitch}"
+                         Margin="15 0 0 0"/>
+                    <TextBox materialDesign:HintAssist.Hint="Pitching Height"
+                         Text="{Binding SelectedWall.HPitching, Mode=OneWay}" 
+                         Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBlock Text="Is Wall Under Raked Area" Width="170" />
+                    <CheckBox IsChecked="{Binding SelectedWall.IsWallUnderRakedArea, Mode=OneWay}" 
+                          Margin="15 0 0 0"
+                          IsEnabled="False"/>
+                    <TextBlock Text="Forced Wall Under Raked Area"
+                           Width="170"
+                           Margin="15 0 0 0"/>
+                    <CheckBox IsChecked="{Binding SelectedWall.ForcedWallUnderRakedArea}"
+                          Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBlock Text="Is Stepdown Wall"
+                           Width="170" 
+                           VerticalAlignment="Bottom"/>
+                    <CheckBox IsChecked="{Binding SelectedWall.IsStepDown}"
+                          Margin="15 0 0 0"
+                          VerticalAlignment="Bottom"/>
+                    <TextBox materialDesign:HintAssist.Hint="StepDown"
+                         Text="{Binding SelectedWall.StepDown}"
+                         Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBlock Text="Is Wall Under Raicing Ceiling" Width="170" VerticalAlignment="Bottom"/>
+                    <CheckBox IsChecked="{Binding SelectedWall.IsRaisedCeiling}"
+                          Margin="15 0 0 0"
+                          VerticalAlignment="Bottom"/>
+                    <TextBox materialDesign:HintAssist.Hint="Raiced Ceiling Height"
+                         Text="{Binding SelectedWall.RaisedCeiling}" Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBlock Text="Is Shorted Wall" Width="170"/>
+                    <CheckBox IsChecked="{Binding SelectedWall.IsShortWall, Mode=OneWay}"
+                          Margin="15 0 0 0"
+                          IsEnabled="False"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBox materialDesign:HintAssist.Hint="Wall Pitching Height"
+                             Width="170"
+                             Text="{Binding SelectedWall.WallPitchingHeight}" />
+                    <TextBox materialDesign:HintAssist.Hint="Wall End Height"
+                             Text="{Binding SelectedWall.WallEndHeight, Mode=OneWay}"
+                             Margin="15 0 0 0"
+                             IsEnabled="False"
+                             Foreground="Coral"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBox materialDesign:HintAssist.Hint="Wall Height"
+                             Text="{Binding SelectedWall.WallHeight}"
+                             Width="170"/>
+                    <TextBox materialDesign:HintAssist.Hint="Quote Height"
+                             Text="{Binding SelectedWall.FinalWallHeight, Mode=OneWay}"
+                             Margin="15 0 0 0"
+                             IsEnabled="False"
+                             Foreground="LimeGreen"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0" >
+                    <ComboBox materialDesign:HintAssist.Hint="Wall Type"
+                              Width="170"
+                              ItemsSource="{Binding SelectedClient.WallTypes}"
+                              SelectedItem="{Binding SelectedWall.WallType,Mode=TwoWay}"
+                              Text="{Binding SelectedWall.WallType.AliasName}"
+                              DisplayMemberPath="AliasName"/>
+                    <ComboBox materialDesign:HintAssist.Hint="Wall Layer"
+                              ItemsSource="{Binding LayerManager.Layers}"
+                              SelectedItem="{Binding SelectedWall.WallColorLayer}"
+                              Margin="15 0 0 0"
+                              Foreground="{Binding SelectedWall.WallColorLayer.Color,FallbackValue=White, Converter= {StaticResource ColorToBrushConverter}}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <TextBlock Text="{Binding Name}" Foreground="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
+                                    <TextBlock Height="3" Width="50" Margin="5,0,0,0"  Background="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <ComboBox materialDesign:HintAssist.Hint="Wall Thickness"
+                              ItemsSource ="{Binding WallThicknessList}"
+                              SelectedItem="{Binding SelectedWall.WallThickness}"
+                              Width="170"/>
+                    <ComboBox materialDesign:HintAssist.Hint="Wall Spacing"
+                              ItemsSource="{Binding WallSpacingList}"
+                              SelectedItem="{Binding SelectedWall.WallSpacing}"
+                              Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Ribbon Place" Width="170" VerticalAlignment="Bottom"/>
+                    <ComboBox SelectedItem="{Binding SelectedWall.RibbonPlate.SizeGrade}"
+                              ItemsSource="{Binding RibbonPlates}"
+                              Text="{Binding SelectedWall.RibbonPlate.SizeGrade,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Top Place" Width="170" VerticalAlignment="Bottom"/>
+                    <ComboBox ItemsSource="{Binding TopPlates}"
+                              SelectedItem="{Binding SelectedWall.TopPlate.SizeGrade,Mode=TwoWay}"
+                              Text="{Binding SelectedWall.TopPlate.SizeGrade}"
+                              Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Stud" Width="170" VerticalAlignment="Bottom"/>
+                    <ComboBox ItemsSource="{Binding Studs}"
+                              SelectedItem="{Binding SelectedWall.Stud.SizeGrade,Mode=TwoWay}"
+                              Text="{Binding SelectedWall.Stud.SizeGrade}"
+                              Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Bottom Place" Width="170" VerticalAlignment="Bottom"/>
+                    <ComboBox ItemsSource="{Binding BottomPlates}"
+                              SelectedItem="{Binding SelectedWall.BottomPlate.SizeGrade,Mode=TwoWay}"
+                              Text="{Binding SelectedWall.BottomPlate.SizeGrade}"
+                              Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Stud Height" Width="170" VerticalAlignment="Bottom"/>
+                    <TextBox Text="{Binding SelectedWall.StudHeight, Mode=OneWay}" Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Wall Length" Width="170" VerticalAlignment="Bottom"/>
+                    <TextBox Text="{Binding SelectedWall.WallLength, Mode=OneWay}"
+                             Margin="15 0 0 0"
+                             IsEnabled="False"
+                             Foreground="LimeGreen"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Extra Length" Width="170" VerticalAlignment="Bottom"/>
+                    <TextBox Text="{Binding SelectedWall.ExtraLength}" Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Temporary Length" Width="170" VerticalAlignment="Bottom"/>
+                    <TextBox Text="{Binding SelectedWall.TempLength, Mode=OneWay}" Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Wall Name" Width="170" VerticalAlignment="Bottom"/>
+                    <TextBox Text="{Binding SelectedWall.WallName, Mode=OneWay}" Margin="15 0 0 0"/>
+                </DockPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+
+    </Grid>
+</UserControl>

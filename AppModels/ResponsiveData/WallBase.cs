@@ -78,7 +78,14 @@ namespace AppModels.ResponsiveData
                     return _wallThickness;
                 }
 
-                return WallType.IsLoadBearingWall ? GlobalWallInfo.ExternalWallThickness : GlobalWallInfo.InternalWallThickness;
+                if ( WallType.WallLocationType == WallLocationTypes.External)
+                {
+                    return GlobalWallInfo.ExternalWallThickness;
+                }
+                else
+                {
+                    return GlobalWallInfo.InternalWallThickness;
+                }
             }
             set
             {
@@ -152,7 +159,7 @@ namespace AppModels.ResponsiveData
                 return studHeight;
             }
         }
-        public bool IsWallUnderRakedArea => WallType.IsRaked || RunLength != 0;
+        public bool IsWallUnderRakedArea => WallType.IsRaked || RunLength != 0 || ForcedWallUnderRakedArea;
         public bool ForcedWallUnderRakedArea
         {
             get=>_forcedWallUnderRakedArea;
@@ -160,9 +167,10 @@ namespace AppModels.ResponsiveData
             {
                 SetProperty(ref _forcedWallUnderRakedArea, value);
                 RaisePropertyChanged(nameof(StudHeight));
+                RaisePropertyChanged(nameof(IsWallUnderRakedArea));
             }
         }
-        public bool IsStepdown
+        public bool IsStepDown
         {
             get => _isStepDown;
             set
@@ -234,7 +242,7 @@ namespace AppModels.ResponsiveData
         {
             get
             {
-                if (!IsStepdown)
+                if (!IsStepDown)
                 {
                     return 0;
                 }
@@ -461,7 +469,7 @@ namespace AppModels.ResponsiveData
             WallPitchingHeight = wall.WallPitchingHeight;
             ForcedWallUnderRakedArea = wall.ForcedWallUnderRakedArea;
             //WallLength = wall.WallLength;
-            IsStepdown = wall.IsStepdown;
+            IsStepDown = wall.IsStepdown;
             IsRaisedCeiling = wall.IsRaisedCeiling;
             IsDesigned = wall.IsDesigned;
             RunLength = wall.RunLength;

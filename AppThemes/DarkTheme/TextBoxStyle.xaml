@@ -164,8 +164,8 @@
                             <Setter TargetName="PART_ContentHost" Property="Margin" Value="0,8,0,8" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="border" Property="Opacity" Value="0.42" />
-                            <Setter TargetName="textFieldBoxBottomLine" Property="Height" Value="0" />
+                            <Setter TargetName="border" Property="Opacity" Value="0" />
+                            <Setter TargetName="textFieldBoxBottomLine" Property="Height" Value="1" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -179,7 +179,7 @@
                                 <Condition Property="IsEnabled" Value="false" />
                                 <Condition Property="materialDesign:TextFieldAssist.HasOutlinedTextField" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Opacity" TargetName="border" Value="0.42"/>
+                            <Setter Property="Opacity" TargetName="border" Value="1"/>
                             <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
                         </MultiTrigger>
                         <MultiTrigger>

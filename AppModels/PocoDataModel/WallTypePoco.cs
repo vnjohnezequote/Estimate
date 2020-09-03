@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using AppModels.Enums;
 
 namespace AppModels.PocoDataModel
 {
@@ -25,6 +26,8 @@ namespace AppModels.PocoDataModel
         /// Gets or sets the wall type is LoadBearing Wall or Non LoadBearing Wall
         /// </summary>
         public bool IsLoadBearingWall { get; set; }
+
+        public WallLocationTypes WallLocationType { get; set; }
 
         /// <summary>
         /// Gets or sets the wall type is Raked Wall or Not
