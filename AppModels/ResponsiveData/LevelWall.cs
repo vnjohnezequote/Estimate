@@ -264,7 +264,7 @@ namespace AppModels.ResponsiveData
 		{
 			foreach (var wallLayerPoco in wallLayers)
 			{
-				var wallLayer = WallLayerFactory.CreateWallLayer(LevelInfo.GlobalInfo.ClientName, wallLayerPoco.Id, LevelInfo, wallLayerPoco.WallType);
+				var wallLayer = WallLayerFactory.CreateWallLayer(LevelInfo.GlobalInfo.Client.Name, wallLayerPoco.Id, LevelInfo, wallLayerPoco.WallType);
 				wallLayer.LoadWallInfo(wallLayerPoco);
 				WallLayers.Add(wallLayer);
 			}

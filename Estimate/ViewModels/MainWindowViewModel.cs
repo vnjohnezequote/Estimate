@@ -168,6 +168,7 @@ namespace Estimate.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
         /// </summary>
+        private bool _isDrawingWindownLoaded = false;
         public MainWindowViewModel()
         {
             //this._clientName = clientName;
@@ -425,7 +426,9 @@ namespace Estimate.ViewModels
                     var serializer = new JsonSerializer();
                     var jobOpen = serializer.Deserialize<JobModelPoco>(jsonReader);
                     jobOpen.Info.JobLocation = result.FileInfo.DirectoryName;
-                    JobModel.LoadJob(jobOpen);
+                    var db = this.UnityContainer.Resolve<ClientDataBase>();
+                    var clients = db.GetClients();
+                    JobModel.LoadJob(jobOpen,clients);
                     EventAggregator.GetEvent<RefreshFloorEvent>().Publish(true);
                 }
             }
@@ -433,9 +436,9 @@ namespace Estimate.ViewModels
 
         private void Info_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "ClientName")
+            if (e.PropertyName == "Client")
             {
-                this.OnChangeClient(JobModel.Info.ClientName);
+                this.OnChangeClient(JobModel.Info.Client);
             }
         }
 
@@ -470,9 +473,9 @@ namespace Estimate.ViewModels
         /// The job model receive.
         /// </summary>
         /// <param name="job">The job<see cref="JobModel"/></param>
-        private void OnChangeClient(string clientName)
+        private void OnChangeClient(ClientPoco client)
         {
-            this.OnSetSelectedClient(clientName);
+            this.OnSetSelectedClient(client);
             this.LoadJobInfor();
             this.LoadWallFrameInput();
         }
@@ -482,10 +485,15 @@ namespace Estimate.ViewModels
         /// </summary>
         private void LoadDrawingWindow()
         {
+            if (_isDrawingWindownLoaded)
+            {
+                return;
+            }
             //var drawingWindow = new DrawingWindowView();
             var drawingWindow = this.UnityContainer.Resolve<BaseWindowService>();
             //shell.ShowShell<NewJobWizardView>();
             drawingWindow.ShowShell<DrawingWindowView>(false);
+            _isDrawingWindownLoaded = true;
             //drawingWindow.Show();
         }
 
@@ -493,16 +501,16 @@ namespace Estimate.ViewModels
         /// The on set selected clientPoco.
         /// </summary>
         /// <param name="customer">The customer<see cref="string"/></param>
-        private void OnSetSelectedClient(string customer)
+        private void OnSetSelectedClient(ClientPoco customer)
         {
-            var selectedCustomer = this._clientDb.GetClient(customer);
+            //var selectedCustomer = this._clientDb.GetClient(customer);
 
-            if (selectedCustomer == null)
+            if (customer == null)
             {
                 return;
             }
 
-            this.SelectedClient = selectedCustomer;
+            this.SelectedClient = customer;
             this.SelectedClientIndex = this.SelectedClient.Id - 1;
         }
 
@@ -760,7 +768,7 @@ namespace Estimate.ViewModels
             {
                 return;
             }
-            this.JobModel.Info.ClientName = this.SelectedClient.Name;
+            this.JobModel.Info.Client = this.SelectedClient;
             this.EventAggregator.GetEvent<CustomerService>().Publish(this.SelectedClient);
         }
 

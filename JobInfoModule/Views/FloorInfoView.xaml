@@ -13,7 +13,8 @@
              xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
-             Style="{DynamicResource MaterialDesignUserControl}" Margin="0 10 0 0">
+             Style="{DynamicResource MaterialDesignUserControl}" Margin="0 10 0 0"
+             Padding="20 0 20 0">
     <UserControl.Resources>
         <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
     </UserControl.Resources>

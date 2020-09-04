@@ -23,7 +23,7 @@ namespace AppModels.PocoDataModel
         public int Depth { get; set; }
         public int Thickness { get; set; }
         public string TimberGrade { get; set; }
-
+        public int TimberInfoId { get; set; }
         public EngineerMemberInfoPoco()
         {
 
@@ -41,7 +41,11 @@ namespace AppModels.PocoDataModel
             NoItem = memberInfo.NoItem;
             Depth = memberInfo.Depth;
             Thickness = memberInfo.Thickness;
-            TimberGrade = memberInfo.TimberGrade; 
+            TimberGrade = memberInfo.TimberGrade;
+            if (memberInfo.TimberInfo != null)
+            {
+                TimberInfoId = memberInfo.TimberInfo.Id;
+            }
         }
 
     }

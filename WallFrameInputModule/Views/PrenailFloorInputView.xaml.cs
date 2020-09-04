@@ -90,11 +90,11 @@ namespace WallFrameInputModule.Views
 
         private void PrenailFloorInputView_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (this._viewModel == null) return;
-            if (this.BeamInput.DataContext is StickFrameBeamAndLintelInputViewModel stickViewModel)
-            {
-                stickViewModel.LevelInfo = _viewModel.Level;
-            }
+            //if (this._viewModel == null) return;
+            //if (this.BeamInput.DataContext is StickFrameBeamAndLintelInputViewModel stickViewModel)
+            //{
+            //    stickViewModel.LevelInfo = _viewModel.Level;
+            //}
         }
     }
 }

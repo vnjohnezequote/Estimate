@@ -37,11 +37,11 @@ namespace ApplicationCore.BaseModule
         protected virtual void Initilazied()
         {
             var db = this.UnityContainer.Resolve<ClientDataBase>();
-            if (string.IsNullOrEmpty(this.JobInfo.ClientName))
+            if (JobInfo.Client == null ||string.IsNullOrEmpty(this.JobInfo.Client.Name))
             {
                 return;
             }
-            this.SelectedClient = db.GetClient(this.JobInfo.ClientName);
+            this.SelectedClient = db.GetClient(this.JobInfo.Client.Name);
         }
         protected virtual void SelectedClientReceive(ClientPoco selectClient)
         {

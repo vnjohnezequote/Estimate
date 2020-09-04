@@ -19,15 +19,20 @@
     </UserControl.Resources>
     <StackPanel>
         <!-- Engineer Infor-->
-        <DockPanel>
-            <materialDesign:ColorZone Mode="PrimaryMid">
+        <DockPanel Margin="20 0 20 0">
+            <materialDesign:ColorZone Mode="Dark"
+                                      Width="120"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Bottom"
+                                      VerticalContentAlignment="Bottom">
                 <Label Content="{Binding JobInfo.FrameDesignInfor.Header, FallbackValue='Frame as per'}"/>
             </materialDesign:ColorZone>
             <ComboBox ItemsSource="{Binding FrameDesignInfors}"
                       SelectedItem="{Binding JobInfo.FrameDesignInfor}"
                       SelectedValue="{Binding JobInfo.FrameDesignInfor}"
                       Text="{Binding JobInfo.FrameDesignInfor.Content}"
-                      DisplayMemberPath="Content">
+                      DisplayMemberPath="Content"
+                      Margin="20 0 0 0">
                 <interactions:Interaction.Triggers>
                     <interactions:EventTrigger EventName="SelectionChanged">
                         <interactions:InvokeCommandAction Command="{Binding BeamDesignInforChangedCommand}"/>
@@ -36,15 +41,20 @@
             </ComboBox>
 
         </DockPanel>
-        <DockPanel>
-            <materialDesign:ColorZone Mode="PrimaryMid">
+        <DockPanel Margin="20 0 20 0">
+            <materialDesign:ColorZone Mode="Dark"
+                                      Width="120"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Bottom"
+                                      VerticalContentAlignment="Center">
                 <Label Content="{Binding JobInfo.BeamDesignInfor.Header, FallbackValue='Beam as per'}"/>
             </materialDesign:ColorZone>
             <ComboBox ItemsSource="{Binding BeamDesignInfors}"
                       SelectedItem="{Binding JobInfo.BeamDesignInfor}"
                       SelectedValue="{Binding JobInfo.BeamDesignInfor}"
                       Text="{Binding JobInfo.BeamDesignInfor.Content}"
-                      DisplayMemberPath="Content">
+                      DisplayMemberPath="Content"
+                      Margin="20 0 0 0">
                 <interactions:Interaction.Triggers>
                     <interactions:EventTrigger EventName="SelectionChanged">
                         <interactions:InvokeCommandAction Command="{Binding BeamDesignInforChangedCommand}"/>
@@ -52,15 +62,19 @@
                 </interactions:Interaction.Triggers>
             </ComboBox>
         </DockPanel>
-        <DockPanel>
-            <materialDesign:ColorZone Mode="PrimaryMid">
+        <DockPanel Margin="20 0 20 0">
+            <materialDesign:ColorZone Mode="Dark" Width="120"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Bottom"
+                                      VerticalContentAlignment="Center">
                 <Label Content="{Binding JobInfo.BracingDesignInfor.Header, FallbackValue='Bracing as per'}"/>
             </materialDesign:ColorZone>
             <ComboBox ItemsSource="{Binding BracingInfors}"
                       SelectedItem="{Binding JobInfo.BracingDesignInfor}"
                       SelectedValue="{Binding JobInfo.BracingDesignInfor}"
                       Text="{Binding JobInfo.BracingDesignInfor.Content}"
-                      DisplayMemberPath="Content">
+                      DisplayMemberPath="Content"
+                      Margin="20 0 0 0">
                 <interactions:Interaction.Triggers>
                     <interactions:EventTrigger EventName="SelectionChanged">
                         <interactions:InvokeCommandAction Command="{Binding BeamDesignInforChangedCommand}"/>
@@ -69,19 +83,24 @@
             </ComboBox>
         </DockPanel>
         <!-- Plan Infor -->
-        <DockPanel>
-            <materialDesign:ColorZone Mode="PrimaryMid">
+        <DockPanel Margin="20 10 20 0">
+            <materialDesign:ColorZone Mode="Dark"
+                                      Width="120"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Bottom"
+                                      VerticalContentAlignment="Center">
                 <Label Content="Plan Issue"/>
             </materialDesign:ColorZone>
             <DatePicker materialDesign:HintAssist.Hint="Pick Date"
                         SelectedDate="{Binding JobInfo.PlanIsueDate}"
                         IsTodayHighlighted="False"
-                        Language="en-AU"/>
+                        Language="en-AU"
+                        Margin="20 0 0 0"/>
 
-            <CheckBox Content="E - Plan" IsChecked="{Binding JobInfo.IsEPlan}"/>
-            <CheckBox Content="Engineer" IsChecked="{Binding JobInfo.IsEngineer}"/>
-            <CheckBox Content="Bracing Plan" IsChecked="{Binding JobInfo.IsBracingPlan}"/>
+            <CheckBox Content="E - Plan" IsChecked="{Binding JobInfo.IsEPlan}" Margin="20 0 0 0"/>
+            <CheckBox Content="Engineer" IsChecked="{Binding JobInfo.IsEngineer}" Margin="20 0 0 0"/>
+            <CheckBox Content="Bracing Plan" IsChecked="{Binding JobInfo.IsBracingPlan}" Margin="20 0 0 0"/>
         </DockPanel>
-        <local:EngineerInfoView/>
+        <local:EngineerInfoView Margin="20 20 20 0"/>
     </StackPanel>
 </UserControl>

@@ -9,6 +9,7 @@ using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using AppModels.ResponsiveData.EngineerMember;
 using JobInfoModule.Views;
 using Prism.Commands;
@@ -38,15 +39,40 @@ namespace JobInfoModule.ViewModels
 
         #endregion
         public ObservableCollection<string> LevelTypes { get; } = new ObservableCollection<string>() { "Global" };
-        public ObservableCollection<string> TimberGradeList { get; } = new ObservableCollection<string>(){"LVL","MGP10","MGP12","17C","F17","F27","Steel"};
-        
+        public ObservableCollection<string> TimberGradeList { get; private set; } 
 
+        public EngineerInfoViewModel()
+        {
+
+        }
         public EngineerInfoViewModel(IUnityContainer unityContainer, IRegionManager regionManager,
             IEventAggregator eventAggregator, ILayerManager layerManager, IJob jobModel) : base(unityContainer,
             regionManager, eventAggregator, layerManager, jobModel)
         {
+            InitializedTimberGradeList();
             JobModel.Levels.CollectionChanged += Levels_CollectionChanged;
             CreateNewEngineerMemberCommand = new DelegateCommand(OnCreateNewEngineerMemberCommand);
+        }
+
+        private void InitializedTimberGradeList()
+        {
+            if (this.TimberGradeList==null)
+            {
+                TimberGradeList = new ObservableCollection<string>();
+            }
+            else
+            {
+                TimberGradeList.Clear();
+            }
+            if (this.SelectedClient!=null)
+            {
+                foreach (var beamKey in SelectedClient.Beams.Keys)
+                {
+                    TimberGradeList.Add(beamKey);   
+                }
+                TimberGradeList.Add("Steel");
+            }
+            
         }
 
         private void Levels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -72,6 +98,10 @@ namespace JobInfoModule.ViewModels
             member.Id = JobModel.EngineerMemberList.Count;
             JobModel.EngineerMemberList.Add(member);
         }
-        
+        protected override void SelectedClientReceive(ClientPoco selectClient)
+        {
+            base.SelectedClientReceive(selectClient);
+            InitializedTimberGradeList();
+        }
     }
 }

@@ -65,9 +65,10 @@
                                     <ddes:Viewport.ViewCubeIcon >
                                         <ddes:ViewCubeIcon Lighting="True"/>
                                     </ddes:Viewport.ViewCubeIcon>
-                                    <ddes:Viewport.Background >
-                                        <ddgr:BackgroundSettings StyleMode="Solid" />
-                                        <!--TopColor="#FF0C151D"-->
+                                    <ddes:Viewport.Background>
+                                        <ddgr:BackgroundSettings StyleMode="Solid"
+                                                                 TopColor="{StaticResource DarkBackGround}"/>
+                                        <!--<ddgr:BackgroundSettings TopColor="#FF0C151D"></ddgr:BackgroundSettings>-->
                                 </ddes:Viewport.Background>
                                     <!--<ddes:Viewport.Grids>
 								<ddes:Grid Step="1" Lighting="True" AutoSize="True" AutoStep="True" MaxNumberOfLines="100" MinNumberOfLines="9" OverridesDefaultStyle="True"/>

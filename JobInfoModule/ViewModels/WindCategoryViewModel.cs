@@ -52,9 +52,9 @@ namespace JobInfoModule.ViewModels
         }
         #endregion
 
-        //public WindCategoryViewModel()
-        //{
-        //}
+        public WindCategoryViewModel()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WindCategoryViewModel"/> class.

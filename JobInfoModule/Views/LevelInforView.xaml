@@ -17,7 +17,8 @@
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:applicationconverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:LevelInfoViewModel, IsDesignTimeCreatable=True}"
-             Style="{DynamicResource MaterialDesignUserControl}">
+             Style="{DynamicResource MaterialDesignUserControl}"
+             Padding="20 0 20 0">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -55,7 +56,7 @@
                 <TextBox materialDesign:HintAssist.Hint="Global Wall Height"
                          materialDesign:HintAssist.IsFloating="True"
                          controls:TextBoxHelper.ClearTextButton="False"
-                         Margin="10 0 0 0"
+                         
                          Text="{Binding JobModel.GlobalWallInfo.WallHeight}"/>
                 <ComboBox materialDesign:HintAssist.Hint="Load Bearing Wall Spacing"
                           materialDesign:HintAssist.IsFloating="True"
@@ -897,9 +898,10 @@
                                           VerticalAlignment="Bottom" Width="114">
                 <Label Padding="10 5 10 5">Step Down</Label>
             </materialDesign:ColorZone>
-            <StackPanel>
-                <TextBox materialDesign:HintAssist.Hint="Garage Step Down" Text="{Binding JobInfo.StepDown}"/>
-            </StackPanel>
+            <TextBox materialDesign:HintAssist.Hint="Garage Step Down" 
+                     Text="{Binding JobInfo.StepDown}"
+                     Margin="15 0 0 0"/>
+           
         </DockPanel>
     </StackPanel>
 </UserControl>

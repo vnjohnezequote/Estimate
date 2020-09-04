@@ -456,11 +456,11 @@ namespace AppDataBase.DataBase
             var f27File = "F27.csv";
             var lvl13File = "LVl13.csv";
             Dictionary<string, List<TimberBase>> beams = new Dictionary<string, List<TimberBase>>();
-            beams.Add("MGP_12", this.LoadTimberListOnCvsFile<TimberBase>(mgp12File));
-            beams.Add("LVL_13", this.LoadTimberListOnCvsFile<TimberBase>(lvl13File));
-            beams.Add("GL_17C", this.LoadTimberListOnCvsFile<TimberBase>(gl17CFile));
-            beams.Add("GL_18C", this.LoadTimberListOnCvsFile<TimberBase>(gl18CFile));
-            beams.Add("F27_Hwd", this.LoadTimberListOnCvsFile<TimberBase>(f27File));
+            beams.Add("MGP12", this.LoadTimberListOnCvsFile<TimberBase>(mgp12File));
+            beams.Add("LVL13", this.LoadTimberListOnCvsFile<TimberBase>(lvl13File));
+            beams.Add("GL17C", this.LoadTimberListOnCvsFile<TimberBase>(gl17CFile));
+            beams.Add("GL18C", this.LoadTimberListOnCvsFile<TimberBase>(gl18CFile));
+            beams.Add("F27Hwd", this.LoadTimberListOnCvsFile<TimberBase>(f27File));
             return beams;
         }
 
@@ -490,7 +490,7 @@ namespace AppDataBase.DataBase
         private List<T> LoadTimberListOnCvsFile<T>(string file)
         {
             var reader = new StreamReader(file);
-            var csvFile = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var csvFile = new CsvReader(reader, CultureInfo.CurrentCulture);
             csvFile.Configuration.HeaderValidated = null;
             csvFile.Configuration.MissingFieldFound = null;
             return csvFile.GetRecords<T>().ToList();

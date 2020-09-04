@@ -32,6 +32,13 @@
                             <x:Type TypeName="appModelEnum:WallType"/>
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
+
+                    <ObjectDataProvider x:Key="BeamTypes"
+										MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="appModelEnum:BeamType"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
                     <converter:IntToBooleanConverter x:Key="IntToBooleanConverter"/>
                     <converter:PitchingHeightToWallHeightConverter x:Key="PitchingToWallHeightConverter"/>
                     <converter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
@@ -41,6 +48,10 @@
                     <helper:RibbonPlatesSelectConverter x:Key="RibbonPlatesSelectConverter"/>
                     <helper:BeamSelectConverter x:Key="BeamSelectConverter"/>
                     <modelCompare:WallTypeComparer x:Key="WallTypeComparer"/>
+                     <Style x:Key="BeamMaximumLengthHeaderStyle" TargetType="syncfusion:GridHeaderCellControl">
+                        <Setter Property="Background" Value="Teal" />
+                        <Setter Property="Foreground" Value="White" />
+                     </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -96,7 +107,7 @@
                         <Button Content="Double Story" />
                         <Button Content="Three Story" />
                     </StackPanel>
-                    <StackPanel>
+                    <!--<StackPanel>
                         <TextBlock Text="Bracing Input"/>
                         <syncfusion:SfDataGrid AllowDeleting="True"
                                                AllowEditing="True"
@@ -121,17 +132,18 @@
                                 <syncfusion:GridTextColumn MappingName="Quantity" />
                             </syncfusion:SfDataGrid.Columns>
                         </syncfusion:SfDataGrid>
-                    </StackPanel>
+                    </StackPanel>-->
                 </StackPanel>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical"
+                            Margin="0 20 0 0">
                     <StackPanel.Resources>
                         <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
                             <Setter Property="Foreground" Value="{Binding WallColorLayer.Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
                         </Style>
                     </StackPanel.Resources>
                     <!-- Input Wall -->
-                    <materialDesign:ColorZone Mode="Accent">
-                        <Label FontSize="18" Content="Wall Input" />
+                    <materialDesign:ColorZone Mode="Accent" HorizontalAlignment="Stretch" Margin="0 0 0 10">
+                        <Label FontSize="18" Content="Wall Input" Margin="50 0 0 0"/>
                     </materialDesign:ColorZone>
                     <syncfusion:SfDataGrid Name="WallInput"
                                            AllowDeleting="True"
@@ -147,7 +159,7 @@
                                            ItemsSource="{Binding Level.WallLayers}"
                                            NavigationMode="Cell"
                                            SelectionMode="Extended"
-                                           SelectionUnit="Any"
+                                           SelectionUnit="Row"
                                            RowStyle="{StaticResource TextRowStyle}"
                                            CurrentCellDropDownSelectionChanged="WallInput_OnCurrentCellDropDownSelectionChanged"
                                            CurrentCellValidated="WallInput_OnCurrentCellValidated"
@@ -290,86 +302,138 @@
                                                        MappingName="WallName" Width="200"/>
                         </syncfusion:SfDataGrid.Columns>
                     </syncfusion:SfDataGrid>
+                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0 " HorizontalAlignment="Left">
+                        <Label Content="Total linear meter" FontSize="20" Padding="10"/>
+                        <TextBlock FontSize="20" Background="DarkRed" Padding="10">
+					        <Run Text="100m" />
+                        </TextBlock>
+                    </StackPanel>
                     <!-- Input Length -->
                     <!--<syncfusion:SfDataGrid ItemsSource="{Binding Level.TempLengths}"></syncfusion:SfDataGrid>-->
                 </StackPanel>
+                <materialDesign:ColorZone Mode="PrimaryDark" Margin="0 10 0 10">
+                    <Label Content="Beam and Bracing Input" FontSize="18" Margin="50 0 0 0"/>
+                </materialDesign:ColorZone>
                 <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsBeamToLongWithStockList}" Value="True">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Resources>
                     <!-- Beam Input -->
                     <StackPanel>
-                        <!--<syncfusion:SfDataGrid AllowDeleting="True"
-										   AllowEditing="True"
-										   AutoGenerateColumns="False"
-										   ItemsSource="{Binding Level.RoofBeams}"
-										   NavigationMode="Cell"
-										   SelectionMode="Extended"
-										   SelectionUnit="Any"
-										   ColumnSizer="Auto"
-										   EditorSelectionBehavior="SelectAll"
-										   EditTrigger="OnTap"
-										   AddNewRowPosition="Bottom">
-							<syncfusion:SfDataGrid.Resources>
-								<Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
-								<Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-							</syncfusion:SfDataGrid.Resources>
-							<syncfusion:SfDataGrid.Columns>
-								<syncfusion:GridTextColumn HeaderText="Location"
-													   MappingName="Location" />
-								<syncfusion:GridComboBoxColumn HeaderText="TimberGrade"
-														   MappingName="BeamTimberGrade" 
-														   ItemsSource="{Binding BeamGradeList}"
-														   UseBindingValue="True"
-														   />
-								<syncfusion:GridComboBoxColumn DisplayMemberPath="SizeTreatment"
-														   HeaderText="Size &amp; Treatment"
-														   ItemsSourceSelector="{StaticResource BeamSelectConverter}"
-														   MappingName="TimberMaterialInfo"
-														   UseBindingValue="True"/>
-								<syncfusion:GridTextColumn HeaderText="Qty"
-													   MappingName="Quantity" />
-								<syncfusion:GridTextColumn HeaderText="QLength"
-													   MappingName="Length" />
+                        <materialDesign:ColorZone Mode="Accent" HorizontalContentAlignment="Center">
+                            <Label Content="Beam" FontSize="16"/>
+                        </materialDesign:ColorZone>
+                        <syncfusion:SfDataGrid AllowDeleting="True"
+                                               AllowEditing="True"
+                                               AutoGenerateColumns="False"
+                                               RowStyle="{StaticResource TextRowStyle}"
+                                               ItemsSource="{Binding Level.RoofBeams}"
+                                               NavigationMode="Cell"
+                                               SelectionMode="Extended"
+                                               SelectionUnit="Row"
+                                               ColumnSizer="Auto"
+                                               EditorSelectionBehavior="SelectAll"
+                                               EditTrigger="OnTap">
+                            <syncfusion:SfDataGrid.Resources>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
+                                <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                            </syncfusion:SfDataGrid.Resources>
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTextColumn HeaderText="Beam Id"
+                                                           MappingName="Id"/>
+                                <syncfusion:GridComboBoxColumn HeaderText="Beam Type"
+                                                               MappingName="Type"
+                                                               ItemsSource="{Binding Source={StaticResource BeamTypes}}"/>
+                                <syncfusion:GridTextColumn HeaderText="Beam Location"
+                                                           MappingName="Location" />
+                                <syncfusion:GridComboBoxColumn HeaderText="Timber Grade"
+                                                               MappingName="TimberGrade" 
+                                                               ItemsSource="{Binding BeamGradeList}"
+                                                               UseBindingValue="True"/>
+                                <syncfusion:GridComboBoxColumn HeaderText="Size &amp; Treatment"
+                                                               ItemsSourceSelector="{StaticResource BeamSelectConverter}"
+                                                               MappingName="TimberInfo"
+                                                               DisplayMemberPath="SizeTreatment"
+                                                               UseBindingValue="True"/>
+                                <syncfusion:GridTextColumn HeaderText="Beam Span"
+                                                           MappingName="SpanLength" />
+                                <syncfusion:GridTextColumn HeaderText="Extra Length"
+                                                           MappingName="ExtraLength"/>
+                                <syncfusion:GridTextColumn HeaderText="Qty"
+                                                           MappingName="Quantity" />
+                                <syncfusion:GridTextColumn HeaderText="Quote Length"
+                                                           MappingName="QuoteLength">
+                                     <syncfusion:GridTextColumn.CellStyle>
+                                        <Style TargetType="syncfusion:GridCell">
+                                             <Setter Property="FontWeight" Value="Bold"/>
+                                             <Setter Property="FontSize" Value="14"/>
+                                             <Setter Property="Foreground" Value="LimeGreen"/>
+                                             <Style.Triggers>
+                                                 <DataTrigger Binding="{Binding Path=IsBeamToLongWithStockList}" Value="True">
+                                                    <Setter Property="Foreground" Value="Red"/>
+                                                 </DataTrigger>
+                                             </Style.Triggers>
+                                        </Style>
+                                    </syncfusion:GridTextColumn.CellStyle>
+                                </syncfusion:GridTextColumn>
 
-							</syncfusion:SfDataGrid.Columns>
-						</syncfusion:SfDataGrid>
-						<Button Content="Add Beam" Command="{Binding AddBeamCommand}"/>-->
-                        <local:StickFrameBeamAndLintelInputView x:Name="BeamInput"/>
+                                <syncfusion:GridTextColumn HeaderText="Unit Price"
+                                                           MappingName="TimberInfo.UnitPrice"/>
+                                <syncfusion:GridTextColumn HeaderText="Maximum Length Available"
+                                                           MappingName="TimberInfo.MaximumLength"
+                                                           HeaderStyle="{StaticResource BeamMaximumLengthHeaderStyle}">
+                                    <syncfusion:GridTextColumn.CellStyle>
+                                        <Style TargetType="syncfusion:GridCell">
+                                             <Setter Property="Foreground" Value="Red" />
+                                             <Setter Property="Padding" Value="80 0 0 0"/>
+                                        </Style>
+                                    </syncfusion:GridTextColumn.CellStyle>
+                                </syncfusion:GridTextColumn>
+
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
+                        <Button Content="Add Beam" Command="{Binding AddBeamCommand}"/>
+                        <!--<local:StickFrameBeamAndLintelInputView x:Name="BeamInput"/>-->
 
                     </StackPanel>
                     <!-- generic Bracing Input -->
-                    <StackPanel>
-                        <!--<syncfusion:SfDataGrid AllowDeleting="True"
-										   AllowEditing="True"
-										   AutoGenerateColumns="False"
-										   ItemsSource="{Binding Level.GeneralBracings}"
-										   NavigationMode="Cell"
-										   SelectionMode="Extended"
-										   SelectionUnit="Any"
-										   ColumnSizer="Auto"
-										   EditorSelectionBehavior="SelectAll"
-										   EditTrigger="OnTap">
-							<syncfusion:SfDataGrid.Resources>
-								<Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
-								<Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-							</syncfusion:SfDataGrid.Resources>
+                    <StackPanel Margin="20 0 0 0">
+                        <materialDesign:ColorZone Mode="Accent" HorizontalContentAlignment="Center">
+                            <Label Content="Bracings" FontSize="16"/>
+                        </materialDesign:ColorZone>
+                        <syncfusion:SfDataGrid AllowDeleting="True"
+                                               AllowEditing="True"
+                                               AutoGenerateColumns="False"
+                                               ItemsSource="{Binding Level.GeneralBracings}"
+                                               NavigationMode="Cell"
+                                               SelectionMode="Extended"
+                                               SelectionUnit="Any"
+                                               ColumnSizer="Auto"
+                                               EditorSelectionBehavior="SelectAll"
+                                               EditTrigger="OnTap">
+                            <syncfusion:SfDataGrid.Resources>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
+                                <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                            </syncfusion:SfDataGrid.Resources>
 
-							<syncfusion:SfDataGrid.Columns>
-								<syncfusion:GridTextColumn 	HeaderText="Description"
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTextColumn 	HeaderText="Description"
 														MappingName="BracingInfo.Name"
 														AllowEditing="False"/>
-								<syncfusion:GridTextColumn HeaderText="Quantity"
+                                <syncfusion:GridTextColumn HeaderText="Quantity"
 													   MappingName="Quantity" />
-							</syncfusion:SfDataGrid.Columns>
-						</syncfusion:SfDataGrid>-->
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
 
 
                         <!-- Bracing Input -->
 
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Total LM" />
-                        <TextBlock>
-					<Run Text="100" />
-                        </TextBlock>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

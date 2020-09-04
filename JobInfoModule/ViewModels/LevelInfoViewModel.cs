@@ -187,7 +187,15 @@ namespace JobInfoModule.ViewModels
                 //this.SelectedIndex = null;
             }
 
-            this.IsCostVisible = this.JobInfo.ClientName == "Prenail";
+            if (JobInfo.Client ==  null || this.JobInfo.Client.Name!="Prenail")
+            {
+                this.IsCostVisible = false;    
+            }
+            else
+            {
+                this.IsCostVisible = true;    
+            }
+            
 
             if (this.Levels == null || this.Levels.Count == 0)
             {

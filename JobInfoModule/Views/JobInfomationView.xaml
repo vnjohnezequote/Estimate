@@ -22,7 +22,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <StackPanel Margin="20 0 20 0">
+    <StackPanel>
         <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
                                   Mode="PrimaryMid" DockPanel.Dock="Top">
             <TextBlock Text="{Binding JobModel.Info.ClientName}" HorizontalAlignment="Center" FontSize="22" />

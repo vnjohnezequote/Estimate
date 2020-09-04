@@ -416,8 +416,6 @@
                             </DataTemplate>
                         </syncfusion:GridComboBoxColumn.ItemTemplate>
                     </Syncfusion:GridComboBoxColumn>
-
-
                     <Syncfusion:GridComboBoxColumn HeaderText="Material Type"
                                                    UseBindingValue="True"
                                                    MappingName="MaterialType"

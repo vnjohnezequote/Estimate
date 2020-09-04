@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Navigation;
 using AppModels.Enums;
 using AppModels.Interaface;
@@ -28,6 +29,8 @@ namespace AppModels.ResponsiveData.EngineerMember
         private int _thickness;
         private string _timberGrade;
         private int _id;
+        private TimberBase _timberInfo;
+
         #endregion
 
         #region Properties
@@ -37,9 +40,7 @@ namespace AppModels.ResponsiveData.EngineerMember
             set => SetProperty(ref _id, value);
         }
         public JobInfo GlobalInfor { get; }
-
         public string LevelType { get=>_levelType; set=>SetProperty(ref _levelType,value); }
-
         public Suppliers? Supplier {
             get
             {
@@ -72,7 +73,6 @@ namespace AppModels.ResponsiveData.EngineerMember
             get => _noItem == 0 ? 1 : _noItem;
             set=>SetProperty(ref _noItem,value);
         }
-
         public int Depth { get=>_depth; set=>SetProperty(ref _depth,value); }
         public int Thickness { get=>_thickness; set=>SetProperty(ref _thickness,value); }
 
@@ -113,7 +113,7 @@ namespace AppModels.ResponsiveData.EngineerMember
                 var depth = 0;
                 var grade = "";
                 var thickness = 0;
-                if (value == null )
+                if (value == null || value == "Nil")
                 {
                     return;
                 }
@@ -148,7 +148,12 @@ namespace AppModels.ResponsiveData.EngineerMember
                 {
                     return "Steel";
                 }
-                if (TimberGrade != "LVL") return TimberGrade;
+
+                if (string.IsNullOrEmpty(TimberGrade))
+                {
+                    return string.Empty;
+                }
+                if (!TimberGrade.Contains( "LVL")) return TimberGrade;
                 switch (Supplier)
                 {
                     case Suppliers.WESBEAM:
@@ -165,7 +170,11 @@ namespace AppModels.ResponsiveData.EngineerMember
         {
             get
             {
-                if (TimberGrade != "LVL") return Depth;
+                if (string.IsNullOrEmpty(TimberGrade))
+                {
+                    return 0;
+                }
+                if (!TimberGrade.Contains( "LVL")) return Depth;
                 switch (Supplier)
                 {
                     case Suppliers.TILLINGS:
@@ -200,6 +209,17 @@ namespace AppModels.ResponsiveData.EngineerMember
 
         }
 
+        public TimberBase TimberInfo
+        {
+            get => _timberInfo;
+            set
+            {
+                 SetProperty(ref _timberInfo, value);
+                 Depth = TimberInfo.Depth;
+                 Thickness = TimberInfo.Thickness;
+                 TimberGrade = TimberInfo.TimberGrade;
+            }
+        }
         #endregion
 
         #region Constructor
@@ -222,8 +242,9 @@ namespace AppModels.ResponsiveData.EngineerMember
         #endregion
 
         #region Private Method
-        public void LoadMemberInfo(EngineerMemberInfoPoco memberInfo)
+        public void LoadMemberInfo(EngineerMemberInfoPoco memberInfo,Dictionary<string,List<TimberBase>> timberInfos)
         {
+            TimberInfo = GetTimberInfoFromList(timberInfos,memberInfo.TimberInfoId,memberInfo.TimberGrade);
             Id = memberInfo.Id;
             Supplier = memberInfo.Supplier;
             LevelType = memberInfo.LevelType;
@@ -236,7 +257,17 @@ namespace AppModels.ResponsiveData.EngineerMember
             Depth = memberInfo.Depth;
             Thickness = memberInfo.Thickness;
             TimberGrade = memberInfo.TimberGrade;
+        }
 
+        private TimberBase GetTimberInfoFromList(Dictionary<string,List<TimberBase>> timberInfos,int timberId,string timberGrade)
+        {
+            if (timberInfos==null)
+            {
+                return null;
+            }
+            
+            timberInfos.TryGetValue(timberGrade, out var beams);
+            return beams?.FirstOrDefault(timberBase => timberBase.Id == timberId);
         }
         private void EngineerMemberInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using System.Windows.Documents;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
@@ -33,7 +34,7 @@ namespace AppModels.ResponsiveData.Openings
 
         private int _id;
         private string _name;
-        private BeamType _beamType;
+        private BeamType _type;
         private SupportType? _pointSupportType;
         private int _spanLength;
         private double _extraLength;
@@ -43,7 +44,7 @@ namespace AppModels.ResponsiveData.Openings
         private string _location;
         private int _supportHeight;
         private int _noItem;
-
+        private TimberBase _timberInfo;
         private string _timberGrade;
 
         //private string _size;
@@ -118,8 +119,8 @@ namespace AppModels.ResponsiveData.Openings
         }
         public BeamType Type
         {
-            get=>_beamType;
-            private set=>SetProperty(ref _beamType,value);
+            get=>_type;
+            set=>SetProperty(ref _type,value);
         }
         public Suppliers? Supplier
         {
@@ -465,6 +466,29 @@ namespace AppModels.ResponsiveData.Openings
                 SetProperty(ref _timberGrade, value);
             } 
         }
+        public TimberBase TimberInfo
+        {
+            get => _timberInfo;
+            set
+            {
+              SetProperty(ref _timberInfo, value);  
+            } 
+        }
+
+        public bool IsBeamToLongWithStockList
+        {
+            get
+            {
+                if (TimberInfo!=null && TimberInfo.MaximumLength< QuoteLength)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
         #endregion
 
@@ -568,7 +592,10 @@ namespace AppModels.ResponsiveData.Openings
                 case nameof(MaterialType):
                     RaisePropertyChanged(nameof(TimberGrade));
                     RaisePropertyChanged(nameof(SizeGrade));
-
+                    break;
+                case nameof(TimberInfo):
+                case nameof(QuoteLength):
+                    RaisePropertyChanged(nameof(IsBeamToLongWithStockList));
                     break;
             }
         }

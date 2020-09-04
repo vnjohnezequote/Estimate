@@ -70,11 +70,11 @@ namespace AppModels.ResponsiveData
             this.Levels = new ObservableCollection<LevelWall>();
         }
 
-        public void LoadJob(JobModelPoco jobLoaded)
+        public void LoadJob(JobModelPoco jobLoaded,List<ClientPoco> clients)
         {
-            Info.LoadJobInfo(jobLoaded.Info);
+            Info.LoadJobInfo(jobLoaded.Info,clients);
             GlobalWallInfo.LoadWallGlobalInfo(jobLoaded.GlobalWallInfo);
-            LoadEnginerList(jobLoaded.EngineerMemberList);
+            LoadEngineerList(jobLoaded.EngineerMemberList,Info.Client.Beams);
             LoadDoorSchedules(jobLoaded.DoorSchedules);
             LoadLevel(jobLoaded.Levels);
         }
@@ -101,12 +101,12 @@ namespace AppModels.ResponsiveData
 
         }
 
-        private void LoadEnginerList(List<EngineerMemberInfoPoco> engineerList)
+        private void LoadEngineerList(List<EngineerMemberInfoPoco> engineerList,Dictionary<string,List<TimberBase>> timberInfos)
         {
             foreach (var memberInfo  in engineerList)
             {
                 var member = new EngineerMemberInfo(Info);
-                member.LoadMemberInfo(memberInfo);
+                member.LoadMemberInfo(memberInfo,timberInfos);
                 EngineerMemberList.Add(member);
             }
         }

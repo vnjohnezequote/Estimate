@@ -13,7 +13,8 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
              mc:Ignorable="d"
-             Style="{DynamicResource MaterialDesignUserControl}">
+             Style="{DynamicResource MaterialDesignUserControl}"
+             Padding="20 0 20 0">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

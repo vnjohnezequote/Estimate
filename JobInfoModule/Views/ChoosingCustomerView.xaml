@@ -12,7 +12,8 @@
              xmlns:converter ="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ChoosingCustomerViewModel, IsDesignTimeCreatable=True}"
-             Style="{DynamicResource MaterialDesignUserControl}">
+             Style="{DynamicResource MaterialDesignUserControl}"
+             Padding="20 0 20 0">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

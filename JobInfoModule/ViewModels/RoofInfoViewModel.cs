@@ -35,7 +35,7 @@ namespace JobInfoModule.ViewModels
         #region Property
         public ObservableCollection<int> TrussSpacings { get; } = new ObservableCollection<int>() { 600, 900 };
         public ObservableCollection<int> RafterSpacings { get; } = new ObservableCollection<int>() { 450, 600, 900 };
-
+        public List<string> TieDownsList { get; } = new List<string>(){"900","1200","1500","1800","Direct"};
         public ObservableCollection<string> RoofMaterials
         {
             get=>_roofMaterials;
@@ -53,6 +53,10 @@ namespace JobInfoModule.ViewModels
 
         #region Constructor
 
+        public RoofInfoViewModel()
+        {
+
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneralWindCategoryViewModel"/> class.
         /// </summary>

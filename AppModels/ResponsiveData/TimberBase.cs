@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using devDept.Serialization;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -37,6 +38,8 @@ namespace AppModels.ResponsiveData
         /// The TimberGrade.
         /// </summary>
         private string _timberGrade;
+
+        private string _treatment;
 
         #endregion
 
@@ -78,6 +81,20 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public int Id { get; set; }
 
+        
+        /// /// <summary>
+        /// Gets or sets the number of item.
+        /// </summary>
+        public int NoItem
+        {
+            get => this._noItem;
+            set
+            {
+                this.SetProperty(ref this._noItem, value);
+                this.CallBackPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Gets or sets the thickness.
         /// </summary>
@@ -104,18 +121,7 @@ namespace AppModels.ResponsiveData
             }
         }
 
-        /// <summary>
-        /// Gets or sets the number of item.
-        /// </summary>
-        public int NoItem
-        {
-            get => this._noItem;
-            set
-            {
-                this.SetProperty(ref this._noItem, value);
-                this.CallBackPropertyChanged();
-            }
-        }
+        
 
        /// <summary>
         /// Gets or sets the type. MGP12 or MPG10
@@ -129,6 +135,17 @@ namespace AppModels.ResponsiveData
                 this.CallBackPropertyChanged();
             }
         }
+
+       public string Treatment {
+           get=>_treatment;
+           set
+           {
+               SetProperty(ref _treatment,value);
+               CallBackPropertyChanged();
+           }
+
+       }
+
 
         /// <summary>
         /// Gets or sets the size.
@@ -156,6 +173,42 @@ namespace AppModels.ResponsiveData
 
         }
 
+        public string SizeTreatment
+        {
+            get
+            {
+                if (Thickness == 0 || Depth == 0)
+                {
+                    return "Nil";
+                }
+                else
+                {
+                    return this.Size + " " + this.Treatment;
+                }
+            }
+        }
+
+        public string SizeGradeTreatment
+        {
+            get
+            {
+                if (Thickness == 0 || Depth == 0)
+                {
+                    return "Nil";
+                }
+                else
+                {
+                    return this.SizeGrade + " " + this.Treatment;
+                }
+            }
+        }
+        public decimal UnitPrice { get; set; }
+        public decimal UnitCostPrice { get; set; }
+        public decimal UnitCostSell { get; set; }
+        public double MaximumLength { get; set; }
+        public string Code { get; set; }
+
+
         /// <summary>
         /// The call back property changed.
         /// </summary>
@@ -163,6 +216,8 @@ namespace AppModels.ResponsiveData
         {
             this.RaisePropertyChanged(nameof(this.Size));
             this.RaisePropertyChanged(nameof(this.SizeGrade));
+            this.RaisePropertyChanged(nameof(SizeGradeTreatment));
+            this.RaisePropertyChanged(nameof(SizeTreatment));
         }
 
     }

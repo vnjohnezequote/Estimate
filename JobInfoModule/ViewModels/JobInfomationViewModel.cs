@@ -54,7 +54,7 @@ namespace JobInfoModule.ViewModels
         {
             get
             {
-                if (string.IsNullOrEmpty(JobModel.Info.ClientName) || JobModel.Info.ClientName != "Prenail")
+                if (JobModel.Info.Client == null|| string.IsNullOrEmpty(JobModel.Info.Client.Name) || JobModel.Info.Client.Name != "Prenail")
                     return Visibility.Collapsed;
                 return Visibility.Visible;
             }

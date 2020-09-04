@@ -57,7 +57,7 @@ namespace NewJobWizardModule.Helper
                     return false;
                 }
 
-                return !(string.IsNullOrEmpty(this.Info.JobLocation) || string.IsNullOrEmpty(this.Info.JobNumber) || string.IsNullOrEmpty(this.Info.ClientName));
+                return !(string.IsNullOrEmpty(this.Info.JobLocation) || string.IsNullOrEmpty(this.Info.JobNumber) || this.Info.Client==null);
             }
 
             set => this.SetProperty(ref this._canCreateJob, value);
@@ -88,7 +88,7 @@ namespace NewJobWizardModule.Helper
         private void JobInfoPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(this.Info.JobLocation) || e.PropertyName == nameof(this.Info.JobNumber)
-                                                                || e.PropertyName == nameof(this.Info.ClientName))
+                                                                || e.PropertyName == nameof(this.Info.Client))
             {
                 this.RaisePropertyChanged(nameof(this.CanCreateJob));
             }

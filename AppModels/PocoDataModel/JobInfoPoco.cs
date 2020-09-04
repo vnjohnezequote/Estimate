@@ -62,7 +62,11 @@ namespace AppModels.PocoDataModel
         public JobInfoPoco(JobInfo info)
         {
             JobLocation = info.JobLocation;
-            ClientName = info.ClientName;
+            if (info.Client!=null)
+            {
+                ClientName = info.Client.Name;
+            }
+            //ClientName = info.ClientName;
             Customer = info.Customer;
             BuilderName = info.BuilderName;
             Supplier = info.Supplier;

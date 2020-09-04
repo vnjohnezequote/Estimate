@@ -48,9 +48,9 @@ namespace JobInfoModule.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="HorizontalJobInfoViewModel"/> class.
         /// </summary>
-        //public HorizontalJobInfoViewModel() 
-        //{
-        //}
+        public HorizontalJobInfoViewModel()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HorizontalJobInfoViewModel"/> class.

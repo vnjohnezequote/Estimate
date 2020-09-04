@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using AppModels.Enums;
 using AppModels.PocoDataModel;
 using Prism.Mvvm;
@@ -51,6 +52,7 @@ namespace AppModels.ResponsiveData
         private CeilingBattensType _ceilingBattenType;
         private string _jobAddress;
         private string _subAddress;
+        private ClientPoco _client;
 
         #endregion
         #region Property
@@ -60,10 +62,16 @@ namespace AppModels.ResponsiveData
             get => this._jobLocation;
             set => this.SetProperty(ref this._jobLocation, value);
         }
-        public string ClientName
+        //public string ClientName
+        //{
+        //    get => this._clientName;
+        //    set => this.SetProperty(ref this._clientName, value);
+        //}
+
+        public ClientPoco Client
         {
-            get => this._clientName;
-            set => this.SetProperty(ref this._clientName, value);
+            get => this._client;
+            set => SetProperty(ref _client,value);
         }
         public string Customer
         {
@@ -306,6 +314,13 @@ namespace AppModels.ResponsiveData
         {
             switch (e.PropertyName)
             {
+                case nameof(Client):
+                    if (Client !=null && Client.Name == "Prenail")
+                    {
+                        this.Supplier = Suppliers.DINDAS;
+                    }
+                    RaisePropertyChanged(nameof(TieDown));
+                    break;
                 case nameof(Customer):
                     {
                         if (this.Customer == "Bunnings Hallam Frame And Truss")
@@ -334,6 +349,10 @@ namespace AppModels.ResponsiveData
         }
         private string GeneralTieDown()
         {
+            if (Client!=null && Client.Name == "Prenail")
+            {
+                return "1200";
+            }
             switch (WindRate)
             {
                 case "N1":
@@ -355,6 +374,10 @@ namespace AppModels.ResponsiveData
         }
         private void SetTieDown(string value)
         {
+            if (Client!=null && Client.Name == "Prenail" && value == "1200")
+            {
+                value = null;
+            }
             switch (WindRate)
             {
                 case "C2":
@@ -392,10 +415,11 @@ namespace AppModels.ResponsiveData
 
         }
 
-        public void LoadJobInfo(JobInfoPoco info)
+        public void LoadJobInfo(JobInfoPoco info,List<ClientPoco> clients)
         {
             JobLocation = info.JobLocation;
-            ClientName = info.ClientName;
+            Client = GetClient(info.ClientName,clients);
+            //ClientName = info.ClientName;
             Customer = info.Customer;
             BuilderName = info.BuilderName;
             Supplier = info.Supplier;
@@ -434,6 +458,19 @@ namespace AppModels.ResponsiveData
             StepDown = info.StepDown;
         }
 
+        private ClientPoco GetClient(string clientName,List<ClientPoco> clients)
+        {
+            //this.Clients = new ObservableCollection<ClientPoco>(this._dbBase.Clients);
+            foreach (var clientPoco in clients)
+            {
+                if (clientPoco.Name == clientName)
+                {
+                    return clientPoco;
+                }
+            }
+
+            return null;
+        }
         #endregion
 
         #region public Member

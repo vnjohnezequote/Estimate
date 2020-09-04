@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
@@ -15,6 +16,6 @@ namespace AppModels.Interaface
         MyObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
         ObservableCollection<OpeningInfo> DoorSchedules { get; }
 
-        void LoadJob(JobModelPoco jobOpen);
+        void LoadJob(JobModelPoco jobOpen,List<ClientPoco> clients);
     }
 }

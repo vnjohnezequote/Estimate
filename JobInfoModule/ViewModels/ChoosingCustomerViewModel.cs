@@ -128,7 +128,7 @@ namespace JobInfoModule.ViewModels
             {
                 return;
             }
-            this.JobInfo.ClientName = this.SelectedClient.Name;
+            this.JobInfo.Client = this.SelectedClient;
             this.EventAggregator.GetEvent<CustomerService>().Publish(this.SelectedClient);
         }
 

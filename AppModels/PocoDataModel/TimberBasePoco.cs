@@ -21,12 +21,14 @@ namespace AppModels.PocoDataModel
         [ProtoMember(6)]
         public string Treatment { get; set; }
         [ProtoMember(7)]
-        public double UnitPrice { get; set; }
+        public decimal UnitCostPrice { get; set; }
+        public decimal UnitSellPrice { get; set; }
         [ProtoMember(8)]
         public string CurrencyUnit { get; set; }
         [ProtoMember(9)]
         public double MaximumLength { get; set; }
-        public TimberBasePoco(ushort id, ushort noItem = 1, ushort thickness= 90, ushort depth =35, string timberGrade = "MGP10",string treatment ="Untreated",double unitPrice = 0, string currencyUnit = "AUD",double maximumLength = 6.0)
+        public string Code { get; set; }
+        public TimberBasePoco(ushort id, ushort noItem = 1, ushort thickness= 90, ushort depth =35, string timberGrade = "MGP10",string treatment ="Untreated",decimal unitCostPrice = 0,decimal unitSellPrice = 0, string currencyUnit = "AUD",double maximumLength = 6.0)
         {
             this.Id = id;
             this.NoItem = noItem;
@@ -34,7 +36,8 @@ namespace AppModels.PocoDataModel
             this.Depth = depth;
             this.TimberGrade = timberGrade;
             this.Treatment = treatment;
-            this.UnitPrice = unitPrice;
+            this.UnitCostPrice = unitCostPrice;
+            UnitSellPrice = unitSellPrice;
             this.CurrencyUnit = currencyUnit;
             this.MaximumLength = maximumLength;
         }
@@ -46,7 +49,8 @@ namespace AppModels.PocoDataModel
             this.Depth = another.Depth;
             this.TimberGrade = another.TimberGrade;
             this.Treatment = another.Treatment;
-            this.UnitPrice = another.UnitPrice;
+            this.UnitCostPrice = another.UnitCostPrice;
+            this.UnitSellPrice = another.UnitSellPrice;
             this.CurrencyUnit = another.CurrencyUnit;
             this.MaximumLength = another.MaximumLength;
         }
@@ -59,7 +63,7 @@ namespace AppModels.PocoDataModel
                 stringBuilder = stringBuilder.Append(NoItem + "/");
             }
 
-            stringBuilder = stringBuilder.Append(Thickness + "x" + Depth + " "+ TimberGrade + " " + Treatment + "/" + UnitPrice + CurrencyUnit);
+            stringBuilder = stringBuilder.Append(Thickness + "x" + Depth + " "+ TimberGrade + " " + Treatment + "/" + UnitCostPrice + CurrencyUnit);
 
             return stringBuilder.ToString();
         }

@@ -83,13 +83,13 @@
             <CheckBox VerticalContentAlignment="Bottom" IsChecked="{Binding JobInfo.JambBeamSupport}"
                       Margin="10 0 10 0"/>
         </DockPanel>
-        <ComboBox Margin="0 10 0 0" 
+        <!--<ComboBox Margin="0 10 0 0" 
                   materialDesign:HintAssist.Hint="TieDown @"
                   IsEditable="True"
                   HorizontalAlignment="Stretch"
                   ItemsSource="{Binding TieDowns}"
                   SelectedItem="{Binding JobInfo.TieDown}"
-                  SelectedValue="{Binding JobInfo.TieDown}"/>
+                  SelectedValue="{Binding JobInfo.TieDown}"/>-->
         <ComboBox Margin="0 10 0 0"
                   materialDesign:HintAssist.Hint="Supplied"
                   IsEditable="True"

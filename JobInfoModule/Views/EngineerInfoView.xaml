@@ -47,16 +47,17 @@
             </ObjectDataProvider>
 
             <helper:EngineerGradeListConverter x:Key="EngineerGradeListConverter"/>
-
-
-
+            <helper:BeamSelectListConverter x:Key="BeamSelectListConverter"/>
 
         </ResourceDictionary>
 
     </UserControl.Resources>
     <StackPanel>
-        <materialDesign:ColorZone Mode="Dark">
-            <TextBlock Text="Global Engineer Information" FontSize="16"/>
+        <materialDesign:ColorZone Mode="PrimaryDark"
+                                  HorizontalContentAlignment="Center"
+                                  Padding="10"
+                                  Margin="0 0 0 10">
+            <TextBlock Text="Global Engineer Information" FontSize="18"/>
         </materialDesign:ColorZone>
         <Syncfusion:SfDataGrid
             ItemsSource="{Binding JobModel.EngineerMemberList}"
@@ -98,8 +99,9 @@
                                                MappingName="TimberGrade"
                                                ItemsSource="{Binding TimberGradeList}"/>
                 <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"
-                                               MappingName="SizeGrade"
-                                               ItemsSourceSelector="{StaticResource EngineerGradeListConverter}"/>
+                                               MappingName="TimberInfo"
+                                               DisplayMemberPath="SizeTreatment"
+                                               ItemsSourceSelector="{StaticResource BeamSelectListConverter}"/>
                 <Syncfusion:GridTextColumn HeaderText="Real Size Grade"
                                                MappingName="RealSizeGrade"/>
             </Syncfusion:SfDataGrid.Columns>

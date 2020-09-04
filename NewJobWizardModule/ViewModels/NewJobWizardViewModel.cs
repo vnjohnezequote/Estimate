@@ -225,7 +225,7 @@ namespace NewJobWizardModule.ViewModels
             }
         }
 
-        public bool CanChangedTab => !string.IsNullOrEmpty(this.JobModel.Info.ClientName);
+        public bool CanChangedTab => this.JobModel.Info.Client != null;
 
         #endregion
 
