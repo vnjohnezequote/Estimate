@@ -16,9 +16,11 @@ using AppModels.Enums;
 using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Openings;
 using AppModels.ResponsiveData.WallMemberData;
 using devDept.Eyeshot.Entities;
+using Syncfusion.Data.Extensions;
 using WallFrameInputModule.Views;
 
 namespace WallFrameInputModule.ViewModels
@@ -49,7 +51,7 @@ namespace WallFrameInputModule.ViewModels
 
     using Unity;
 
-    
+
 
     /// <summary>
     /// The Prenail floor input view model.
@@ -98,6 +100,11 @@ namespace WallFrameInputModule.ViewModels
         private PrenailWallLayer _selectedWall;
         #endregion
 
+        #region Properties
+
+
+
+        #endregion
         #region Constructor
 
         /// <summary>
@@ -120,14 +127,15 @@ namespace WallFrameInputModule.ViewModels
         /// <param name="eventAggregator">
         /// The event aggregator.
         /// </param>
-        public PrenailFloorInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager, IEntitiesManager entitiesManager,IJob jobModel )
-            : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
+        public PrenailFloorInputViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IEntitiesManager entitiesManager, IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator, layerManager, jobModel)
         {
+            EngineerList = new ObservableCollection<EngineerMemberInfo>();
             this.EntitiesManager = entitiesManager;
             EntitiesManager.EntitiesCollectionChanged += EntitiesManager_EntitiesCollectionChanged;
             this.PropertyChanged += PrenailFloorInputViewModelPropertyChanged;
             this.WallThicknessList = new List<int> { 90, 70 };
-            WallSpacingList = new List<int>(){300,350,400,450,600};
+            WallSpacingList = new List<int>() { 300, 350, 400, 450, 600 };
             //this.CreateLayers();
             //this.WallInputLoadedCommand = new DelegateCommand<FrameworkElement>(this.InputControlLoaded);
             this.NewWallRowInputCommand = new DelegateCommand(this.OnAddNewWallRow);
@@ -135,9 +143,40 @@ namespace WallFrameInputModule.ViewModels
             this.WallInputSortCommand = new DelegateCommand(this.OnWallInputSort);
             this.LoadCSVFileCommand = new DelegateCommand(this.OnLoadCSVFile);
             this.AddBeamCommand = new DelegateCommand(this.OnAddNewBeam);
+            this.AddBracingCommand = new DelegateCommand(OnAddBracing);
             this.ReFreshWallCommand = new DelegateCommand(this.CalculatorWallLength);
+            JobModel.EngineerMemberList.CollectionChanged += EngineerMemberList_CollectionChanged;
         }
 
+        private void EngineerMemberList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+
+            EngineerList.Clear();
+
+            InitEngineerList();
+
+            foreach (var beam in Level.RoofBeams)
+            {
+                beam.NotifyPropertyChanged();
+            }
+            RaisePropertyChanged(nameof(EngineerReferenceVisibility));
+        }
+
+        public void InitEngineerList()
+        {
+            if (Level == null) return;
+            foreach (var engineerMemberInfo in JobModel.EngineerMemberList)
+            {
+                if (EngineerList.Contains(engineerMemberInfo))
+                {
+                    continue;
+                }
+                if ((engineerMemberInfo.LevelType == this.Level.LevelName) || engineerMemberInfo.LevelType == "Global")
+                {
+                    EngineerList.Add(engineerMemberInfo);
+                }
+            }
+        }
 
 
         #endregion
@@ -148,6 +187,11 @@ namespace WallFrameInputModule.ViewModels
         //    get => _levelName;
         //    set => SetProperty(ref _levelName, value);
         //}
+        public ObservableCollection<EngineerMemberInfo> EngineerList { get; }
+        public bool EngineerReferenceVisibility
+        {
+            get => EngineerList.Count == 0 ? true : false;
+        }
         public IEntitiesManager EntitiesManager
         {
             get => _entitiesManager;
@@ -158,12 +202,12 @@ namespace WallFrameInputModule.ViewModels
             get => _selectedWall;
             set
             {
-              SetProperty(ref _selectedWall, value);
-              if (this.EventAggregator !=null)
-              {
-                  this.EventAggregator.GetEvent<WallEventService>().Publish(SelectedWall);
-              }
-            } 
+                SetProperty(ref _selectedWall, value);
+                if (this.EventAggregator != null)
+                {
+                    this.EventAggregator.GetEvent<WallEventService>().Publish(SelectedWall);
+                }
+            }
         }
         /// <summary>
         /// Gets or sets the beam grade list.
@@ -184,51 +228,15 @@ namespace WallFrameInputModule.ViewModels
         public SfDataGrid WallInputDataGrid { get; set; }
 
         /// <summary>
-        /// Gets or sets the studs.
-        /// </summary>
-        //public Dictionary<string, List<TimberBase>> Studs
-        //{
-        //    get => this._studs;
-        //    set => this.SetProperty(ref this._studs, value);
-        //}
-
-        ///// <summary>
-        ///// Gets or sets the ribbonplates.
-        ///// </summary>
-        //public Dictionary<string, List<TimberBase>> RibbonPlates
-        //{
-        //    get => this._ribbonPlates;
-        //    set => this.SetProperty(ref this._ribbonPlates, value);
-        //}
-
-        ///// <summary>
-        ///// Gets or sets the ribbonplates.
-        ///// </summary>
-        //public Dictionary<string, List<TimberBase>> TopPlates
-        //{
-        //    get => this._topPlates;
-        //    set => this.SetProperty(ref this._topPlates, value);
-        //}
-
-        ///// <summary>
-        ///// Gets or sets the ribbonplates.
-        ///// </summary>
-        //public Dictionary<string, List<TimberBase>> BottomPlates
-        //{
-        //    get => this._bottomPlates;
-        //    set => this.SetProperty(ref this._bottomPlates, value);
-        //}
-
-        /// <summary>
         /// Gets or sets the wall thickness.
         /// </summary>
         public List<int> WallThicknessList { get; set; }
         public List<int> WallSpacingList { get; set; }
 
-    /// <summary>
-    /// Gets or sets the title.
-    /// </summary>
-    public string Title
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        public string Title
         {
             get => this._title;
             set => this.SetProperty(ref this._title, value);
@@ -243,7 +251,7 @@ namespace WallFrameInputModule.ViewModels
         /// Gets the new wall row input command.
         /// </summary>
         public ICommand NewWallRowInputCommand { get; private set; }
-
+        
         /// <summary>
         /// Gets the delete wall row command.
         /// </summary>
@@ -276,6 +284,8 @@ namespace WallFrameInputModule.ViewModels
 
         public ICommand ReFreshWallCommand { get; private set; }
 
+        public ICommand AddBracingCommand { get; private set; }
+
         #endregion
 
         #region Public Method
@@ -296,10 +306,21 @@ namespace WallFrameInputModule.ViewModels
             // this.TopPlates = this.SelectedClient.TopPlates;
             // this.BottomPlates = this.SelectedClient.BottomPlates;
             // this.BeamGradeList = new List<string>(this.SelectedClient.Beams.Keys);
-            this.Level.TimberWallBracings = new ObservableCollection<Bracing>();
-            this.Level.GeneralBracings = new ObservableCollection<GenericBracing>();
-            var genericBracing = new GenericBracing { BracingInfo = new GenericBracingBase { Name = "MetalBrace" } };
-            this.Level.GeneralBracings.Add(genericBracing);
+            if (this.Level.TimberWallBracings == null)
+            {
+                this.Level.TimberWallBracings = new ObservableCollection<Bracing>();    
+            }
+            
+            if (this.Level.GeneralBracings == null)
+            {
+                this.Level.GeneralBracings = new ObservableCollection<GenericBracing>();    
+            }
+
+            if (this.Level.GeneralBracings.Count == 0)
+            {
+                var genericBracing = new GenericBracing { BracingInfo = SelectedClient.GenericBracingBases.FirstOrDefault() };    
+                this.Level.GeneralBracings.Add(genericBracing);
+            }
             //LoadBeamInput();
             //.WallLayers[1].WallColorLayer.Color
 
@@ -307,17 +328,17 @@ namespace WallFrameInputModule.ViewModels
 
         public void LoadBeamInput()
         {
-             var parameters =
-                    new NavigationParameters
-                    {
+            var parameters =
+                   new NavigationParameters
+                   {
                         { "Level", this.Level },
                         { "SelectedClient", this.SelectedClient }
-                    };
-                if (Level != null)
-                {
-                    this.RegionManager.RequestNavigate("BeamInputRegion", nameof(StickFrameBeamAndLintelInputView), parameters);
-                }
-            
+                   };
+            if (Level != null)
+            {
+                this.RegionManager.RequestNavigate("BeamInputRegion", nameof(StickFrameBeamAndLintelInputView), parameters);
+            }
+
 
         }
 
@@ -339,7 +360,7 @@ namespace WallFrameInputModule.ViewModels
                 foreach (var levelWallLayer in wallayers)
                 {
                     var tempLength = 0.0;
-                    if (levelWallLayer.WallColorLayer==null)
+                    if (levelWallLayer.WallColorLayer == null)
                     {
                         continue;
                     }
@@ -352,7 +373,7 @@ namespace WallFrameInputModule.ViewModels
                                 tempLength += iWall2D.Length();
                             }
                         }
-                       
+
                     }
 
                     levelWallLayer.TempLength = tempLength / 1000;
@@ -381,10 +402,16 @@ namespace WallFrameInputModule.ViewModels
                 this.Level.RoofBeams = new ObservableCollection<Beam>();
             }
             var beamId = Level.RoofBeams.Count + 1;
-            var newBeam = new Beam(BeamType.RoofBeam,Level.LevelInfo){Id = beamId};
+            var newBeam = new Beam(BeamType.RoofBeam, Level.LevelInfo) { Id = beamId };
             this.Level.RoofBeams.Add(newBeam);
         }
 
+        private void OnAddBracing()
+        {
+            var id = Level.TimberWallBracings.Count;
+            var timberBracing = new Bracing();
+            this.Level.TimberWallBracings.Add(timberBracing);
+        }
         /// <summary>
         /// The on load csv file.
         /// </summary>

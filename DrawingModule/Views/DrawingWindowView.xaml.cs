@@ -23,15 +23,15 @@ namespace DrawingModule.Views
 
         #region Properties
 
-        
 
-        
+
+
 
         #endregion
         public DrawingWindowView()
         {
             this.InitializeComponent();
-            if (this.DataContext!=null)
+            if (this.DataContext != null)
             {
                 _drawingWindowViewModel = this.DataContext as DrawingWindowViewModel;
                 _drawingWindowViewModel.PropertyChanged += _drawingWindowViewModel_PropertyChanged;
@@ -43,7 +43,7 @@ namespace DrawingModule.Views
 
         private void _drawingWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName=="IsOrthorMode")
+            if (e.PropertyName == "IsOrthorMode")
             {
                 this.CanvasDrawing.CanvasDrawing.IsOrthoModeEnable = _drawingWindowViewModel.IsOrthorMode;
             }
@@ -82,7 +82,7 @@ namespace DrawingModule.Views
                 drawings.Invalidate();
             }
         }
-        
+
 
         private void CanvasDrawing_WorkCompleted(object sender, WorkCompletedEventArgs e)
         {
@@ -135,14 +135,14 @@ namespace DrawingModule.Views
             {
                 foreach (var levelWall in _drawingWindowViewModel.Levels)
                 {
-                    
+
                     CanvasDrawing.AddSheet(levelWall.LevelName, linearUnitsType.Millimeters, formatType.A4_LANDSCAPE_ISO, _drawingWindowViewModel.JobModel);
                 }
-                
+
                 //CanvasDrawing.TestPaperSpace.LineTypes.ReplaceItem(new LinePattern(CanvasDrawing.HiddenSegmentsLineTypeName, new float[] { 0.8f, -0.4f }));
             }
         }
-        
+
         protected override void OnSourceInitialized(System.EventArgs e)
         {
             base.OnSourceInitialized(e);
@@ -169,21 +169,25 @@ namespace DrawingModule.Views
                 {
                     this.CanvasDrawing.CanvasDrawing.IsOrthoModeEnable =
                         !this.CanvasDrawing.CanvasDrawing.IsOrthoModeEnable;
-                    if (this._drawingWindowViewModel!= null)
+                    if (this._drawingWindowViewModel != null)
                     {
                         this._drawingWindowViewModel.IsOrthorMode = this.CanvasDrawing.CanvasDrawing.IsOrthoModeEnable;
                     }
                     return;
                 }
                 var handler = this.CanvasDrawing.CanvasDrawing.PreProcessKeyDownForCanvasView(e);
-                    //Dispatcher.Invoke((Func<bool>)(() => this.CanvasDrawing.CanvasDrawing.PreProcessKeyDownForCanvasView(e)));
+                //Dispatcher.Invoke((Func<bool>)(() => this.CanvasDrawing.CanvasDrawing.PreProcessKeyDownForCanvasView(e)));
 
                 if (!handler)
                 {
-                    handler =
-                        //Dispatcher.Invoke((Func<bool>)(() => this.CanvasDrawing.DynamicInput.PreProcessKeyboardInput(e))); 
-                   this.CanvasDrawing.DynamicInput.PreProcessKeyboardInput(e);
-                    if (!handler)
+                    if (CanvasDrawing.CanvasDrawing.IsMouseOver)
+                    {
+                        handler = //Dispatcher.Invoke((Func<bool>)(() => this.CanvasDrawing.DynamicInput.PreProcessKeyboardInput(e))); 
+                            this.CanvasDrawing.DynamicInput.PreProcessKeyboardInput(e);
+                    }
+                    
+
+                    if (!handler&& CanvasDrawing.CanvasDrawing.IsMouseOver)
                     {
                         //Dispatcher.Invoke((Action)(() => this.CanvasDrawing.FocusDynamicCommandLine()));
                         this.CanvasDrawing.FocusDynamicCommandLine();
@@ -197,7 +201,7 @@ namespace DrawingModule.Views
 
         private void UpdateLayoutClick(object sender, RoutedEventArgs e)
         {
-           UpDateLayout();
+            UpDateLayout();
         }
 
         private void UpDateLayout()

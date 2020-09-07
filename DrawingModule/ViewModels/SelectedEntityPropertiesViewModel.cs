@@ -53,7 +53,21 @@ namespace DrawingModule.ViewModels
                         return Visibility.Collapsed;
                 }
             }
-        } 
+        }
+
+        public Visibility TextContentVisibility
+        {
+            get
+            {
+                switch (_selectedEntity)
+                {
+                    case ITextVm _:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+            }
+        }
 
         public IEntityVm SelectedEntity
         {
@@ -65,6 +79,7 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(ColorVisibility));
                 RaisePropertyChanged(nameof(LevelVisibility));
                 RaisePropertyChanged(nameof(ColorMethodVisibility));
+                RaisePropertyChanged(nameof(TextContentVisibility));
             }
         }
         public ObservableCollection<LevelWall> Levels { get; private set; }
@@ -116,6 +131,7 @@ namespace DrawingModule.ViewModels
             {
                 EntitiesManager?.SyncLevelSelectedsEntityPropertyChanged(((IWall2D)this.SelectedEntity).WallLevelName);
             }
+            EntitiesManager.Refresh();
         }
     }
 }

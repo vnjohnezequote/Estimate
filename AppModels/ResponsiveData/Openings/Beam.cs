@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Windows.Documents;
@@ -213,7 +214,15 @@ namespace AppModels.ResponsiveData.Openings
         public EngineerMemberInfo EngineerMemberInfo
         {
             get=> _engineerTimberInfo; 
-            set=>SetProperty(ref _engineerTimberInfo, value);
+            set
+            {
+                SetProperty(ref _engineerTimberInfo, value);
+                if (EngineerMemberInfo!=null)
+                {
+                    TimberInfo = EngineerMemberInfo.TimberInfo;
+                }
+                
+            }
         }
 
         public EngineerMemberInfo SupportReference
@@ -455,11 +464,11 @@ namespace AppModels.ResponsiveData.Openings
                 {
                     return _timberGrade;
                 }
-                return EngineerMemberInfo != null ? EngineerMemberInfo.TimberGrade : _timberGrade;
+                return TimberInfo != null ? TimberInfo.TimberGrade : _timberGrade;
             }
             set
             {
-                if (EngineerMemberInfo!=null && EngineerMemberInfo.TimberGrade == value)
+                if (TimberInfo!=null && TimberInfo.TimberGrade == value)
                 {
                     value = string.Empty;
                 }
@@ -602,11 +611,12 @@ namespace AppModels.ResponsiveData.Openings
 
         #endregion
 
-        public void LoadBeamInfo(BeamPoco beam, List<EngineerMemberInfo> engineerSchedules, List<WallBase> walls)
+        public void LoadBeamInfo(BeamPoco beam, List<EngineerMemberInfo> engineerSchedules, List<WallBase> walls,Dictionary<string,List<TimberBase>> timberInfos)
         {
             LoadPointSupportInfo(beam.LoadPointSupports, engineerSchedules);
             LoadWallInfo(walls, beam);
             LoadEngineerInfo(engineerSchedules, beam);
+            TimberInfo = LoadTimberInfor(timberInfos, beam.TimberInfoId,beam.TimberGrade);
             Location = beam.Location;
             PointSupportType = beam.PointSupportType;
             Type = beam.Type;
@@ -622,6 +632,21 @@ namespace AppModels.ResponsiveData.Openings
             MaterialType = beam.MaterialType;
         }
 
+        private TimberBase LoadTimberInfor(Dictionary<string,List<TimberBase>> timberInfos, int timberId,string timberGrade)
+        {
+            if (timberInfos == null)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(timberGrade))
+            {
+                return null;
+            }
+
+            timberInfos.TryGetValue(timberGrade, out var beams);
+            return beams?.FirstOrDefault(timberBase => timberBase.Id == timberId);
+        }
         private void LoadEngineerInfo(List<EngineerMemberInfo> engineerSchedules, BeamPoco beam)
         {
             foreach (var engineerMemberInfo in engineerSchedules)

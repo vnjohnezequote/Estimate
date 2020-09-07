@@ -24,7 +24,7 @@ using Unity;
 
 namespace WallFrameInputModule.ViewModels
 {
-    public class StickFrameBeamAndLintelInputViewModel : BaseViewModel
+    public class StickFrameBeamAndLintelInputViewModel : BaseFloorViewModelAware
     {
         #region Field
 
@@ -59,7 +59,7 @@ namespace WallFrameInputModule.ViewModels
 
         public Beam SelectedBeam
         {
-            get=>_selectedBeam; 
+            get=>_selectedBeam;
             set=>SetProperty(ref _selectedBeam,value);
         }
 

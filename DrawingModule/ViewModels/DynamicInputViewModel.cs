@@ -68,7 +68,9 @@ namespace DrawingModule.ViewModels
             get => _curentTool;
             set => SetProperty(ref _curentTool, value);
         }
-        public Visibility CommandTextVisibility => this.CurrentTool == null ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility CommandTextVisibility => CurrentTool==null ? Visibility.Visible : Visibility.Collapsed;
+
         public Visibility LengthVisibility
         {
             get
@@ -207,6 +209,19 @@ namespace DrawingModule.ViewModels
                 {
                     return this._curentTool.IsUsingScaleFactorTextBox ? Visibility.Visible : Visibility.Collapsed;
                 }
+            }
+        }
+
+        public double CommandTextOpacity
+        {
+            get
+            {
+                if (CommandTextVisibility == Visibility.Visible && string.IsNullOrEmpty(CommandTextInput))
+                {
+                    return 0;
+                }
+
+                return 1;
             }
         }
 
@@ -504,8 +519,16 @@ namespace DrawingModule.ViewModels
             this._dispatcher = System.Windows.Application.Current.Dispatcher;
             //this.SetupCommandLineHints();
             this.SwitchEditor();
+            PropertyChanged += DynamicInputViewModel_PropertyChanged;
+        }
 
+        private void DynamicInputViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(CommandTextInput)|| e.PropertyName == nameof(CommandTextVisibility))
+            {
+               RaisePropertyChanged(nameof(CommandTextOpacity));
 
+            }
         }
         #endregion
 

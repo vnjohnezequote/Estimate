@@ -44,11 +44,11 @@ namespace AppModels.PocoDataModel
             get; set;
         }
 
-        public List<BracingPoco> TimberWallBracings
+        public List<ResponsiveData.Bracing> TimberWallBracings
         {
             get; set;
         }
-        public List<GenericBracingPoco> GeneralBracings
+        public List<GenericBracing> GeneralBracings
         {
             get; set;
         }
@@ -97,10 +97,13 @@ namespace AppModels.PocoDataModel
             CostDelivery = level.CostDelivery;
             LevelInfo = new GlobalWallInfoPoco(level.LevelInfo);
             this.InitializerWallLayers(level.WallLayers.ToList());
-            this.InitializerTimberBracings(level.TimberWallBracings.ToList());
-            this.InitializerGeneralBracings(level.GeneralBracings.ToList());
+            //this.InitializerTimberBracings(level.TimberWallBracings.ToList());
+            this.TimberWallBracings = level.TimberWallBracings.ToList();
+            this.GeneralBracings = level.GeneralBracings.ToList();
+            //this.InitializerGeneralBracings(level.GeneralBracings.ToList());
             this.InitializerRoofBeams(level.RoofBeams.ToList());
             this.InitializerOpenings(level.Openings.ToList());
+            
         }
 
         public void InitializerWallLayers(List<WallBase> wallLayers)
@@ -115,12 +118,12 @@ namespace AppModels.PocoDataModel
 
         public void InitializerTimberBracings(List<ResponsiveData.Bracing> timberBracings)
         {
-            TimberWallBracings = new List<BracingPoco>();
+            //TimberWallBracings = new List<BracingPoco>();
         }
 
         public void InitializerGeneralBracings(List<GenericBracing> genericBracings)
         {
-            GeneralBracings = new List<GenericBracingPoco>();
+            //GeneralBracings = new List<GenericBracingPoco>();
         }
 
         public void InitializerRoofBeams(List<Beam> roofBeams)

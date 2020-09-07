@@ -1,18 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProtoBuf;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="GenericBracingBasePoco.cs" company="John Nguyen">
+//   John Nguyen
+// </copyright>
+// <summary>
+//   Defines the Generic Bracing type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace AppModels.PocoDataModel
 {
-    [ProtoContract]
+    /// <summary>
+    /// The generic bracing base.
+    /// </summary>
     public class GenericBracingBasePoco
     {
-        [ProtoMember(1)]
-        public string Name { get; set; }
-        [ProtoMember(1)]
+        public int Id { get; set; }
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        public string Name {get;set;}
+
+        /// <summary>
+        /// Gets or sets the unit price.
+        /// </summary>
         public double UnitPrice { get; set; }
     }
 }

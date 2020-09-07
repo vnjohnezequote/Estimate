@@ -92,7 +92,8 @@
                              Width="200"
                              Foreground="#FFFFFFFF"
                              HorizontalAlignment="Left"
-                             Text ="{Binding CommandTextInput, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text ="{Binding CommandTextInput, UpdateSourceTrigger=PropertyChanged}"
+                             Opacity="{Binding CommandTextOpacity}"/>
                     <commandLine:NonTopmostPopup x:Name="AutoCompletePopup"
                                                 PlacementTarget="{Binding ElementName=CommandLine}"
                                                 StaysOpen="True"

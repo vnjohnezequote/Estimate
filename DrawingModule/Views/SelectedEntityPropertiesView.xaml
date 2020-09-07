@@ -53,6 +53,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
 
         </Grid.RowDefinitions>
         <TextBlock Text="Layer" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LayerVisibility}"/>
@@ -61,6 +62,7 @@
         <TextBlock Text="Color By" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding ColorMethodVisibility}"/>
         <TextBlock Text="X" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" />
         <TextBlock Text="Y" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" />
+        <TextBlock Text="Content" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding TextContentVisibility}"/>
         <GridSplitter Grid.Column="1"
                       Grid.Row="0"
                       Grid.RowSpan="3"
@@ -117,6 +119,11 @@
         <TextBox Grid.Row="5"
                  Grid.Column="2"
                  Text="{Binding SelectedEntity.Y}"/>
+        <TextBox Grid.Row="6"
+                 Grid.Column="2"
+                 Text="{Binding SelectedEntity.TextString}"
+                 Visibility="{Binding TextContentVisibility}"
+                 AcceptsReturn="True"/>
 
     </Grid>
 

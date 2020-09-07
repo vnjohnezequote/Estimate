@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using AppModels.PocoDataModel;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -16,15 +17,16 @@ namespace AppModels.ResponsiveData
     /// </summary>
     public class GenericBracing : BindableBase
     {
+        private int _quantity;
         /// <summary>
         /// The bracing info.
         /// </summary>
-        private GenericBracingBase bracingInfo;
+        private GenericBracingBasePoco bracingInfo;
 
         /// <summary>
         /// Gets or sets the bracing info.
         /// </summary>
-        public GenericBracingBase BracingInfo
+        public GenericBracingBasePoco BracingInfo
         {
             get => this.bracingInfo;
             set => this.SetProperty(ref this.bracingInfo, value);
@@ -33,11 +35,16 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the quantities.
         /// </summary>
-        public int Quantity { get; set; }
+        public int Quantity { get=>_quantity; set=>SetProperty(ref _quantity,value); }
 
         /// <summary>
         /// Gets or sets the price.
         /// </summary>
         public double Price { get; set; }
+
+        public GenericBracing()
+        {
+            
+        }
     }
 }

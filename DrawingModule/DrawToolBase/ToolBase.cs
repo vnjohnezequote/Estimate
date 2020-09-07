@@ -55,18 +55,7 @@ namespace DrawingModule.DrawToolBase
         public FocusType DefaultDynamicInputTextBoxToFocus { get; protected set; }
         
         // Error here if click by mouse
-        public IDynamicInputView DynamicInput
-        {
-            get
-            {
-                if (_dynamicInput == null)
-                {
-                    return null;
-                }
-
-                return _dynamicInput;
-            }
-        } 
+        public IDynamicInputView DynamicInput => _dynamicInput ?? null;
 
         protected ToolBase()
         {

@@ -176,6 +176,7 @@
     <Compile Include="Interaface\IGlobalWallInfo.cs" />
     <Compile Include="Interaface\ISupportMember.cs" />
     <Compile Include="Interaface\ISupportInfo.cs" />
+    <Compile Include="Interaface\ITextVm.cs" />
     <Compile Include="Interaface\ITimberInfo.cs" />
     <Compile Include="Interaface\IWallInfo.cs" />
     <Compile Include="Interaface\IWallMember.cs" />
@@ -189,7 +190,6 @@
     <Compile Include="PocoDataModel\Bracing\BracingBasePoco.cs" />
     <Compile Include="PocoDataModel\Bracing\BracingPoco.cs" />
     <Compile Include="PocoDataModel\DesignInfoPoco.cs" />
-    <Compile Include="PocoDataModel\GenericBracingBasePoco.cs" />
     <Compile Include="PocoDataModel\GenericBracingPoco.cs" />
     <Compile Include="PocoDataModel\GlobalWallDetailPoco.cs" />
     <Compile Include="PocoDataModel\JobInfoPoco.cs" />
@@ -227,7 +227,7 @@
     <Compile Include="Factories\EntitiyVmFactory.cs" />
     <Compile Include="Factories\EyeshotEntityVMFactory.cs" />
     <Compile Include="ResponsiveData\GenericBracing.cs" />
-    <Compile Include="ResponsiveData\GenericBracingBase.cs" />
+    <Compile Include="PocoDataModel\GenericBracingBasePoco.cs" />
     <Compile Include="ResponsiveData\IntegerDimension.cs" />
     <Compile Include="ResponsiveData\DoubleDimension.cs" />
     <Compile Include="Interaface\IEntityVm.cs" />
@@ -254,6 +254,7 @@
     <Compile Include="ViewModelEntity\LinearPathVm.cs" />
     <Compile Include="ViewModelEntity\LinearPathWall2DVm.cs" />
     <Compile Include="ViewModelEntity\LineVm.cs" />
+    <Compile Include="ViewModelEntity\TextVm.cs" />
     <Compile Include="ViewModelEntity\VectorViewVm.cs" />
     <Compile Include="ViewModelEntity\Wall2DVm.cs" />
     <Compile Include="ResponsiveData\WallMemberData\WallStud.cs" />

@@ -16,6 +16,7 @@
              xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
              xmlns:applicationConverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
              xmlns:helper="clr-namespace:JobInfoModule.Helper;assembly=JobInfoModule"
+             xmlns:helper1="clr-namespace:WallFrameInputModule.Helper"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Name="LintelAndBeamInput">
@@ -56,6 +57,7 @@
             </ObjectDataProvider>
             <applicationConverter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
             <helper:EngineerGradeListConverter x:Key="EngineerGradeListConverter"/>
+            <helper1:BeamSelectConverter x:Key="BeamSelectConverter"/>
             <!--<helper:EngineerGradeListConverter x:Key="EngineerGradeListConverter"/>-->
         </ResourceDictionary>
     </UserControl.Resources>
@@ -426,8 +428,9 @@
                                                    ItemsSource="{Binding TimberGradeList}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"
                                                    UseBindingValue="True"
-                                                   MappingName="SizeGrade"
-                                                   ItemsSourceSelector="{StaticResource EngineerGradeListConverter}"/>
+                                                   MappingName="TimberInfo"
+                                                   DisplayMemberPath="SizeTreatment"
+                                                   ItemsSourceSelector="{StaticResource BeamSelectConverter}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Wall Reference"
                                                    UseBindingValue="True"
                                                    MappingName="WallReference"

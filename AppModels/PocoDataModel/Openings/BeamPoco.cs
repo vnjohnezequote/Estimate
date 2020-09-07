@@ -25,7 +25,9 @@ namespace AppModels.PocoDataModel.Openings
         public int NoItem { get; set; }
         public int Thickness { get; set; }
         public int Depth  { get; set; }
+        public string TimberGrade { get; set; }
         public MaterialTypes? MaterialType { get; set; }
+        public int TimberInfoId { get; set; }
 
         public BeamPoco()
         {
@@ -59,10 +61,15 @@ namespace AppModels.PocoDataModel.Openings
             {
                 WallReferenceID = beamInfo.WallReference.Id;
             }
-            
+
+            if (beamInfo.TimberInfo!=null)
+            {
+                TimberInfoId = beamInfo.TimberInfo.Id;
+            }
             NoItem = beamInfo.NoItem;
             Thickness = beamInfo.NoItem;
             Depth = beamInfo.Depth;
+            TimberGrade = beamInfo.TimberGrade;
             MaterialType = beamInfo.MaterialType;
 
             //GLobalSupportInfo = beamInfo.GLobalSupportInfo;

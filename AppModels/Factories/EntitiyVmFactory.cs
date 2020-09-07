@@ -17,13 +17,12 @@ namespace AppModels.Factories
                     return entityVmCreateAble.CreateEntityVm();
                 case Line line:
                     return line.CreateLineVm();
-                    break;
                 case LinearPath linePath:
                     return linePath.CreateLinearPathVm();
-                    break;
                 case VectorView view:
                     return view.CreateVectorViewVm();
-                    break;
+                case Text text:
+                    return text.CreateTextVm();
                 case Entity entiti:
                     entiti.CreateEntityVm();
                     break;

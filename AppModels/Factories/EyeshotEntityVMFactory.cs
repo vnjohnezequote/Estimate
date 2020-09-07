@@ -26,6 +26,11 @@ namespace AppModels.Factories
             return new LinearPathVm(linearPath);
         }
 
+        public static TextVm CreateTextVm(this Text text)
+        {
+            return new TextVm(text);
+        }
+
         public static VectorViewVm CreateVectorViewVm(this VectorView vectorView)
         {
             return new VectorViewVm(vectorView);

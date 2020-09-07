@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.IO;
+using System.Linq;
 using System.Timers;
 using ApplicationInterfaceCore;
 using AppModels.Interaface;
@@ -426,9 +427,7 @@ namespace Estimate.ViewModels
                     var serializer = new JsonSerializer();
                     var jobOpen = serializer.Deserialize<JobModelPoco>(jsonReader);
                     jobOpen.Info.JobLocation = result.FileInfo.DirectoryName;
-                    var db = this.UnityContainer.Resolve<ClientDataBase>();
-                    var clients = db.GetClients();
-                    JobModel.LoadJob(jobOpen,clients);
+                    JobModel.LoadJob(jobOpen,Clients.ToList());
                     EventAggregator.GetEvent<RefreshFloorEvent>().Publish(true);
                 }
             }

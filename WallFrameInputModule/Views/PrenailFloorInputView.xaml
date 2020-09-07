@@ -18,8 +18,7 @@
     xmlns:helper="clr-namespace:WallFrameInputModule.Helper"
 	xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.WPF"
 	xmlns:modelCompare="clr-namespace:AppModels.Comparer;assembly=AppModels"
-	xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
-    Loaded="PrenailFloorInputView_OnLoaded">
+	xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels">
     <!--d:DataContext="{d:DesignInstance {x:Type viewModels:PrenailFloorInputViewModel}, IsDesignTimeCreatable=True}"-->
     <UserControl.Resources>
         <ResourceDictionary>
@@ -352,6 +351,20 @@
                                                                ItemsSource="{Binding Source={StaticResource BeamTypes}}"/>
                                 <syncfusion:GridTextColumn HeaderText="Beam Location"
                                                            MappingName="Location" />
+                                <syncfusion:GridComboBoxColumn HeaderText="Engineer Reference"
+                                                               MappingName="EngineerMemberInfo" 
+                                                               ItemsSource="{Binding EngineerList}"
+                                                               UseBindingValue="True">
+                                     <syncfusion:GridComboBoxColumn.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock  Text="{Binding EngineerName}"/>
+                                                    <TextBlock  Text="{Binding TimberGrade}" Margin="10 0 0 0"/>
+                                                    <TextBlock Text="{Binding SizeGrade}" Margin="10 0 0 0"/>
+                                                    </StackPanel>
+                                            </DataTemplate>
+                                        </syncfusion:GridComboBoxColumn.ItemTemplate>
+                                </syncfusion:GridComboBoxColumn>
                                 <syncfusion:GridComboBoxColumn HeaderText="Timber Grade"
                                                                MappingName="TimberGrade" 
                                                                ItemsSource="{Binding BeamGradeList}"
@@ -421,15 +434,44 @@
                                 <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
                                 <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
                             </syncfusion:SfDataGrid.Resources>
-
                             <syncfusion:SfDataGrid.Columns>
                                 <syncfusion:GridTextColumn 	HeaderText="Description"
-														MappingName="BracingInfo.Name"
-														AllowEditing="False"/>
+                                                            MappingName="BracingInfo.Name"
+                                                            AllowEditing="False"/>
+                                <syncfusion:GridTextColumn HeaderText="Unit Price"
+                                                           MappingName="BracingInfo.UnitPrice"/>
                                 <syncfusion:GridTextColumn HeaderText="Quantity"
 													   MappingName="Quantity" />
                             </syncfusion:SfDataGrid.Columns>
                         </syncfusion:SfDataGrid>
+                        <syncfusion:SfDataGrid AllowDeleting="True"
+                                               AllowEditing="True"
+                                               AutoGenerateColumns="False"
+                                               HeaderRowHeight="0"
+                                               ItemsSource="{Binding Level.TimberWallBracings}"
+                                               NavigationMode="Cell"
+                                               SelectionMode="Extended"
+                                               SelectionUnit="Any"
+                                               ColumnSizer="Auto"
+                                               AllowResizingColumns="False"
+                                               EditorSelectionBehavior="SelectAll"
+                                               EditTrigger="OnTap">
+                            <syncfusion:SfDataGrid.Resources>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
+                                <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                            </syncfusion:SfDataGrid.Resources>
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridComboBoxColumn 	HeaderText="Description"
+                                                                MappingName="BracingInfo"
+                                                                DisplayMemberPath="Size"
+                                                                ItemsSource="{Binding SelectedClient.TimberBracingBases}"/>
+                                <syncfusion:GridTextColumn HeaderText="Unit Price"
+                                                           MappingName="BracingInfo.UnitPrice"/>
+                                <syncfusion:GridTextColumn HeaderText="Quantity"
+                                                           MappingName="Quantity"/>
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
+                        <Button Content="Add Bracing" Command="{Binding AddBracingCommand}"/>
 
 
                         <!-- Bracing Input -->

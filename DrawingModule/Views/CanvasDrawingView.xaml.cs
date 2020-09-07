@@ -352,6 +352,11 @@ namespace DrawingModule.Views
             
                     if (_viewModel != null)
                     {
+                        if (e == null)
+                        {
+                            _viewModel.SelectedEntity = null;
+                            return;
+                        }
                         var entityFactory = new EntitiyVmFactory();
                         _viewModel.SelectedEntity = entityFactory.creatEntityVm(e.Item);
                     }

@@ -76,15 +76,19 @@ namespace AppModels.ResponsiveData
             GlobalWallInfo.LoadWallGlobalInfo(jobLoaded.GlobalWallInfo);
             LoadEngineerList(jobLoaded.EngineerMemberList,Info.Client.Beams);
             LoadDoorSchedules(jobLoaded.DoorSchedules);
-            LoadLevel(jobLoaded.Levels);
+            if (Info.Client !=null)
+            {
+                LoadLevel(jobLoaded.Levels,Info.Client.Beams);    
+            }
+            
         }
 
-        private void LoadLevel(List<LevelWallPoco> levels )
+        private void LoadLevel(List<LevelWallPoco> levels,Dictionary<string,List<TimberBase>> timberInforDict )
         {
             foreach (var levelWallPoco in levels)
             {
                 var level = new LevelWall(GlobalWallInfo);
-                level.LoadLevelInfo(levelWallPoco);
+                level.LoadLevelInfo(levelWallPoco,timberInforDict);
                 Levels.Add(level);
             }
 

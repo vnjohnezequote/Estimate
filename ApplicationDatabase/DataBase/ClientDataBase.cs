@@ -239,6 +239,7 @@ namespace AppDataBase.DataBase
                 BottomPlates = this.CreatePrenailBottomPlates(),
                 Beams = this.CreatePrenailBeamList(),
                 TimberBracingBases = this.CreatePrenailBracingList(),
+                GenericBracingBases = CreatePrenailGenericBracingList(),
                 WallTypes = new List<WallTypePoco>()
                                 {
                                     new WallTypePoco() { Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "LB_External",WallLocationType = WallLocationTypes.External},
@@ -474,6 +475,12 @@ namespace AppDataBase.DataBase
         {
             var bracingFile = "BracingList.csv";
             return this.LoadTimberListOnCvsFile<BracingBase>(bracingFile);
+        }
+
+        private List<GenericBracingBasePoco> CreatePrenailGenericBracingList()
+        {
+            var genericBracingFile = "GenericBracingList.csv";
+            return this.LoadTimberListOnCvsFile<GenericBracingBasePoco>(genericBracingFile);
         }
 
         /// <summary>

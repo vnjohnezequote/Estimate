@@ -84,7 +84,7 @@ namespace AppModels.PocoDataModel
         /// <summary>
         /// Gets or sets the generic bracing bases.
         /// </summary>
-        public List<GenericBracingBase> GenericBracingBases { get; set; }
+        public List<GenericBracingBasePoco> GenericBracingBases { get; set; }
 
         /// <summary>
         /// Gets or sets the clientPoco icon.

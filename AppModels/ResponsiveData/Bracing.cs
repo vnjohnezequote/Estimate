@@ -16,6 +16,7 @@ namespace AppModels.ResponsiveData
     /// </summary>
     public class Bracing : BindableBase
     {
+        private int _quantity;
         /// <summary>
         /// The bracing info.
         /// </summary>
@@ -33,7 +34,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the quantities.
         /// </summary>
-        public int Quantity { get; set; }
+        public int Quantity { get=>_quantity; set=>SetProperty(ref _quantity,value); }
 
         /// <summary>
         /// Gets or sets the price.

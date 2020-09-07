@@ -82,7 +82,7 @@ namespace AppModels.ResponsiveData
 		/// </summary>
 		//private ObservableCollection<WallTempLength> _tempLength;
 		
-		private ObservableCollection<GenericBracing> _generalBracing;
+		private ObservableCollection<GenericBracing> _generalBracingList;
 
 		#endregion
 
@@ -99,6 +99,7 @@ namespace AppModels.ResponsiveData
 		{
 			this.LevelInfo = new LevelGlobalWallInfo(jobInfo);
 			this.WallLayers = new ObservableCollection<WallBase>();
+			GeneralBracings = new ObservableCollection<GenericBracing>();
 			this.TimberWallBracings = new ObservableCollection<Bracing>();
 			this.RoofBeams = new ObservableCollection<Beam>();
 			this.Openings = new ObservableCollection<Opening>();
@@ -174,8 +175,8 @@ namespace AppModels.ResponsiveData
 		}
 		public ObservableCollection<GenericBracing> GeneralBracings 
 		{
-			get => this._generalBracing;
-			set=>this.SetProperty(ref this._generalBracing,value);
+			get => this._generalBracingList;
+			set=>this.SetProperty(ref this._generalBracingList,value);
 		}
 		//public ObservableCollection<Opening> DoorAndWindowList { get; }
 		/// <summary>
@@ -219,7 +220,7 @@ namespace AppModels.ResponsiveData
 
 		#region Public Method
 
-		public void LoadLevelInfo(LevelWallPoco level)
+		public void LoadLevelInfo(LevelWallPoco level,Dictionary<string,List<TimberBase>> timberInforDict)
 		{
             LevelName = level.LevelName;
 			TotalWallLength = level.TotalWallLength;
@@ -227,15 +228,15 @@ namespace AppModels.ResponsiveData
 			CostDelivery = level.CostDelivery;
 			LevelInfo.LoadWallGlobalInfo(level.LevelInfo);
             this.InitializerWallLayers(level.WallLayers);
-			InitializerRoofBeams(level.RoofBeams);
+			InitializerRoofBeams(level.RoofBeams,timberInforDict);
 			InitializerOpenings(level.Openings);
-			
-			
-			//this.InitializerTimberBracings(level.TimberWallBracings.ToList());
-			//this.InitializerGeneralBracings(level.GeneralBracings.ToList());
-			//this.InitializerRoofBeams(level.RoofBeams.ToList());
-			//this.InitializerOpenings(level.Openings.ToList());
-		}
+            this.GeneralBracings.AddRange(level.GeneralBracings);
+            this.TimberWallBracings.AddRange(level.TimberWallBracings);
+            //this.InitializerTimberBracings(level.TimberWallBracings.ToList());
+            //this.InitializerGeneralBracings(level.GeneralBracings.ToList());
+            //this.InitializerRoofBeams(level.RoofBeams.ToList());
+            //this.InitializerOpenings(level.Openings.ToList());
+        }
         private void Opening_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "IsDoorUnderLbw") return;
@@ -270,12 +271,12 @@ namespace AppModels.ResponsiveData
 			}
 		}
 
-		private void InitializerRoofBeams(List<BeamPoco> roofBeams)
+		private void InitializerRoofBeams(List<BeamPoco> roofBeams,Dictionary<string,List<TimberBase>> timberInfoDict)
 		{
 			foreach (var roofBeam in roofBeams)
 			{
 				var rBeam = new Beam(BeamType.RoofBeam,this.LevelInfo);
-				rBeam.LoadBeamInfo(roofBeam,LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList(),this.WallLayers.ToList());
+				rBeam.LoadBeamInfo(roofBeam,LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList(),this.WallLayers.ToList(),timberInfoDict);
 				RoofBeams.Add(rBeam);
 			}
 		}

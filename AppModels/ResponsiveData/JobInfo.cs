@@ -117,6 +117,10 @@ namespace AppModels.ResponsiveData
             get => JobAddress + ", " + SubAddress;
             set
             {
+                if (string.IsNullOrEmpty(value)|| value == ", ")
+                {
+                    return;
+                }
                 var jobAddresses = value.Split(',');
                 if (jobAddresses.Length == 0) return;
                 JobAddress = jobAddresses[0];

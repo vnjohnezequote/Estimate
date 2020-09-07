@@ -77,7 +77,7 @@ namespace DrawingModule.DrawToolBase
             this._dimPoint = null;
             IsUsingSwitchMode = true;
         }
-        protected void ProcessedDim(Point3D p1, Point3D p2, Point3D p3, Plane storePlane, double dimTextHeight = 10.0)
+        protected void ProcessedDim(Point3D p1, Point3D p2, Point3D p3, Plane storePlane, double dimTextHeight = 100.0)
         {
             var linearEntity = new LinearDim(storePlane, p1, p2, p3, dimTextHeight);
             EntitiesManager.AddAndRefresh(linearEntity, this.LayerManager.SelectedLayer.Name);

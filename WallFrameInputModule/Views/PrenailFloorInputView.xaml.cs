@@ -45,6 +45,8 @@ namespace WallFrameInputModule.Views
             {
                 _viewModel = this.DataContext as PrenailFloorInputViewModel;
             }
+
+            this.Loaded += PrenailFloorInputView_OnLoaded;
         }
 
 
@@ -90,7 +92,7 @@ namespace WallFrameInputModule.Views
 
         private void PrenailFloorInputView_OnLoaded(object sender, RoutedEventArgs e)
         {
-            //if (this._viewModel == null) return;
+            _viewModel?.InitEngineerList();
             //if (this.BeamInput.DataContext is StickFrameBeamAndLintelInputViewModel stickViewModel)
             //{
             //    stickViewModel.LevelInfo = _viewModel.Level;

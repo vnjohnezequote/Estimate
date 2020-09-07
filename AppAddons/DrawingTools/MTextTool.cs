@@ -63,7 +63,8 @@ namespace AppAddons.DrawingTools
         }
         protected virtual void ProcessDrawEntities(Point3D insertPoint)
         {
-            var text = new MultilineText(Plane.XY, insertPoint,TextInput, 1000, TextHeight,5);
+            var text = new MultilineText(Plane.XY, insertPoint,TextInput, 1000, TextHeight,1.3*TextHeight);
+            text.Contents = TextInput;
             var rad = Utility.DegToRad(TextAngle);
             text.Rotate(rad, Vector3D.AxisZ, insertPoint);
             EntitiesManager.AddAndRefresh(text, LayerManager.SelectedLayer.Name);

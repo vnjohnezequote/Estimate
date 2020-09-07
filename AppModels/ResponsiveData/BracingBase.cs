@@ -16,6 +16,7 @@ namespace AppModels.ResponsiveData
     /// </summary>
     public class BracingBase : BindableBase
     {
+        private int _id;
         /// <summary>
         /// The width.
         /// </summary>
@@ -26,9 +27,7 @@ namespace AppModels.ResponsiveData
         /// </summary>
         private int _height;
 
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
+        public int Id { get=>_id; set=>SetProperty(ref _id,value); }
         public int Width
         {
             get => this._width;
