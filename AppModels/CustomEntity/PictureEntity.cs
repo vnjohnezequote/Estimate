@@ -15,6 +15,10 @@ namespace AppModels.CustomEntity
             Lighted = false;
         }
 
+        public PictureEntity(Picture another): base(another)
+        {
+
+        }
         //protected override void DrawForSelection(GfxDrawForSelectionParams data)
         //{
         //    //data.RenderContext.DrawLineLoop(this.Vertices);

@@ -153,6 +153,7 @@
     <Compile Include="Enums\CeilingBattensType.cs" />
     <Compile Include="Enums\ClientNames.cs" />
     <Compile Include="Enums\DoorType.cs" />
+    <Compile Include="Enums\LineTypes.cs" />
     <Compile Include="Enums\LoadPointLocation.cs" />
     <Compile Include="Enums\MaterialTypes.cs" />
     <Compile Include="Enums\NoggingMethod.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Interaface\IWallMember.cs" />
     <Compile Include="Interaface\IWallMemberDetailInfo.cs" />
     <Compile Include="Interaface\IWallMemberInfo.cs" />
+    <Compile Include="PocoDataModel\Customer.cs" />
     <Compile Include="PocoDataModel\EngineerMember\EngineerMemberInfoPoco.cs" />
     <Compile Include="PocoDataModel\Openings\LintelBeamPoco.cs" />
     <Compile Include="PocoDataModel\Openings\OpeningInfoPoco.cs" />
@@ -251,6 +253,7 @@
     <Compile Include="ResponsiveData\WallMemberData\WallTopPlate.cs" />
     <Compile Include="ViewModelEntity\EntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVmBase.cs" />
+    <Compile Include="ViewModelEntity\LeaderVM.cs" />
     <Compile Include="ViewModelEntity\LinearPathVm.cs" />
     <Compile Include="ViewModelEntity\LinearPathWall2DVm.cs" />
     <Compile Include="ViewModelEntity\LineVm.cs" />

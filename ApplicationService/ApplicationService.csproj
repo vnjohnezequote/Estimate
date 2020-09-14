@@ -129,10 +129,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddNewLayerEventService.cs" />
+    <Compile Include="AutoSaveDrawingEvent.cs" />
     <Compile Include="BuilderService.cs" />
     <Compile Include="ClientService.cs" />
     <Compile Include="CommandExcuteStringEvent.cs" />
     <Compile Include="CustomerService.cs" />
+    <Compile Include="DrawingSaveJobEvent.cs" />
     <Compile Include="DynamicInputViewEvent.cs" />
     <Compile Include="EntityService.cs" />
     <Compile Include="HintViewerServices.cs" />
@@ -142,6 +144,7 @@
     <Compile Include="JobUnitService.cs" />
     <Compile Include="LayerManagerService.cs" />
     <Compile Include="LevelNameService.cs" />
+    <Compile Include="OpenJobEvent.cs" />
     <Compile Include="PromptStatus.cs" />
     <Compile Include="PromptStatusEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -160,6 +163,7 @@
     <Compile Include="RefreshFloorEvent.cs" />
     <Compile Include="RegionService.cs" />
     <Compile Include="RemoveLayerEventService.cs" />
+    <Compile Include="SaveDrawingEvent.cs" />
     <Compile Include="TreatmentService.cs" />
     <Compile Include="WallEventService.cs" />
     <Compile Include="WindCategoryService.cs" />

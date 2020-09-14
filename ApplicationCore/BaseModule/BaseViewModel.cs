@@ -7,8 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.ObjectModel;
+using System.Linq;
 using ApplicationInterfaceCore;
 using AppModels.Interaface;
+using AppModels.ResponsiveData;
+using LiteDB;
 
 namespace ApplicationCore.BaseModule
 {
@@ -55,6 +59,19 @@ namespace ApplicationCore.BaseModule
         /// </param>
         protected BaseViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager,IJob jobModel)
         {
+            using (var db = new LiteDatabase(@"filename=DesignInfo.db;upgrade=true"))
+            {
+                var designInfors = db.GetCollection<DesignInfor>("DesignInfors");
+
+                var result = designInfors.Find(x => x.InfoType == "Beam").ToList();
+                this.BeamDesignInfors = new ObservableCollection<DesignInfor>(result);
+                result = designInfors.Find(x => x.InfoType == "Frame").ToList();
+                this.FrameDesignInfors = new ObservableCollection<DesignInfor>(result);
+                result = designInfors.Find(x => x.InfoType == "Bracing").ToList();
+                this.BracingInfors = new ObservableCollection<DesignInfor>(result);
+
+                // this.CreateDatabase(designInfors);
+            }
             this.JobModel = jobModel;
             this.UnityContainer = unityContainer;
             this.RegionManager = regionManager;
@@ -75,6 +92,58 @@ namespace ApplicationCore.BaseModule
         public IRegionManager RegionManager { get; set; }
         protected IEventAggregator EventAggregator { get; private set; }
         public IJob JobModel { get; private set; }
+        /// <summary>
+        /// Gets or sets the beam design infors.
+        /// </summary>
+        public ObservableCollection<DesignInfor> BeamDesignInfors { get; set; }
+
+        /// <summary>
+        /// Gets or sets the frame design infors.
+        /// </summary>
+        public ObservableCollection<DesignInfor> FrameDesignInfors { get; set; }
+
+        /// <summary>
+        /// Gets or sets the bracing infors.
+        /// </summary>
+        public ObservableCollection<DesignInfor> BracingInfors { get; set; }
         #endregion Properties
+
+        /// <summary>
+        /// The create database.
+        /// </summary>
+        /// <param name="db">
+        /// The db.
+        /// </param>
+        private void CreateDatabase(LiteCollection<DesignInfor> db)
+        {
+            var designInfor = new DesignInfor() { Content = "Engineer", Header = "Frame follow as per", InfoType = "Frame" };
+            db.Insert(designInfor);
+            designInfor = new DesignInfor() { Content = "Australia Standard", Header = "Frame Design as per", InfoType = "Frame" };
+            db.Insert(designInfor);
+            designInfor = new DesignInfor() { Content = "Framing Schedule", Header = "Frame follow as per", InfoType = "Frame" };
+            db.Insert(designInfor);
+            designInfor = new DesignInfor() { Content = "Engineer and Australia Standard", Header = "Frame design as per", InfoType = "Frame" };
+            db.Insert(designInfor);
+
+            designInfor = new DesignInfor() { Content = "Engineer", Header = "Beam follow as per", InfoType = "Beam" };
+            db.Insert(designInfor);
+            designInfor = new DesignInfor() { Content = "Australia Standard", Header = "Beam Design as per", InfoType = "Beam" };
+            db.Insert(designInfor);
+            designInfor = new DesignInfor() { Content = "Framing Schedule", Header = "Beam follow as per", InfoType = "Beam" };
+            db.Insert(designInfor);
+            designInfor = new DesignInfor() { Content = "Engineer and Australia Standard", Header = "Frame design as per", InfoType = "Beam" };
+            db.Insert(designInfor);
+
+            designInfor = new DesignInfor() { Content = "Engineer", Header = "Bracing supply as per", InfoType = "Bracing" };
+            db.Insert(designInfor);
+            designInfor = new DesignInfor() { Content = "Bracing Plan", Header = "Bracing supply as per", InfoType = "Bracing" };
+            db.Insert(designInfor);
+            designInfor = new DesignInfor() { Content = "TBA", Header = "No Bracing supply", InfoType = "Bracing" };
+            db.Insert(designInfor);
+
+            db.EnsureIndex(x => x.Content);
+            db.EnsureIndex(x => x.InfoType);
+
+        }
     }
 }

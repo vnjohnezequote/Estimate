@@ -12,7 +12,7 @@ namespace DrawingModule.DrawInteractiveUtilities
 {
     internal static class DrawSnappPointUtl
     {
-        public static void DisplaySnappedVertex(ICadDrawAble canvasDrawing,SnapPoint snap,RenderContextBase renderContext, double snapSymbolSize = 10)
+        public static void DisplaySnappedVertex(ICadDrawAble canvasDrawing,SnapPoint snap,RenderContextBase renderContext, double snapSymbolSize = 20)
         {
             renderContext.SetLineSize(2);
 
@@ -22,7 +22,7 @@ namespace DrawingModule.DrawInteractiveUtilities
 
             Point2D onScreen =canvasDrawing.WorldToScreen(snap);
 
-            var snapPoint = snap;
+            //var snapPoint = snap;
             var drawPoint = new System.Drawing.Point((int) onScreen.X, (int) (onScreen.Y));
             
             switch (snap.Type)
@@ -58,6 +58,45 @@ namespace DrawingModule.DrawInteractiveUtilities
             renderContext.SetLineSize(1);
         }
 
+        public static void DisplayTrackingPoint(ICadDrawAble canvasDrawing, HashSet<Point3D> polarPoints,
+            RenderContextBase renderContext, double trackingPointSize = 20)
+        {
+            renderContext.SetLineSize(2);
+
+            // white color
+            renderContext.SetColorWireframe(Color.FromArgb(0, 255, 0));
+            renderContext.SetState(depthStencilStateType.DepthTestOff);
+            renderContext.SetLineSize(1);
+            foreach (var polarPoint in polarPoints)
+            {
+                if (polarPoint == null)
+                {
+                    return;
+                }
+                Point2D onScreen =canvasDrawing.WorldToScreen(polarPoint);
+                if (onScreen == null)
+                {
+                    return;
+                }
+                var drawPoint = new System.Drawing.Point((int) onScreen.X, (int) (onScreen.Y));
+                DrawCrossTrackingpoint(drawPoint,trackingPointSize,renderContext);
+            }
+        }
+
+        public static void DisplayTrackedPoint(ICadDrawAble canvasDrawing, Point3D potaTrackedPoint,RenderContextBase renderContext, double trackingPointSize = 20)
+        {
+            renderContext.SetLineSize(2);
+
+            // white color
+            renderContext.SetColorWireframe(Color.FromArgb(0, 255, 0));
+            renderContext.SetState(depthStencilStateType.DepthTestOff);
+            renderContext.SetLineSize(1);
+            Point2D onScreen =canvasDrawing.WorldToScreen(potaTrackedPoint);
+            var drawPoint = new System.Drawing.Point((int) onScreen.X, (int) (onScreen.Y));
+            DrawCrossTrackingpoint(drawPoint,trackingPointSize,renderContext);
+
+
+        }
         private static void DrawCross(System.Drawing.Point onScreen, double snapSymbolSize, RenderContextBase renderContext)
         {
             double dim1 = onScreen.X + (snapSymbolSize / 2);
@@ -80,6 +119,29 @@ namespace DrawingModule.DrawInteractiveUtilities
                     bottomRightVertex,
 
                 });
+        }
+
+        private static void DrawCrossTrackingpoint(System.Drawing.Point onScreen, double snapSymbolSize, RenderContextBase renderContext)
+        {
+            double dim1 = onScreen.X + (snapSymbolSize / 2);
+            double dim2 = onScreen.Y + (snapSymbolSize / 2);
+            double dim3 = onScreen.X - (snapSymbolSize / 2);
+            double dim4 = onScreen.Y - (snapSymbolSize / 2);
+            var top = new Point3D(onScreen.X,dim2);
+            var bottom = new Point3D(onScreen.X,dim4);
+            var left = new Point3D(dim3,onScreen.Y);
+            var right = new Point3D(dim1,onScreen.Y);
+            renderContext.DrawLines(
+               new Point3D[]
+               {
+                    top,
+                    bottom,
+
+                    left,
+                    right,
+
+               });
+
         }
         private static void DrawIntersection(System.Drawing.Point onScreen, double snapSymbolSize, RenderContextBase renderContext)
         {

@@ -90,5 +90,6 @@ namespace AppModels.PocoDataModel
         /// Gets or sets the clientPoco icon.
         /// </summary>
         public string ClientIcon { get; set; }
+        public List<Customer> Customers { get; set; }
     }
 }

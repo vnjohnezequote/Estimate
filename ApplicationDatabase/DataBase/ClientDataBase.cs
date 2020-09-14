@@ -39,7 +39,7 @@ namespace AppDataBase.DataBase
         /// <summary>
         /// The clients.
         /// </summary>
-        private readonly ILiteCollection<ClientPoco> _clients;
+        private ILiteCollection<ClientPoco> _clients;
 
 
         #endregion
@@ -52,7 +52,7 @@ namespace AppDataBase.DataBase
         /// </summary>
         public ClientDataBase()
         {
-            using (var db = new LiteDatabase("filename=Clients.Db;upgrade=true"))
+           using (var db = new LiteDatabase("filename=Clients.Db;upgrade=true"))
             {
                 this._clients = db.GetCollection<ClientPoco>("Clients");
                 this.Clients = this.GetClients();
@@ -136,7 +136,7 @@ namespace AppDataBase.DataBase
         /// </param>
         public void CreateClient(string clientName, List<string> builders = null, string clientIcon = "")
         {
-            var client = new ClientPoco() { Name = clientName, Builders = new List<string>(), ClientIcon = clientIcon };
+            var client = new ClientPoco() { Name = clientName, Builders = new List<string>(), ClientIcon = clientIcon,Customers = new List<Customer>()};
             this._clients.Insert(client);
             this._clients.EnsureIndex(x => x.Name);
             this.DataBaseUpdated?.Invoke(this, null);
@@ -151,11 +151,16 @@ namespace AppDataBase.DataBase
         /// </param>
         public void UpdateClient(ClientPoco clientPoco)
         {
-            if (this._clients.Exists(x => x.Name == clientPoco.Name))
+            using (var db = new LiteDatabase("filename=Clients.Db;upgrade=true"))
             {
-                this._clients.Update(clientPoco);
-                this.DataBaseUpdated?.Invoke(this, null);
+                _clients = db.GetCollection<ClientPoco>("Clients");
+                //this.Clients = this.GetClients();
+                if (this._clients.Exists(x => x.Name == clientPoco.Name))
+                {
+                    this._clients.Update(clientPoco);
+                    this.DataBaseUpdated?.Invoke(this, null);
 
+                }
             }
         }
 
@@ -195,6 +200,7 @@ namespace AppDataBase.DataBase
                     "Sheets","Tiles"
                 },
                 Builders = new List<string>() { "Jason Home", "Kenvin Home", "Happy Home", "Crazy Home" },
+                Customers = new List<Customer>(),
                 WallTypes = new List<WallTypePoco>()
                                 {
                                     new WallTypePoco() { Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "EXT WALL" },
@@ -233,6 +239,7 @@ namespace AppDataBase.DataBase
                     "Sheets","Tiles"
                 },
                 Builders = new List<string>() { "Funny Home", "Teddy Home", "America Home", "Dalat Home" },
+                Customers = new List<Customer>(){new Customer( "Noosa Truss")},
                 Studs = this.CreatePrenailStuds(),
                 RibbonPlates = this.CreatePrenailRibbonPlates(),
                 TopPlates = this.CreatPrenailTopPlates(),
@@ -281,7 +288,7 @@ namespace AppDataBase.DataBase
                     "Sheets","Tiles"
                 },
                 Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
-
+                Customers = new List<Customer>(),
                 WallTypes = new List<WallTypePoco>
                             {
                 new WallTypePoco(){Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "EXTERNAL LOAD BEARING"},
@@ -322,7 +329,7 @@ namespace AppDataBase.DataBase
                     "Sheets","Tiles"
                 },
                 Builders = new List<string>() { "Privium", "Privium Homes" },
-
+                Customers = new List<Customer>(){new Customer("Bunnings Trade"),new Customer("Finlaysons"),new Customer("Bunnings Trade Victoria"),new Customer("Bunnings Hallam Frame And Truss")},
                 WallTypes = new List<WallTypePoco>
                 {
                     new WallTypePoco(){Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "LOAD BEARING WALL"},
@@ -360,7 +367,7 @@ namespace AppDataBase.DataBase
                     "LongRun","Tiles"
                 },
                 Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
-
+                Customers = new List<Customer>(),
                 WallTypes = new List<WallTypePoco>
                 {
                     new WallTypePoco(){Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "LOAD BEARING WALL"},

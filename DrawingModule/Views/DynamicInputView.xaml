@@ -102,7 +102,7 @@
                                                 AllowsTransparency="True"
                                                 VerticalOffset="5">
                         <local:HintViewer Width="{Binding ElementName=CommandLine, Path=Width}"
-                                          MinWidth="200"/>
+                                          MinWidth="200" x:Name="HintViewer"/>
                     </commandLine:NonTopmostPopup>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"

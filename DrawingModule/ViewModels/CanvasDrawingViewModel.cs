@@ -125,7 +125,24 @@ namespace DrawingModule.ViewModels
         {
             _canvasDrawing?.SetActivelevel(para);
             this.ActiveLevel = para;
-            _paperSpace?.SetActiveSheet(ActiveLevel);
+            var checkIfLevelAvailable = false;
+            if (_paperSpace==null)
+            {
+                return;
+            }
+            foreach (var paperSpaceSheet in _paperSpace.Sheets)
+            {
+                if (ActiveLevel == paperSpaceSheet.Name)
+                {
+                    checkIfLevelAvailable = true;
+                }
+            }
+
+            if (checkIfLevelAvailable)
+            {
+                //_paperSpace?.SetActiveSheet(ActiveLevel);
+            }
+            
         }
         private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -135,7 +152,7 @@ namespace DrawingModule.ViewModels
             }
             else
             {
-                if (EntitiesManager.SelectedEntity is EntityVm entity)
+                if (EntitiesManager.SelectedEntity is EntityVmBase entity)
                 {
                     var layerName = entity.LayerName;
                     var selectedLayer = (from layerItem in LayerManager.Layers

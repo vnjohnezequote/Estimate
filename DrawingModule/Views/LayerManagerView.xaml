@@ -52,10 +52,9 @@
                                                />-->
 
             </DockPanel>
-            
-                <syncfusion:SfDataGrid Name="LayerManagerGrid"
-                                       EditTrigger="OnDoubleTap"
-                                       AutoGenerateColumns="False"
+            <syncfusion:SfDataGrid Name="LayerManagerGrid"
+                                   EditTrigger="OnTap"
+                                   AutoGenerateColumns="False"
                                    AllowDeleting="True"
                                    AllowEditing="True"
                                    AllowResizingColumns="True"
@@ -63,12 +62,11 @@
                                    ColumnSizer="Auto"
                                    ItemsSource="{Binding LayerManager.Layers}"
                                    RowStyle="{StaticResource LayerTextRowStyle}"
-                                   AddNewRowPosition="Bottom"
                                    SelectionMode="Extended"
                                    SelectedItem="{Binding LayerManager.SelectedLayer}"
                                    SelectedItems="{Binding LayerManager.SelectedLayers}"
-                                       Background="{StaticResource MaterialDesignLightBackground}"
-                >
+                                   Background="{StaticResource MaterialDesignLightBackground}"
+            >
                 <syncfusion:SfDataGrid.Resources>
                     <Style TargetType="TextBox" />
                     <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
@@ -101,9 +99,6 @@
                         DisplayMemberPath="Description"
                         SelectedValuePath="Name">
                     </syncfusion:GridComboBoxColumn>
-
-
-
                     <syncfusion:GridTextColumn HeaderText="Line Weight" MappingName="LineWeight"/>
                     <syncfusion:GridCheckBoxColumn HeaderText="On" MappingName="Visible"/>
                     <syncfusion:GridCheckBoxColumn HeaderText="Lock" MappingName="Locked"/>
@@ -125,6 +120,7 @@
                     </syncfusion:GridTemplateColumn>
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>
+            <Button Content="Add New Layer" Command="{Binding AddNewLayerCommand}" Style="{StaticResource MahApps.Styles.Button}"/>
         </StackPanel>
     </Grid>
 </UserControl>

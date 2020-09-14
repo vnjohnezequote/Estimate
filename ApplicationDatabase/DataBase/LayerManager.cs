@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
+using System.Windows;
 using ApplicationInterfaceCore;
 using AppModels.AppData;
 using devDept.Eyeshot;
@@ -108,27 +109,83 @@ namespace AppModels
 
         private void SyncLayerListAndLayers()
         {
-            foreach (var layer in CanvasLayers)
+            if (CanvasLayers.Count == 1 && CanvasLayers[0].Name == "Default")
             {
-                var checkName = Layers.Any(layerCheck => layerCheck.Name == layer.Name);
-                if (checkName)
+                PrepairLayer();
+                CanvasLayers.RemoveAt(0);
+
+            }
+            else
+            {
+                foreach (var layer in CanvasLayers)
                 {
-                    continue;
-                }
-                var layerItem =
-                    new LayerItem(layer)
+                    var checkName = Layers.Any(layerCheck => layerCheck.Name == layer.Name);
+                    if (checkName)
                     {
-                        IsSelected = false,
-                        PrintAble = true,
-                    };
-                this.Layers.Add(layerItem);
-                if (layerItem.Name == "Default")
-                {
-                    layerItem.Color = Color.Red;
+                        continue;
+                    }
+                    var layerItem =
+                        new LayerItem(layer)
+                        {
+                            IsSelected = false,
+                            PrintAble = true,
+                        };
+                    this.Layers.Add(layerItem);
+                    //if (layerItem.Name == "Default")
+                    //{
+                    //    layerItem.Color = Color.Red;
+                    //}
                 }
+
             }
         }
 
+        private void PrepairLayer()
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                var newLayer = new LayerItem(){Name ="Wall"+ i,LineWeight = 5};
+                Add(newLayer);
+            }
+            Layers[0].Color = Color.Blue;
+            Layers[1].Color = Color.Red;
+            Layers[2].Color = Color.OrangeRed;
+            Layers[3].Color = Color.LimeGreen;
+            Layers[4].Color = Color.Magenta;
+            Layers[5].Color = Color.Maroon;
+            Layers[6].Color=Color.Aqua;
+            Layers[7].Color = Color.Teal;
+            Layers[8].Color = Color.DarkOliveGreen;
+            Layers[9].Color = Color.DarkGoldenrod;
+            Layers[10].Color = Color.Tomato;
+            Layers[11].Color = Color.SteelBlue;
+            Layers[12].Color = Color.Purple;
+            Layers[13].Color = Color.SaddleBrown;
+            Layers[14].Color = Color.MediumVioletRed;
+            Layers[15].Color = Color.MediumSpringGreen;
+            var beamLayer = new LayerItem();
+            beamLayer.Color = Color.Blue;
+            beamLayer.Name = "Beam";
+            beamLayer.LineWeight = 5;
+            Layers.Add(beamLayer);
+            var beamLayer2 = new LayerItem();
+            beamLayer2.Color = Color.Aqua;
+            beamLayer2.Name = "Beam Stick Frame";
+            beamLayer2.LineTypeName = "Dash Space";
+            beamLayer2.LineWeight = 5;
+            Layers.Add(beamLayer2);
+            var planLayer = new LayerItem();
+            planLayer.Name = "Plan";
+            planLayer.Color = Color.Red;
+            planLayer.PrintAble = false;
+            Layers.Add(planLayer);
+            var beamMarkedLayer = new LayerItem();
+            beamMarkedLayer.Name = "BeamMarked";
+            beamMarkedLayer.Color = Color.Blue;
+            beamMarkedLayer.LineWeight = 1;
+            Layers.Add(beamMarkedLayer);
+        
+        }
         public void Add(LayerItem addLayerItem)
         {
             this.Layers.Add(addLayerItem);
@@ -144,6 +201,12 @@ namespace AppModels
         {
             if (this.CanvasLayers == null)
             {
+                return;
+            }
+
+            if (Layers[id].Name == "Plan" || Layers[id].Name == "BeamMarked" || Layers[id].Name .Contains("Beam"))
+            {
+                MessageBox.Show("This layer can not be deleted");
                 return;
             }
             RemoveCanvasLayer(Layers[id]);

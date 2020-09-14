@@ -231,6 +231,13 @@ namespace DrawingModule.Views
                 //ComponentDispatcher.ThreadPreprocessMessage += OnKeyMessages;
             }
             MouseDown += DynamicInputView_MouseDown;
+            this.HintViewer.PreviewMouseDown += HintViewer_PreviewMouseDown;
+        }
+
+        private void HintViewer_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.mCommandLine != null)
+                mCommandLine.ProcessCommandLineMouseDown();
         }
 
         private void DynamicInputView_MouseDown(object sender, MouseButtonEventArgs e)

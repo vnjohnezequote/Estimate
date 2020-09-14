@@ -37,6 +37,9 @@ namespace DrawingModule.ViewModels
         public Visibility LayerVisibility => _selectedEntity==null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility ColorVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility ColorMethodVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
+
+        public Visibility LeaderVisibility => SelectedEntity is LeaderVM ? Visibility.Visible : Visibility.Collapsed;
+
         public Visibility LevelVisibility
         {
             get
@@ -80,6 +83,7 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(LevelVisibility));
                 RaisePropertyChanged(nameof(ColorMethodVisibility));
                 RaisePropertyChanged(nameof(TextContentVisibility));
+                RaisePropertyChanged(nameof(LeaderVisibility));
             }
         }
         public ObservableCollection<LevelWall> Levels { get; private set; }

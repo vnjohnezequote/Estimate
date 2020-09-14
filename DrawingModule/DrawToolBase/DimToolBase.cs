@@ -80,6 +80,7 @@ namespace DrawingModule.DrawToolBase
         protected void ProcessedDim(Point3D p1, Point3D p2, Point3D p3, Plane storePlane, double dimTextHeight = 100.0)
         {
             var linearEntity = new LinearDim(storePlane, p1, p2, p3, dimTextHeight);
+            linearEntity.LineTypeMethod = colorMethodType.byLayer;
             EntitiesManager.AddAndRefresh(linearEntity, this.LayerManager.SelectedLayer.Name);
         }
 

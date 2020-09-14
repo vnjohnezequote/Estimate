@@ -77,15 +77,17 @@
 		<!-- Tool Bar -->
 		<DockPanel Grid.Row="1"
 					Background="{StaticResource DarkBackGround}">
-			<Button Content="{materialDesign:PackIcon ContentSave}" Command="{Binding SaveCommand}" Margin="30 0 0 0" Style="{StaticResource MahApps.Styles.Button.MetroSquare}"/>
-            <Button Content="{materialDesign:PackIcon OpenInApp}" Command="{Binding OpenCommand}" Margin="10 0 0 0" Style="{StaticResource MahApps.Styles.Button.MetroSquare}"/>
-            <Button Content="{materialDesign:PackIcon Export}" Command="{Binding ExportDWGCommand}" Margin="10 0 0 0" Style="{StaticResource MahApps.Styles.Button.MetroSquare}"/>
-            <Button Content="{materialDesign:PackIcon Import}" Command="{Binding ImportDWGCommand}" Margin="10 0 0 0" Style="{StaticResource MahApps.Styles.Button.MetroSquare}"/>
+			<Button Content="{materialDesign:PackIcon ContentSave}" Command="{Binding SaveCommand}" Margin="30 0 0 0" />
+            <Button Content="{materialDesign:PackIcon OpenInApp}" Command="{Binding OpenCommand}" Margin="10 0 0 0" />
+            <Button Content="{materialDesign:PackIcon Export}" Command="{Binding ExportDWGCommand}" Margin="10 0 0 0" />
+            <Button Content="{materialDesign:PackIcon Import}" Command="{Binding ImportDWGCommand}" Margin="10 0 0 0" />
 
-			<Button Content="Update Layout" Click="UpdateLayoutClick"/>
-            <Button Content="Print Layout" Click="PrintLayoutClick"/>
+			<Button Content="{materialDesign:PackIcon Update}" Click="UpdateLayoutClick" Margin="10 0 0 0"/>
+            <Button Content="{materialDesign:PackIcon Printer}" Click="PrintLayoutClick" Margin="10 0 0 0"/>
 
-            <Button Content="{materialDesign:PackIcon VectorLine}" Command="{Binding DrawLineCommand}" Margin="10 0 0 0" />
+			<!--<Button Content="{materialDesign:PackIcon InsertDriveFile}" Command="{Binding ImportPDFCommand}" Margin="10 0 0 0"/>-->
+
+            <!--<Button Content="{materialDesign:PackIcon VectorLine}" Command="{Binding DrawLineCommand}" Margin="10 0 0 0" />
 			<Button Content="{materialDesign:PackIcon RectangleOutline}" Margin="10 0 0 0" Command="{Binding DrawRectangleCommand}" />
 			<Button Content="{materialDesign:PackIcon RayStartArrow}" Margin="10 0 0 0" Command="{Binding DrawRayCommand}"/>
 			<Button Content="{materialDesign:PackIcon RayVertex}" Margin="10 0 0 0" Command="{Binding DrawXlineCommand}"/>
@@ -111,7 +113,7 @@
 			<Button Content="{materialDesign:PackIcon ScissorsCutting}" Margin="5 0 0 0" Command="{Binding TrimCommand}"/>
 			<Button Content="{materialDesign:PackIcon ArrowExpand}" Margin="5 0 0 0" Command="{Binding ExtendCommand}"/>
 			<Button Content="{materialDesign:PackIcon ArrowCollapseLeft}" Margin="5 0 0 0" Command="{Binding FilletCommand}"/>
-			<Button Content="{materialDesign:PackIcon ImageFilterNone}" Margin="5 0 0 0" Command="{Binding OffsetCommand}"/>
+			<Button Content="{materialDesign:PackIcon ImageFilterNone}" Margin="5 0 0 0" Command="{Binding OffsetCommand}"/>-->
 			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <ComboBox VerticalAlignment="Center"
                           Margin="0 0 10 0"

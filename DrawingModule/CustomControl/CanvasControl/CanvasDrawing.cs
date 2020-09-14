@@ -373,6 +373,8 @@ namespace DrawingModule.CustomControl.CanvasControl
             {
                 SetProperty(ref _currentPoint, value);
                 this.RaisePropertiesChangedForDynamicInput();
+                RaisePropertyChanged(nameof(TempLineType));
+                _isMouseMove = true;
             }
         }
         public Point3D LastClickPoint
@@ -382,6 +384,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             {
                 SetProperty(ref _lastClickPoint, value);
                 this.RaisePropertiesChangedForDynamicInput();
+                RaisePropertyChanged(nameof(TempLineType));
             }
         }
         public Point3D BasePoint3D
@@ -489,6 +492,18 @@ namespace DrawingModule.CustomControl.CanvasControl
                         {
                             DrawSnappPointUtl.DisplaySnappedVertex(this, SnapPoint, renderContext);
                         }
+
+                        if (PolaTrackingPoints.Count !=0)
+                        {
+                            DrawSnappPointUtl.DisplayTrackingPoint(this, PolaTrackingPoints, renderContext);
+                            //DrawInteractiveUntilities.DrawInteractiveSpotLine(LastClickPoint,CurrentPoint,this);
+                            FindingPolaPoint();
+                            if (PolaTrackedPoint != null)
+                            {
+                                CurrentPoint = PolaTrackedPoint;
+                                PolaTrackedPoint = null;
+                            }
+                        }
                     }
                 }
                 else if (IsSnappingEnable)
@@ -500,6 +515,17 @@ namespace DrawingModule.CustomControl.CanvasControl
                             if (SnapPoint != null)
                             {
                                 DrawSnappPointUtl.DisplaySnappedVertex(this, SnapPoint, renderContext);
+                            }
+                            if (PolaTrackingPoints.Count != 0)
+                            {
+                                DrawSnappPointUtl.DisplayTrackingPoint(this, PolaTrackingPoints, renderContext);
+                                //DrawInteractiveUntilities.DrawInteractiveSpotLine(LastClickPoint,CurrentPoint,this);
+                                FindingPolaPoint();
+                                if (PolaTrackedPoint!=null)
+                                {
+                                    CurrentPoint = PolaTrackedPoint;
+                                    PolaTrackedPoint = null;
+                                }
                             }
 
                         }
@@ -516,6 +542,67 @@ namespace DrawingModule.CustomControl.CanvasControl
                 this.DrawInteractiveEntityUnderMouse(_entityUnderMouse);
             }
             base.DrawOverlay(data);
+        }
+
+        private void FindingPolaPoint()
+        {
+            if (TempLineType == AppModels.Enums.LineTypes.None || TempLineType == AppModels.Enums.LineTypes.SlantingLine)
+            {
+                return;
+            }
+
+            if (TempLineType == AppModels.Enums.LineTypes.HorizontalLine)
+            {
+                foreach (var polaTrackingPoint in PolaTrackingPoints)
+                {
+                    FindingVerticalTrackedPoint(polaTrackingPoint);
+                }
+            }
+            else
+            {
+                foreach (var polaTrackingPoint in PolaTrackingPoints)
+                {
+                    FindingHorizontaltrackedPoint(polaTrackingPoint);
+                }
+            }
+        }
+
+        private void FindingVerticalTrackedPoint(Point3D polaTrackingPoint)
+        {
+            var newPoint = new Point3D(polaTrackingPoint.X,polaTrackingPoint.Y+1);
+            var verticalSegment2d = new Segment2D(polaTrackingPoint,newPoint);
+            var curentTempLineSegment = new Segment2D(LastClickPoint,CurrentPoint);
+            Segment2D.IntersectionLine(verticalSegment2d, curentTempLineSegment, out var intersecPoint);
+            if (intersecPoint!=null)
+            {
+                DrawInteractiveUntilities.DrawInteractiveSpotLine(polaTrackingPoint,intersecPoint.ConvertPoint2DtoPoint3D(),this);
+                //var polaLine= new Segment2D(polaTrackingPoint,intersecPoint);
+                var dist = CurrentPoint.DistanceTo(intersecPoint);
+                if (dist<=10)
+                {
+                    PolaTrackedPoint = intersecPoint.ConvertPoint2DtoPoint3D();
+                    DrawSnappPointUtl.DisplayTrackedPoint(this,PolaTrackedPoint,renderContext);
+                }
+            }
+        }
+
+        private void FindingHorizontaltrackedPoint(Point3D polaTrackingPoint)
+        {
+            var newPoint = new Point3D(polaTrackingPoint.X+1, polaTrackingPoint.Y );
+            var horizontalSegment2d = new Segment2D(polaTrackingPoint, newPoint);
+            var curentTempLineSegment = new Segment2D(LastClickPoint, CurrentPoint);
+            Segment2D.IntersectionLine(horizontalSegment2d, curentTempLineSegment, out var intersecPoint);
+            if (intersecPoint != null)
+            {
+                DrawInteractiveUntilities.DrawInteractiveSpotLine(polaTrackingPoint, intersecPoint.ConvertPoint2DtoPoint3D(), this);
+                //var polaLine= new Segment2D(polaTrackingPoint,intersecPoint);
+                var dist = CurrentPoint.DistanceTo(intersecPoint);
+                if (dist <= 10)
+                {
+                    PolaTrackedPoint = intersecPoint.ConvertPoint2DtoPoint3D();
+                    DrawSnappPointUtl.DisplayTrackedPoint(this, PolaTrackedPoint, renderContext);
+                }
+            }
         }
 
         private void DrawInteractiveEntityUnderMouse(Entity entity)
@@ -565,50 +652,10 @@ namespace DrawingModule.CustomControl.CanvasControl
             return currentPoint;
         }
 
-        //private void RegisterDrawInteractiveHandler(IDrawInteractive subscriber)
-        //{
-        //    this._drawInteractiveHandler += subscriber.DrawInteractiveHandler;
-        //}
-        //private void UnRegisterDrawInteractiveHandler(IDrawInteractive subscriber)
-        //{
-        //    _drawInteractiveHandler =null;
-        //    this.Invalidate();
-        //}
-
-
-        //private void ProcessEnterKey()
-        //{
-        //    if (this.FuncCommand!= null)
-        //    {
-        //        IAsyncResult asysnResult = FuncCommand.BeginInvoke(new AsyncCallback(DoSomeThingCompleteAsyncComplete), null);
-        //    }
-        //}
-
         private void RaisePropertiesChangedForDynamicInput()
         {
             this.RaisePropertyChanged(nameof(CurrentLengthDimension));
             this.RaisePropertyChanged(nameof(CurrentAngleDimension));
-            //this.RaisePropertyChanged(nameof(TextHeightVisibility));
-            //this.RaisePropertyChanged(nameof(TextWidthVisibility));
-            //this.RaisePropertyChanged(nameof(IsSelectedForEditingTool));
-            //this.RaisePropertyChanged(nameof(CurrentLength));
-            //this.RaisePropertyChanged(nameof(CurrentAngle));
-            //this.RaisePropertyChanged(nameof(CurrentHeight));
-            //this.RaisePropertyChanged(nameof(CurrentWidth));
-            //this.RaisePropertyChanged(nameof(TestPropertiesValue));
-            //this.RaisePropertyChanged(nameof(DrawingMode));
-            //this.RaisePropertyChanged(nameof(LengthVisibility));
-            //this.RaisePropertyChanged(nameof(AngleVisibility));
-            //this.RaisePropertyChanged(nameof(HeightVisibility));
-            //this.RaisePropertyChanged(nameof(WidthVisibility));
-            //this.RaisePropertyChanged(nameof(VDimDimension));
-            //this.RaisePropertyChanged(nameof(HDimDimension));
-            //this.RaisePropertyChanged(nameof(VDimVisibility));
-            //this.RaisePropertyChanged(nameof(HDimVisibility));
-            //this.RaisePropertyChanged(nameof(TextInputContentVisibility));
-            //this.RaisePropertyChanged(nameof(TextStringAngleVisibility));
-            //this.RaisePropertyChanged(nameof(LeaderSegmentVisibility));
-            //this.RaisePropertyChanged(nameof(ArrowSizeVisibility));
         }
         #endregion
         #region Public Method
@@ -890,7 +937,16 @@ namespace DrawingModule.CustomControl.CanvasControl
             _isUserClicked = false;
             if (this.PromptStatus == PromptStatus.OK)
             {
-                resultPoint = CurrentPoint;
+                //if (PolaTrackedPoint !=null)
+                //{
+                //    resultPoint = PolaTrackedPoint;
+                //    PolaTrackedPoint = null;
+                //}
+                //else
+                //{
+                    resultPoint = CurrentPoint;    
+                //}
+                
                 stringResult = "Get Point Complete";
                 promptStatus = PromptStatus.OK;
             }
@@ -914,6 +970,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.Dispatcher.Invoke((Action)(() =>
             {//this refer to form in WPF application 
                 Entities.Add(entity, ActiveLayerName);
+                
                 Entities.Regen();
                 Invalidate();
             }));

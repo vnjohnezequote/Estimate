@@ -8,7 +8,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels.CustomEntity;
@@ -21,6 +24,9 @@ using AppModels.ResponsiveData.Openings;
 using AppModels.ResponsiveData.WallMemberData;
 using devDept.Eyeshot.Entities;
 using Syncfusion.Data.Extensions;
+using Syncfusion.Office;
+using Syncfusion.XlsIO;
+using Syncfusion.XlsIO.Implementation.Security;
 using WallFrameInputModule.Views;
 
 namespace WallFrameInputModule.ViewModels
@@ -50,6 +56,7 @@ namespace WallFrameInputModule.ViewModels
     using Syncfusion.UI.Xaml.Grid.Helpers;
 
     using Unity;
+    using Excel= Microsoft.Office.Interop.Excel;
 
 
 
@@ -145,6 +152,7 @@ namespace WallFrameInputModule.ViewModels
             this.AddBeamCommand = new DelegateCommand(this.OnAddNewBeam);
             this.AddBracingCommand = new DelegateCommand(OnAddBracing);
             this.ReFreshWallCommand = new DelegateCommand(this.CalculatorWallLength);
+            ExportDataToExcelCommand = new DelegateCommand(OnExportData);
             JobModel.EngineerMemberList.CollectionChanged += EngineerMemberList_CollectionChanged;
         }
 
@@ -160,6 +168,810 @@ namespace WallFrameInputModule.ViewModels
                 beam.NotifyPropertyChanged();
             }
             RaisePropertyChanged(nameof(EngineerReferenceVisibility));
+        }
+
+        private void OnExportData()
+        {
+            if (!CheckJobInfo(out var message))
+            {
+                MessageBox.Show(message);
+
+                return;
+            }
+            var excel = new Excel.Application();
+            var workbook = excel.Workbooks.Open(System.AppDomain.CurrentDomain.BaseDirectory + "PrenailTemplate.xlsm");
+            var sheets = workbook.Worksheets;
+            var isNeedSecondWorkBook = false;
+            var listLevelIndexAddTwoSheet = new List<int>();
+            switch (JobModel.Levels.Count)
+            {
+                case 1:
+                    excel.GetType().InvokeMember("Run",
+                        System.Reflection.BindingFlags.Default | System.Reflection.BindingFlags.InvokeMethod, null,
+                        excel, new Object[] { "PrenailTemplate.xlsm!ShowSingleStorey" });
+                    excel.ScreenUpdating = false;
+                    Excel.Worksheet worksheet = sheets["JOB SETUP"];
+                    OnFillJobInfoToExcel(worksheet);
+                    LoadSingleFrameDelivery(worksheet);
+                    excel.ScreenUpdating = true;
+                    isNeedSecondWorkBook = OnFillWallToExcel(workbook, listLevelIndexAddTwoSheet);
+                    //excel.Run("ShowSingleStorey");
+                    break;
+                case 2:
+                    excel.GetType().InvokeMember("Run",
+                       System.Reflection.BindingFlags.Default | System.Reflection.BindingFlags.InvokeMethod, null,
+                       excel, new Object[] { "PrenailTemplate.xlsm!ShowDoubleStorey" });
+                    excel.ScreenUpdating = false;
+                    Excel.Worksheet worksheet2 = sheets["JOB SETUP"];
+                    OnFillJobInfoToExcel(worksheet2);
+                    LoadDoubleFrameDelivery(worksheet2);
+                    excel.ScreenUpdating = true;
+                    isNeedSecondWorkBook=OnFillWallToExcel(workbook, listLevelIndexAddTwoSheet);
+                    //excel.Run("ShowDoubleStorey");
+                    break;
+                case 3:
+                    excel.GetType().InvokeMember("Run",
+                      System.Reflection.BindingFlags.Default | System.Reflection.BindingFlags.InvokeMethod, null,
+                      excel, new Object[] { "PrenailTemplate.xlsm!threestorey" });
+                    excel.ScreenUpdating = false;
+                    Excel.Worksheet worksheet3 = sheets["JOB SETUP"];
+                    OnFillJobInfoToExcel(worksheet3);
+                    LoadThreeFrameDelivery(worksheet3);
+                    excel.ScreenUpdating = true;
+                    isNeedSecondWorkBook = OnFillWallToExcel(workbook, listLevelIndexAddTwoSheet);
+                    //excel.Run(" threestorey");
+                    break;
+                default:
+                    break;
+            }
+            string fileSave = "Prenail Estimate - " + JobModel.Info.JobNumber;
+            if (JobModel.Info.JobLocation.EndsWith("\\"))
+            {
+                fileSave = JobModel.Info.JobLocation + fileSave;
+            }
+            else
+            {
+                fileSave = JobModel.Info.JobLocation + "\\" + fileSave;
+            }
+            if (!isNeedSecondWorkBook)
+            {
+                workbook.SaveAs(fileSave);
+            }
+
+            if (isNeedSecondWorkBook)
+            {
+                var fileSave1 = fileSave +"-Sheet 1";
+                workbook.SaveAs(fileSave1);
+                Excel.Worksheet jobSetup = workbook.Worksheets["JOB SETUP"];
+                jobSetup.Range["C15"].ClearContents();
+                jobSetup.Range["C17"].ClearContents();
+                jobSetup.Range["C19"].ClearContents();
+                switch (JobModel.Levels.Count)
+                {
+                    case 1:
+                        var singleFloor = workbook.Worksheets["Single Storey ESTIMATE"];
+                        FillSingleLevelToExcel(singleFloor,false);
+                        break;
+                    case 2:
+                        var doubleFloor = workbook.Worksheets["2 Storey ESTIMATE"];
+                        FillDoubleLevelToExcel(doubleFloor,listLevelIndexAddTwoSheet,false);
+                        break;
+                    case 3:
+                        var lowerFloor = workbook.Worksheets["Basement Level ESTIMATE"];
+                        var midleFloor = workbook.Worksheets["Middle & Upper Level ESTIMATE"];
+                        FillThreeLevelWallToExcel(lowerFloor,midleFloor,listLevelIndexAddTwoSheet,false);
+                        break;
+                    default:
+                        break;
+                }
+                var fileSave2 = fileSave + "-Sheet 2";
+                workbook.SaveAs(fileSave2);
+            }
+            excel.Quit();
+            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excel);
+            MessageBox.Show("Export Complete");
+
+        }
+        private void OnFillJobInfoToExcel(Excel.Worksheet worksheet)
+        {
+            worksheet.Range["C12"].Formula = "=TODAY()";
+            worksheet.Range["C13"].Value = JobModel.Info.JobNumber;
+            worksheet.Range["F13"].Value = JobModel.Info.BuilderName;
+            worksheet.Range["F14"].Value = JobModel.Info.JobAddress;
+            worksheet.Range["F15"].Value = JobModel.Info.SubAddress;
+            worksheet.Range["C23"].Value = JobModel.Info.Treatment;
+            worksheet.Range["C25"].Value = JobModel.Info.WindRate;
+            StringBuilder plannIssue = new StringBuilder("ISSUE ");
+            plannIssue.Append(JobModel.Info.PlanIsueDate.ToString("dd/MM/yyyy"));
+            plannIssue.Append(" + Arch");
+            if (JobModel.Info.IsEngineer)
+            {
+                plannIssue.Append(" + Engineer");
+            }
+
+            if (JobModel.Info.IsBracingPlan)
+            {
+                plannIssue.Append(" + BC-Plan");
+            }
+
+            if (JobModel.Info.IsEPlan)
+            {
+                plannIssue.Append(" + E-Plan");
+            }
+
+            worksheet.Range["C33"].Value = plannIssue.ToString();
+
+
+
+        }
+        private bool OnFillWallToExcel(Excel.Workbook workbook,List<int> levelIndexsaddTwoSheet)
+        {
+            switch (JobModel.Levels.Count)
+                {
+                    case 1:
+                    {
+                        Excel.Worksheet singleFloor = workbook.Worksheets["Single Storey ESTIMATE"];
+                        singleFloor.Range["I61"].Value = BuildNote();
+                        if (JobModel.Levels[0].WallLayers.Count>13)
+                        {
+                            FillSingleLevelToExcel(singleFloor);
+                            return true;
+                        }
+                        FillSingleLevelToExcel(singleFloor);
+                        return false;
+
+                    }
+                    case 2:
+                    {
+                        var returnValue = false;
+                        Excel.Worksheet doubleFloor = workbook.Worksheets["2 Storey ESTIMATE"];
+                        doubleFloor.Range["I148"].Value = BuildNote();
+                        if (JobModel.Levels[0].WallLayers.Count>13)
+                        {
+                            levelIndexsaddTwoSheet.Add(0);
+                            returnValue = true;
+                        }
+
+                        if (JobModel.Levels[1].WallLayers.Count>13)
+                        {
+                            levelIndexsaddTwoSheet.Add(1);
+                            returnValue = true;
+                        }
+                        FillDoubleLevelToExcel(doubleFloor,levelIndexsaddTwoSheet);
+                        return returnValue;
+                    }
+
+                    case 3:
+                    {
+                        var returnValue = false;
+                        Excel.Worksheet lowerFloor = workbook.Worksheets["Basement Level ESTIMATE"];
+                        Excel.Worksheet midleFloor = workbook.Worksheets["Middle & Upper Level ESTIMATE"];
+                        midleFloor.Range["I148"].Value = BuildNote();
+                        if (JobModel.Levels[0].WallLayers.Count > 13)
+                        {
+                            levelIndexsaddTwoSheet.Add(0);
+                            returnValue = true;
+                        }
+
+                        if (JobModel.Levels[1].WallLayers.Count > 13)
+                        {
+                            levelIndexsaddTwoSheet.Add(1);
+                            returnValue = true;
+                        }
+                        if (JobModel.Levels[2].WallLayers.Count > 13)
+                        {
+                            levelIndexsaddTwoSheet.Add(2);
+                            returnValue = true;
+                        }
+
+                        FillThreeLevelWallToExcel(lowerFloor, midleFloor,levelIndexsaddTwoSheet);
+                        return returnValue;
+                    }
+                }
+            return false;
+        }
+        private void FillThreeLevelWallToExcel(Excel.Worksheet lowerSheet, Excel.Worksheet midleSheet, List<int> levelNeedTobeAddList, bool isOnlyOneSheetToFill = true)
+        {
+            if (isOnlyOneSheetToFill)
+            {
+                FillSingleLevelToExcel(lowerSheet);
+                FillUpperLevel(midleSheet,JobModel.Levels[2],isOnlyOneSheetToFill);
+                FillLowerLevel(midleSheet, JobModel.Levels[1],isOnlyOneSheetToFill);
+            }
+            else
+            {
+                lowerSheet.Range["B12", "H24"].ClearContents();
+                lowerSheet.Range["J12", "J24"].ClearContents();
+                lowerSheet.Range["C25"].ClearContents();
+                lowerSheet.Range["J30", "J36"].ClearContents();
+                lowerSheet.Range["B40", "G49"].ClearContents();
+
+                midleSheet.Range["B12", "H24"].ClearContents();
+                midleSheet.Range["J12", "J24"].ClearContents();
+                midleSheet.Range["C25"].ClearContents();
+                midleSheet.Range["J30", "J36"].ClearContents();
+                midleSheet.Range["B40", "G49"].ClearContents();
+
+                midleSheet.Range["B90", "H102"].ClearContents();
+                midleSheet.Range["J90", "J102"].ClearContents();
+                midleSheet.Range["C103"].ClearContents();
+                midleSheet.Range["J108", "J114"].ClearContents();
+                midleSheet.Range["B118", "G127"].ClearContents();
+
+                if (levelNeedTobeAddList.Contains(0))
+                {
+                    FillSingleLevelToExcel(lowerSheet,false);
+                }
+
+                if (levelNeedTobeAddList.Contains(1))
+                {
+                    FillLowerLevel(midleSheet, JobModel.Levels[1],false);
+                }
+
+                if (levelNeedTobeAddList.Contains(2))
+                {
+                    FillUpperLevel(midleSheet, JobModel.Levels[2], false);
+                }
+                
+            }
+        }
+        private void FillDoubleLevelToExcel(Excel.Worksheet doubleSheet,List<int> levelNeedTobeAddList, bool isOnlyOneSheetToFill = true)
+        {
+            CleardoubleConttent(doubleSheet);
+            if (isOnlyOneSheetToFill)
+            {
+                FillUpperLevel(doubleSheet, JobModel.Levels[1], isOnlyOneSheetToFill);
+                FillLowerLevel(doubleSheet, JobModel.Levels[0], isOnlyOneSheetToFill);
+            }
+            else
+            {
+                //Clear Content before fill new Sheet
+                
+
+                foreach (var level in levelNeedTobeAddList)
+                {
+                    if (level == 0)
+                    {
+                        FillLowerLevel(doubleSheet, JobModel.Levels[0], isOnlyOneSheetToFill);
+                    }
+                    else
+                    {
+                        FillUpperLevel(doubleSheet, JobModel.Levels[1], isOnlyOneSheetToFill);
+                    }
+                }
+            }
+        }
+        private void CleardoubleConttent(Excel.Worksheet doubleSheet)
+        {
+            doubleSheet.Range["B12", "H24"].ClearContents();
+            doubleSheet.Range["J12", "J24"].ClearContents();
+            doubleSheet.Range["C25"].ClearContents();
+            doubleSheet.Range["J30", "J36"].ClearContents();
+            doubleSheet.Range["B40", "G49"].ClearContents();
+
+            doubleSheet.Range["B90", "H102"].ClearContents();
+            doubleSheet.Range["J90", "J102"].ClearContents();
+            doubleSheet.Range["C103"].ClearContents();
+            doubleSheet.Range["J108", "J114"].ClearContents();
+            doubleSheet.Range["B118", "G127"].ClearContents();
+        }
+        private void FillUpperLevel(Excel.Worksheet doubleSheet,LevelWall level,bool isOnlyOneSheetToFill)
+        {
+            var startIndexToFill = 0;
+            if (isOnlyOneSheetToFill == true)
+            {
+                if (level.LintelLm != 0)
+                {
+                    doubleSheet.Range["C103"].Value = level.LintelLm;
+                }
+
+                if (level.GeneralBracings[0].Quantity != 0)
+                    doubleSheet.Range["J108"].Value = level.GeneralBracings[0].Quantity;
+                if (level.TimberWallBracings.Count > 0)
+                {
+                    FillTimberBracing(doubleSheet, level,78);
+                }
+                if (level.RoofBeams.Count > 0)
+                {
+                    FillRoofBeam(doubleSheet, level,78);
+                }
+
+            }
+            else
+            {
+                startIndexToFill = 13;
+            }
+            FillWallToExcel(doubleSheet, level, startIndexToFill,90);
+        }
+        private void FillLowerLevel(Excel.Worksheet doubleSheet,LevelWall level, bool isOnlyOneSheetToFill)
+        {
+            var startIndexToFill = 0;
+            if (isOnlyOneSheetToFill == true)
+            {
+                if (level.LintelLm != 0)
+                {
+                    doubleSheet.Range["C25"].Value = level.LintelLm;
+                }
+
+                if (level.GeneralBracings[0].Quantity != 0)
+                    doubleSheet.Range["J30"].Value = level.GeneralBracings[0].Quantity;
+                if (level.TimberWallBracings.Count > 0)
+                {
+                    FillTimberBracing(doubleSheet, level);
+                }
+                if (level.RoofBeams.Count > 0)
+                {
+                    FillRoofBeam(doubleSheet, level);
+                }
+
+            }
+            else
+            {
+                startIndexToFill = 13;
+            }
+            FillWallToExcel(doubleSheet, level, startIndexToFill);
+        }
+        private void FillSingleLevelToExcel(Excel.Worksheet singleSheet,bool isOnlyOneSheetToFill = true)
+        {
+            var level = JobModel.Levels[0];
+            var startIndexToFill = 0;
+            ClearOneContentBeforeFill(singleSheet);
+            if ( isOnlyOneSheetToFill== true)
+            {
+                if (level.LintelLm != 0)
+                {
+                    singleSheet.Range["C25"].Value = level.LintelLm;
+                }
+
+                if (level.GeneralBracings[0].Quantity != 0)
+                    singleSheet.Range["J30"].Value = level.GeneralBracings[0].Quantity;
+                if (level.TimberWallBracings.Count > 0)
+                {
+                    FillTimberBracing(singleSheet, level);
+                }
+
+                if (level.RoofBeams.Count>0)
+                {
+                    FillRoofBeam(singleSheet, level);
+                }
+            }
+            else
+            {
+                startIndexToFill = 13;
+            }
+            FillWallToExcel(singleSheet, level, startIndexToFill);
+
+        }
+
+        private string BuildNote()
+        {
+            StringBuilder notes = new StringBuilder("Design wind speed used ");
+            notes = notes.Append(JobModel.Info.WindRate);
+            notes.Append(Environment.NewLine);
+            notes.Append(JobModel.Info.FrameDesignInfor.Header);
+            notes.Append(" ");
+            notes.Append(JobModel.Info.FrameDesignInfor.Content);
+            notes.Append(Environment.NewLine);
+            if (JobModel.Info.BeamDesignInfor != null)
+            {
+                notes.Append(JobModel.Info.BeamDesignInfor.Header);
+                notes.Append(" ");
+                notes.Append(JobModel.Info.BeamDesignInfor.Content);
+                notes.Append(Environment.NewLine);
+            }
+
+            notes.Append(JobModel.Info.BracingDesignInfor.Header);
+            notes.Append(" ");
+            notes.Append(JobModel.Info.BracingDesignInfor.Content);
+            notes.Append(Environment.NewLine);
+            notes.Append("Please check and Confirm");
+            return notes.ToString();
+
+        }
+        private void ClearOneContentBeforeFill(Excel.Worksheet singleSheet)
+        {
+            singleSheet.Range["B12", "H24"].ClearContents();
+            singleSheet.Range["J12", "J24"].ClearContents();
+            singleSheet.Range["C25"].ClearContents();
+            singleSheet.Range["J30", "J36"].ClearContents();
+            singleSheet.Range["B40", "G49"].ClearContents();
+        }
+        private void FillRoofBeam(Excel.Worksheet inputSheet,LevelWall level,int movementIndexRow = 0)
+        {
+            var rowIndex = 40 + movementIndexRow;
+            foreach (var roofBeam in level.RoofBeams)
+            {
+                if (roofBeam.MaterialType == MaterialTypes.Steel)
+                {
+                    continue;
+                }
+                var location = "B" + rowIndex;
+                var grade = "C" + rowIndex;
+                var sizeTreatement = "D" + rowIndex;
+                var qty = "F" + rowIndex;
+                var length = "G" + rowIndex;
+
+                inputSheet.Range[location].Value = roofBeam.Location;
+                inputSheet.Range[grade].Value = roofBeam.TimberInfo.TimberGrade;
+                inputSheet.Range[sizeTreatement].Value = roofBeam.TimberInfo.SizeTreatment;
+                inputSheet.Range[qty].Value = roofBeam.Quantity;
+                inputSheet.Range[length].Value = roofBeam.QuoteLength;
+                rowIndex++;
+            }
+            
+
+            
+        }
+        private void FillTimberBracing(Excel.Worksheet inputSheet,LevelWall level,int movementIndexRow = 0)
+        {
+            
+            foreach (var timberWallBracing in level.TimberWallBracings)
+            {
+                var fillQtyIndex = "0";
+                bool isAvailableFillIndex = false;
+                switch (timberWallBracing.BracingInfo.Height)
+                {
+                    case 2400:
+                        if (timberWallBracing.BracingInfo.Width == 900)
+                        {
+                            var index = 31 + movementIndexRow;
+                            fillQtyIndex = "J"+index;
+                            isAvailableFillIndex = true;
+                        }
+
+                        if (timberWallBracing.BracingInfo.Width == 1200)
+                        {
+                            var index2 = 32 + movementIndexRow;
+                            fillQtyIndex = "J"+index2;
+                            isAvailableFillIndex = true;
+                        }
+                        break;
+                    case 2700:
+                        if (timberWallBracing.BracingInfo.Width == 900)
+                        {
+                            var index3 = 33 + movementIndexRow;
+                            fillQtyIndex = "J"+index3;
+                            isAvailableFillIndex = true;
+                        }
+
+                        if (timberWallBracing.BracingInfo.Width == 1200)
+                        {
+                            var index4 = 34 + movementIndexRow;
+                            fillQtyIndex = "J"+index4;
+                            isAvailableFillIndex = true;
+                        }
+                        break;
+                    case 3000:
+                        if (timberWallBracing.BracingInfo.Width == 900)
+                        {
+                            var index5 = 35 + movementIndexRow;
+                            fillQtyIndex = "J"+index5;
+                            isAvailableFillIndex = true;
+                        }
+
+                        if (timberWallBracing.BracingInfo.Width == 1200)
+                        {
+                            var index6 = 36 + movementIndexRow;
+                            fillQtyIndex = "J"+index6;
+                            isAvailableFillIndex = true;
+                        }
+                        break;
+                }
+
+                if (isAvailableFillIndex)
+                {
+                    inputSheet.Range[fillQtyIndex].Value = timberWallBracing.Quantity;
+                }
+            }
+        }
+        private void FillWallToExcel(Excel.Worksheet inputSheet,LevelWall level,int startIndexToFill,int startIndexRow = 12)
+        {
+            var endIndex = 0;
+            if (startIndexToFill ==0)
+            {
+                if (level.WallLayers.Count>13)
+                {
+                    endIndex = 13;
+                }
+                else
+                {
+                    endIndex = level.WallLayers.Count;
+                }
+            }
+            else
+            {
+                endIndex = level.WallLayers.Count;
+            }
+            for (var j = startIndexToFill; j < endIndex; j++)
+            {
+                FillWallRow(startIndexRow,level.WallLayers[j],inputSheet);
+                startIndexRow++;
+            }
+        }
+        private bool CheckJobInfo(out string message)
+        {
+            message = "";
+            
+            if (string.IsNullOrEmpty(JobModel.Info.JobNumber))
+            {
+                message = "You Missed JobNumber, Please Check";
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(JobModel.Info.BuilderName))
+            {
+                message = "You Missed Builder, Please Check";
+                return false;
+            }
+            if (string.IsNullOrEmpty(JobModel.Info.JobAddress))
+            {
+                message = "You Missed Job Address, Please Check";
+                return false;
+            }
+            if (string.IsNullOrEmpty(JobModel.Info.Treatment))
+            {
+                message = "You Missed Wall Treatment, Please Check";
+                return false;
+            }
+
+            if (JobModel.Info.FrameDesignInfor == null)
+            {
+                message = "You Missed Frame Design Info";
+                return false;
+            }
+
+            if (JobModel.Info.BracingDesignInfor == null)
+            {
+                message = "You Missed Bracing Design Info";
+                return false;
+            }
+            if (JobModel.Levels.Count == 0)
+            {
+                message = "Are you sure this job has no any level?";
+                return false;
+            }
+
+            
+            foreach (var jobModelLevel in JobModel.Levels)
+            {
+                if (jobModelLevel.WallLayers.Count==0)
+                {
+                    message = "Are you sure "+jobModelLevel.LevelName+" has no any Wall?";
+                    return false;
+                }
+
+                foreach (var wall in jobModelLevel.WallLayers)
+                {
+                    if (wall.WallType == null)
+                    {
+                        message = "You Missed Wall Type";
+                        return false;
+                    }
+
+                    if (wall.WallColorLayer==null)
+                    {
+                        message = "You Missed Wall Layer";
+                        return false;
+                    }
+
+                    if (wall.WallLength==0)
+                    {
+                        message = "You Missed Wall Length";
+                        return false;
+                    }
+                }
+
+                if (Level.TimberWallBracings.Count != 0)
+                {
+                    foreach (var wallbracing in Level.TimberWallBracings)
+                    {
+                        if (wallbracing.Quantity ==0)
+                        {
+                            message = "You Missed Wall Bracings Quantity";
+                            return false;
+                        }
+
+                        if (wallbracing.BracingInfo == null)
+                        {
+                            message = "You Missed Wall Bracings Type";
+                            return false;
+                        }
+                    }
+                }
+
+                if (Level.RoofBeams.Count != 0)
+                {
+                    int countBeam = 0;
+                    foreach (var roofBeam in Level.RoofBeams)
+                    {
+                        if (roofBeam.MaterialType!=MaterialTypes.Steel)
+                        {
+                            countBeam++;
+                        }
+                    }
+                    if (countBeam>10)
+                    {
+                        message = "Your's Beams out of beam list in excel, please combine some beam";
+                        return false;
+                    }
+                    foreach (var roofBeam in Level.RoofBeams)
+                    {
+                        if (roofBeam.Quantity==0 )
+                        {
+                            message = "You Missed Roof Beam Quantity";
+                            return false;
+                        }
+
+                        if (roofBeam.IsBeamToLongWithStockList)
+                        {
+                            message = "Your's beams has a beam out of stock, please check again";
+                            return false;
+                        }
+
+                        if (roofBeam.TimberInfo==null)
+                        {
+                            message = "You Missed choose beam in your's Beams List, please check againt";
+                            return false;
+                        }
+
+                        if (string.IsNullOrEmpty(roofBeam.Location))
+                        {
+                            message = "Yours Beam Missed Beam Location";
+                            return false;
+                        }
+                    }
+                }
+                
+            }
+            
+
+            return true;
+        }
+        private void FillWallRow(int i, WallBase wall, Excel.Worksheet worksheet)
+        {
+            if (wall.WallType == null)
+            {
+                return;
+            }
+            var wallType = "B" + i;
+            var wallHeight = "C" + i;
+            var studSize = "D" + i;
+            var studSpacing = "E" + i;
+            var topPlate = "F" + i;
+            var ribbonPlate = "G" + i;
+            var bottomPlate = "H" + i;
+            var wallLength = "J" + i;
+
+            worksheet.Range[wallType].Value = wall.WallType.AliasName;
+            worksheet.Range[wallHeight].Value = wall.FinalWallHeight;
+            worksheet.Range[studSize].Value = wall.Stud.SizeGrade;
+            worksheet.Range[studSpacing].Value = wall.WallSpacing + "mm";
+            worksheet.Range[topPlate].Value = wall.TopPlate.SizeGrade;
+            worksheet.Range[ribbonPlate].Value = wall.RibbonPlate.SizeGrade;
+            worksheet.Range[bottomPlate].Value = wall.BottomPlate.SizeGrade;
+            worksheet.Range[wallLength].Value = wall.WallLength;
+        }
+        private void LoadSingleFrameDelivery(Excel.Worksheet worksheet)
+        {
+            worksheet.Activate();
+            worksheet.Unprotect("Secureme");
+
+            worksheet.Range["C21"].Value="SINGLE STOREY Frame Delivery";
+
+            ResetFormatDeliveryRange(worksheet);
+
+            worksheet.Range["B15"].Value = "SINGLE STOREY DELIVERY:";
+
+            Excel.Range range = worksheet.Range["C15"];
+
+            FormatDeliveryRange(range);
+
+            if (JobModel.Levels[0].CostDelivery != 0)
+            {
+                worksheet.Range["C15"].Value = JobModel.Levels[0].CostDelivery;
+            }
+
+            worksheet.Range["A1"].Activate();
+            worksheet.Protect("Secureme");
+
+        }
+        private void LoadDoubleFrameDelivery(Excel.Worksheet worksheet)
+        {
+            worksheet.Activate();
+            worksheet.Unprotect("Secureme");
+
+            worksheet.Range["C21"].Value = "2 STOREY, 'Separate Frame Deliveries'";
+
+            ResetFormatDeliveryRange(worksheet);
+
+            worksheet.Range["B15"].Value = "UPPER STOREY DELIVERY:";
+            Excel.Range range = worksheet.Range["C15"];
+            FormatDeliveryRange(range);
+            worksheet.Range["B17"].Value = "LOWER STOREY DELIVERY:";
+            range = worksheet.Range["C17"];
+            FormatDeliveryRange(range);
+            if (JobModel.Levels[0].CostDelivery != 0)
+            {
+                worksheet.Range["C17"].Value = JobModel.Levels[0].CostDelivery;
+            }
+            if (JobModel.Levels[1].CostDelivery != 0)
+            {
+                worksheet.Range["C15"].Value = JobModel.Levels[1].CostDelivery;
+            }
+
+        }
+        private void LoadThreeFrameDelivery(Excel.Worksheet worksheet)
+        {
+            worksheet.Activate();
+            worksheet.Unprotect("Secureme");
+            worksheet.Range["C21"].Value = "Three STOREY, 'Separate Frame Deliveries'";
+            ResetFormatDeliveryRange(worksheet);
+            worksheet.Range["B15"].Value = "UPPER STOREY DELIVERY:";
+            Excel.Range range = worksheet.Range["C15"];
+            FormatDeliveryRange(range);
+            worksheet.Range["B17"].Value = "MIDDLE LEVEL DELIVERY:";
+            range = worksheet.Range["C17"];
+            FormatDeliveryRange(range);
+            worksheet.Range["B19"].Value = "BASEMENT LEVEL DELIVERY:";
+            range = worksheet.Range["C19"];
+            FormatDeliveryRange(range);
+
+            if (JobModel.Levels[0].CostDelivery != 0)
+            {
+                worksheet.Range["C19"].Value = JobModel.Levels[0].CostDelivery;
+            }
+            if (JobModel.Levels[1].CostDelivery != 0)
+            {
+                worksheet.Range["C17"].Value = JobModel.Levels[1].CostDelivery;
+            }
+            if (JobModel.Levels[2].CostDelivery != 0)
+            {
+                worksheet.Range["C15"].Value = JobModel.Levels[2].CostDelivery;
+            }
+
+
+        }
+        private void ResetFormatDeliveryRange(Excel.Worksheet worksheet)
+        {
+            worksheet.Range["D19"].ClearContents();
+            worksheet.Range["D15", "B19"].ClearContents();
+            Excel.Range range = worksheet.Range["C15", "C19"];
+            range.ClearContents();
+            range.ClearFormats();
+            range.Locked = true;
+            range.Interior.Pattern = Excel.Constants.xlSolid;
+            range.Interior.PatternColorIndex = Excel.Constants.xlAutomatic;
+            range.Interior.ThemeColor = Excel.XlThemeColor.xlThemeColorDark2;
+            range.Interior.TintAndShade = 0;
+            range.Interior.PatternTintAndShade = 0;
+        }
+        private void FormatDeliveryRange(Excel.Range range)
+        {
+            range.NumberFormat = "$#,##0";
+            var border = range.Borders[Excel.XlBordersIndex.xlEdgeLeft];
+            SetBoderRangeDelivery(border);
+            border = range.Borders[Excel.XlBordersIndex.xlEdgeRight];
+            SetBoderRangeDelivery(border);
+            border = range.Borders[Excel.XlBordersIndex.xlEdgeTop];
+            SetBoderRangeDelivery(border);
+            border = range.Borders[Excel.XlBordersIndex.xlEdgeBottom];
+            SetBoderRangeDelivery(border);
+            range.Interior.Pattern = Excel.Constants.xlSolid;
+            range.Interior.PatternColorIndex = Excel.Constants.xlAutomatic;
+            range.Interior.ThemeColor = Excel.XlThemeColor.xlThemeColorAccent5;
+            range.Interior.TintAndShade = 0.799981688894314;
+            range.Interior.PatternTintAndShade = 0;
+            range.Locked = false;
+            range.FormulaHidden = false;
+            range.HorizontalAlignment = Excel.Constants.xlCenter;
+            range.VerticalAlignment = Excel.Constants.xlCenter;
+        }
+        private void SetBoderRangeDelivery(Excel.Border border)
+        {
+            border.LineStyle = Excel.XlLineStyle.xlContinuous;
+            border.Color = -65536;
+            border.TintAndShade = 0;
+            border.Weight = Excel.XlBorderWeight.xlThin;
         }
 
         public void InitEngineerList()
@@ -285,6 +1097,7 @@ namespace WallFrameInputModule.ViewModels
         public ICommand ReFreshWallCommand { get; private set; }
 
         public ICommand AddBracingCommand { get; private set; }
+        public ICommand ExportDataToExcelCommand { get; private set; }
 
         #endregion
 
@@ -316,7 +1129,7 @@ namespace WallFrameInputModule.ViewModels
                 this.Level.GeneralBracings = new ObservableCollection<GenericBracing>();    
             }
 
-            if (this.Level.GeneralBracings.Count == 0)
+            if (this.Level.GeneralBracings.Count == 0 && this.JobModel.Info.Client.Name == "Prenail")
             {
                 var genericBracing = new GenericBracing { BracingInfo = SelectedClient.GenericBracingBases.FirstOrDefault() };    
                 this.Level.GeneralBracings.Add(genericBracing);

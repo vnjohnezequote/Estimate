@@ -24,8 +24,8 @@ namespace AppModels.PocoDataModel
         public DateTime CompleteDate { get; set; }
         public DateTime PlanIsueDate { get; set; }
         public bool IsEPlan { get; set; }
-        public bool IsEngineer { get; set; }
-        public bool IsBracingPlan { get; set; }
+        //public bool IsEngineer { get; set; }
+        //public bool IsBracingPlan { get; set; }
         public string Treatment { get; set; }
         public string TieDown { get; set; }
         public string RoofMaterial { get; set; }
@@ -80,8 +80,8 @@ namespace AppModels.PocoDataModel
             CompleteDate = info.CompleteDate;
             PlanIsueDate = info.PlanIsueDate;
             IsEPlan = info.IsEPlan;
-            IsEngineer = info.IsEngineer;
-            IsBracingPlan = info.IsBracingPlan;
+            //IsEngineer = info.IsEngineer;
+            //IsBracingPlan = info.IsBracingPlan;
             Treatment = info.Treatment;
             TieDown = info.TieDown;
             RoofMaterial = info.RoofMaterial;

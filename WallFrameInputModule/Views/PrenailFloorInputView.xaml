@@ -102,9 +102,10 @@
                     <!-- Report Button -->
                     <StackPanel Margin="50 10 0 0">
 
-                        <Button Content="Single" />
+                        <!--<Button Content="Single" />
                         <Button Content="Double Story" />
-                        <Button Content="Three Story" />
+                        <Button Content="Three Story" />-->
+                        <Button Content="{materialDesign:PackIcon MicrosoftExcel}" Command="{Binding ExportDataToExcelCommand}"/>
                     </StackPanel>
                     <!--<StackPanel>
                         <TextBlock Text="Bracing Input"/>

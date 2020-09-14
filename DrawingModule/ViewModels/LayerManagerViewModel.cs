@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
+//using System.Windows.Input;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
+using AppModels.AppData;
 using AppModels.Interaface;
 using devDept.Eyeshot;
 using Prism.Commands;
@@ -21,6 +24,7 @@ namespace DrawingModule.ViewModels
 
         #region Properties
         public ICommand DeleteLayerCommand { get; private set; }
+        public ICommand AddNewLayerCommand { get; private set; }
         public ObservableCollection<LinePattern> LineTypes { get; set; }
         #endregion
 
@@ -36,17 +40,36 @@ namespace DrawingModule.ViewModels
             _entitiesManger = entitiesManager;
             LineTypes = new ObservableCollection<LinePattern>();
             PrepareLineTypes();
+            PrepareLayers();
             DeleteLayerCommand = new DelegateCommand<SfDataGrid>(OnDeleteLayerRow);
+            AddNewLayerCommand = new DelegateCommand(OnAddNewLayer);
+        }
+
+        private void OnAddNewLayer()
+        {
+            if (LayerManager.Layers.Count <= 0) return;
+            var newLayer = new LayerItem();
+            var newName = LayerManager.SelectedLayer.Name;
+            newLayer.Name = newName;
+            var checkName = LayerManager.Layers.Any(layer => layer.Name == newLayer.Name);
+            if (checkName)
+            {
+                newLayer.Name = newLayer.Name + LayerManager.Layers.Count.ToString();
+            }
+            LayerManager.Layers.Add(newLayer);
+            LayerManager.SelectedLayer = newLayer;
         }
 
         private void PrepareLineTypes()
         {
-            //var lineType = new LinePattern("Dash dot", new[] { 5f, -1f, 1f, -1f }, "Dash dot _._._._.");
-            //lineType.Name;
-            //lineType.Description
             LineTypes.Add(new LinePattern("Continues",null,"Continues __________________"));
             LineTypes.Add(new LinePattern("Dash Dot",new []{ 5f, -1f, 1f, -1f },"Dash dot _ . _ . _ . _ ."));
             LineTypes.Add(new LinePattern("Dash Space", new []{5f,-5f}, "Dash space __ __ __ __ __"));
+        }
+
+        private void PrepareLayers()
+        {
+            
         }
         private void OnDeleteLayerRow(SfDataGrid layerGrid)
         {

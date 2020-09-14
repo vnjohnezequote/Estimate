@@ -93,6 +93,7 @@ namespace WallFrameInputModule.Views
         private void PrenailFloorInputView_OnLoaded(object sender, RoutedEventArgs e)
         {
             _viewModel?.InitEngineerList();
+            _viewModel?.CalculatorWallLength();
             //if (this.BeamInput.DataContext is StickFrameBeamAndLintelInputViewModel stickViewModel)
             //{
             //    stickViewModel.LevelInfo = _viewModel.Level;

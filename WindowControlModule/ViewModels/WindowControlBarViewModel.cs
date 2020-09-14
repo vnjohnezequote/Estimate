@@ -76,6 +76,10 @@ namespace WindowControlModule.ViewModels
             {
                 if (this.isSaved)
                 {
+                    if (this._window==null)
+                    {
+                        return;
+                    }
                     this._window.Close();
                 }
             });

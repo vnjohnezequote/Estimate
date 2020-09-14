@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows.Input;
+using Estimate.ViewModels;
+
 namespace Estimate.Views
 {
     using System.Diagnostics.CodeAnalysis;
@@ -21,6 +24,7 @@ namespace Estimate.Views
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
     public partial class MainWindowView : FlatWindow
     {
+        private MainWindowViewModel _viewModel;
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowView"/> class.
         /// </summary>
@@ -28,7 +32,20 @@ namespace Estimate.Views
         {
             
             this.InitializeComponent();
+            if (this.DataContext!=null && this.DataContext is MainWindowViewModel viewModel)
+            {
+                _viewModel = viewModel;
+            }
         }
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (e.Key == Key.S)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                    _viewModel.SaveJob();
+            }
+        }
     }
 }

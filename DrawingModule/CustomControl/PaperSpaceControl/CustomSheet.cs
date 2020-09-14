@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using AppModels.CustomEntity;
+using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.ResponsiveData;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Enums;
 using DrawingModule.Views;
+using Point = System.Drawing.Point;
 
 namespace DrawingModule.CustomControl.PaperSpaceControl
 {
@@ -23,10 +28,22 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             {formatType.A4_ISO,new PageSize(180.0, 277.0,1,PageLayout.Portrait)},
             {formatType.A4_LANDSCAPE_ISO,new PageSize(267.0, 190.0,1,PageLayout.Landscape)},
         };
+
+        private IJob _job;
+        private Point3D _logoInsertPoint;
+        private PictureEntity _logoEntity;
         #endregion
 
         #region Properties
 
+        public IJob Job
+        {
+            get => _job;
+            set
+            {
+                _job = value;
+            }
+        }
         #endregion
 
         #region Constructor
@@ -34,11 +51,74 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
         public CustomSheet(linearUnitsType units, double width, double height, string name) : base(units, width, height, name)
         {
         }
+        public CustomSheet(linearUnitsType units, double width, double height, string name,IJob jobInfo) : base(units, width, height, name)
+        {
+            Job = jobInfo;
+            Job.Info.PropertyChanged += JobInfo_PropertyChanged;
+        }
+
+        private void JobInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(JobInfo.Customer))
+            {
+                this.RebuildLogo();
+            }
+        }
 
         #endregion
 
         #region Build Page
 
+        private PictureEntity BuildLogo(Point3D logoInsertPoint)
+        {
+            if (this.Job==null || logoInsertPoint==null)
+            {
+                return null;
+            }
+            if (string.IsNullOrEmpty(Job.Info.Customer))
+                {
+                    return null; 
+                }
+                var curFile = Job.Info.Customer+".png";
+                if (File.Exists(curFile))
+                {
+                    var img = Image.FromFile(curFile);
+                    _logoEntity = new PictureEntity(Plane.XY, logoInsertPoint, 37.648, 6.136, img);
+                    return _logoEntity;
+                }
+                return null;
+
+        }
+
+        private void RebuildLogo()
+        {
+            if (string.IsNullOrEmpty(Job.Info.Customer))
+            {
+                if (this.Entities.Contains(_logoEntity))
+                {
+                    _logoEntity.Image = null;
+                    this.Entities.Remove(_logoEntity);
+                    return;
+                }
+            }
+            var curFile = Job.Info.Customer+".png";
+            if (File.Exists(curFile))
+            {
+                if (this.Entities.Contains(_logoEntity))
+                    this.Entities.Remove(_logoEntity);
+                var img = Image.FromFile(curFile);
+                _logoEntity.Image = img;
+                this.Entities.Add(_logoEntity);
+
+            }
+            else
+            {
+                if (this.Entities.Contains(_logoEntity))
+                    this.Entities.Remove(_logoEntity);
+            }
+
+
+        }
         protected Entity[] CreateTitleBlocks(PageSize pageSize, Color color, float lineWeight = 0.3f)
         {
             List<Entity> list = new List<Entity>();
@@ -58,7 +138,6 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             
             return list.ToArray();
         }
-
         public virtual void CreateLandscapePageBorder(PageSize pageSize, double unitsConversionFactor, Color color, float lineWeight, List<Entity> lists, float pageBorder)
         {
             double borderWidth = pageBorder * unitsConversionFactor;
@@ -144,12 +223,21 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             });
 
             baseAtributePoint = table.GetBottomLeftCorner(4, 0);
+            _logoInsertPoint = new Point3D(baseAtributePoint.X+22,baseAtributePoint.Y+14);
+            //_logoInsertPoint = baseAtributePoint;
+            var logo = BuildLogo(_logoInsertPoint);
+            this.Entities.Add(logo);
+            //lists.Add(logo);
+            // lists.Add(new );
+
+
+            baseAtributePoint = table.GetBottomLeftCorner(4, 0);
             basePoint2 = new Point3D((baseAtributePoint.X+2) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y-2);
             Text text = new Text(basePoint2, "CLIENT", 2,Text.alignmentType.TopLeft);
             text.Color = Color.Chartreuse;
             text.ColorMethod = colorMethodType.byEntity;
             lists.Add(text);
-            lists.Add(new devDept.Eyeshot.Entities.Attribute(new Point3D(basePoint2.X,basePoint2.Y-5), "Client", String.Empty, attributeHeight)
+            lists.Add(new devDept.Eyeshot.Entities.Attribute(new Point3D(basePoint2.X,basePoint2.Y-5), "Client", String.Empty, attributeHeight/1.2)
             {
                 Alignment = Text.alignmentType.MiddleLeft
             });
@@ -310,7 +398,6 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
 
 
         }
-
         public virtual void CreatePortraitPageBorder(PageSize pageSize, double unitsConversionFactor,Color color, float lineWeight,List<Entity> lists, double borderGap)
         {
             //var y = (42 * pageSize.ScaleFactor) * unitsConversionFactor;
@@ -376,11 +463,10 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             var pageSize = (from pageFormat in _pageFormatTypes 
                 where pageFormat.Key == pageFormateType select pageFormat.Value).FirstOrDefault();
             IList<Entity> ents = this.BuildBlockEntities(pageSize, color);
+            
             return this.BuildFormatBlock(this.GetBlockNameString("A3", blockName), ents, out block);
             
         }
-        
-
         internal IList<Entity> BuildBlockEntities(PageSize pageSize, Color? color)
         {
             List<Entity> list = new List<Entity>();
@@ -389,9 +475,9 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             list.AddRange(this.CreateTitleBlocks(pageSize, colorOut, 0.15f));
             return list;
         }
-        private string GetBlockNameString(string string_0, string string_1)
+        private string GetBlockNameString(string paperSizeName, string blockName)
         {
-            return string_1 ?? string.Format("{0} {1}", this.Name, string_0);
+            return blockName ?? string.Format("{0} {1}", this.Name, paperSizeName);
         }
 
         #endregion

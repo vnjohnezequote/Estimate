@@ -34,7 +34,9 @@ namespace DrawingModule.CustomControl.CanvasControl
             {
                 SetProperty(ref _currentTool, value);
                 ToolChanged?.Invoke(this,new ToolChangedArgs(value));
-
+                if (CurrentTool != null) return;
+                this.PolaTrackingPoints.Clear();
+                PolaTrackedPoint = null;
             }
         }
         protected override void OnMouseMove(MouseEventArgs e)
@@ -96,6 +98,7 @@ namespace DrawingModule.CustomControl.CanvasControl
 
             if (this.ActionMode == actionType.None && e.ChangedButton == MouseButton.Left)
             {
+                this.PolaTrackingPoints.Clear();
                 if (IsProcessingTool)
                 {
                     if (_currentTool != null)

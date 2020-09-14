@@ -83,6 +83,12 @@ namespace DrawingModule.Views
                         case nameof(_viewModel.JobModel.Info.JobNumber):
                             br.Attributes["JobNo"].Value = _viewModel.JobModel.Info.JobNumber;
                             break;
+                        case nameof(_viewModel.JobModel.Info.Customer):
+                            if (_viewModel.JobModel.Info.Client.Name == "StickFrame")
+                            {
+                                br.Attributes["Client"].Value = _viewModel.JobModel.Info.Customer;
+                            }
+                            break;
                     }
                 }
             }
@@ -159,27 +165,27 @@ namespace DrawingModule.Views
                 var formatBlockReference = GetFormatBlockReference(activeSheet);
             if (formatBlockReference != null)
             {
-            //    //    formatBlockReference.Attributes["Format"].Value = formatBlockReference.BlockName.Replace("Sheet1", String.Empty).Trim();
-            //    //    var sheetNumber = 1;
-            //    //    var sheetsCount = 1;
-            //    //    formatBlockReference.Attributes["Sheet"].Value = string.Format("SHEET {0} OF {1}", sheetNumber, sheetsCount);
+                //    //    formatBlockReference.Attributes["Format"].Value = formatBlockReference.BlockName.Replace("Sheet1", String.Empty).Trim();
+                //    //    var sheetNumber = 1;
+                //    //    var sheetsCount = 1;
+                //    //    formatBlockReference.Attributes["Sheet"].Value = string.Format("SHEET {0} OF {1}", sheetNumber, sheetsCount);
 
-            //    //    //scaleComboBox.SelectedItem = formatBlockReference.Attributes["Scale"].ToString().Replace("SCALE: ", "");
+                //    //    //scaleComboBox.SelectedItem = formatBlockReference.Attributes["Scale"].ToString().Replace("SCALE: ", "");
 
-            //    //    // updates FastZPR representation
-            //drawings.Entities.UpdateBoundingBox();
-            //    //}
-            //    //drawings1.ZoomFit();
+                //    //    // updates FastZPR representation
+                //drawings.Entities.UpdateBoundingBox();
+                //    //}
+                //    //drawings1.ZoomFit();
 
-            //    //if (drawings1.GetActiveSheet() == null)
-            //    //{
-            //    //    drawingsPanel1.ActivateSheet(drawings1.Sheets[0].Name);
+                //    //if (drawings1.GetActiveSheet() == null)
+                //    //{
+                //    //    drawingsPanel1.ActivateSheet(drawings1.Sheets[0].Name);
 
-            //    //    if (_treeIsDirty)
-            //    //    {
-            //    //        drawingsPanel1.SyncTree();
-            //    //        _treeIsDirty = false;
-               //}
+                //    //    if (_treeIsDirty)
+                //    //    {
+                //    //        drawingsPanel1.SyncTree();
+                //    //        _treeIsDirty = false;
+                //}
 
                     drawings1.ZoomFit();
                 }
@@ -206,7 +212,15 @@ namespace DrawingModule.Views
         public void AddSheet(string name, linearUnitsType units, formatType formatType, IJob job, bool addDefaultView = true)
         {
             Tuple<double, double> size = DrawingHelper.GetFormatSize(units, formatType);
-            CustomSheet sheet = new CustomSheet(units, size.Item1, size.Item2, name);
+            CustomSheet sheet = null;
+            if (this._viewModel!=null && this._viewModel.JobModel!=null)
+            {
+                sheet = new CustomSheet(units, size.Item1, size.Item2, name, _viewModel.JobModel);    
+            }
+            else
+            {
+                sheet = new CustomSheet(units, size.Item1, size.Item2, name);    
+            }
             
             Block block;
             BlockReference br = CreateFormatBlock(formatType, sheet, out block,job);
@@ -271,7 +285,7 @@ namespace DrawingModule.Views
         }
 
         private readonly Dictionary<string, string> _formatBlockNames = new Dictionary<string, string>();
-        private TreeNode _rootTreeNode;
+        //private TreeNode _rootTreeNode;
         private BlockReference CreateFormatBlock(formatType formatType, CustomSheet sheet, out Block block,IJob job)
         {
             if (_formatBlockNames.ContainsKey(sheet.Name))
@@ -286,7 +300,14 @@ namespace DrawingModule.Views
             br.Attributes["WindRate"] = new AttributeReference(job.Info.WindRate);
             br.Attributes["RoofMaterial"] = new AttributeReference(job.Info.RoofMaterial);
             br.Attributes["TieDown"] = new AttributeReference(job.Info.TieDown + " TIE - DOWN");
-            br.Attributes["Client"] = new AttributeReference("Bunnings Trade Victoria");
+            if (job.Info.Client.Name == "StickFrame")
+            {
+                br.Attributes["Client"] = new AttributeReference(job.Info.Customer);   
+            }
+            else
+            {
+                br.Attributes["Client"] = new AttributeReference("");   
+            }
             br.Attributes["Address"] = new AttributeReference(job.Info.JobAddress);
             br.Attributes["City"] = new AttributeReference(job.Info.SubAddress);
             br.Attributes["Title"] = new AttributeReference(sheet.Name);
@@ -295,18 +316,6 @@ namespace DrawingModule.Views
             br.Attributes["Date"] = new AttributeReference(nowDate);
             br.Attributes["JobNo"] = new AttributeReference(job.Info.JobNumber);
             br.Attributes["Scale"] = new AttributeReference("1:50");
-
-            // Initializes attributes
-            //var sheetNumber = PaperSpace.Sheets.IndexOf(PaperSpace.GetActiveSheet()) + 1;
-            //var sheetsCount = PaperSpace.Sheets.Count;
-            //if (sheetsCount == 0)
-            //{
-            //    sheetNumber++;
-            //    sheetsCount++;
-            //}
-
-            //br.Attributes["Sheet"] = new AttributeReference(string.Format("SHEET {0} OF {1}", sheetNumber, sheetsCount));
-
             return br;
         }
         public void AddDefaultViews(CustomSheet sheet)
@@ -316,9 +325,8 @@ namespace DrawingModule.Views
             // adds Front vector view
             var view = new VectorView(-100 * unitsConversionFactor, -300 , viewType.Top, 0.01, GetViewName(sheet, viewType.Front,false));
             //var view = new RasterView(7 * unitsConversionFactor, 100 * unitsConversionFactor, viewType.Top, 0.5, GetViewName(sheet, viewType.Top, true));
-
-            view.ColorMethod = colorMethodType.byLayer;
-            view.LineTypeMethod = colorMethodType.byLayer;
+            //view.ColorMethod = colorMethodType.byLayer;
+            //view.LineTypeMethod = colorMethodType.byLayer;
             sheet.Entities.Add(view);
             // adds Trimetric raster view            
             //sheet.Entities.Add(new RasterView(150 * unitsConversionFactor, 230 * unitsConversionFactor, viewType.Trimetric, sheet.Scale, GetViewName(sheet, viewType.Trimetric, true)));

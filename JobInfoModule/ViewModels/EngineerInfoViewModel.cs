@@ -66,10 +66,14 @@ namespace JobInfoModule.ViewModels
             }
             if (this.SelectedClient!=null)
             {
-                foreach (var beamKey in SelectedClient.Beams.Keys)
+                if (SelectedClient.Beams!=null)
                 {
-                    TimberGradeList.Add(beamKey);   
+                    foreach (var beamKey in SelectedClient.Beams.Keys)
+                    {
+                        TimberGradeList.Add(beamKey);
+                    }
                 }
+                
                 TimberGradeList.Add("Steel");
             }
             

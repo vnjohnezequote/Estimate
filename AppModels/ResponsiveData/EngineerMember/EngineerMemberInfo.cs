@@ -79,7 +79,18 @@ namespace AppModels.ResponsiveData.EngineerMember
         public string TimberGrade
         {
             get => MaterialType == MaterialTypes.Steel ? "Steel" : _timberGrade;
-            set=>SetProperty(ref _timberGrade,value);
+            set
+            {
+                if (value == "Steel")
+                {
+                    MaterialType = MaterialTypes.Steel;
+                }
+                else
+                {
+                    MaterialType = MaterialTypes.Timber;
+                }
+                SetProperty(ref _timberGrade,value);
+            }
         }
         public string Size => this.NoItem == 1 ? this.Thickness + "x" + this.Depth : this.NoItem + "/" + this.Thickness + "x" + this.Depth;
         public string SizeGrade

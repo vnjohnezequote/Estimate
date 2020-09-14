@@ -26,6 +26,7 @@ namespace AppModels.ViewModelEntity
             {
                 if (this.Entity == null) return;
                 if (value != null) this.Entity.Color = (Color) value;
+                RaisePropertyChanged(nameof(Color));
             }
         }
         public string LayerName
@@ -39,6 +40,7 @@ namespace AppModels.ViewModelEntity
             }
         }
 
+
         public colorMethodType ColorMethod
         {
             get => Entity?.ColorMethod ?? colorMethodType.byEntity;
@@ -46,8 +48,32 @@ namespace AppModels.ViewModelEntity
             {
                 if (Entity ==null) return;
                 Entity.ColorMethod = value;
+                RaisePropertyChanged(nameof(ColorMethod));
             }
         }
+
+        public float LineWeight
+        {
+            get
+            {
+                if (Entity!=null )
+                {
+                    return Entity.LineWeight;
+                }
+
+                return 0;
+            } 
+            set
+
+        {
+            if (Entity!=null)
+            {
+                Entity.LineWeight = value;
+                RaisePropertyChanged(nameof(LineWeight));
+            }
+        }
+        }
+        
 
         protected EntityVmBase(IEntity entity)
         {

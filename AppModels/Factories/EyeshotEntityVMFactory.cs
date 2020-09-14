@@ -31,6 +31,11 @@ namespace AppModels.Factories
             return new TextVm(text);
         }
 
+        public static LeaderVM CreateLeaderVm(this Leader leader)
+        {
+            return new LeaderVM(leader);
+        }
+
         public static VectorViewVm CreateVectorViewVm(this VectorView vectorView)
         {
             return new VectorViewVm(vectorView);

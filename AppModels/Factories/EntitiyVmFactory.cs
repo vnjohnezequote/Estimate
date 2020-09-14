@@ -23,6 +23,8 @@ namespace AppModels.Factories
                     return view.CreateVectorViewVm();
                 case Text text:
                     return text.CreateTextVm();
+                case Leader leader:
+                    return leader.CreateLeaderVm();
                 case Entity entiti:
                     entiti.CreateEntityVm();
                     break;

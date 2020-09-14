@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using AppModels.Enums;
 using AppModels.PocoDataModel;
 using Prism.Mvvm;
@@ -76,12 +77,26 @@ namespace AppModels.ResponsiveData
         public string Customer
         {
             get => this._customer;
-            set => this.SetProperty(ref _customer, value);
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+                 this.SetProperty(ref _customer, value);
+            }
         }
         public string BuilderName
         {
             get => this._builderName;
-            set => this.SetProperty(ref this._builderName, value);
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    return;
+                }
+                this.SetProperty(ref this._builderName, value);
+            }
         }
         public Suppliers Supplier
         {
@@ -122,9 +137,22 @@ namespace AppModels.ResponsiveData
                     return;
                 }
                 var jobAddresses = value.Split(',');
-                if (jobAddresses.Length == 0) return;
-                JobAddress = jobAddresses[0];
-                SubAddress = jobAddresses[1].Trim() + ", " + jobAddresses[2].Trim();
+                switch (jobAddresses.Length)
+                {
+                    case 0:
+                        return;
+                    case 1:
+                        JobAddress = jobAddresses[0];
+                        return;
+                    case 2:
+                        JobAddress = jobAddresses[0];
+                        SubAddress = jobAddresses[1].Trim();
+                        break;
+                    case 3:
+                        JobAddress = jobAddresses[0];
+                        SubAddress = jobAddresses[1].Trim() + ", " + jobAddresses[2].Trim();
+                        break;
+                }
             } 
         }
         public string UnitNumber
@@ -167,14 +195,37 @@ namespace AppModels.ResponsiveData
         }
         public bool IsEngineer
         {
-            get => this._isEngineer;
-            set => this.SetProperty(ref this._isEngineer, value);
+            get
+            {
+                if ((BracingDesignInfor!=null && BracingDesignInfor.Content.Contains("Engineer"))||
+                    (BeamDesignInfor!=null && BeamDesignInfor.Content.Contains("Engineer"))||
+                    (FrameDesignInfor!=null && FrameDesignInfor.Content.Contains("Engineer")))
+                {
+                    return true;
+                }
+
+                return false;
+            } 
+            //set => this.SetProperty(ref this._isEngineer, value);
         }
         public bool IsBracingPlan
         {
-            get => this._isBracingPlan;
-            set => this.SetProperty(ref this._isBracingPlan, value);
+            get
+            {
+                if (BracingDesignInfor!=null && BracingDesignInfor.Content.Contains("TBA"))
+                {
+                    return false;
+                }
+
+                if (BracingDesignInfor!=null && BracingDesignInfor.Content.Contains("Bracing Plan"))
+                {
+                    return true;
+                }
+                return false;
+            }
+            //set => this.SetProperty(ref this._isBracingPlan, value);
         }
+
         public string IssuesInfor { get; set; }
         public string Treatment
         {
@@ -268,17 +319,38 @@ namespace AppModels.ResponsiveData
         public DesignInfor FrameDesignInfor
         {
             get => this._frameDesignInfor;
-            set => this.SetProperty(ref this._frameDesignInfor, value);
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+                this.SetProperty(ref this._frameDesignInfor, value);
+            } 
         }
         public DesignInfor BeamDesignInfor
         {
             get => this._beamDesignInfor;
-            set => this.SetProperty(ref this._beamDesignInfor, value);
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+                this.SetProperty(ref this._beamDesignInfor, value);
+            } 
         }
         public DesignInfor BracingDesignInfor
         {
             get => this._bracingDesignInfor;
-            set => this.SetProperty(ref this._bracingDesignInfor, value);
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+                this.SetProperty(ref this._bracingDesignInfor, value);
+            } 
         }
         public int StepDown
         {
@@ -322,6 +394,12 @@ namespace AppModels.ResponsiveData
                     if (Client !=null && Client.Name == "Prenail")
                     {
                         this.Supplier = Suppliers.DINDAS;
+                        Customer = "Noosa Truss";
+                    }
+
+                    else if(Client!=null && Client.Name!="Prenail")
+                    {
+                        Customer = "";
                     }
                     RaisePropertyChanged(nameof(TieDown));
                     break;
@@ -348,6 +426,12 @@ namespace AppModels.ResponsiveData
                     }
                 case nameof(WindRate):
                     this.RaisePropertyChanged(nameof(TieDown));
+                    break;
+                case nameof(FrameDesignInfor):
+                case nameof(BeamDesignInfor):
+                case nameof(BracingDesignInfor):
+                    RaisePropertyChanged(nameof(IsEngineer));
+                    RaisePropertyChanged(nameof(IsBracingPlan));
                     break;
             }
         }
@@ -437,8 +521,8 @@ namespace AppModels.ResponsiveData
             CompleteDate = info.CompleteDate;
             PlanIsueDate = info.PlanIsueDate;
             IsEPlan = info.IsEPlan;
-            IsEngineer = info.IsEngineer;
-            IsBracingPlan = info.IsBracingPlan;
+            //IsEngineer = info.IsEngineer;
+            //IsBracingPlan = info.IsBracingPlan;
             Treatment = info.Treatment;
             TieDown = info.TieDown;
             RoofMaterial = info.RoofMaterial;

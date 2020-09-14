@@ -60,11 +60,11 @@ namespace DrawingModule.ViewModels
         private Entity _selectedEntity;
         #endregion
         #region public Property
-        public Entity SelectedEntity
-        {
-            get => _selectedEntity;
-            set => SetProperty(ref _selectedEntity, value);
-        }
+        //public Entity SelectedEntity
+        //{
+        //    get => _selectedEntity;
+        //    set => SetProperty(ref _selectedEntity, value);
+        //}
         public ObservableCollection<LevelWall> Levels
         {
             get=>_levels;
@@ -88,11 +88,10 @@ namespace DrawingModule.ViewModels
             }
             set
             {
+                if(string.IsNullOrEmpty(value))
+                    return;
                 SetProperty(ref _selectedLevel, value);
-                if (this.EventAggregator != null)
-                {
-                    this.EventAggregator.GetEvent<LevelNameService>().Publish(_selectedLevel);
-                }
+                EventAggregator?.GetEvent<LevelNameService>().Publish(_selectedLevel);
             } 
         }
 
@@ -110,6 +109,7 @@ namespace DrawingModule.ViewModels
         /// </summary>
         public ICommand ExportDWGCommand { get; private set; }
         public ICommand ImportDWGCommand { get; private set; }
+        public ICommand ImportPDFCommand { get; private set; }
         public ICommand WindowLoadedCommand { get; private set; }
         public ICommand DrawLineCommand { get; private set; }
         public ICommand DrawRectangleCommand { get; private set; }
@@ -169,6 +169,10 @@ namespace DrawingModule.ViewModels
             ImportDWGCommand = new DelegateCommand(this.OnImportDWG);
             SaveCommand = new DelegateCommand(this.OnSaveDrawing);
             OpenCommand = new DelegateCommand(this.OnOpenDrawing);
+            EventAggregator.GetEvent<OpenJobEvent>().Subscribe(OnOpenDrawingEventSubcribe);
+            EventAggregator.GetEvent<AutoSaveDrawingEvent>().Subscribe(OnAutoSaveDrawing);
+            EventAggregator.GetEvent<SaveDrawingEvent>().Subscribe(OnSaveDrawing);
+            //ImportPDFCommand = new DelegateCommand(OnImportPDF);
             //_autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
             //_autoSaveTimer.Start();
 
@@ -195,13 +199,54 @@ namespace DrawingModule.ViewModels
             this.IsOrthorMode = true;
 
         }
+
+        public void SaveJob()
+        {
+            if (this.EventAggregator!=null)
+            {
+                EventAggregator.GetEvent<DrawingSaveJobEvent>().Publish();
+            }
+        }
+        private void OnAutoSaveDrawing()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>
+            { 
+                OnAutoSaveDrawingExcute();
+            }));
+        }
+
         private void _autoSaveTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>
             {//this refer to form in WPF application 
-                OnSaveDrawing();
+                //OnSaveDrawing();
             }));
             
+        }
+
+        
+        private void OnAutoSaveDrawingExcute()
+        {
+            if (this.JobModel != null)
+            {
+                var fileName = JobModel.Info.JobLocation + "\\" + JobModel.Info.JobNumber +"_back"+ ".eye";
+                WriteFile writeFile = new WriteFile(
+                    new WriteFileParams(_drawingModel)
+                    , fileName,
+                    new EzequoteFileSerializer()
+                );
+                _drawingModel.StartWork(writeFile);
+            }
+        }
+
+        private void OnOpenDrawingEventSubcribe(string drawingPath)
+        {
+            if (_drawingModel!=null)
+            {
+                _drawingModel.Clear();
+                ReadFile readFile = new ReadFile(drawingPath, new EzequoteFileSerializer());
+                _drawingModel.StartWork(readFile);
+            }
         }
 
         #endregion
@@ -254,9 +299,23 @@ namespace DrawingModule.ViewModels
             }
         }
 
+        private void OnImPortPDF()
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "PDF drawings (*.PDF)|*.PDF";
+            var result = openFileDialog.ShowDialog();
+            if (result == true)
+            {
+                
+                //ReadFile readFile = new ReadFile(openFileDialog.FileName, new EzequoteFileSerializer());
+                //_drawingModel.StartWork(readFile);
+            }
+        }
+
         private void OnSaveDrawing()
         {
             /*
+            
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
             saveFileDialog.Filter =
@@ -276,28 +335,22 @@ namespace DrawingModule.ViewModels
                     new EzequoteFileSerializer()
                 );
                 _drawingModel.StartWork(writeFile);
+            }*/
+
+            if (this.JobModel != null)
+            {
+                var fileName = JobModel.Info.JobLocation + "\\" + JobModel.Info.JobNumber + ".eye";
+                WriteFile writeFile = new WriteFile(
+                    new WriteFileParams(_drawingModel)
+                    , fileName,
+                    new EzequoteFileSerializer()
+                );
+                _drawingModel.StartWork(writeFile);
             }
-            */
-            //if (this.JobModel!=null)
-            //{
-            //    var fileName = JobModel.Info.JobLocation+ "\\" + JobModel.Info.JobNumber + ".eye";
-            //    WriteFile writeFile = new WriteFile(
-            //        new WriteFileParams(_drawingModel)
-            //        , fileName,
-            //        new EzequoteFileSerializer()
-            //    );
-            //    _drawingModel.StartWork(writeFile);
-            //}
-        }
-
-        private void Autosave()
-        {
-
         }
 
         private void OnOpenDrawing()
         {
-
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "CAD drawings (*.eye)|*.eye";
             var result = openFileDialog.ShowDialog();

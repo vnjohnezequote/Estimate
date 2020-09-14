@@ -737,7 +737,6 @@
     </FrameworkElement.Resources>
     <Border Width="{Binding ElementName=HintViewerControl, Path=Width}">
         <ItemsControl ItemTemplate="{StaticResource HintCategoryDataTemplate}"
-                      ItemsSource="{Binding HintCategories}" 
-            />
+                      ItemsSource="{Binding HintCategories}" />
     </Border>
 </UserControl>

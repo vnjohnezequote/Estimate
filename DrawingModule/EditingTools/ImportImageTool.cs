@@ -1,6 +1,7 @@
 ﻿
 
 using System.Drawing;
+using System.Reactive.Joins;
 using System.Windows.Forms;
 using ApplicationInterfaceCore;
 using ApplicationService;
@@ -50,7 +51,8 @@ namespace DrawingModule.EditingTools
             if (resutl.Status == PromptStatus.OK)
             {
                 var inserPoint = resutl.Value;
-                var insertPick = new PictureEntity(Plane.XY, inserPoint, _imgWidth, _imgHeight, _insertImage);
+                var picPlan = Plane.XY.Offset(-10);
+                var insertPick = new PictureEntity(picPlan, inserPoint, _imgWidth, _imgHeight, _insertImage);
                 
                 EntitiesManager.AddAndRefresh(insertPick, LayerManager.SelectedLayer.Name);
             }

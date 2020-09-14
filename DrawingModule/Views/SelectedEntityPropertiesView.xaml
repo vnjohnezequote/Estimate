@@ -54,15 +54,21 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
 
         </Grid.RowDefinitions>
-        <TextBlock Text="Layer" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LayerVisibility}"/>
-        <TextBlock Text="Color" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding ColorVisibility}"/>
+        <TextBlock Text="Layer" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5"/>
+        <TextBlock Text="Color" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5"/>
         <TextBlock Text="Level" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LevelVisibility}"/>
-        <TextBlock Text="Color By" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding ColorMethodVisibility}"/>
-        <TextBlock Text="X" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" />
-        <TextBlock Text="Y" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" />
-        <TextBlock Text="Content" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding TextContentVisibility}"/>
+        <TextBlock Text="Color By" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" />
+        <TextBlock Text="Line Weight" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" />
+        <TextBlock Text="X" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" />
+        <TextBlock Text="Y" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5" />
+        <TextBlock Text="Content" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding TextContentVisibility}"/>
+        <TextBlock Text="Text Height" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding TextContentVisibility}"/>
+        <TextBlock Text="Arrow Size" Grid.Row="9" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding LeaderVisibility}"/>
         <GridSplitter Grid.Column="1"
                       Grid.Row="0"
                       Grid.RowSpan="3"
@@ -115,14 +121,27 @@
                   SelectedItem="{Binding Path=SelectedEntity.ColorMethod}"/>
         <TextBox Grid.Row="4"
                  Grid.Column="2"
-                 Text="{Binding SelectedEntity.X}"/>
+                 Text="{Binding SelectedEntity.LineWeight}"/>
         <TextBox Grid.Row="5"
                  Grid.Column="2"
-                 Text="{Binding SelectedEntity.Y}"/>
+                 Text="{Binding SelectedEntity.X}"/>
         <TextBox Grid.Row="6"
+                 Grid.Column="2"
+                 Text="{Binding SelectedEntity.Y}"/>
+        <TextBox Grid.Row="7"
                  Grid.Column="2"
                  Text="{Binding SelectedEntity.TextString}"
                  Visibility="{Binding TextContentVisibility}"
+                 AcceptsReturn="True"/>
+        <TextBox Grid.Row="8"
+                 Grid.Column="2"
+                 Text="{Binding SelectedEntity.TextHeight}"
+                 Visibility="{Binding TextContentVisibility}"
+                 AcceptsReturn="True"/>
+        <TextBox Grid.Row="9"
+                 Grid.Column="2"
+                 Text="{Binding SelectedEntity.ArrowSize}"
+                 Visibility="{Binding LeaderVisibility}"
                  AcceptsReturn="True"/>
 
     </Grid>

@@ -89,6 +89,18 @@ namespace DrawingModule.CustomControl.CanvasControl
                     this.Focus();
                     this.ProcessCancelTool();
                     return false;
+                //case Key.Tab:
+                //    if (this.CurrentTool!=null)
+                //    {
+                //        return true;
+                //    }
+
+                //    if (this.CurrentTool == null && this.IsFocused)
+                //    {
+                //        return false;
+                //    }
+
+                //    return true;
                 default:
                     return this.IsProcessingTool;
             }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
+using AppModels.CustomEntity;
 using AppModels.ResponsiveData;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -10,6 +12,9 @@ using devDept.Geometry;
 using devDept.Graphics;
 using DrawingModule.CustomControl.PaperSpaceControl;
 using DrawingModule.ViewModels;
+using DynamicData;
+using Attribute = devDept.Eyeshot.Entities.Attribute;
+using Size = System.Drawing.Size;
 
 namespace DrawingModule.Views
 {
@@ -39,6 +44,7 @@ namespace DrawingModule.Views
             this.Loaded += DrawingWindowView_Loaded;
             this.CanvasDrawing.CanvasDrawing.WorkCompleted += CanvasDrawing_WorkCompleted;
             this.CanvasDrawing.TabControlDrawing.SelectionChanged += TabControl1_SelectionChanged;
+            
         }
 
         private void _drawingWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -90,12 +96,34 @@ namespace DrawingModule.Views
             var model1 = this.CanvasDrawing.CanvasDrawing;
 
             if (!(e.WorkUnit is ReadFileAsyncWithDrawings)) return;
+           
             var rfa = (ReadFileAsyncWithDrawings)e.WorkUnit;
+           
             rfa.AddToScene(model1);
-            //model1.SetView(viewType.Trimetric, true, false);
+            var listPicEntitiesToRemove = new List<Entity>();
+            var listPicEntitiesToAdd = new List<Entity>();
+            foreach (var rfaEntity in model1.Entities)
+            {
+                if (rfaEntity is Picture picEntity)
+                {
+                    var myPic = new PictureEntity(picEntity);
+                    listPicEntitiesToAdd.Add(myPic);
+                    listPicEntitiesToRemove.Add(rfaEntity);
+                }
+            }
+
+            foreach (var model1Entity in listPicEntitiesToRemove)
+            {
+                model1.Entities.Remove(model1Entity);
+            }
+            model1.Entities.AddRange(listPicEntitiesToAdd);
+
+            model1.Entities.Regen();
+
             var drawings = this.CanvasDrawing.PaperSpace;
 
             model1.Units = rfa.Units;
+            
             rfa.AddToDrawings(drawings);
 
             //// If there are no sheets adds a default one to have a ready-to-use paper space.
@@ -106,8 +134,8 @@ namespace DrawingModule.Views
 
         private void DrawingWindowView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            //this.CanvasDrawing.CanvasDrawing.Renderer = rendererType.Direct3D;
-            //this.CanvasDrawing.CanvasDrawing.Turbo.MaxComplexity = 100;
+            this.CanvasDrawing.CanvasDrawing.Renderer = rendererType.Direct3D;
+            this.CanvasDrawing.CanvasDrawing.Turbo.MaxComplexity = 100;
             this.CanvasDrawing.CanvasDrawing.HideSmall = true;
             this.CanvasDrawing.CanvasDrawing.Wireframe.SilhouettesDrawingMode = silhouettesDrawingType.Never;
             this.CanvasDrawing.CanvasDrawing.Shaded.SilhouettesDrawingMode = silhouettesDrawingType.Never;
@@ -120,6 +148,8 @@ namespace DrawingModule.Views
             this.CanvasDrawing.CanvasDrawing.Shaded.ShowEdges = false;
             this.CanvasDrawing.CanvasDrawing.Shaded.ShowInternalWires = false;
             this.CanvasDrawing.CanvasDrawing.Rendered.ShowEdges = false;
+            CanvasDrawing.CanvasDrawing.Camera.ProjectionMode = projectionType.Orthographic;
+            CanvasDrawing.CanvasDrawing.Renderer = rendererType.Native;
             this.CanvasDrawing.PaperSpace.Rebuild(this.CanvasDrawing.CanvasDrawing, true, true);
         }
 
@@ -131,16 +161,36 @@ namespace DrawingModule.Views
             // sets the units of the model.
             //this.CanvasDrawing.CanvasDrawing.Units = rf.Units;
             //this.CanvasDrawing.CanvasDrawing.Entities.Add(rf.Entities[0]);
-            if (this.CanvasDrawing.PaperSpace.Sheets.Count == 0)
+            if (this.CanvasDrawing.PaperSpace.Sheets.Count != 0) return;
+            foreach (var levelWall in _drawingWindowViewModel.Levels)
             {
-                foreach (var levelWall in _drawingWindowViewModel.Levels)
-                {
 
-                    CanvasDrawing.AddSheet(levelWall.LevelName, linearUnitsType.Millimeters, formatType.A4_LANDSCAPE_ISO, _drawingWindowViewModel.JobModel);
-                }
-
-                //CanvasDrawing.TestPaperSpace.LineTypes.ReplaceItem(new LinePattern(CanvasDrawing.HiddenSegmentsLineTypeName, new float[] { 0.8f, -0.4f }));
+                CanvasDrawing.AddSheet(levelWall.LevelName, linearUnitsType.Millimeters, formatType.A4_LANDSCAPE_ISO, _drawingWindowViewModel.JobModel);
             }
+
+           // BuildTestBeamBlock();
+
+            //CanvasDrawing.TestPaperSpace.LineTypes.ReplaceItem(new LinePattern(CanvasDrawing.HiddenSegmentsLineTypeName, new float[] { 0.8f, -0.4f }));
+        }
+
+        private void BuildTestBeamBlock()
+        {
+            Block beam = new Block("B1");
+            Line beamLine = new Line(new Point3D(0,0,0),new Point3D(1000,0,0));
+            beamLine.ColorMethod = colorMethodType.byEntity;
+            beamLine.Color = Color.Blue;
+            beam.Entities.Add(beamLine);
+            Leader beamLeader = new Leader(Plane.XY,new Point3D(500,0,0),new Point3D(500,2000,0));
+            beamLeader.ArrowheadSize = 500;
+            beam.Entities.Add(beamLeader);
+            var beamText = new Attribute(new Point3D(250,2050,0),"Name","B1",500);
+            beam.Entities.Add(beamText);
+            CanvasDrawing.CanvasDrawing.Blocks.Add(beam);
+            BlockReference reference = new BlockReference(new Point3D(0,0,0),"B1",0);
+            reference.Attributes.Add("Name","B1");
+            CanvasDrawing.CanvasDrawing.Entities.Add(reference);
+
+
         }
 
         protected override void OnSourceInitialized(System.EventArgs e)
@@ -159,12 +209,18 @@ namespace DrawingModule.Views
         //    ContainerMessageDispatcher.RaiseWin32Message(hWnd, message, wParam, lParam, ref handled);
         //    return IntPtr.Zero;
         //}
-
+        
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             if (CanvasDrawing.TabDrawing.IsSelected)
             {
+                if (e.Key == Key.S && Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    if (_drawingWindowViewModel != null)
+                        _drawingWindowViewModel.SaveJob();
+                    return;
+                }
                 if (e.Key == Key.F8)
                 {
                     this.CanvasDrawing.CanvasDrawing.IsOrthoModeEnable =
@@ -185,7 +241,6 @@ namespace DrawingModule.Views
                         handler = //Dispatcher.Invoke((Func<bool>)(() => this.CanvasDrawing.DynamicInput.PreProcessKeyboardInput(e))); 
                             this.CanvasDrawing.DynamicInput.PreProcessKeyboardInput(e);
                     }
-                    
 
                     if (!handler&& CanvasDrawing.CanvasDrawing.IsMouseOver)
                     {
@@ -228,9 +283,29 @@ namespace DrawingModule.Views
 
         private void PrintLayoutClick(object sender, RoutedEventArgs e)
         {
-            if (CanvasDrawing.PaperSpace.PageSetup(true, true, 0) == false) return;
-            //CanvasDrawing.PaperSpace.PrintPreview(new System.Drawing.Size(800, 600));
+            if (CanvasDrawing.PaperSpace.PageSetup(true,true,0)==false) return;
             CanvasDrawing.PaperSpace.Print();
+            //var hdSetting = new HiddenLinesViewSettings(CanvasDrawing.PaperSpace);
+            //hdSetting.KeepEntityColor = true;
+            //hdSetting.KeepEntityLineWeight = true;
+            //var hlv = new HiddenLinesViewOnPaper(hdSetting);
+            //CanvasDrawing.PaperSpace.StartWork(hlv);
+            //CanvasDrawing.PaperSpace.PrintPreview(new System.Drawing.Size(800, 600));
+            //var hdSetting = new HiddenLinesViewSettings(CanvasDrawing.PaperSpace);
+            //if (CanvasDrawing.CanvasDrawing.PageSetup(true, true, 0) == false) return;
+            
+            //if (CanvasDrawing.CanvasDrawing.PageSetup(true,true,0)==false) return;
+            //CanvasDrawing.CanvasDrawing.Camera.ProjectionMode = projectionType.Orthographic;
+            //var hdSetting = new HiddenLinesViewSettings(CanvasDrawing.CanvasDrawing);
+            //hdSetting.KeepEntityColor = true;
+            //hdSetting.KeepEntityLineWeight = true;
+            //hdSetting.TreatWhiteAsBlack = true;
+
+            //var hlv = new HiddenLinesViewOnPaper(hdSetting);
+            //CanvasDrawing.CanvasDrawing.StartWork(hlv);
+
+            //CanvasDrawing.CanvasDrawing.DoWork(hlv);
+            
             //if (CanvasDrawing.CanvasDrawing.PageSetup(true,true,0)==false) return;
             //CanvasDrawing.CanvasDrawing.Print();
             //CanvasDrawing.CanvasDrawing.

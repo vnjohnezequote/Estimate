@@ -1128,6 +1128,11 @@ namespace DrawingModule.ViewModels
             //UpdateSelectAllTExtInTextBox();
 
         }
+
+        public void ProcessCommandLineMouseDown()
+        {
+            HandleEnterAndSpaceKey();
+        }
         public bool ProcessKeyDown(KeyEventArgs e)
         {
             e.Handled = false;

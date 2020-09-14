@@ -164,7 +164,7 @@ namespace Estimate.ViewModels
         /// The max panel changed.
         /// </summary>
         private readonly Action _maxPanelChanged;
-        private Timer _autoSaveTimer = new Timer(1 * 60 * 1000);
+        private Timer _autoSaveTimer = new Timer(5 * 60 * 1000);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
@@ -211,8 +211,9 @@ namespace Estimate.ViewModels
             SaveJobCommand = new DelegateCommand(OnSaveJobCommand);
             OpenJobCommand = new DelegateCommand(OnOpenJobCommand);
             JobModel.Info.PropertyChanged += Info_PropertyChanged;
-            //_autoSaveTimer.Start();
-            //_autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
+            _autoSaveTimer.Start();
+            _autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
+            this.EventAggregator.GetEvent<DrawingSaveJobEvent>().Subscribe(OnSaveJobCommand);
             //this.EventAggregator.GetEvent<JobModelService>().Subscribe(this.OnChangeClient);
 
 
@@ -222,6 +223,7 @@ namespace Estimate.ViewModels
         {
             System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>
             {//this refer to form in WPF application 
+                OnAutoSaveFile();
                 OnSaveJobCommand();
             }));
 
@@ -369,6 +371,11 @@ namespace Estimate.ViewModels
             get => chuoiluu;
             set => SetProperty(ref chuoiluu, value);
         }
+
+        public void SaveJob()
+        {
+            OnSaveJobCommand();
+        }
         private void OnSaveJobCommand()
         {
             if (this.JobModel != null)
@@ -395,7 +402,51 @@ namespace Estimate.ViewModels
                 {
                     serializer.Serialize(writer, jobSaved);
                 }
+                this.EventAggregator.GetEvent<SaveDrawingEvent>().Publish();
                 
+                //Chuoiluu = JsonConvert.SerializeObject(JobModel, new JsonSerializerSettings()
+                //{
+                //    TypeNameHandling = TypeNameHandling.Auto,
+                //    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                //    ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                //    Formatting = Formatting.Indented,
+                //});
+
+                //var jobOpen = JsonConvert.DeserializeObject<JobModelPoco>(Chuoiluu);
+            }
+        }
+
+        private void OnAutoSaveFile()
+        {
+            if (this.JobModel != null)
+            {
+                var fileName = JobModel.Info.JobLocation + @"\" + JobModel.Info.JobNumber +"_backup"+ ".Db";
+                var jobSaved = new JobModelPoco(JobModel);
+                //using (var db = new LiteDatabase("filename=Clients.Db;upgrade=true"))
+                //{
+                //    var jobs = db.GetCollection<JobModel>("Jobs");
+                //    jobs.Insert((JobModel)JobModel);
+                //}
+                //Chuoiluu = JsonConvert.SerializeObject(jobSaved);
+                //Chuoiluu = JsonConvert.SerializeObject(jobSaved, new JsonSerializerSettings()
+                //{
+                //    Formatting = Formatting.Indented,
+                //});
+                JsonSerializer serializer = new JsonSerializer()
+                {
+                    Formatting = Formatting.Indented,
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+                using (var sw = new StreamWriter(fileName))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, jobSaved);
+                }
+
+                if (this.EventAggregator!=null)
+                {
+                    this.EventAggregator.GetEvent<AutoSaveDrawingEvent>().Publish();
+                }
                 //Chuoiluu = JsonConvert.SerializeObject(JobModel, new JsonSerializerSettings()
                 //{
                 //    TypeNameHandling = TypeNameHandling.Auto,
@@ -422,11 +473,18 @@ namespace Estimate.ViewModels
             {
                 using (var stream = File.OpenRead(result.File))
                 {
+                    var folderString = result.FileInfo.Directory.FullName;
                     TextReader text = new StreamReader(stream);
                     var jsonReader = new JsonTextReader(text);
                     var serializer = new JsonSerializer();
                     var jobOpen = serializer.Deserialize<JobModelPoco>(jsonReader);
                     jobOpen.Info.JobLocation = result.FileInfo.DirectoryName;
+                    var drawingFile = folderString + "\\"+jobOpen.Info.JobNumber+".eye";
+                    if (File.Exists(drawingFile))
+                    {
+                       this.LoadDrawingWindow();
+                       this.EventAggregator.GetEvent<OpenJobEvent>().Publish(drawingFile);
+                    }
                     JobModel.LoadJob(jobOpen,Clients.ToList());
                     EventAggregator.GetEvent<RefreshFloorEvent>().Publish(true);
                 }

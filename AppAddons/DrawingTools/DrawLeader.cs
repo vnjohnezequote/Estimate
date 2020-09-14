@@ -70,9 +70,9 @@ namespace AppAddons.DrawingTools
                 }
 
                 var leader = new Leader(Plane.XY, _clickPoints) { ArrowheadSize = this.ArrowSize };
-                EntitiesManager.AddAndRefresh(leader, LayerManager.SelectedLayer.Name);
+                EntitiesManager.AddAndRefresh(leader, "BeamMarked");
                 var text = Utils.CreateNewTextLeader(this._clickPoints[_clickPoints.Count - 2], this._clickPoints[_clickPoints.Count - 1],TextInput,TextHeight);
-                EntitiesManager.AddAndRefresh(text, LayerManager.SelectedLayer.Name);
+                EntitiesManager.AddAndRefresh(text, "BeamMarked");
                 _clickPoints.Clear();
                 BasePoint = null;
                     //EntitiesManager.AddAndRefresh(text, LayerManager.SelectedLayer.Name);

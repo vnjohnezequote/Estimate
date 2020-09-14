@@ -35,10 +35,31 @@ namespace AppModels.ViewModelEntity
             }
         }
 
+        public double TextHeight
+        {
+            get
+            {
+                if (Entity is Text textEntity)
+                {
+                    return textEntity.Height;
+                }
+
+                return 0;
+            }
+            set
+            {
+                if (Entity is Text textEntity)
+                {
+                    textEntity.Height = value;
+                    RaisePropertyChanged(nameof(TextHeight));
+                }
+            }
+        }
         public override void NotifyPropertiesChanged()
         {
             base.NotifyPropertiesChanged();
             RaisePropertyChanged(nameof(TextString));
+            RaisePropertyChanged(nameof(TextHeight));
         }
     }
 }

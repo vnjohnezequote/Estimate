@@ -10,6 +10,7 @@ namespace AppModels.Interaface
         Color? Color { get; }
         string LayerName { get; }
         colorMethodType ColorMethod { get; }
+        float LineWeight { get; }
         void NotifyPropertiesChanged();
     }
 }

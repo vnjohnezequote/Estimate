@@ -25,20 +25,14 @@
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Bottom"
                                       VerticalContentAlignment="Bottom">
-                <Label Content="{Binding JobInfo.FrameDesignInfor.Header, FallbackValue='Frame as per'}"/>
+                <Label Content="{Binding JobModel.Info.FrameDesignInfor.Header, FallbackValue='Frame as per'}"/>
             </materialDesign:ColorZone>
-            <ComboBox ItemsSource="{Binding FrameDesignInfors}"
-                      SelectedItem="{Binding JobInfo.FrameDesignInfor}"
-                      SelectedValue="{Binding JobInfo.FrameDesignInfor}"
-                      Text="{Binding JobInfo.FrameDesignInfor.Content}"
+            <ComboBox SelectedItem="{Binding JobModel.Info.FrameDesignInfor, Mode=TwoWay}"
                       DisplayMemberPath="Content"
-                      Margin="20 0 0 0">
-                <interactions:Interaction.Triggers>
-                    <interactions:EventTrigger EventName="SelectionChanged">
-                        <interactions:InvokeCommandAction Command="{Binding BeamDesignInforChangedCommand}"/>
-                    </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>
-            </ComboBox>
+                      Text="{Binding JobModel.Info.FrameDesignInfor.Content}"
+                      ItemsSource="{Binding FrameDesignInfors}"
+                      Margin="20 0 0 0"/>
+            <!--<TextBox Text="{Binding JobModel.Info.FrameDesignInfor.Content}"/>-->
 
         </DockPanel>
         <DockPanel Margin="20 0 20 0">
@@ -47,40 +41,29 @@
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Bottom"
                                       VerticalContentAlignment="Center">
-                <Label Content="{Binding JobInfo.BeamDesignInfor.Header, FallbackValue='Beam as per'}"/>
+                <Label Content="{Binding JobModel.Info.BeamDesignInfor.Header, FallbackValue='Beam as per'}"/>
             </materialDesign:ColorZone>
-            <ComboBox ItemsSource="{Binding BeamDesignInfors}"
-                      SelectedItem="{Binding JobInfo.BeamDesignInfor}"
-                      SelectedValue="{Binding JobInfo.BeamDesignInfor}"
-                      Text="{Binding JobInfo.BeamDesignInfor.Content}"
+            <ComboBox SelectedItem="{Binding JobModel.Info.BeamDesignInfor,Mode=TwoWay}"
+                      Text="{Binding JobModel.Info.BeamDesignInfor.Content}"
                       DisplayMemberPath="Content"
-                      Margin="20 0 0 0">
-                <interactions:Interaction.Triggers>
-                    <interactions:EventTrigger EventName="SelectionChanged">
-                        <interactions:InvokeCommandAction Command="{Binding BeamDesignInforChangedCommand}"/>
-                    </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>
-            </ComboBox>
+                      ItemsSource="{Binding BeamDesignInfors}"
+                      Margin="20 0 0 0"/>
+            <!--<TextBox Text="{Binding JobModel.Info.BeamDesignInfor.Content}"/>-->
         </DockPanel>
         <DockPanel Margin="20 0 20 0">
             <materialDesign:ColorZone Mode="Dark" Width="120"
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Bottom"
                                       VerticalContentAlignment="Center">
-                <Label Content="{Binding JobInfo.BracingDesignInfor.Header, FallbackValue='Bracing as per'}"/>
+                <Label Content="{Binding JobModel.Info.BracingDesignInfor.Header, FallbackValue='Bracing as per'}"/>
             </materialDesign:ColorZone>
-            <ComboBox ItemsSource="{Binding BracingInfors}"
-                      SelectedItem="{Binding JobInfo.BracingDesignInfor}"
-                      SelectedValue="{Binding JobInfo.BracingDesignInfor}"
-                      Text="{Binding JobInfo.BracingDesignInfor.Content}"
+            <ComboBox SelectedItem="{Binding JobModel.Info.BracingDesignInfor,Mode=TwoWay}"
+                      SelectedValue="{Binding JobModel.Info.BracingDesignInfor,Mode=TwoWay}"
+                      Text="{Binding JobModel.Info.BracingDesignInfor.Content}"
                       DisplayMemberPath="Content"
-                      Margin="20 0 0 0">
-                <interactions:Interaction.Triggers>
-                    <interactions:EventTrigger EventName="SelectionChanged">
-                        <interactions:InvokeCommandAction Command="{Binding BeamDesignInforChangedCommand}"/>
-                    </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>
-            </ComboBox>
+                      ItemsSource="{Binding BracingInfors}"
+                      Margin="20 0 0 0"/>
+            <!--<TextBox Text="{Binding JobModel.Info.BracingDesignInfor.Content}"/>-->
         </DockPanel>
         <!-- Plan Infor -->
         <DockPanel Margin="20 10 20 0">
@@ -92,14 +75,14 @@
                 <Label Content="Plan Issue"/>
             </materialDesign:ColorZone>
             <DatePicker materialDesign:HintAssist.Hint="Pick Date"
-                        SelectedDate="{Binding JobInfo.PlanIsueDate}"
+                        SelectedDate="{Binding JobModel.Info.PlanIsueDate}"
                         IsTodayHighlighted="False"
                         Language="en-AU"
                         Margin="20 0 0 0"/>
 
-            <CheckBox Content="E - Plan" IsChecked="{Binding JobInfo.IsEPlan}" Margin="20 0 0 0"/>
-            <CheckBox Content="Engineer" IsChecked="{Binding JobInfo.IsEngineer}" Margin="20 0 0 0"/>
-            <CheckBox Content="Bracing Plan" IsChecked="{Binding JobInfo.IsBracingPlan}" Margin="20 0 0 0"/>
+            <CheckBox Content="E - Plan" IsChecked="{Binding JobModel.Info.IsEPlan}" Margin="20 0 0 0"/>
+            <CheckBox Content="Engineer" IsChecked="{Binding JobModel.Info.IsEngineer, Mode=OneWay}" Margin="20 0 0 0"/>
+            <CheckBox Content="Bracing Plan" IsChecked="{Binding JobModel.Info.IsBracingPlan,Mode=OneWay}" Margin="20 0 0 0"/>
         </DockPanel>
         <local:EngineerInfoView Margin="20 20 20 0"/>
     </StackPanel>
