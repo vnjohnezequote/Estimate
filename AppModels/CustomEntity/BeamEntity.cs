@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Openings;
@@ -8,11 +9,12 @@ using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
+using devDept.Serialization;
 using Attribute = devDept.Eyeshot.Entities.Attribute;
-using Point = System.Windows.Point;
 
 namespace AppModels.CustomEntity
 {
+    [Serializable]
     public class BeamEntity: BlockReference
     {
         private Beam _beamReference;
@@ -35,6 +37,7 @@ namespace AppModels.CustomEntity
         public Attribute TreatmentAttribute { get; set; }
         public Attribute SupportWallAttribute { get; set; }
         public Attribute CustomAttribute { get; set; }
+        public int BeamReferenceId { get; set; }
         //public MultilineText BeamName { get; set; }
         public Point3D BaseAttributePoint { get; set; }
         public Leader BeamLeader { get; set; }
@@ -92,9 +95,22 @@ namespace AppModels.CustomEntity
             set
             {
                 _beamName = value;
+                if (BeamReference !=null)
+                {
+                    BeamReference.Name = value;
+                }
+                
                 if (ShowBeamNameOnly)
                 {
-                    this.Attributes["Name"].Value = value;
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.Attributes["Name"].Value = BeamReference.Name;
+                    }
+                    else
+                    {
+                        this.Attributes["Name"].Value = value;
+                    }
+                    
                 }
             }
 
@@ -142,7 +158,7 @@ namespace AppModels.CustomEntity
                 if (ShowBeamNameOnly == true)
                 {
                     this.PreCalculatorAttributePoint();
-                    if (this.Attributes["Name"] != null)
+                    if (this.Attributes.ContainsKey("Name"))
                     {
                         this.Attributes["Name"].Value = BeamNameString;
                     }
@@ -155,9 +171,10 @@ namespace AppModels.CustomEntity
                     if (BeamReference.TimberInfo != null)
                     {
                         this.PreCalculatorAttributePoint();
-                        this.Attributes["Name"].Value = BeamReference.TimberInfo.SizeGrade + " @ " + BeamReference.Quantity + "/" + BeamReference.QuoteLength;
-                        
-                        //this.BeamName.TextString = BeamReference.TimberInfo.SizeGrade + " @ " + BeamReference.Quantity + "/" + BeamReference.QuoteLength;
+                        if (this.Attributes.ContainsKey("Name"))
+                        {
+                            this.Attributes["Name"].Value = BeamReference.TimberInfo.SizeGrade + " @ " + BeamReference.Quantity + "/" + BeamReference.QuoteLength;
+                        }
                     }
                 }
             }
@@ -213,10 +230,10 @@ namespace AppModels.CustomEntity
                 }
             }
         }
-        //public BeamEntity(Point3D insPoint, string blockName, double rotationAngleInRadians = 0): base(insPoint, blockName, rotationAngleInRadians)
-        //{
+        public BeamEntity(BlockReference another) : base(another)
+        {
 
-        //}
+        }
         public BeamEntity(Point3D insPoint, string blockName, Point3D beamStartPoint, Point3D beamEndPoint, string clientName, string levelName = "", double rotationAngleInRadians = 0, BeamMarkedLocation? beamMarkedLocation = null) : base(insPoint, blockName, rotationAngleInRadians)
         {
             ClientName = clientName;
@@ -326,7 +343,6 @@ namespace AppModels.CustomEntity
             //BeamBlock.Entities.Add(BeamName);
             //BeamNameAttribute.Alignment = Text.alignmentType.MiddleCenter;
         }
-
         private Text.alignmentType CalculatorMarkedBeamPoint(out Point3D startPoint,out Point3D endPoint, out Point3D beamNamePoint)
         {
             startPoint = null;
@@ -363,7 +379,6 @@ namespace AppModels.CustomEntity
             }
             
         }
-
         private void PreCalculatorAttributePoint()
         {
             var continuesMovement = 0;
@@ -380,51 +395,90 @@ namespace AppModels.CustomEntity
             if (ContinuesBeam)
             {
                 continuesMovement = 800;
-                this.Attributes["Continues"].Value = "Continues";
+                if (this.Attributes.ContainsKey("Continues"))
+                {
+                    this.Attributes["Continues"].Value = "Continues";
+                }
+                
             }
             else
             {
-                this.Attributes["Continues"].Value = string.Empty;
+                if (this.Attributes.ContainsKey("Continues"))
+                {
+                    this.Attributes["Continues"].Value = string.Empty;
+                }
+                
             }
 
             if (SupportWallOver)
             {
                 supportWallMovement = 800;
-                this.Attributes["Support"].Value = "Support Wall Over";
+                if (this.Attributes.ContainsKey("Support"))
+                {
+                    this.Attributes["Support"].Value = "Support Wall Over";
+                }
+                
             }
             else
             {
-                this.Attributes["Support"].Value = string.Empty;
+                if (this.Attributes.ContainsKey("Support"))
+                {
+                    this.Attributes["Support"].Value = string.Empty;
+                }
+
+                
             }
 
             if (BeamReference != null && BeamReference.TimberInfo != null &&
                 BeamReference.TimberInfo.Treatment.Contains("H3"))
             {
                 treatmentMovement = 800;
-                this.Attributes["Treatment"].Value = "H3 Treated";
+                if (this.Attributes.ContainsKey("Treatment"))
+                {
+                    this.Attributes["Treatment"].Value = "H3 Treated";
+                }
+                
             }
             else
             {
-                this.Attributes["Treatment"].Value = string.Empty;
+                if (this.Attributes.ContainsKey("Treatment"))
+                {
+                    this.Attributes["Treatment"].Value = string.Empty;
+                }
+                
             }
             if (!string.IsNullOrEmpty(CustomAtrributeString))
             {
                 customMovement = 800;
-                this.Attributes["Custom"].Value = CustomAtrributeString;
+                if (this.Attributes.ContainsKey("Custom"))
+                {
+                    this.Attributes["Custom"].Value = CustomAtrributeString;
+                }
+                
             }
             else
             {
-                this.Attributes["Custom"].Value = string.Empty;
+                if (this.Attributes.ContainsKey("Custom"))
+                {
+                    this.Attributes["Custom"].Value = string.Empty;
+                }
+                
             }
 
             if (BeamReference!=null && BeamReference.Type==BeamType.Lintel && !ShowBeamNameOnly)
             {
                 lintelMovement = 800;
-                this.Attributes["Lintel"].Value = "Lintel Beam";
+                if (this.Attributes.ContainsKey("Lintel"))
+                {
+                    this.Attributes["Lintel"].Value = "Lintel Beam";
+                }
             }
             else
             {
-                this.Attributes["Lintel"].Value = string.Empty;
+                if (this.Attributes.ContainsKey("Lintel"))
+                {
+                    this.Attributes["Lintel"].Value = string.Empty;
+                }
             }
 
             if (BeamMarkedLocation == BeamMarkedLocation.top)
@@ -434,14 +488,35 @@ namespace AppModels.CustomEntity
                 supportMoveDisctance = treatmentMovement + continuesMovement + customMovement;
                 treatMentMoveDistance = continuesMovement + customMovement;
                 continuesMoveDisctance = customMovement;
-                this.Attributes["Custom"].InsertionPoint = BaseAttributePoint;
-                this.Attributes["Continues"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + continuesMoveDisctance);
-                this.Attributes["Treatment"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + treatMentMoveDistance);
-                this.Attributes["Support"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + supportMoveDisctance);
-                this.Attributes["Lintel"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + lintelMoveDistance);
-                this.Attributes["Name"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + wallMoveDisctance);
-                
+                if (this.Attributes.ContainsKey("Custom"))
+                {
+                    this.Attributes["Custom"].InsertionPoint = BaseAttributePoint;
+                }
 
+                if (this.Attributes.ContainsKey("Continues"))
+                {
+                    this.Attributes["Continues"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + continuesMoveDisctance);
+                }
+
+                if (this.Attributes.ContainsKey("Treatment"))
+                {
+                    this.Attributes["Treatment"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + treatMentMoveDistance);
+                }
+
+                if (this.Attributes.ContainsKey("Support"))
+                {
+                    this.Attributes["Support"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + supportMoveDisctance);
+                }
+
+                if (this.Attributes.ContainsKey("Lintel"))
+                {
+                    this.Attributes["Lintel"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + lintelMoveDistance);
+                }
+
+                if (this.Attributes.ContainsKey("Name"))
+                {
+                    this.Attributes["Name"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + wallMoveDisctance);
+                }
             }
             else 
             {
@@ -450,18 +525,36 @@ namespace AppModels.CustomEntity
                 supportMoveDisctance = -(treatmentMovement + continuesMovement + customMovement);
                 treatMentMoveDistance = -(continuesMovement + customMovement);
                 continuesMoveDisctance = -customMovement;
+                if (this.Attributes.ContainsKey("Custom"))
+                {
+                    this.Attributes["Custom"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + wallMoveDisctance);
+                }
 
-                this.Attributes["Name"].InsertionPoint = BaseAttributePoint;
-                this.Attributes["Lintel"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + continuesMoveDisctance);
-                this.Attributes["Support"].InsertionPoint = new Point3D(BaseAttributePoint.X,BaseAttributePoint.Y+ treatMentMoveDistance);
-                this.Attributes["Treatment"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + supportMoveDisctance);
-                this.Attributes["Continues"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + lintelMoveDistance);
-                this.Attributes["Custom"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + wallMoveDisctance);
+                if (this.Attributes.ContainsKey("Continues"))
+                {
+                    this.Attributes["Continues"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + lintelMoveDistance);
+                }
+
+                if (this.Attributes.ContainsKey("Treatment"))
+                {
+                    this.Attributes["Treatment"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + supportMoveDisctance);
+                }
+
+                if (this.Attributes.ContainsKey("Support"))
+                {
+                    this.Attributes["Support"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + treatMentMoveDistance);
+                }
+
+                if (this.Attributes.ContainsKey("Lintel"))
+                {
+                    this.Attributes["Lintel"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + continuesMoveDisctance);
+                }
+
+                if (this.Attributes.ContainsKey("Name"))
+                {
+                    this.Attributes["Name"].InsertionPoint = BaseAttributePoint;
+                }
             }
-
-            
-
-            
         }
         private void _beamReference_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -469,17 +562,24 @@ namespace AppModels.CustomEntity
             {
                 if (BeamReference.TimberInfo != null && !ShowBeamNameOnly)
                 {
-                    this.Attributes["Name"].Value = BeamReference.TimberInfo.SizeGrade + " @ " + BeamReference.Quantity + "/" + BeamReference.QuoteLength;
+                    if (this.Attributes.ContainsKey("Name"))
+                    {
+                        this.Attributes["Name"].Value = BeamReference.TimberInfo.SizeGrade + " @ " + BeamReference.Quantity + "/" + BeamReference.QuoteLength;
+                    }
+
                     this.PreCalculatorAttributePoint();
                 }
             }
 
             if ((e.PropertyName == nameof(BeamReference.Name) || e.PropertyName == nameof(BeamReference.Type)) && ShowBeamNameOnly)
             {
-                this.Attributes["Name"].Value = BeamNameString;
+                if (this.Attributes.ContainsKey("Name"))
+                {
+                    this.Attributes["Name"].Value = BeamNameString;
+                }
+
             }
         }
-
         private void RecalculatorBeamMarkedLocation()
         {
             var textAlignment = CalculatorMarkedBeamPoint(out var startPoint, out var endPoint, out var beamNamePoint);
@@ -497,14 +597,10 @@ namespace AppModels.CustomEntity
             //this.BeamName.Alignment = textAlignment;
             PreCalculatorAttributePoint();
             //this.Attributes["Name"].InsertionPoint = beamNamePoint;
-            this.Attributes["Name"].Alignment = textAlignment;
-            this.Attributes["Continues"].Alignment = textAlignment;
-            this.Attributes["Lintel"].Alignment = textAlignment;
-            this.Attributes["Custom"].Alignment = textAlignment;
-            this.Attributes["Support"].Alignment = textAlignment;
-            this.Attributes["Treatment"].Alignment = textAlignment;
-
-
+            foreach (var attribute in Attributes)
+            {
+                attribute.Value.Alignment = textAlignment;
+            }
         }
         public IEntityVm CreateEntityVm()
         {
@@ -544,6 +640,14 @@ namespace AppModels.CustomEntity
                 BeamLeader.Color = _beamMarkedColor;
             }
 
+            foreach (var attribute in Attributes)
+            {
+                attribute.Value.Color = _beamMarkedColor;
+            }
+        }
+        public override EntitySurrogate ConvertToSurrogate()
+        {
+            return new BeamEntitySurrogate(this);
         }
     }
 }

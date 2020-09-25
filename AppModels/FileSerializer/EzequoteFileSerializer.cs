@@ -20,6 +20,7 @@ namespace AppModels.FileSerializer
 
         public EzequoteFileSerializer(contentType contentType) : base(contentType)
         {
+            LinearDim line = null;
         }
 
         protected override void FillModel()
@@ -32,7 +33,32 @@ namespace AppModels.FileSerializer
             Model[typeof(Wall2DSurrogate)]
                 .Add(1, "WallLevelName")
                 .UseConstructor = false;
-            
+            Model[typeof(BlockReference)]
+                .AddSubType(1001, typeof(BeamEntity));
+            Model[typeof(BlockReferenceSurrogate)]
+                .AddSubType(1001, typeof(BeamEntitySurrogate));
+            Model[typeof(BeamEntitySurrogate)]
+                .Add(1, "BeamLine")
+                .Add(2, "BeamNameAttribute")
+                .Add(3, "BeamQtyAttribute")
+                .Add(4, "LintelAttribute")
+                .Add(5, "ContinuesAttribute")
+                .Add(6, "TreatmentAttribute")
+                .Add(7, "SupportWallAttribute")
+                .Add(8, "CustomAttribute")
+                .Add(9, "BaseAttributePoint")
+                .Add(10, "BeamLeader")
+                .Add(11, "BeamBlock")
+                .Add(12, "ClientName")
+                .Add(13, "BeamReferenceId")
+                .Add(14, "LevelName")
+                .Add(15, "BeamMarkedLocation")
+                .Add(16, "ShowBeamNameOnly")
+                .Add(17, "ContinuesBeam")
+                .Add(18, "SupportWallOver")
+                .Add(19, "CustomAtrributeString")
+                .UseConstructor = false;
+
         }
 
     }

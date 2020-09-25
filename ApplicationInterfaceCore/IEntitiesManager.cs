@@ -15,8 +15,8 @@ namespace ApplicationInterfaceCore
     public interface IEntitiesManager: INotifyPropertyChanged
     {
         event EventHandler EntitiesCollectionChanged;
-        EntityList Entities { get; }
-        BlockKeyedCollection Blocks { get; }
+        EntityList Entities { get; set; }
+        BlockKeyedCollection Blocks { get; set; }
         IEntityVm SelectedEntity { get; }
         ObservableCollection<Entity> SelectedEntities { get; }
         ICadDrawAble CanvasDrawing { get; }

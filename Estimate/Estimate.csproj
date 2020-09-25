@@ -67,8 +67,10 @@
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.3.0\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Eyeshot.Control.x86.Wpf.v12">
-      <HintPath>C:\Program Files\devDept Software\Eyeshot Ultimate 12\Bin\x86\devDept.Eyeshot.Control.x86.Wpf.v12.dll</HintPath>
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Eyeshot.Control.x86.Wpf.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=c8a727666e3c0a09, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2020\Bin\x86\devDept.Eyeshot.Control.x86.Wpf.v2020.dll</HintPath>
     </Reference>
     <Reference Include="DynamicData, Version=6.14.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicData.6.14.14\lib\net461\DynamicData.dll</HintPath>

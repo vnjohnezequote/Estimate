@@ -45,12 +45,10 @@ namespace DrawingModule.ViewModels
     {
         #region private field
 
-        private IEntitiesManager _entitiesManager;
         /// <summary>
         /// The drawin model.
         /// </summary>
         private CanvasDrawing _drawingModel;
-
         private DrawingWindowView _window;
         private bool _isOrthorMode;
         private bool _isDimByObject;
@@ -60,6 +58,8 @@ namespace DrawingModule.ViewModels
         private Entity _selectedEntity;
         #endregion
         #region public Property
+        public IEntitiesManager EntitiesManager { get; }
+
         //public Entity SelectedEntity
         //{
         //    get => _selectedEntity;
@@ -163,7 +163,7 @@ namespace DrawingModule.ViewModels
             {
                 this.Levels = jobModel.Levels;
             }
-            _entitiesManager = entitiesManager;
+            EntitiesManager = entitiesManager;
             this.WindowLoadedCommand = new DelegateCommand<DrawingWindowView>(this.WindowLoaded);
             ExportDWGCommand = new DelegateCommand(this.OnExportDWG);
             ImportDWGCommand = new DelegateCommand(this.OnImportDWG);

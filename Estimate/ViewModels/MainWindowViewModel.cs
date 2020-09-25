@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Timers;
 using ApplicationInterfaceCore;
+using AppModels.CustomEntity;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
@@ -170,6 +171,8 @@ namespace Estimate.ViewModels
         /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
         /// </summary>
         private bool _isDrawingWindownLoaded = false;
+
+        //public IEntitiesManager EntitiesManager { get; }
         public MainWindowViewModel()
         {
             //this._clientName = clientName;
@@ -186,9 +189,10 @@ namespace Estimate.ViewModels
             [NotNull] IUnityContainer unityContainer,
             [NotNull] IRegionManager regionManager,
             [NotNull] IEventAggregator eventAggregator,
-            ILayerManager layerManager,IJob jobModel)
+            ILayerManager layerManager,IJob jobModel,IEntitiesManager entitiesManager)
             : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
+            //this.EntitiesManager = entitiesManager;
             //this._clientName = clientName;
             this._clientDb = this.UnityContainer.Resolve<ClientDataBase>();
             this.GetClientCollection();
@@ -487,6 +491,7 @@ namespace Estimate.ViewModels
                     }
                     JobModel.LoadJob(jobOpen,Clients.ToList());
                     EventAggregator.GetEvent<RefreshFloorEvent>().Publish(true);
+                    //ReloadBeamReferenceForBeamLayout();
                 }
             }
         }

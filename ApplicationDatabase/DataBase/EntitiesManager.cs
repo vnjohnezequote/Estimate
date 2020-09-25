@@ -24,8 +24,8 @@ namespace AppDataBase.DataBase
         public event EventHandler EntitiesCollectionChanged ;
         private IEntityVm _selectedEntity;
         private ObservableCollection<Entity> _selectedEntities;
-        public EntityList Entities { get; private set; }
-        public BlockKeyedCollection Blocks { get; private set; }
+        public EntityList Entities { get; set; }
+        public BlockKeyedCollection Blocks { get; set; }
 
         public IEntityVm SelectedEntity
         {
@@ -221,10 +221,11 @@ namespace AppDataBase.DataBase
 
         public void SetEntitiesList(EntityList entities)
         {
-            if (Entities == null)
-            {
-                this.Entities=entities;
-            }
+            this.Entities = entities;
+            //if (Entities == null)
+            //{
+            //    this.Entities=entities;
+            //}
         }
 
         public void SetBlocks(BlockKeyedCollection blocks)

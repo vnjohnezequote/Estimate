@@ -3,6 +3,8 @@ using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels.CustomEntity;
+using AppModels.ResponsiveData;
 using DrawingModule.Application;
 using DrawingModule.EditingTools;
 
@@ -71,6 +73,44 @@ namespace DrawingModule.CustomControl.CanvasControl
                     this._waitingForPickSelection = false;
                     return true;
                 case Key.Delete:
+                    if (this.EntitiesManager.SelectedEntities!=null && this.EntitiesManager.SelectedEntities.Count!=0)
+                    {
+                        foreach (var entitiesManagerSelectedEntity in EntitiesManager.SelectedEntities)
+                        {
+                            if (entitiesManagerSelectedEntity is BeamEntity beam)
+                            {
+                                if (JobModel!=null)
+                                {
+                                    LevelWall level = null;
+                                    foreach (var jobModelLevel in JobModel.Levels)
+                                    {
+                                        if (jobModelLevel.LevelName == beam.LevelName)
+                                        {
+                                            level = jobModelLevel;
+                                        }
+                                    }
+
+                                    if (level!=null)
+                                    {
+                                        if (level.RoofBeams.Contains(beam.BeamReference))
+                                        {
+                                            level.RoofBeams.Remove(beam.BeamReference);
+                                        }
+                                        var i = 1;
+                                        foreach (var levelRoofBeam in level.RoofBeams)
+                                        {
+                                            levelRoofBeam.Id = i;
+                                            i++;
+                                        }
+                                    }
+                                    
+                                }
+
+                                this.Blocks.Remove(beam.BeamBlock);
+                            }
+                        }
+                    }
+                    return true;
                 case Key.LeftShift:
                 case Key.RightShift:
                 case Key.LeftAlt:

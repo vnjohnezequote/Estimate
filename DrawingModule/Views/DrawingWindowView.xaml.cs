@@ -142,6 +142,11 @@ namespace DrawingModule.Views
             var rfa = (ReadFileAsyncWithDrawings)e.WorkUnit;
            
             rfa.AddToScene(model1);
+            //if (_drawingWindowViewModel != null && _drawingWindowViewModel.EntitiesManager != null)
+            //{
+            //    _drawingWindowViewModel.EntitiesManager.SetEntitiesList(model1.Entities);
+            //}
+
             var listPicEntitiesToRemove = new List<Entity>();
             var listPicEntitiesToAdd = new List<Entity>();
             foreach (var rfaEntity in model1.Entities)
@@ -172,6 +177,94 @@ namespace DrawingModule.Views
             if (drawings.Sheets.Count == 0)
                 this.CanvasDrawing.AddDefaultSheet();
             model1.LayersManager.SetLayerList(model1.Layers);
+            if (_drawingWindowViewModel != null && _drawingWindowViewModel.EntitiesManager != null)
+            {
+                //_drawingWindowViewModel.EntitiesManager.Blocks = model1.Blocks;
+                _drawingWindowViewModel.EntitiesManager.Entities = model1.Entities;
+                var lisEntitiesRemove = new List<BeamEntity>();
+                var listBlock = new List<Block>();
+                foreach (var model1Entity in model1.Entities)
+                {
+                    if (model1Entity is BeamEntity beam)
+                    {
+                        foreach (var entitiesManagerBlock in _drawingWindowViewModel.EntitiesManager.Blocks)
+                        {
+                            if (entitiesManagerBlock.Name == beam.BlockName)
+                            {
+                                listBlock.Add(entitiesManagerBlock);
+                            }
+                        }
+                        lisEntitiesRemove.Add(beam);
+                    }
+                }
+
+                foreach (var block in listBlock)
+                {
+                    _drawingWindowViewModel.EntitiesManager.Blocks.Remove(block);
+                }
+
+                foreach (var entity in lisEntitiesRemove)
+                {
+                    _drawingWindowViewModel.EntitiesManager.Entities.Remove(entity);
+                }
+
+                foreach (var entity in lisEntitiesRemove)
+                {
+                    _drawingWindowViewModel.EntitiesManager.Blocks.Add(entity.BeamBlock);
+                    _drawingWindowViewModel.EntitiesManager.Entities.Add(entity);
+                }
+                ReloadBeamReferenceForBeamLayout();
+                //_drawingWindowViewModel.EntitiesManager.Blocks.Clear();
+                //_drawingWindowViewModel.EntitiesManager.Blocks = model1.Blocks;
+                //model1.Blocks.Clear();
+                //foreach (var model1Entity in model1.Entities)
+                //{
+                //    if (model1Entity is BeamEntity beam)
+                //    {
+                //        model1.Blocks.Add(beam.BeamBlock);
+                //    }
+                //}
+                //model1.Entities.Regen();
+                //model1.Invalidate();
+
+            }
+        }
+        private void ReloadBeamReferenceForBeamLayout()
+        {
+            var entitiesManager = _drawingWindowViewModel.EntitiesManager;
+            var jobModel = _drawingWindowViewModel.JobModel;
+            if (entitiesManager != null && entitiesManager.Entities != null &&
+                entitiesManager.Entities.Count != 0 && jobModel != null && jobModel.Levels != null &&
+                jobModel.Levels.Count != 0)
+            {
+                foreach (var entitiesManagerEntity in entitiesManager.Entities)
+                {
+                    LevelWall level = null;
+                    if (entitiesManagerEntity is BeamEntity beam)
+                    {
+                        foreach (var jobModelLevel in jobModel.Levels)
+                        {
+                            if (beam.LevelName == jobModelLevel.LevelName)
+                            {
+                                level = jobModelLevel;
+                            }
+                        }
+
+                        if (level != null)
+                        {
+                            foreach (var roofBeam in level.RoofBeams)
+                            {
+                                if (roofBeam.Id == beam.BeamReferenceId)
+                                {
+                                    beam.BeamReference = roofBeam;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+
         }
 
         private void DrawingWindowView_Loaded(object sender, System.Windows.RoutedEventArgs e)
