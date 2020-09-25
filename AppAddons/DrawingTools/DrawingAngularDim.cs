@@ -34,9 +34,9 @@ namespace AppAddons.DrawingTools
         [CommandMethod("AngleDim")]
         public void DrawAngularDim()
         {
+            var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
             while (true)
             {
-                var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
                 ToolMessage = "Please Select first line";
                 var promptLineOption = new PromptSelectionOptions();
                 var result = acDoc.Editor.GetSelection(promptLineOption);

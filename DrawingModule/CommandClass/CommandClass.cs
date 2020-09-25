@@ -42,8 +42,8 @@ namespace DrawingModule.CommandClass
             var canvas = Application.Application.DocumentManager.MdiActiveDocument.Editor.CanvasDrawing;
             
             var objectType = mi.DeclaringType;
-            var magicConstructor = objectType.GetConstructor(Type.EmptyTypes);
-            var magicClassObject = magicConstructor.Invoke(new object[] { });
+            //var magicConstructor = objectType.GetConstructor(Type.EmptyTypes);
+            //var magicClassObject = magicConstructor.Invoke(new object[] { });
             var objectInstance = Activator.CreateInstance(objectType, null);
             this._commandObject = objectInstance;
             this.InvokeWorkerWithExceptionFilter(mi, objectInstance, bLispFunction);

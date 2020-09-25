@@ -91,10 +91,11 @@ namespace AppAddons.DrawingTools
             var rad = Utility.DegToRad(TextAngle);
             text.Rotate(rad, Vector3D.AxisZ, e.CurrentPoint);
 
-            var tempText = text.ConvertToCurves((Environment)canvas);
+            var tempText = text.ConvertToLinearPaths(0.01,(Environment)canvas);
             foreach (var curve in tempText)
             {
-                DrawInteractiveUntilities.Draw(curve,canvas);
+                //DrawInteractiveUntilities.Draw(curve,canvas);
+                DrawInteractiveUntilities.DrawCurveOrBlockRef(curve, canvas);
             }
 
             if (BasePoint!=null && e.CurrentPoint!=null)

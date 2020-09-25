@@ -55,12 +55,12 @@
     <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.4\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Eyeshot.Control.Wpf.v2020" />
-    <Reference Include="devDept.Geometry.v2020">
-      <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
-    </Reference>
-    <Reference Include="devDept.Graphics.Shaders.v2020" />
-    <Reference Include="devDept.Graphics.Wpf.v2020" />
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Geometry.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL" >
+		<HintPath>C:\Program Files\devDept Software\Eyeshot Ultimate 12\Bin\devDept.Geometry.v12.dll</HintPath>
+	</Reference>
+    <Reference Include="devDept.Graphics.Shaders.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=54ce5f5f803e4b42, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Graphics.Wpf.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=f3cd437f0d8061b5, processorArchitecture=MSIL" />
     <Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.2.0.1422\lib\net45\Prism.dll</HintPath>
     </Reference>
@@ -157,7 +157,7 @@
       <Name>ApplicationCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\ApplicationInterfaceCore\ApplicationInterfaceCore.csproj">
-      <Project>{ea2caab1-eb61-4436-b30a-7f8d993b3414}</Project>
+      <Project>{EA2CAAB1-EB61-4436-B30A-7F8D993B3414}</Project>
       <Name>ApplicationInterfaceCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\ApplicationService\ApplicationService.csproj">

@@ -16,6 +16,7 @@ namespace ApplicationInterfaceCore
     {
         event EventHandler EntitiesCollectionChanged;
         EntityList Entities { get; }
+        BlockKeyedCollection Blocks { get; }
         IEntityVm SelectedEntity { get; }
         ObservableCollection<Entity> SelectedEntities { get; }
         ICadDrawAble CanvasDrawing { get; }
@@ -27,6 +28,7 @@ namespace ApplicationInterfaceCore
         //void ChangeSelectedEntiesLayer(Layer layer);
         void ClearSelectedEntities();
         void SetEntitiesList(EntityList entities);
+        void SetBlocks(BlockKeyedCollection blocks);
         void SetCanvasDrawing(ICadDrawAble cadDraw);
         void NotifyEntitiesListChanged();
         void ResetSelection();

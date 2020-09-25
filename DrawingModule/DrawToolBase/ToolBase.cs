@@ -3,6 +3,7 @@ using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using AppModels.EventArg;
+using AppModels.Interaface;
 using devDept.Geometry;
 using DrawingModule.Enums;
 using DrawingModule.Interface;
@@ -51,6 +52,7 @@ namespace DrawingModule.DrawToolBase
         public bool IsUsingMultilineTextBox { get; protected set; }
         public bool IsUsingOffsetDistance { get; protected set; }
         public bool IsUsingSwitchMode { get; protected set; }
+        public IJob JobModel { get; set; }
         public UnderMouseDrawingType EntityUnderMouseDrawingType { get; protected set; }
         public FocusType DefaultDynamicInputTextBoxToFocus { get; protected set; }
         

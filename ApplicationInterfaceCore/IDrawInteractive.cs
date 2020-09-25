@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Windows.Input;
 using ApplicationInterfaceCore.Enums;
 using AppModels.EventArg;
+using AppModels.Interaface;
 using devDept.Geometry;
 
 namespace ApplicationInterfaceCore
@@ -38,6 +39,7 @@ namespace ApplicationInterfaceCore
         double CurrentHeight { get; set; }
         double CurrentAngle { get; set; }
         double ScaleFactor { get; set; }
+        IJob JobModel { get; set; }
         UnderMouseDrawingType EntityUnderMouseDrawingType { get; }
         FocusType DefaultDynamicInputTextBoxToFocus { get; }
         IDynamicInputView DynamicInput { get;}

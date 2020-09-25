@@ -97,6 +97,7 @@ namespace AppAddons.DrawingTools
                     rectangle.Color = LayerManager.SelectedLayer.Color;
                     var wall2D = new LinearPathWall2D(rectangle);
                     wall2D.WallLevelName = this.ActiveLevel;
+                    wall2D.LineTypeScale = 50;
                     this.EntitiesManager.AddAndRefresh(wall2D, this.LayerManager.SelectedLayer.Name);
                     BasePoint = EndPoint = null;
                     CurrentWidth = 0;

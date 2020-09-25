@@ -149,19 +149,19 @@ namespace AppModels
             }
             Layers[0].Color = Color.Blue;
             Layers[1].Color = Color.Red;
-            Layers[2].Color = Color.OrangeRed;
+            Layers[2].Color = Color.Orange;
             Layers[3].Color = Color.LimeGreen;
             Layers[4].Color = Color.Magenta;
-            Layers[5].Color = Color.Maroon;
-            Layers[6].Color=Color.Aqua;
-            Layers[7].Color = Color.Teal;
+            Layers[5].Color=Color.Aqua;
+            Layers[6].Color = Color.Maroon;
+            Layers[7].Color = Color.CornflowerBlue;
             Layers[8].Color = Color.DarkOliveGreen;
             Layers[9].Color = Color.DarkGoldenrod;
-            Layers[10].Color = Color.Tomato;
-            Layers[11].Color = Color.SteelBlue;
-            Layers[12].Color = Color.Purple;
+            Layers[10].Color = Color.RoyalBlue;
+            Layers[11].Color = Color.DodgerBlue;
+            Layers[12].Color = Color.MediumVioletRed;
             Layers[13].Color = Color.SaddleBrown;
-            Layers[14].Color = Color.MediumVioletRed;
+            Layers[14].Color = Color.MidnightBlue;
             Layers[15].Color = Color.MediumSpringGreen;
             var beamLayer = new LayerItem();
             beamLayer.Color = Color.Blue;
@@ -182,7 +182,7 @@ namespace AppModels
             var beamMarkedLayer = new LayerItem();
             beamMarkedLayer.Name = "BeamMarked";
             beamMarkedLayer.Color = Color.Blue;
-            beamMarkedLayer.LineWeight = 1;
+            beamMarkedLayer.LineWeight = 3;
             Layers.Add(beamMarkedLayer);
         
         }

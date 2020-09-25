@@ -25,6 +25,7 @@ namespace AppDataBase.DataBase
         private IEntityVm _selectedEntity;
         private ObservableCollection<Entity> _selectedEntities;
         public EntityList Entities { get; private set; }
+        public BlockKeyedCollection Blocks { get; private set; }
 
         public IEntityVm SelectedEntity
         {
@@ -155,8 +156,23 @@ namespace AppDataBase.DataBase
         {
             Application.Current.Dispatcher.Invoke((Action)(() =>
             {//this refer to form in WPF application 
-                Entities.Add(entity, layerName);
-                Entities.Regen();
+                if (entity is Picture)
+                {
+                    Entities.Add(entity, layerName);
+                    Entities.Regen();
+                }
+                else
+                {
+                    var index = Entities.Count - 1;
+                    if (index<0)
+                    {
+                        index = 0;
+                    }
+                    entity.LayerName = layerName;
+                    Entities.Insert(index,entity);
+                    Entities.Regen();
+                }
+                
                 Invalidate();
                 this.NotifyEntitiesListChanged();
             }));
@@ -209,8 +225,14 @@ namespace AppDataBase.DataBase
             {
                 this.Entities=entities;
             }
+        }
 
-
+        public void SetBlocks(BlockKeyedCollection blocks)
+        {
+            if (Blocks == null)
+            {
+                Blocks = blocks;
+            }
         }
 
         public void SetCanvasDrawing(ICadDrawAble cadDraw)

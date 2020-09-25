@@ -41,8 +41,11 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
         private Point3D _startMovementPoint;
         private Point3D _currentMovementPoint;
         private bool _buttomPressed = false;
+        public bool IsImported = false;
+        public bool IsToReload = true;
+        public bool IsModified = true;
 
-        
+
         public event EventHandler<EntityEventArgs> EntitiesSelectedChanged;
 
         #region Constructor
@@ -80,7 +83,7 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             var mousePosition = RenderContextUtility.ConvertPoint(GetMousePosition(e));
             if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
             {
-                if (GetToolBar().Contains(mousePosition))
+                if (ToolBar.Contains(mousePosition))
                 {
                     base.OnMouseDown(e);
 
@@ -90,38 +93,38 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                 if (index != -1)
                 {
                     var view = Entities[index] as devDept.Eyeshot.Entities.View;
-                    if (view!=null)
+                    if (view != null)
                     {
                         view.Selected = true;
                         SelectedEntity = view;
                     }
-                    
+
                     var selectedViewArg = new EntityEventArgs(view);
                     if (EntitiesSelectedChanged != null)
                         EntitiesSelectedChanged.Invoke(this, selectedViewArg);
                 }
                 else
                 {
-                    if (SelectedEntity!=null)
+                    if (SelectedEntity != null)
                     {
                         SelectedEntity.Selected = false;
                         SelectedEntity = null;
                         EntitiesSelectedChanged.Invoke(this, null);
                     }
-                    
-                    
+
+
                 }
 
             }
-            else if(e.ChangedButton == System.Windows.Input.MouseButton.Middle)
+            else if (e.ChangedButton == System.Windows.Input.MouseButton.Middle)
             {
-                if (SelectedEntity!=null)
+                if (SelectedEntity != null)
                 {
                     _buttomPressed = true;
                     this.ScreenToPlane(mousePosition, Plane.XY, out var currentPoint);
-                    if (currentPoint!=null)
+                    if (currentPoint != null)
                     {
-                        _startMovementPoint=currentPoint;
+                        _startMovementPoint = currentPoint;
                     }
                 }
             }
@@ -173,9 +176,9 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                     view.Y += y;
                 }
                 
-                 //Vector3D movement = new Vector3D(_startMovementPoint,_currentMovementPoint);
-                 //((Entity)tempEntity).Translate(movement);
-                 DrawCurveOrBlockRef(tempEntity);
+                //Vector3D movement = new Vector3D(_startMovementPoint,_currentMovementPoint);
+                //((Entity)tempEntity).Translate(movement);
+                DrawCurveOrBlockRef(tempEntity);
             }
             base.DrawOverlay(myParams);
         }

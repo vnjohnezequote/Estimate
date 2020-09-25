@@ -210,7 +210,8 @@ namespace AppModels.ResponsiveData.Openings
             }
         }
         public int Quantity { get=>_quantity; set=>SetProperty(ref _quantity,value); }
-        public IGlobalWallInfo GlobalInfo { get; }
+        public IGlobalWallInfo GlobalInfo { get; set; }
+
         public EngineerMemberInfo EngineerMemberInfo
         {
             get=> _engineerTimberInfo; 
@@ -506,14 +507,28 @@ namespace AppModels.ResponsiveData.Openings
         public Beam(BeamType beamType,IGlobalWallInfo globalInfo)
         {
             Type = beamType;
-            GlobalInfo = globalInfo;
+            InitGlobalInfor(globalInfo);
+            PropertyChanged += Beam_PropertyChanged;
+            InitializedBeamSupportPoint();
+            //GLobalSupportInfo = gLobalSupportInfo;
+        }
+
+        public void InitGlobalInfor(IGlobalWallInfo globalWallInfo)
+        {
+            if (GlobalInfo!=null)
+            {
+                GlobalInfo.PropertyChanged -= GlobalInfo_PropertyChanged;
+                GlobalInfo.GlobalExtWallDetailInfo.BottomPlate.PropertyChanged -= PlatePropertiesChanged;
+                GlobalInfo.GlobalExtWallDetailInfo.TopPlate.PropertyChanged -= PlatePropertiesChanged;
+                GlobalInfo.GlobalExtWallDetailInfo.RibbonPlate.PropertyChanged -= PlatePropertiesChanged;
+            }
+            GlobalInfo = globalWallInfo;
             GlobalInfo.PropertyChanged += GlobalInfo_PropertyChanged;
             GlobalInfo.GlobalExtWallDetailInfo.BottomPlate.PropertyChanged += PlatePropertiesChanged;
             GlobalInfo.GlobalExtWallDetailInfo.TopPlate.PropertyChanged += PlatePropertiesChanged;
             GlobalInfo.GlobalExtWallDetailInfo.RibbonPlate.PropertyChanged += PlatePropertiesChanged;
-            PropertyChanged += Beam_PropertyChanged;
-            InitializedBeamSupportPoint();
-            //GLobalSupportInfo = gLobalSupportInfo;
+            RaisePropertyChanged(nameof(SupportHeight));
+            RaisePropertyChanged(nameof(ThicknessTBT));
         }
         private void Wall_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -594,6 +609,7 @@ namespace AppModels.ResponsiveData.Openings
                     RaisePropertyChanged(nameof(Depth));
                     RaisePropertyChanged(nameof(Thickness));
                     RaisePropertyChanged(nameof(TimberGrade));
+                    RaisePropertyChanged(nameof(TimberInfo));
                     RaisePropertyChanged(nameof(Size));
                     RaisePropertyChanged(nameof(SizeGrade));
                     RaisePropertyChanged(nameof(MaterialType));

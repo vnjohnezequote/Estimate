@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using AppModels.EventArg;
+using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
@@ -83,9 +84,12 @@ namespace DrawingModule.EditingTools
             var removed = new List<int>();
 
 
-            IList<Entity> myEnts = canvas.Entities.CurrentBlockReference != null
-                ? canvas.Blocks[canvas.Entities.CurrentBlockReference.BlockName].Entities
-                : new List<Entity>(canvas.Entities);
+            EntityList myEnts = canvas.CurrentBlockReference != null
+                ? canvas.Blocks[canvas.CurrentBlockReference.BlockName].Entities
+                :canvas.Entities;
+               
+                //? canvas.Blocks[canvas.CurrentBlockReference.BlockName].Entities
+                //: new List<Entity>(canvas.Entities);
 
             int[] ents;
 
@@ -221,7 +225,7 @@ namespace DrawingModule.EditingTools
             
             //Adjust the bounds so that it doesn't exit from the current viewport frame
 
-            int[] viewFrame = canvas.Viewports[canvas.ActiveViewport].GetViewFrame();
+            int[] viewFrame = canvas.Viewports[canvas.ActiveViewportIndex].GetViewFrame();
             int left = viewFrame[0];
             int top = viewFrame[1] + viewFrame[3];
             int right = left + viewFrame[2];

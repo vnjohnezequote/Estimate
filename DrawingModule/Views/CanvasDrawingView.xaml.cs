@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using AppModels;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
 using AppModels.Factories;
 using AppModels.Interaface;
@@ -20,7 +22,7 @@ using Environment = devDept.Eyeshot.Environment;
 
 namespace DrawingModule.Views
 {
-
+    
     public enum formatType
     {
         A0_ISO, A1_ISO, A2_ISO, A3_ISO, A4_ISO, A4_LANDSCAPE_ISO, A_ANSI, A_LANDSCAPE_ANSI, B_ANSI, C_ANSI, D_ANSI, E_ANSI
@@ -30,6 +32,7 @@ namespace DrawingModule.Views
     /// </summary>
     public partial class CanvasDrawingView : UserControl
     {
+        private MyViewBuilder _viewBuilder;
         private CanvasDrawingViewModel _viewModel;
         public static readonly DependencyProperty ActiveLayerNameProperty =
             DependencyProperty.Register("ActiveLayerName", typeof(string), typeof(CanvasDrawingView),
@@ -72,7 +75,7 @@ namespace DrawingModule.Views
                         case nameof(_viewModel.JobModel.Info.RoofMaterial):
                             br.Attributes["RoofMaterial"].Value = _viewModel.JobModel.Info.RoofMaterial;
                             break;
-                        case nameof(_viewModel.JobModel.Info.TieDown):
+                        case "SetTieDown":
                             br.Attributes["TieDown"].Value = _viewModel.JobModel.Info.TieDown;
                             break;
                         case nameof(_viewModel.JobModel.Info.JobAddress):
@@ -93,11 +96,6 @@ namespace DrawingModule.Views
                 }
             }
             //var activeSheet = this.PaperSpace.GetActiveSheet();
-            
-
-               
-
-            
             PaperSpace.Entities.UpdateBoundingBox();
             PaperSpace.Invalidate();
         }
@@ -155,43 +153,51 @@ namespace DrawingModule.Views
         }
         private void TestPaperSpace_WorkCompleted(object sender, WorkCompletedEventArgs e)
         {
-            var drawings1 = this.PaperSpace;
-            ViewBuilder vb = e.WorkUnit as ViewBuilder;
-            if (vb != null && PaperSpace.Sheets.Count != 0)
+            if (_viewBuilder != null)
             {
-                vb.AddToDrawings(drawings1);
-                this.PaperSpace.SetActiveSheet(this._viewModel.ActiveLevel);
-                CustomSheet activeSheet = (CustomSheet)PaperSpace.GetActiveSheet();
-                var formatBlockReference = GetFormatBlockReference(activeSheet);
-            if (formatBlockReference != null)
-            {
-                //    //    formatBlockReference.Attributes["Format"].Value = formatBlockReference.BlockName.Replace("Sheet1", String.Empty).Trim();
-                //    //    var sheetNumber = 1;
-                //    //    var sheetsCount = 1;
-                //    //    formatBlockReference.Attributes["Sheet"].Value = string.Format("SHEET {0} OF {1}", sheetNumber, sheetsCount);
+                _viewBuilder.AddToDrawings(PaperSpace);
 
-                //    //    //scaleComboBox.SelectedItem = formatBlockReference.Attributes["Scale"].ToString().Replace("SCALE: ", "");
-
-                //    //    // updates FastZPR representation
-                //drawings.Entities.UpdateBoundingBox();
-                //    //}
-                //    //drawings1.ZoomFit();
-
-                //    //if (drawings1.GetActiveSheet() == null)
-                //    //{
-                //    //    drawingsPanel1.ActivateSheet(drawings1.Sheets[0].Name);
-
-                //    //    if (_treeIsDirty)
-                //    //    {
-                //    //        drawingsPanel1.SyncTree();
-                //    //        _treeIsDirty = false;
-                //}
-
-                    drawings1.ZoomFit();
+                if (PaperSpace.ActiveSheet == null)
+                {
+                    var sheet = PaperSpace.Sheets[0];
+                    PaperSpace.ActiveSheet = sheet;
+                    PaperSpace.ZoomFit();
+                }
+                PaperSpace.Entities.Regen();
+                PaperSpace.Invalidate();
+                
+                if (!_viewBuilder.QueueCompleted)
+                {
+                    PaperSpace.StartWork(_viewBuilder);
+                }
+                else
+                {
+                    _viewBuilder.Dispose();
+                    _viewBuilder = null;
                 }
 
-                drawings1.Invalidate();
+                if (PaperSpace.IsToReload && !PaperSpace.IsImported && PaperSpace.IsModified)
+                {
+                    PaperSpace.IsToReload = false;
+                }
             }
+
+
+            //var drawings1 = this.PaperSpace;
+            //ViewBuilder vb = e.WorkUnit as ViewBuilder;
+            //if (vb != null && PaperSpace.Sheets.Count != 0)
+            //{
+            //    vb.AddToDrawings(drawings1);
+            //    this.PaperSpace.SetActiveSheet(this._viewModel.ActiveLevel);
+            //    CustomSheet activeSheet = (CustomSheet)PaperSpace.GetActiveSheet();
+            //    var formatBlockReference = GetFormatBlockReference(activeSheet);
+            //if (formatBlockReference != null)
+            //{
+            //    drawings1.ZoomFit();
+            //}
+
+            //    drawings1.Invalidate();
+            //}
         }
 
 
@@ -213,14 +219,15 @@ namespace DrawingModule.Views
         {
             Tuple<double, double> size = DrawingHelper.GetFormatSize(units, formatType);
             CustomSheet sheet = null;
-            if (this._viewModel!=null && this._viewModel.JobModel!=null)
+            if (this._viewModel != null && this._viewModel.JobModel != null)
             {
-                sheet = new CustomSheet(units, size.Item1, size.Item2, name, _viewModel.JobModel);    
+                sheet = new CustomSheet(units, size.Item1, size.Item2, name, _viewModel.JobModel);
             }
             else
             {
-                sheet = new CustomSheet(units, size.Item1, size.Item2, name);    
+                sheet = new CustomSheet(units, size.Item1, size.Item2, name);
             }
+            //Sheet sheet = new Sheet(units,size.Item1,size.Item2,name);
             
             Block block;
             BlockReference br = CreateFormatBlock(formatType, sheet, out block,job);
@@ -244,6 +251,7 @@ namespace DrawingModule.Views
             block = null;
 
             br = sheet.BuildPaper(formatType, out block);
+            //br = sheet.BuildA4ISO(out block);
 
             return br;
         }
@@ -302,11 +310,11 @@ namespace DrawingModule.Views
             br.Attributes["TieDown"] = new AttributeReference(job.Info.TieDown + " TIE - DOWN");
             if (job.Info.Client.Name == "StickFrame")
             {
-                br.Attributes["Client"] = new AttributeReference(job.Info.Customer);   
+                br.Attributes["Client"] = new AttributeReference(job.Info.Customer);
             }
             else
             {
-                br.Attributes["Client"] = new AttributeReference("");   
+                br.Attributes["Client"] = new AttributeReference("");
             }
             br.Attributes["Address"] = new AttributeReference(job.Info.JobAddress);
             br.Attributes["City"] = new AttributeReference(job.Info.SubAddress);
@@ -321,13 +329,21 @@ namespace DrawingModule.Views
         public void AddDefaultViews(CustomSheet sheet)
         {
             double unitsConversionFactor = Utility.GetLinearUnitsConversionFactor(linearUnitsType.Millimeters, sheet.Units);
-
+            double extensionAmount = Math.Min(sheet.Width, sheet.Height) / 200;
             // adds Front vector view
-            var view = new VectorView(-100 * unitsConversionFactor, -300 , viewType.Top, 0.01, GetViewName(sheet, viewType.Front,false));
+            var view = new CustomVectorView(-100 * unitsConversionFactor, -300 , viewType.Top, 0.01, GetViewName(sheet, viewType.Front,false)){CenterlinesExtensionAmount = extensionAmount};
+            ////{ CenterlinesExtensionAmount = extensionAmount}
+            view.KeepEntityColor = true;
+            view.KeepEntityLineType = true;
+            view.KeepEntityLineWeight = true;
+            //view.HiddenSegments = false;
+            //view.ColorMethod = colorMethodType.byEntity;
+            //view.LineTypeMethod = colorMethodType.byEntity;
+            sheet.AddViewPlaceHolder(view,CanvasDrawing,PaperSpace,view.BlockName.Replace(sheet.Name,String.Empty));
             //var view = new RasterView(7 * unitsConversionFactor, 100 * unitsConversionFactor, viewType.Top, 0.5, GetViewName(sheet, viewType.Top, true));
             //view.ColorMethod = colorMethodType.byLayer;
             //view.LineTypeMethod = colorMethodType.byLayer;
-            sheet.Entities.Add(view);
+            //sheet.Entities.Add(view);
             // adds Trimetric raster view            
             //sheet.Entities.Add(new RasterView(150 * unitsConversionFactor, 230 * unitsConversionFactor, viewType.Trimetric, sheet.Scale, GetViewName(sheet, viewType.Trimetric, true)));
             // adds Top vector view
@@ -338,11 +354,49 @@ namespace DrawingModule.Views
             return String.Format("{0} {1} {2}", sheet.Name, viewType.ToString(), isRaster ? "Raster View" : "Vector View");
         }
 
+        public void StartViewBuilder(View singleView = null, bool dirtyOnly = true)
+        {
+            var initViewBuilder = _viewBuilder == null;
+            if (initViewBuilder)
+            {
+                _viewBuilder = new MyViewBuilder(CanvasDrawing,PaperSpace,dirtyOnly,ViewBuilder.operatingType.Queue);
+                //var viewBuilder = new ViewBuilder(CanvasDrawing, PaperSpace, dirtyOnly, ViewBuilder.operatingType.Queue);
+                //var myViewBuilder = new MyViewBuilder(CanvasDrawing,PaperSpace,dirtyOnly, ViewBuilder.operatingType.Queue);
+            }
+
+            if (singleView!=null)
+            {
+                if (initViewBuilder)
+                {
+                    _viewBuilder.ClearQueue();
+                    _viewBuilder.AddToQueue(singleView,PaperSpace.ActiveSheet);
+                }
+
+            }
+            else
+            {
+                if (!initViewBuilder)
+                {
+                    _viewBuilder.AddToQueue(PaperSpace,dirtyOnly,PaperSpace.ActiveSheet);
+                    
+                }
+            }
+
+            if (!PaperSpace.IsBusy)
+            {
+                PaperSpace.StartWork(_viewBuilder);
+                
+            }
+        }
 
         #endregion
 
         #region Private Method
 
+        public void CLear()
+        {
+            PaperSpace.Clear();
+        }
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -350,10 +404,7 @@ namespace DrawingModule.Views
             this.DynamicInput.Margin = new Thickness(position.X+15, position.Y+15, 0.0, 0.0);
         }
         
-        
-
         #endregion
-
 
         private void PaperSpace_OnEntitiesSelectedChanged(object sender, EntityEventArgs e)
         {

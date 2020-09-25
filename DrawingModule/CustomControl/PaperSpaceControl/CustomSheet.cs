@@ -61,7 +61,7 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
         {
             if (e.PropertyName == nameof(JobInfo.Customer))
             {
-                this.RebuildLogo();
+                //this.RebuildLogo();
             }
         }
 
@@ -226,7 +226,11 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             _logoInsertPoint = new Point3D(baseAtributePoint.X+22,baseAtributePoint.Y+14);
             //_logoInsertPoint = baseAtributePoint;
             var logo = BuildLogo(_logoInsertPoint);
-            this.Entities.Add(logo);
+            if (logo!=null)
+            {
+                //this.Entities.Add(logo);
+            }
+            
             //lists.Add(logo);
             // lists.Add(new );
 

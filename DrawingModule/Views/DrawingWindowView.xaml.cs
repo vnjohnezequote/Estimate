@@ -4,15 +4,18 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.ResponsiveData;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using devDept.Graphics;
+using DrawingModule.CustomControl.CanvasControl;
 using DrawingModule.CustomControl.PaperSpaceControl;
 using DrawingModule.ViewModels;
 using DynamicData;
+using ReactiveUI;
 using Attribute = devDept.Eyeshot.Entities.Attribute;
 using Size = System.Drawing.Size;
 
@@ -27,11 +30,6 @@ namespace DrawingModule.Views
         #endregion
 
         #region Properties
-
-
-
-
-
         #endregion
         public DrawingWindowView()
         {
@@ -57,6 +55,18 @@ namespace DrawingModule.Views
 
         private void TabControl1_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+            if (!CanvasDrawing.CanvasDrawingControl.PaperSpace.IsImported && CanvasDrawing.CanvasDrawingControl.PaperSpace.IsModified)
+            {
+                ReloadDrawings();
+            }
+            else if(CanvasDrawing.CanvasDrawingControl.TabControlDrawing.SelectedIndex == 1 && CanvasDrawing.CanvasDrawingControl.PaperSpace.Sheets.Count>0 && CanvasDrawing.CanvasDrawingControl.PaperSpace.IsToReload)
+            {
+                //CanvasDrawing.CanvasDrawingControl.PaperSpace.IsToReload = false;
+                CanvasDrawing.CanvasDrawingControl.StartViewBuilder();
+            }
+            //CanvasDrawing.CanvasDrawingControl.StartViewBuilder();
+
+            /*
             Drawings drawings = CanvasDrawing.PaperSpace;
             foreach (var canvasDrawingLineType in CanvasDrawing.CanvasDrawing.LineTypes)
             {
@@ -78,17 +88,49 @@ namespace DrawingModule.Views
                 //drawingsUserControl1.EnableUIElements(false);
 
                 // rebuilds all the "dirty" views for all sheets.
-                drawings.Rebuild(this.CanvasDrawing.CanvasDrawing, true, true);
+                //drawings.Rebuild(this.CanvasDrawing.CanvasDrawing, true, true);
+                var sheet = CanvasDrawing.PaperSpace.ActiveSheet as CustomSheet;
+                if (sheet == null)
+                {
+                    //CanvasDrawing.PaperSpace.ActiveSheet(CanvasDrawing)
+                    sheet = CanvasDrawing.PaperSpace.Sheets[0] as CustomSheet;
+                    CanvasDrawing.PaperSpace.ActiveSheet = sheet;
+                }
                 //var sheet = CanvasDrawing.PaperSpace.GetActiveSheet() as CustomSheet;
-                //if (sheet != null)
-                //{
-                //   UpDateLayout();
-                //}
+                if (sheet != null)
+                {
+                   UpDateLayout();
+                }
                 drawings.Entities.Regen();
                 drawings.Invalidate();
-            }
+            }*/
         }
 
+        private void ReloadDrawings()
+        {
+            if (CanvasDrawing.TabControlDrawing.SelectedIndex == 1 && CanvasDrawing.PaperSpace.IsModified)
+            {
+                InitializeDrawing();
+                CanvasDrawing.PaperSpace.IsModified = false;
+            }
+            
+            if (CanvasDrawing.CanvasDrawingControl.PaperSpace.Sheets.Count>0)
+            {
+                CanvasDrawing.CanvasDrawingControl.StartViewBuilder();
+            }
+
+            CanvasDrawing.PaperSpace.IsToReload = true;
+        }
+
+        private void InitializeDrawing()
+        {
+            CanvasDrawing.CanvasDrawingControl.CLear();
+            foreach (var levelWall in _drawingWindowViewModel.Levels)
+            {
+                CanvasDrawing.AddSheet(levelWall.LevelName, linearUnitsType.Millimeters, formatType.A4_LANDSCAPE_ISO, _drawingWindowViewModel.JobModel);
+            }
+
+        }
 
         private void CanvasDrawing_WorkCompleted(object sender, WorkCompletedEventArgs e)
         {
@@ -134,9 +176,8 @@ namespace DrawingModule.Views
 
         private void DrawingWindowView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            this.CanvasDrawing.CanvasDrawing.Renderer = rendererType.Direct3D;
+            this.CanvasDrawing.CanvasDrawing.Renderer = rendererType.Native;
             this.CanvasDrawing.CanvasDrawing.Turbo.MaxComplexity = 100;
-            this.CanvasDrawing.CanvasDrawing.HideSmall = true;
             this.CanvasDrawing.CanvasDrawing.Wireframe.SilhouettesDrawingMode = silhouettesDrawingType.Never;
             this.CanvasDrawing.CanvasDrawing.Shaded.SilhouettesDrawingMode = silhouettesDrawingType.Never;
             this.CanvasDrawing.CanvasDrawing.Rendered.SilhouettesDrawingMode = silhouettesDrawingType.Never;
@@ -149,60 +190,51 @@ namespace DrawingModule.Views
             this.CanvasDrawing.CanvasDrawing.Shaded.ShowInternalWires = false;
             this.CanvasDrawing.CanvasDrawing.Rendered.ShowEdges = false;
             CanvasDrawing.CanvasDrawing.Camera.ProjectionMode = projectionType.Orthographic;
-            CanvasDrawing.CanvasDrawing.Renderer = rendererType.Native;
-            this.CanvasDrawing.PaperSpace.Rebuild(this.CanvasDrawing.CanvasDrawing, true, true);
+            CanvasDrawing.CanvasDrawing.CurrentBlock.Units = linearUnitsType.Millimeters;
+
+            //this.CanvasDrawing.PaperSpace.Rebuild(this.CanvasDrawing.CanvasDrawing, true, true);
         }
 
         protected override void OnContentRendered(System.EventArgs e)
         {
+        //    //if (this.CanvasDrawing.PaperSpace.Sheets.Count != 0) return;
+        //    //foreach (var levelWall in _drawingWindowViewModel.Levels)
+        //    //{
 
-            //ReadFile rf = new ReadFile("Crankcase.eye");
-            //rf.DoWork();
-            // sets the units of the model.
-            //this.CanvasDrawing.CanvasDrawing.Units = rf.Units;
-            //this.CanvasDrawing.CanvasDrawing.Entities.Add(rf.Entities[0]);
-            if (this.CanvasDrawing.PaperSpace.Sheets.Count != 0) return;
-            foreach (var levelWall in _drawingWindowViewModel.Levels)
-            {
+        //    //    CanvasDrawing.AddSheet(levelWall.WallLevelName, linearUnitsType.Millimeters, formatType.A4_LANDSCAPE_ISO, _drawingWindowViewModel.JobModel);
+        //    //}
+        //    base.OnContentRendered(e);
 
-                CanvasDrawing.AddSheet(levelWall.LevelName, linearUnitsType.Millimeters, formatType.A4_LANDSCAPE_ISO, _drawingWindowViewModel.JobModel);
-            }
+            //BuildTestBeamBlock();
+            base.OnContentRendered(e);
 
-           // BuildTestBeamBlock();
-
-            //CanvasDrawing.TestPaperSpace.LineTypes.ReplaceItem(new LinePattern(CanvasDrawing.HiddenSegmentsLineTypeName, new float[] { 0.8f, -0.4f }));
+        //    //CanvasDrawing.TestPaperSpace.LineTypes.ReplaceItem(new LinePattern(CanvasDrawing.HiddenSegmentsLineTypeName, new float[] { 0.8f, -0.4f }));
         }
 
         private void BuildTestBeamBlock()
         {
-            Block beam = new Block("B1");
-            Line beamLine = new Line(new Point3D(0,0,0),new Point3D(1000,0,0));
-            beamLine.ColorMethod = colorMethodType.byEntity;
-            beamLine.Color = Color.Blue;
-            beam.Entities.Add(beamLine);
-            Leader beamLeader = new Leader(Plane.XY,new Point3D(500,0,0),new Point3D(500,2000,0));
-            beamLeader.ArrowheadSize = 500;
-            beam.Entities.Add(beamLeader);
-            var beamText = new Attribute(new Point3D(250,2050,0),"Name","B1",500);
-            beam.Entities.Add(beamText);
-            CanvasDrawing.CanvasDrawing.Blocks.Add(beam);
-            BlockReference reference = new BlockReference(new Point3D(0,0,0),"B1",0);
-            reference.Attributes.Add("Name","B1");
-            CanvasDrawing.CanvasDrawing.Entities.Add(reference);
-
-
+            var line = new Line(new Point3D(200, 3000, 0), new Point3D(3200, 3000, 0));
+            CanvasDrawing.CanvasDrawing.Entities.Add(line);
+            var beamEntity = new BeamEntity(new Point3D(0, 0, 0), "B1", new Point3D(200, 3000, 0), new Point3D(3200,3000, 0), "Prenail", "GroundFloor", 0, BeamMarkedLocation.bottom);
+            CanvasDrawing.CanvasDrawing.Blocks.Add(beamEntity.BeamBlock);
+            beamEntity.Attributes.Add("Name", "195x65 GL17C @ 1/3.3");
+            beamEntity.ColorMethod = colorMethodType.byEntity;
+            beamEntity.LineTypeMethod = colorMethodType.byEntity;
+            beamEntity.LineTypeScale = 0.5f;
+            beamEntity.LineWeightMethod = colorMethodType.byEntity;
+            CanvasDrawing.CanvasDrawing.Entities.Add(beamEntity);
         }
 
-        protected override void OnSourceInitialized(System.EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            //IntPtr handle = new WindowInteropHelper(this).Handle;
-            //int num = Win32.GetWindowLong(handle, -16).ToInt32();
-            //num = ((num | int.MinValue) & -524289);
-            //Win32.SetWindowLong(handle, -16, new IntPtr(num));
-            //HwndSource hwndSource = HwndSource.FromHwnd(handle);
-            //hwndSource.AddHook(new HwndSourceHook(DrawingWindowView.WndProc));
-        }
+        //protected override void OnSourceInitialized(System.EventArgs e)
+        //{
+        //    base.OnSourceInitialized(e);
+        //    //IntPtr handle = new WindowInteropHelper(this).Handle;
+        //    //int num = Win32.GetWindowLong(handle, -16).ToInt32();
+        //    //num = ((num | int.MinValue) & -524289);
+        //    //Win32.SetWindowLong(handle, -16, new IntPtr(num));
+        //    //HwndSource hwndSource = HwndSource.FromHwnd(handle);
+        //    //hwndSource.AddHook(new HwndSourceHook(DrawingWindowView.WndProc));
+        //}
 
         //private static IntPtr WndProc(IntPtr hWnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
         //{
@@ -261,21 +293,22 @@ namespace DrawingModule.Views
 
         private void UpDateLayout()
         {
-            Sheet activeSheet = CanvasDrawing.PaperSpace.GetActiveSheet();
+            //Sheet activeSheet = CanvasDrawing.PaperSpace.ActiveSheet;
 
             //devDept.Eyeshot.Entities.View view = null;
-
             //view = new VectorView(100, 30, viewType.Top, 0.01, CanvasDrawing.GetViewName((CustomSheet)activeSheet, viewType.Front, false));
-            foreach (var activeSheetEntity in activeSheet.Entities)
-            {
-                if (activeSheetEntity is VectorView vectorViews)
-                {
-                    vectorViews.Rebuild(CanvasDrawing.CanvasDrawing, activeSheet, CanvasDrawing.PaperSpace, true);
-                }
-            }
+
+            //foreach (var activeSheetEntity in activeSheet.Entities)
+            //{
+            //    if (activeSheetEntity is VectorView vectorViews)
+            //    {
+            //        vectorViews.Rebuild(CanvasDrawing.CanvasDrawing, activeSheet, CanvasDrawing.PaperSpace, true);
+            //    }
+            //}
+            CanvasDrawing.CanvasDrawingControl.StartViewBuilder(null,false);
 
             //if (CanvasDrawing.PaperSpace.Blocks.Contains(view.BlockName))
-            //    CanvasDrawing.PaperSpace.Blocks.Remove(view.BlockName); // it removes also related block references.
+            //   CanvasDrawing.PaperSpace.Blocks.Remove(view.BlockName); // it removes also related block references.
 
             //view.Rebuild(CanvasDrawing.CanvasDrawing, activeSheet, CanvasDrawing.PaperSpace, true);
 
@@ -300,7 +333,6 @@ namespace DrawingModule.Views
             //hdSetting.KeepEntityColor = true;
             //hdSetting.KeepEntityLineWeight = true;
             //hdSetting.TreatWhiteAsBlack = true;
-
             //var hlv = new HiddenLinesViewOnPaper(hdSetting);
             //CanvasDrawing.CanvasDrawing.StartWork(hlv);
 

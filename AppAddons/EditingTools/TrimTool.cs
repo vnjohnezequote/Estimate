@@ -115,7 +115,8 @@ namespace AppAddons.EditingTools
             {
                 if (_firstSelectedEntity is ICurve trimmingCurve && _secondSelectedEntity is ICurve curve)
                 {
-                   
+
+#if NURBS
                     Point3D[] intersetionPoints = Curve.Intersection(trimmingCurve, curve);
                     if (intersetionPoints.Length > 0 && _trimPoint !=null)
                     {
@@ -203,11 +204,11 @@ namespace AppAddons.EditingTools
                     _firstSelectedEntity = null;
                     _secondSelectedEntity = null;
                     _trimPoint = null;
-
+#endif
                 }
+
             }
 
-
         }
-    }
+            }
 }

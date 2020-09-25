@@ -13,7 +13,7 @@ namespace ApplicationInterfaceCore
         string ActiveLevel { get; }
         int DimTextHeight { get; }
         ViewportList Viewports { get; }
-        int ActiveViewport { get; }
+        int ActiveViewportIndex { get; }
         Size Size{ get; }
         Point3D LastClickPoint { get; }
         Plane DrawingPlane { get; }
@@ -29,6 +29,7 @@ namespace ApplicationInterfaceCore
         double CurrentTextHeight { get; }
         double CurrentTextAngle { get; }
         double ScaleFactor { get; }
+        BlockKeyedCollection Blocks { get; }
         IDynamicInputView DynamicInput { get; }
         LayerKeyedCollection Layers { get; }
         void RefreshEntities();

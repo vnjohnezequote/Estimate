@@ -994,7 +994,7 @@ namespace WallFrameInputModule.ViewModels
         #endregion
 
         #region public
-        //public string LevelName
+        //public string WallLevelName
         //{
         //    get => _levelName;
         //    set => SetProperty(ref _levelName, value);
@@ -1113,7 +1113,7 @@ namespace WallFrameInputModule.ViewModels
         {
             base.OnNavigatedTo(navigationContext);
             this.Title = "Prenai - " + this.Level.LevelName;
-            //this.LevelName = this.Level.LevelName;
+            //this.WallLevelName = this.Level.WallLevelName;
             // this.Studs = this.SelectedClient.Studs;
             // this.RibbonPlates = this.SelectedClient.RibbonPlates;
             // this.TopPlates = this.SelectedClient.TopPlates;

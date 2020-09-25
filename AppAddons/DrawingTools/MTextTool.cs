@@ -63,7 +63,7 @@ namespace AppAddons.DrawingTools
         }
         protected virtual void ProcessDrawEntities(Point3D insertPoint)
         {
-            var text = new MultilineText(Plane.XY, insertPoint,TextInput, 1000, TextHeight,1.3*TextHeight);
+            var text = new MultilineText(Plane.XY, insertPoint,TextInput, 10000, TextHeight,1.3*TextHeight);
             text.Contents = TextInput;
             var rad = Utility.DegToRad(TextAngle);
             text.Rotate(rad, Vector3D.AxisZ, insertPoint);
@@ -100,10 +100,11 @@ namespace AppAddons.DrawingTools
             var rad = Utility.DegToRad(TextAngle);
             text.Rotate(rad, Vector3D.AxisZ, e.CurrentPoint);
 
-            var tempText = text.ConvertToCurves((Environment)canvas);
+            var tempText = text.ConvertToLinearPaths(0.01,(Environment)canvas);
             foreach (var curve in tempText)
             {
-                DrawInteractiveUntilities.Draw(curve, canvas);
+                DrawInteractiveUntilities.DrawCurveOrBlockRef(curve,canvas);
+                //DrawInteractiveUntilities.Draw(curve, canvas);
             }
 
             if (BasePoint != null && e.CurrentPoint != null)

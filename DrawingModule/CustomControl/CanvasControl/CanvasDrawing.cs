@@ -21,6 +21,7 @@ using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels;
 using AppModels.EventArg;
+using AppModels.Interaface;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
@@ -55,7 +56,9 @@ namespace DrawingModule.CustomControl.CanvasControl
         public static readonly DependencyProperty LayersManagerProperty =
             DependencyProperty.Register("LayersManager", typeof(ILayerManager), typeof(CanvasDrawing),
                 new PropertyMetadata(null, LayersManagerChangedCallBack));
-
+        public static readonly DependencyProperty JobModelProperty =
+            DependencyProperty.Register("JobModel", typeof(IJob), typeof(CanvasDrawing),
+                new PropertyMetadata(null));
         private bool _cursorOutSide;
         private bool _isUserInteraction;
         private bool _isSnappingEnable;
@@ -84,6 +87,12 @@ namespace DrawingModule.CustomControl.CanvasControl
         {
             get => (ILayerManager)GetValue(LayersManagerProperty);
             set => SetValue(LayersManagerProperty, value);
+        }
+
+        public IJob JobModel
+        {
+            get => (IJob)GetValue(JobModelProperty);
+            set => SetValue(JobModelProperty, value);
         }
         //public DrawEntitiesType DrawEntitiesType { get; set; }
         public int CurrentIndex { get; set; }
@@ -403,7 +412,8 @@ namespace DrawingModule.CustomControl.CanvasControl
         public CanvasDrawing()
 
         {
-            DimTextHeight = 10;
+            //PickBoxSize = 16;
+            DimTextHeight = 500;
             IsUserInteraction = false;
             _waitingForSelection = false;
             _waitingForPickSelection = false;
@@ -417,6 +427,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.CurrentIndex = -1;
             Loaded += CanvasDrawing_Loaded;
             this.PrepareLineTypes();
+
             //SelectionColor = null;
             //SelectionColor = Color.FromArgb(50,Color.Chocolate);
 
@@ -782,10 +793,11 @@ namespace DrawingModule.CustomControl.CanvasControl
             //return this._selectTool.SelectedEntities.ToList();
         }
 
-        private Entity GetSelectionEntity()
+        public Entity GetSelectionEntity()
         {
             return Dispatcher.Invoke((Func<Entity>)(() => this.EntitiesManager.SelectedEntity?.Entity as Entity));
         }
+        
 
         private void ClearSelectionEntity()
         {
@@ -1056,7 +1068,11 @@ namespace DrawingModule.CustomControl.CanvasControl
             var vp = (ICadDrawAble)d;
             var newValue = (IEntitiesManager)e.NewValue;
             if (newValue != null)
+            {
                 newValue.SetEntitiesList(vp.Entities);
+                newValue.SetBlocks(vp.Blocks);
+            }
+
             newValue.SetCanvasDrawing(vp);
 
             // do something

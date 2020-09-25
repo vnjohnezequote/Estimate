@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationService;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
+using devDept.Geometry;
 using devDept.Graphics;
 using DrawingModule.Application;
 using DrawingModule.DrawToolBase;
@@ -88,16 +91,32 @@ namespace DrawingModule.CustomControl.CanvasControl
                 return false;
             }
         }
-
+        //private List<Point3D> test = new List<Point3D>();
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             var mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
             var check = GetEntitiesUnderMouse(mousePosition);
             _isUserClicked = true;
             this.LastClickPoint = CurrentPoint;
+            //test.Add(LastClickPoint);
 
             if (this.ActionMode == actionType.None && e.ChangedButton == MouseButton.Left)
             {
+                //if (test.Count == 2)
+                //{
+                //    var beamEntity = new BeamEntity(test[0], "B1" , test[0],test[1], "Prenail", "GroundFloor", 0);
+                //    Blocks.Add(beamEntity.BeamBlock);
+                //    beamEntity.Attributes.Add("Name", "195x65 GL17C @ 1/3.3");
+                //    beamEntity.ColorMethod = colorMethodType.byEntity;
+                //    beamEntity.LineTypeMethod = colorMethodType.byEntity;
+                //    //beamEntity.LineTypeScale = 0.5f;
+                //    beamEntity.LineWeightMethod = colorMethodType.byEntity;
+                //    Entities.Add(beamEntity, "Beam");
+                //    Entities.Regen();
+                //    Invalidate();
+                //}
+
+
                 this.PolaTrackingPoints.Clear();
                 if (IsProcessingTool)
                 {
@@ -151,7 +170,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                 }
                 else
                 {
-                    if (!GetToolBar().Contains(mousePosition))
+                    if (!ActiveViewport.ToolBar.Contains(mousePosition))
                     {
                         this.ProcessMouseDownForSelectionTool(e, check);
                     }
@@ -197,6 +216,10 @@ namespace DrawingModule.CustomControl.CanvasControl
             }
 
             CurrentTool.ActiveLevel = this.ActiveLevel;
+            if (this.JobModel !=null)
+            {
+                CurrentTool.JobModel = this.JobModel;
+            }
             IsProcessingTool = true;
             _isUserInteraction = false;
             MouseMove_Drawing += tool.NotifyMouseMove;

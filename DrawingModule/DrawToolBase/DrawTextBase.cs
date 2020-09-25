@@ -14,7 +14,7 @@ namespace DrawingModule.DrawToolBase
     {
         public override Point3D BasePoint { get; protected set; }
         private string _textInput;
-        private double _textHeight=50;
+        private double _textHeight=500;
         private double _textAngle=0;
         public string TextInput {
             get => string.IsNullOrEmpty(_textInput) ? "Please enter string to insert" : _textInput;
@@ -28,7 +28,7 @@ namespace DrawingModule.DrawToolBase
             {
                 if (Math.Abs(_textHeight) < 0.1)
                 {
-                    return 100;
+                    return 500;
                 }
 
                 if (_textHeight<0)

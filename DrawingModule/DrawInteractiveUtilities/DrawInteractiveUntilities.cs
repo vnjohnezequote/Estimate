@@ -78,20 +78,25 @@ namespace DrawingModule.DrawInteractiveUtilities
                         var text = new Text(dim.Vertices[6], dim.TextString, dim.Height);
                         text.Rotate(Utils.GetAngleRadian(dim.Vertices[2], dim.Vertices[3]), Vector3D.AxisZ, dim.Vertices[6]);
 
-                        var tempText = text.ConvertToCurves((Environment)canvas);
+                        var tempText = text.ConvertToLinearPaths(0.01, (Environment) canvas);
+                        //text.ConvertToCurves((Environment)canvas);
                         foreach (var curve in tempText)
                         {
-                            Draw(curve,canvas);
+                            var screenpts = Utils.GetScreenVertices(curve.Vertices, canvas);
+                            canvas.renderContext.DrawLineStrip(screenpts);
+                            //Draw(curve,canvas);
                         }
 
                         break;
                     }
                 case Text text:
                     {
-                        var tempText = text.ConvertToCurves((Environment)canvas);
+                        var tempText = text.ConvertToLinearPaths(0.01, (Environment)canvas);
                         foreach (var curve in tempText)
                         {
-                            Draw(curve,canvas);
+                            var screenpts = Utils.GetScreenVertices(curve.Vertices, canvas);
+                            canvas.renderContext.DrawLineStrip(screenpts);
+                            //Draw(curve,canvas);
                         }
                         break;
                     }
@@ -245,7 +250,6 @@ namespace DrawingModule.DrawInteractiveUtilities
 
         public static void DrawInteractiveSpotLine(Point3D firstPoint, Point3D secondPoint, ICadDrawAble canvas)
         {
-
             if (firstPoint == null || secondPoint == null)
                 return;
             var startPoint = canvas.WorldToScreen(firstPoint);
@@ -298,10 +302,12 @@ namespace DrawingModule.DrawInteractiveUtilities
             var rad = Utility.DegToRad(canvas.CurrentTextAngle);
             textOutput.Rotate(rad, Vector3D.AxisZ, currentPoint);
 
-            var tempText = textOutput.ConvertToCurves((Environment)canvas);
+            var tempText = textOutput.ConvertToLinearPaths(0.01,(Environment)canvas);
             foreach (var curve in tempText)
             {
-                Draw(curve,canvas);
+                var screenpts = Utils.GetScreenVertices(curve.Vertices, canvas);
+                canvas.renderContext.DrawLineStrip(screenpts);
+                //Draw(curve,canvas);
             }
         }
 

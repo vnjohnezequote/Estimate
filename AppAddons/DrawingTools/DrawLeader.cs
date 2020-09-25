@@ -24,7 +24,7 @@ namespace AppAddons.DrawingTools
         public override Point3D BasePoint { get; protected set; }
         private List<Point3D> _clickPoints;
         private int _leaderSegment = 1;
-        private int _arrowSize = 10;
+        private int _arrowSize = 500;
         public int LeaderSegment
         {
             get => _leaderSegment <= 0 ? 1 : _leaderSegment;
@@ -33,7 +33,7 @@ namespace AppAddons.DrawingTools
 
         public int ArrowSize
         {
-            get => _arrowSize<=0 ? 10 : _arrowSize;
+            get => _arrowSize<=0 ? 500 : _arrowSize;
             set => SetProperty(ref _arrowSize, value);
         }
 

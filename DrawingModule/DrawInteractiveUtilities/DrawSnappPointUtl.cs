@@ -12,7 +12,7 @@ namespace DrawingModule.DrawInteractiveUtilities
 {
     internal static class DrawSnappPointUtl
     {
-        public static void DisplaySnappedVertex(ICadDrawAble canvasDrawing,SnapPoint snap,RenderContextBase renderContext, double snapSymbolSize = 20)
+        public static void DisplaySnappedVertex(ICadDrawAble canvasDrawing,SnapPoint snap,RenderContextBase renderContext, double snapSymbolSize = 40)
         {
             renderContext.SetLineSize(2);
 
@@ -59,7 +59,7 @@ namespace DrawingModule.DrawInteractiveUtilities
         }
 
         public static void DisplayTrackingPoint(ICadDrawAble canvasDrawing, HashSet<Point3D> polarPoints,
-            RenderContextBase renderContext, double trackingPointSize = 20)
+            RenderContextBase renderContext, double trackingPointSize = 40)
         {
             renderContext.SetLineSize(2);
 
@@ -83,7 +83,7 @@ namespace DrawingModule.DrawInteractiveUtilities
             }
         }
 
-        public static void DisplayTrackedPoint(ICadDrawAble canvasDrawing, Point3D potaTrackedPoint,RenderContextBase renderContext, double trackingPointSize = 20)
+        public static void DisplayTrackedPoint(ICadDrawAble canvasDrawing, Point3D potaTrackedPoint,RenderContextBase renderContext, double trackingPointSize = 40)
         {
             renderContext.SetLineSize(2);
 

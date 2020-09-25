@@ -29,19 +29,19 @@ namespace AppAddons.DrawingTools
     public  class DrawingLine: ToolBase
     {
         //public DrawInteractiveDelegate DrawInteractiveHandler { get; private set; }
-        public override string ToolName => "DrawingLine";
-        private List<Point3D> _points = new List<Point3D>();
-        public sealed override string ToolMessage => _points.Count == 0
+        public override string ToolName => "Drawing Line";
+        public List<Point3D> Points { get; set; } = new List<Point3D>();
+        public sealed override string ToolMessage => Points.Count == 0
             ? "Please enter start point. Escape to break tool"
             : "Please enter next point. Escape to break tool";
 
         public override Point3D BasePoint { get; protected set; }
-        private PromptPointOptions promptPointOp { get; set; }
+        public PromptPointOptions PromptPointOp { get; set; }
         #region Constructor
 
         public DrawingLine()
         {
-           this.promptPointOp = new PromptPointOptions(ToolMessage);
+           this.PromptPointOp = new PromptPointOptions(ToolMessage);
            IsUsingOrthorMode = false;
            IsUsingLengthTextBox = true;
            IsUsingAngleTextBox = true;
@@ -54,25 +54,25 @@ namespace AppAddons.DrawingTools
             DynamicInput?.FocusLength();
             while (true)
             {
-                this.promptPointOp.Message = ToolMessage;
-                var res = acDoc.Editor.GetPoint(this.promptPointOp);
+                this.PromptPointOp.Message = ToolMessage;
+                var res = acDoc.Editor.GetPoint(this.PromptPointOp);
                 if (res.Status == PromptStatus.Cancel)
                 {
                     return;
                 }
 
-                _points.Add(res.Value);
-                if (_points.Count>0)
+                Points.Add(res.Value);
+                if (Points.Count>0)
                 {
-                    var index = _points.Count - 1;
-                    BasePoint = (Point3D)_points[index]; ;
+                    var index = Points.Count - 1;
+                    BasePoint = (Point3D)Points[index]; ;
                     IsUsingOrthorMode = true;
                 }
-                if (this._points.Count < 2) continue;
-                var index2 = _points.Count - 1;
-                var startPoint2 = (Point3D)_points[index2 - 1].Clone();
-                var endPoint = (Point3D) _points[index2].Clone();
-                var line = new Line(startPoint2,endPoint);
+                if (this.Points.Count < 2) continue;
+                var index2 = Points.Count - 1;
+                var startPoint = (Point3D)Points[index2 - 1].Clone();
+                var endPoint = (Point3D) Points[index2].Clone();
+                var line = new Line(startPoint,endPoint);
                 line.LineTypeMethod = colorMethodType.byLayer;
                 {
                     if (LayerManager.SelectedLayer.LineTypeName!="Continues")
@@ -83,6 +83,7 @@ namespace AppAddons.DrawingTools
                 line.Color = LayerManager.SelectedLayer.Color;
                 var wall2D = new Wall2D(line);
                 wall2D.WallLevelName = this.ActiveLevel;
+                wall2D.LineTypeScale = 1;
                 //wall2D.WallLevelName = "Level 1";
                 this.EntitiesManager.AddAndRefresh(wall2D,this.LayerManager.SelectedLayer.Name);
             }
@@ -124,9 +125,9 @@ namespace AppAddons.DrawingTools
             drawTable.renderContext.SetColorWireframe(LayerManager.SelectedLayer.Color);
             drawTable.renderContext.SetLineSize(LayerManager.SelectedLayer.LineWeight);
             //drawTable.renderContext.SetLineStipple();
-            if (this._points.Count < 1) return;
-            var index = this._points.Count - 1;
-            var startPoint = drawTable.WorldToScreen(_points[index]);
+            if (this.Points.Count < 1) return;
+            var index = this.Points.Count - 1;
+            var startPoint = drawTable.WorldToScreen(Points[index]);
             if (e.CurrentPoint == null)
             {
                 return;

@@ -79,12 +79,13 @@
     <Reference Include="CsvHelper, Version=15.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.15.0.5\lib\net47\CsvHelper.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Eyeshot.Control.Wpf.v2020" />
-    <Reference Include="devDept.Geometry.v2020">
-      <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
-    </Reference>
-    <Reference Include="devDept.Graphics.Shaders.v2020" />
-    <Reference Include="devDept.Graphics.Wpf.v2020" />
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Geometry.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL" >
+	<HintPath>C:\Program Files\devDept Software\Eyeshot Ultimate 12\Bin\devDept.Geometry.v12.dll</HintPath>
+	</Reference>
+	
+    <Reference Include="devDept.Graphics.Shaders.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=54ce5f5f803e4b42, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Graphics.Wpf.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=f3cd437f0d8061b5, processorArchitecture=MSIL" />
     <Reference Include="LiteDB, Version=5.0.8.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.5.0.8\lib\net45\LiteDB.dll</HintPath>
     </Reference>
@@ -151,7 +152,6 @@
     <Compile Include="AppData\LayerItem.cs" />
     <Compile Include="CustomEntity\BeamEntity.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\Wall2DSurrogate.cs" />
-    <Compile Include="CustomEntity\CustomVectorView.cs" />
     <Compile Include="Enums\BeamMarkedLocation.cs" />
     <Compile Include="Enums\BeamType.cs" />
     <Compile Include="Enums\CeilingBattensType.cs" />
@@ -174,7 +174,6 @@
     <Compile Include="Factories\WallLayerFactory.cs" />
     <Compile Include="FileSerializer\EzequoteFileSerializer.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="MyHiddenLinesView.cs" />
     <Compile Include="Interaface\IBasicWallInfo.cs" />
     <Compile Include="Interaface\IBeam.cs" />
     <Compile Include="Interaface\IClientDatabase.cs" />
@@ -188,7 +187,6 @@
     <Compile Include="Interaface\IWallMember.cs" />
     <Compile Include="Interaface\IWallMemberDetailInfo.cs" />
     <Compile Include="Interaface\IWallMemberInfo.cs" />
-    <Compile Include="MyViewBuilder.cs" />
     <Compile Include="PocoDataModel\Customer.cs" />
     <Compile Include="PocoDataModel\EngineerMember\EngineerMemberInfoPoco.cs" />
     <Compile Include="PocoDataModel\Openings\LintelBeamPoco.cs" />

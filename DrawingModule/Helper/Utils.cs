@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
 using ApplicationInterfaceCore;
+using AppModels.CustomEntity;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CustomControl;
@@ -446,10 +447,46 @@ namespace DrawingModule.Helper
                 }
                 else
                 {
-                    foreach (var vertex in cadDraw.Entities[index].Vertices)
+                    if (cadDraw.Entities[index] is BeamEntity beamEntity)
                     {
-                        snapPoints.Add(new SnapPoint(vertex, ObjectSnapType.End));
+                        if (Utils.GetPerpenticalSnapPoints(cadDraw.LastClickPoint, beamEntity.BeamLine as ICurve).Count > 0)
+                        {
+                            snapPoints.UnionWith(Utils.GetPerpenticalSnapPoints(cadDraw.LastClickPoint, beamEntity.BeamLine as ICurve));
+                        }
+
+                        var vertices = beamEntity.BeamLine.Vertices;
+
+
+                        foreach (var vertex in vertices)
+                        {
+                            snapPoints.Add(new SnapPoint(vertex, ObjectSnapType.End));
+                        }
+
+                        if(!Utils.CheckPointInSnapPoints(beamEntity.BeamLine.MidPoint, snapPoints))
+                            snapPoints.Add(new SnapPoint(beamEntity.BeamLine.MidPoint,ObjectSnapType.Nearest));
+
+                        tempLine = beamEntity.BeamLine;
+
+                        cadDraw.ScreenToPlane(mouseLocation, cadDraw.DrawingPlane, out var mousePos);
+                        if (tempLine != null)
+                        {
+                            var nearPoint = Utils.GetPerpendicularPoints(tempLine, mousePos);
+                            if (!Utils.CheckPointInSnapPoints(nearPoint, snapPoints))
+                            {
+                                snapPoints.Add(new SnapPoint(nearPoint, ObjectSnapType.Nearest));
+                            }
+                        }
+
+
                     }
+                    else
+                    {
+                        foreach (var vertex in cadDraw.Entities[index].Vertices)
+                        {
+                            snapPoints.Add(new SnapPoint(vertex, ObjectSnapType.End));
+                        }
+                    }
+                    
                 }
 
                 countIndex++;

@@ -211,8 +211,8 @@ namespace Estimate.ViewModels
             SaveJobCommand = new DelegateCommand(OnSaveJobCommand);
             OpenJobCommand = new DelegateCommand(OnOpenJobCommand);
             JobModel.Info.PropertyChanged += Info_PropertyChanged;
-            _autoSaveTimer.Start();
-            _autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
+            //_autoSaveTimer.Start();
+            //_autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
             this.EventAggregator.GetEvent<DrawingSaveJobEvent>().Subscribe(OnSaveJobCommand);
             //this.EventAggregator.GetEvent<JobModelService>().Subscribe(this.OnChangeClient);
 

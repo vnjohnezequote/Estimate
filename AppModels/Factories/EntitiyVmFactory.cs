@@ -1,4 +1,5 @@
 ﻿using System;
+using AppModels.CustomEntity;
 using AppModels.Interaface;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
@@ -25,6 +26,8 @@ namespace AppModels.Factories
                     return text.CreateTextVm();
                 case Leader leader:
                     return leader.CreateLeaderVm();
+                case BeamEntity beam:
+                    return beam.CreateEntityVm();
                 case Entity entiti:
                     entiti.CreateEntityVm();
                     break;

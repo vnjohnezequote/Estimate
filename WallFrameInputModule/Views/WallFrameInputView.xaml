@@ -19,7 +19,7 @@
         <ComboBox materialDesign:HintAssist.Hint="Floor Level"
                   IsEditable="True"
                   ItemsSource="{Binding Job.Levels}"
-                  DisplayMemberPath="LevelName"/>
+                  DisplayMemberPath="WallLevelName"/>
         <TabControl prism:RegionManager.RegionName="FloorInputRegion"
                     prism:RegionManager.RegionManager="{Binding RegionManager}"
                     Style="{StaticResource MaterialDesignTabControlCustom}"

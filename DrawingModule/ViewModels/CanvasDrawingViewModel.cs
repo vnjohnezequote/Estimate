@@ -138,11 +138,13 @@ namespace DrawingModule.ViewModels
                 }
             }
 
-            if (checkIfLevelAvailable)
+            if (!checkIfLevelAvailable) return;
+            if (_paperSpace!=null)
             {
-                //_paperSpace?.SetActiveSheet(ActiveLevel);
+                _paperSpace.ActiveSheet = _paperSpace.Sheets[ActiveLevel];
+
             }
-            
+
         }
         private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

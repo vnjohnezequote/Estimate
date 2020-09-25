@@ -57,11 +57,11 @@
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.3.0\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Eyeshot.Control.Wpf.v2020"/>
-    <Reference Include="devDept.Geometry.v2020">
- <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Geometry.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL" >
+	<HintPath>C:\Program Files\devDept Software\Eyeshot Ultimate 12\Bin\devDept.Geometry.v12.dll</HintPath>
 	</Reference>
-    <Reference Include="devDept.Graphics.Wpf.v2020"/>
+    <Reference Include="devDept.Graphics.Wpf.v12, Version=12.0.351.0, Culture=neutral, PublicKeyToken=f3cd437f0d8061b5, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>

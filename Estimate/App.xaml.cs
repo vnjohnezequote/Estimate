@@ -8,12 +8,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System.Text;
 using AppAddons;
 using AppDataBase.DataBase;
 using ApplicationInterfaceCore;
 using AppModels;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
+using Serilog;
 
 namespace Estimate
 {
@@ -45,6 +47,7 @@ namespace Estimate
         /// </param>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSerilog();
             containerRegistry.RegisterSingleton<IJob, JobModel>();
             containerRegistry.RegisterSingleton<ILayerManager,LayerManager>();
             containerRegistry.RegisterSingleton<IEntitiesManager, EntitiesManager>();
@@ -101,6 +104,7 @@ namespace Estimate
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            Log.Logger = new LoggerConfiguration().MinimumLevel.Error().WriteTo.File("Estimate.log").CreateLogger();
             AppDomain.CurrentDomain.AssemblyLoad += CurrentDomainOnAssemblyLoad;
             base.OnStartup(e);
             if (e.Args.Length > 0)
@@ -108,7 +112,15 @@ namespace Estimate
                 MessageBox.Show(e.Args[0]);
             }
         }
-        
+        protected override void OnExit(ExitEventArgs e)
+        {
+            Log.CloseAndFlush();
+            
+
+            base.OnExit(e);
+        }
+
+
 
     }
 }

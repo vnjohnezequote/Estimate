@@ -27,12 +27,12 @@
                     <Grid>
                         <canvasControl:CanvasDrawing x:Name="CanvasDrawing"
 										Units="Millimeters"
-                                        AutoRefresh="True"
+										AntiAliasingSamples="x8"
+										AutoRefresh="True"
                                         EntitiesManager="{Binding EntitiesManager}"
                                         LayersManager="{Binding LayerManager}"
                                         JobModel="{Binding JobModel}"
-                                        ActiveLayerName="{Binding LayerManager.SelectedLayer.Name}"
-                                        SelectionFilterMode="Entity">
+                                        ActiveLayerName="{Binding LayerManager.SelectedLayer.Name}" SelectionFilterMode="Entity">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseLeave">
                                     <b:InvokeCommandAction Command="{Binding CanvasDrawingMouseLeave, Mode=OneWay}"/>
@@ -47,18 +47,18 @@
                             </b:Interaction.Triggers>
                             <canvasControl:CanvasDrawing.Viewports>
                                 <ddes:Viewport DisplayMode="Wireframe" Name="TopViewPort">
-                                    <!--<ddes:Viewport.OriginSymbols>
+                                    <!--<ddes:Viewport.OriginSymbol>
 								<ddes:OriginSymbol Lighting="True"/>
-							</ddes:Viewport.OriginSymbols>-->
+							</ddes:Viewport.OriginSymbol>-->
                                     <ddes:Viewport.Pan>
                                         <ddes:PanSettings MouseButton="Middle, None"/>
                                     </ddes:Viewport.Pan>
                                     <ddes:Viewport.Rotate>
                                         <ddes:RotateSettings Enabled="False"/>
                                     </ddes:Viewport.Rotate>
-                                    <!--<ddes:Viewport.OriginSymbolss>
+                                    <!--<ddes:Viewport.OriginSymbols>
 								<ddes:OriginSymbol Lighting="True"/>
-							</ddes:Viewport.OriginSymbolss>-->
+							</ddes:Viewport.OriginSymbols>-->
                                     <ddes:Viewport.CoordinateSystemIcon>
                                         <ddes:CoordinateSystemIcon Lighting="True"/>
                                     </ddes:Viewport.CoordinateSystemIcon>
