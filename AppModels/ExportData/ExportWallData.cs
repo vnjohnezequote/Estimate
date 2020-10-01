@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using AppModels.Enums;
 using AppModels.ResponsiveData;
@@ -31,8 +32,8 @@ namespace AppModels.ExportData
         public int TCorners { get; set; }
         public int InwallSupport { get; set; }
         public int BathCheckOuts { get; set; }
-        public int WallRunLength { get; set; }
         public int AdditionalStuds { get; set; }
+        public double RoofPitch { get; set; }
 
         public ObservableCollection<ExportDoorData> Doors { get; set; }
         public ObservableCollection<ExportDoorData> Windows { get; set; }
@@ -49,13 +50,14 @@ namespace AppModels.ExportData
             TCorners = wall.TCorners;
             InwallSupport = wall.InWallSupports;
             BathCheckOuts = wall.BathCheckout;
+            RoofPitch = wall.CeilingPitch;
             if (wall.WallType.IsRaked)
             {
                 if (NumberOfSameWalls == 0)
                 {
                     NumberOfSameWalls = 1;
                 }
-                WallLength = (int) WallLength * 1000 / NumberOfSameWalls;
+                WallLength = (int) (WallLength * 1000 / NumberOfSameWalls);
                 WallHeight = (int)Math.Ceiling(wall.FinalWallHeight-WallLength* Math.Tan(Utility.DegToRad(wall.CeilingPitch)));
             }
             else
@@ -67,7 +69,10 @@ namespace AppModels.ExportData
             
             StudSize = wall.Stud.SizeGrade;
             TopPlate = wall.TopPlate.SizeGrade;
-            RibbonPlate = wall.RibbonPlate.SizeGrade;
+            if (IsLoadbearingWall)
+            {
+                RibbonPlate = wall.RibbonPlate.SizeGrade;
+            }
             BottomPlate = wall.BottomPlate.SizeGrade;
             WallSpacing = wall.WallSpacing;
             AdditionalStuds = (int)Math.Ceiling(wall.WetAreaLength / 0.45 - wall.WetAreaLength / 0.6);
@@ -109,6 +114,7 @@ namespace AppModels.ExportData
                     }
                 }
             }
+
         }
         public bool DoorContaintDoor(Opening door, ref int doorIndex)
         {
@@ -134,13 +140,145 @@ namespace AppModels.ExportData
             return false;
         }
 
-        public void ExportWallDataToExcel(Microsoft.Office.Interop.Excel.Worksheet levelSheet,int offsetValue, WarnervaleExcelDataRangeIndex wallDataRange)
+        public void ExportWallDataToExcel( WarnervaleExcelDataRangeIndex wallDataRange)
         {
-            ExportDoorDatatoExcel(levelSheet,wallDataRange,offsetValue);
+            if (IsLoadbearingWall)
+            {
+                if (IsRakedWall)
+                {
+                    wallDataRange.StudSize.Value = StudSize;
+                    wallDataRange.WallSpacing.Value = WallSpacing;
+                    wallDataRange.WallLength.Value = WallLength;
+                    wallDataRange.WallHeight.Value = WallHeight;
+                    wallDataRange.BeamPockets.Value = BeamPockets;
+                    wallDataRange.Corners.Value = Corners;
+                    wallDataRange.TCorners.Value = TCorners;
+                    wallDataRange.Supports.Value = InwallSupport;
+                    wallDataRange.TopPlate.Value = TopPlate;
+                    wallDataRange.BottomPlate.Value = BottomPlate;
+                    wallDataRange.RibbonPlate.Value = RibbonPlate;
+                    wallDataRange.WetAreaStud.Value = AdditionalStuds;
+                    wallDataRange.RoofPitch.Value = RoofPitch;
+                    wallDataRange.NumberOfSameWall.Value = NumberOfSameWalls;
+                    ExportDoorDatatoExcel( wallDataRange);
+                }
+                else
+                {
+                    wallDataRange.StudSize.Value = StudSize;
+                    wallDataRange.WallSpacing.Value = WallSpacing;
+                    wallDataRange.WallLength.Value = WallLength;
+                    wallDataRange.WallHeight.Value = WallHeight;
+                    wallDataRange.BeamPockets.Value = BeamPockets;
+                    wallDataRange.Corners.Value = Corners;
+                    wallDataRange.TCorners.Value = TCorners;
+                    wallDataRange.Supports.Value = InwallSupport;
+                    wallDataRange.TopPlate.Value = TopPlate;
+                    wallDataRange.BottomPlate.Value = BottomPlate;
+                    wallDataRange.RibbonPlate.Value = RibbonPlate;
+                    wallDataRange.WetAreaStud.Value = AdditionalStuds;
+                    ExportDoorDatatoExcel(wallDataRange);   
+                }
+            }
+            else
+            {
+                if (IsRakedWall)
+                {
+                    wallDataRange.StudSize.Value = StudSize;
+                    wallDataRange.WallSpacing.Value = WallSpacing;
+                    wallDataRange.WallLength.Value = WallLength;
+                    wallDataRange.WallHeight.Value = WallHeight;
+                    wallDataRange.Corners.Value = Corners;
+                    wallDataRange.TCorners.Value = TCorners;
+                    wallDataRange.TopPlate.Value = TopPlate;
+                    wallDataRange.BottomPlate.Value = BottomPlate;
+                    wallDataRange.WetAreaStud.Value = AdditionalStuds;
+                    wallDataRange.BathCheckout.Value = BathCheckOuts;
+                    wallDataRange.RoofPitch.Value = RoofPitch;
+                    wallDataRange.NumberOfSameWall.Value = NumberOfSameWalls;
+                    ExportDoorDatatoExcel(wallDataRange);
+                }
+                else
+                {
+                    wallDataRange.StudSize.Value = StudSize;
+                    wallDataRange.WallSpacing.Value = WallSpacing;
+                    wallDataRange.WallLength.Value = WallLength;
+                    wallDataRange.WallHeight.Value = WallHeight;
+                    wallDataRange.Corners.Value = Corners;
+                    wallDataRange.TCorners.Value = TCorners;
+                    wallDataRange.TopPlate.Value = TopPlate;
+                    wallDataRange.BottomPlate.Value = BottomPlate;
+                    wallDataRange.WetAreaStud.Value = AdditionalStuds;
+                    wallDataRange.BathCheckout.Value = BathCheckOuts;
+                    ExportDoorDatatoExcel(wallDataRange);
+                }
+            }
         }
 
-        public void ExportDoorDatatoExcel(Microsoft.Office.Interop.Excel.Worksheet levelSheet, WarnervaleExcelDataRangeIndex wallDataRange, int offsetValue)
+        public void ExportDoorDatatoExcel(WarnervaleExcelDataRangeIndex wallDataRange)
         {
+            if (IsLoadbearingWall)
+            {
+                if (Windows.Count>16)
+                {
+                    MessageBox.Show(
+                        "Your Wall Contains Two Much Window, exceed Window range in Excel please check againt ");
+                    return;
+                }
+                else
+                {
+                    var i = 0;
+                    foreach (var window in Windows)
+                    {
+                        wallDataRange.StartWindowHeight.Offset[i,0].Value = window.Height;
+                        wallDataRange.StartWindowWidth.Offset[i, 0].Value = window.Width;
+                        wallDataRange.StartWindowQty.Offset[i, 0].Value = window.Qty;
+                        wallDataRange.StartWindowTrussSpan.Offset[i, 0].Value = window.TrussSpan;
+                        i++;
+                    }
+
+                    
+                }
+
+                if (Doors.Count>11)
+                {
+                    MessageBox.Show(
+                        "Your Wall Contains Two Much Door, exceed Door range in Excel please check againt ");
+                    return;
+                }
+                else
+                {
+                    var i = 0;
+                    foreach (var door in Doors)
+                    {
+                        wallDataRange.StartDoorWidth.Offset[i, 0].Value =door.Width;
+                        wallDataRange.StartDoorQty.Offset[i, 0].Value = door.Qty;
+                        wallDataRange.StartDoorTrussSpan.Offset[i, 0].Value = door.TrussSpan;
+                        i++;
+                    }
+
+                }
+                
+            }
+            else
+            {
+                if (Doors.Count > 11)
+                {
+                    MessageBox.Show(
+                        "Your Wall Contains Two Much Door, exceed Door range in Excel please check againt ");
+                    return;
+                }
+                else
+                {
+                    var i = 0;
+                    foreach (var door in Doors)
+                    {
+                        wallDataRange.StartDoorWidth.Offset[i, 0].Value = door.Width;
+                        wallDataRange.StartDoorQty.Offset[i, 0].Value = door.Qty;
+                        i++;
+                    }
+                }
+
+            }
 
         }
 

@@ -17,6 +17,9 @@ namespace AppModels.ExportData
         public Excel.Range TCorners { get; set; }
         public Excel.Range Supports { get; set; }
         public Excel.Range StudSize { get; set; }
+        public Excel.Range TopPlate { get; set; }
+        public Excel.Range BottomPlate { get; set; }
+        public Excel.Range RibbonPlate { get; set; }
         public Excel.Range StartWindowHeight { get; set; }
         public Excel.Range StartWindowWidth { get; set; }
         public Excel.Range StartWindowQty { get; set; }
@@ -26,9 +29,10 @@ namespace AppModels.ExportData
         public Excel.Range StartDoorTrussSpan { get; set; }
         public Excel.Range WetAreaStud { get; set; }
         public Excel.Range BathCheckout { get; set; }
-        public Excel.Range RunLength { get; set; }
+        //public Excel.Range RunLength { get; set; }
         public Excel.Range NumberOfSameWall { get; set; }
         public Excel.Range RoofPitch { get; set; }
+
 
 
 
