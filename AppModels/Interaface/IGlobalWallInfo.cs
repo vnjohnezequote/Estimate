@@ -11,6 +11,7 @@ namespace AppModels.Interaface
     {
         JobInfo GlobalInfo { get; }
         IGlobalWallInfo GlobalWallInformation { get; }
+        //string LevelName{ get;}
         int ExternalDoorHeight { get; }
         int InternalDoorHeight { get; }
         int ExternalWallSpacing { get; }

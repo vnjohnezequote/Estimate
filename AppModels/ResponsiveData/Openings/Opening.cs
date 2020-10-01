@@ -40,6 +40,7 @@ namespace AppModels.ResponsiveData.Openings
         private NumberOfDoors _doorNumberType;
         private int _noDoor;
         private bool _isGarageDoor;
+        private int _supportSpan;
 
         public WallBase WallReference
         {
@@ -66,8 +67,8 @@ namespace AppModels.ResponsiveData.Openings
                 }
                 
             }
-            
         }
+        public int SupportSpan { get=>_supportSpan; set=>SetProperty(ref _supportSpan,value); }
         public int NoDoor { get=>_noDoor; set=>SetProperty(ref _noDoor,value); }
         public bool IsGarageDoor { get=>_isGarageDoor; set=>SetProperty(ref _isGarageDoor,value); }
 
@@ -326,6 +327,7 @@ namespace AppModels.ResponsiveData.Openings
             Location = openingInfo.Location;
             Height = openingInfo.Height;
             Width = openingInfo.Width;
+            SupportSpan = openingInfo.SupportSpan;
             DoorHeaderHeight = openingInfo.DoorHeaderHeight;
             Lintel.LoadLintelInfo(openingInfo.Lintel,engineerSchedules);
         }

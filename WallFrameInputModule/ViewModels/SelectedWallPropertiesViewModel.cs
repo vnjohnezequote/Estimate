@@ -145,6 +145,10 @@ namespace WallFrameInputModule.ViewModels
             {
                 wallKey = "NONLBW";
             }
+            if (SelectedWall.GlobalWallInfo.GlobalInfo.Client.Name == "Warnervale")
+            {
+                wallKey = SelectedWall.WallThickness.ToString();
+            }
 
             if (studsDict.ContainsKey(wallKey))
             {

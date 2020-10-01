@@ -16,18 +16,22 @@ using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels.CustomEntity;
 using AppModels.Enums;
+using AppModels.ExportData;
 using AppModels.Factories;
 using AppModels.Interaface;
+using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Openings;
 using AppModels.ResponsiveData.WallMemberData;
+using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using Syncfusion.Data.Extensions;
 using Syncfusion.Office;
 using Syncfusion.XlsIO;
 using Syncfusion.XlsIO.Implementation.Security;
 using WallFrameInputModule.Views;
+using Environment = System.Environment;
 
 namespace WallFrameInputModule.ViewModels
 {
@@ -79,6 +83,8 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         private int _startItemId;
 
+        private Opening _selectedDoor;
+
         /// <summary>
         /// The studs.
         /// </summary>
@@ -109,7 +115,40 @@ namespace WallFrameInputModule.ViewModels
 
         #region Properties
 
+        public Visibility PrenailVisibility
+        {
+            get
+            {
+                if (this.SelectedClient!=null && SelectedClient.Name=="Prenail")
+                {
+                    return Visibility.Visible;
+                }
 
+                return Visibility.Collapsed;
+            }
+        }
+
+        public Opening SelectedDoor
+        {
+            get=>_selectedDoor;
+            set=>SetProperty(ref _selectedDoor,value);
+        }
+
+        public Visibility WarnervaleVisibility
+        {
+            get
+            {
+                if (this.SelectedClient!=null && SelectedClient.Name=="Warnervale")
+                {
+                    return Visibility.Visible;
+                }
+
+                return Visibility.Collapsed;
+            }
+        }
+        public ICommand AddNewDoorCommand { get; private set; }
+
+        public ICommand DeleteOpeningRowCommand { get; private set; }
 
         #endregion
         #region Constructor
@@ -152,8 +191,38 @@ namespace WallFrameInputModule.ViewModels
             this.AddBeamCommand = new DelegateCommand(this.OnAddNewBeam);
             this.AddBracingCommand = new DelegateCommand(OnAddBracing);
             this.ReFreshWallCommand = new DelegateCommand(this.CalculatorWallLength);
+            AddNewDoorCommand = new DelegateCommand(OnAddNewDoorCommand);
+            DeleteOpeningRowCommand = new DelegateCommand<SfDataGrid>(OnDeleteOpening);
             ExportDataToExcelCommand = new DelegateCommand(OnExportData);
             JobModel.EngineerMemberList.CollectionChanged += EngineerMemberList_CollectionChanged;
+        }
+
+        private void OnDeleteOpening(SfDataGrid openingGrid)
+        {
+            var recordId = openingGrid.SelectedIndex;
+            if (recordId < 0)
+            {
+                return;
+            }
+
+            if (Level.Lintels.Contains(Level.Openings[recordId].Lintel))
+            {
+                Level.Lintels.Remove(Level.Openings[recordId].Lintel);
+            }
+            Level.Openings.RemoveAt(recordId);
+        }
+        private void OnAddNewDoorCommand()
+        {
+            var _startDoorId = Level.Openings.Count + 1;
+            var door = new Opening(this.Level.LevelInfo) { Id = _startDoorId };
+            Level.AddOpening(door);
+        }
+        protected override void OnRaisePropertiesChanged()
+        {
+            //base.OnRaisePropertiesChanged();
+            RaisePropertyChanged(nameof(Title));
+            RaisePropertyChanged(nameof(PrenailVisibility));
+            RaisePropertyChanged(nameof(WarnervaleVisibility));
         }
 
         private void EngineerMemberList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -171,6 +240,108 @@ namespace WallFrameInputModule.ViewModels
         }
 
         private void OnExportData()
+        {
+            if (SelectedClient != null)
+            {
+                if (SelectedClient.Name == "Prenail")
+                {
+                    ExportPrenailData();
+                }
+
+                if (SelectedClient.Name == "Warnervale")
+                {
+                    ExportWarnervaleData();
+                }
+            }
+            
+        }
+
+        private void ExportWarnervaleData()
+        {
+            if (!CheckJobInfo(out var message))
+            {
+                MessageBox.Show(message);
+
+                return;
+            }
+            WarnervaleExportDataList = new List<WarnervaleExportData>();
+            var excel = new Excel.Application();
+            var workbook = excel.Workbooks.Open(System.AppDomain.CurrentDomain.BaseDirectory + "WarnervaleTemplate.xlsm");
+            var sheets = workbook.Worksheets;
+            var infoSheet = sheets["Job Particulars Input"] as Excel.Worksheet;
+            var isNeedSecondWorkBook = false;
+            switch (JobModel.Levels.Count)
+            {
+                case 1:
+                    //InputJobWarnervaleInfo(infoSheet);
+                    GeneralFileForWarnervale(workbook,JobModel.Levels[0],true);
+                    break;
+                case 2:
+                    foreach (var jobModelLevel in JobModel.Levels)
+                    {
+                        var levelName = jobModelLevel.LevelName.Replace(" Floor", "");
+                        //InputJobWarnervaleInfo(infoSheet,levelName,jobModelLevel);
+                        GeneralFileForWarnervale(workbook, jobModelLevel, true);
+                    }
+                    //InputJobWarnervaleInfo(infoSheet);
+                    break;
+                case 3:
+                    foreach (var jobModelLevel in JobModel.Levels)
+                    {
+                        //InputJobWarnervaleInfo(infoSheet, jobModelLevel.LevelName, jobModelLevel,true);
+                        GeneralFileForWarnervale(workbook, JobModel.Levels[0], true);
+                    }
+                    //InputJobWarnervaleInfo(infoSheet);
+                    break;
+                case 4:
+                    foreach (var jobModelLevel in JobModel.Levels)
+                    {
+                        //InputJobWarnervaleInfo(infoSheet, jobModelLevel.LevelName, jobModelLevel,true);
+                        GeneralFileForWarnervale(workbook, JobModel.Levels[0], true);
+                    }
+                    //InputJobWarnervaleInfo(infoSheet);
+                    break;
+                default:break;
+                    
+            }
+            excel.Quit();
+            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excel);
+            foreach (var warnervaleExportData in WarnervaleExportDataList)
+            {
+                warnervaleExportData.ExportToExcel(JobModel);
+            }
+            MessageBox.Show("Export Complete");
+        }
+
+        private void GeneralFileForWarnervale(Excel.Workbook workbook,LevelWall level,bool includeLevelName)
+        {
+            var fileSave = JobModel.Info.JobNumber;
+            if (JobModel.Info.JobLocation.EndsWith("\\"))
+            {
+                fileSave = JobModel.Info.JobLocation + fileSave;
+            }
+            else
+            {
+                fileSave = JobModel.Info.JobLocation + "\\" + fileSave;
+            }
+
+            if (!string.IsNullOrEmpty(JobModel.Info.UnitNumber))
+            {
+                fileSave = fileSave + "-Unit " + JobModel.Info.UnitNumber;
+            }
+
+            if (includeLevelName)
+            {
+                fileSave = fileSave + " " + level.LevelName;
+                fileSave = fileSave.Replace(" Floor", "");
+            }
+            var warnervaleExportData = new WarnervaleExportData(level,fileSave);
+            warnervaleExportData.SaveFile(workbook);
+            WarnervaleExportDataList.Add(warnervaleExportData);
+            
+        }
+
+        private void ExportPrenailData()
         {
             if (!CheckJobInfo(out var message))
             {
@@ -206,7 +377,7 @@ namespace WallFrameInputModule.ViewModels
                     OnFillJobInfoToExcel(worksheet2);
                     LoadDoubleFrameDelivery(worksheet2);
                     excel.ScreenUpdating = true;
-                    isNeedSecondWorkBook=OnFillWallToExcel(workbook, listLevelIndexAddTwoSheet);
+                    isNeedSecondWorkBook = OnFillWallToExcel(workbook, listLevelIndexAddTwoSheet);
                     //excel.Run("ShowDoubleStorey");
                     break;
                 case 3:
@@ -240,7 +411,7 @@ namespace WallFrameInputModule.ViewModels
 
             if (isNeedSecondWorkBook)
             {
-                var fileSave1 = fileSave +"-Sheet 1";
+                var fileSave1 = fileSave + "-Sheet 1";
                 workbook.SaveAs(fileSave1);
                 Excel.Worksheet jobSetup = workbook.Worksheets["JOB SETUP"];
                 jobSetup.Range["C15"].ClearContents();
@@ -250,16 +421,16 @@ namespace WallFrameInputModule.ViewModels
                 {
                     case 1:
                         var singleFloor = workbook.Worksheets["Single Storey ESTIMATE"];
-                        FillSingleLevelToExcel(singleFloor,false);
+                        FillSingleLevelToExcel(singleFloor, false);
                         break;
                     case 2:
                         var doubleFloor = workbook.Worksheets["2 Storey ESTIMATE"];
-                        FillDoubleLevelToExcel(doubleFloor,listLevelIndexAddTwoSheet,false);
+                        FillDoubleLevelToExcel(doubleFloor, listLevelIndexAddTwoSheet, false);
                         break;
                     case 3:
                         var lowerFloor = workbook.Worksheets["Basement Level ESTIMATE"];
                         var midleFloor = workbook.Worksheets["Middle & Upper Level ESTIMATE"];
-                        FillThreeLevelWallToExcel(lowerFloor,midleFloor,listLevelIndexAddTwoSheet,false);
+                        FillThreeLevelWallToExcel(lowerFloor, midleFloor, listLevelIndexAddTwoSheet, false);
                         break;
                     default:
                         break;
@@ -270,7 +441,6 @@ namespace WallFrameInputModule.ViewModels
             excel.Quit();
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excel);
             MessageBox.Show("Export Complete");
-
         }
         private void OnFillJobInfoToExcel(Excel.Worksheet worksheet)
         {
@@ -714,13 +884,13 @@ namespace WallFrameInputModule.ViewModels
                 return false;
             }
 
-            if (JobModel.Info.FrameDesignInfor == null)
+            if (SelectedClient!=null && SelectedClient.Name=="Prenail" && JobModel.Info.FrameDesignInfor == null)
             {
                 message = "You Missed Frame Design Info";
                 return false;
             }
 
-            if (JobModel.Info.BracingDesignInfor == null)
+            if (SelectedClient != null && SelectedClient.Name == "Prenail" && JobModel.Info.BracingDesignInfor == null)
             {
                 message = "You Missed Bracing Design Info";
                 return false;
@@ -730,8 +900,6 @@ namespace WallFrameInputModule.ViewModels
                 message = "Are you sure this job has no any level?";
                 return false;
             }
-
-            
             foreach (var jobModelLevel in JobModel.Levels)
             {
                 if (jobModelLevel.WallLayers.Count==0)
@@ -761,67 +929,71 @@ namespace WallFrameInputModule.ViewModels
                     }
                 }
 
-                if (Level.TimberWallBracings.Count != 0)
+                if (SelectedClient!=null && SelectedClient.Name == "Prenail")
                 {
-                    foreach (var wallbracing in Level.TimberWallBracings)
+                    if (Level.TimberWallBracings.Count != 0)
                     {
-                        if (wallbracing.Quantity ==0)
+                        foreach (var wallbracing in Level.TimberWallBracings)
                         {
-                            message = "You Missed Wall Bracings Quantity";
-                            return false;
-                        }
+                            if (wallbracing.Quantity == 0)
+                            {
+                                message = "You Missed Wall Bracings Quantity";
+                                return false;
+                            }
 
-                        if (wallbracing.BracingInfo == null)
-                        {
-                            message = "You Missed Wall Bracings Type";
-                            return false;
+                            if (wallbracing.BracingInfo == null)
+                            {
+                                message = "You Missed Wall Bracings Type";
+                                return false;
+                            }
                         }
                     }
+
+                    if (Level.RoofBeams.Count != 0)
+                    {
+                        int countBeam = 0;
+                        foreach (var roofBeam in Level.RoofBeams)
+                        {
+                            if (roofBeam.MaterialType != MaterialTypes.Steel)
+                            {
+                                countBeam++;
+                            }
+                        }
+                        if (countBeam > 10)
+                        {
+                            message = "Your's Beams out of beam list in excel, please combine some beam";
+                            return false;
+                        }
+                        foreach (var roofBeam in Level.RoofBeams)
+                        {
+                            if (roofBeam.Quantity == 0)
+                            {
+                                message = "You Missed Roof Beam Quantity";
+                                return false;
+                            }
+
+                            if (roofBeam.IsBeamToLongWithStockList)
+                            {
+                                message = "Your's beams has a beam out of stock, please check again";
+                                return false;
+                            }
+
+                            if (roofBeam.TimberInfo == null)
+                            {
+                                message = "You Missed choose beam in your's Beams List, please check againt";
+                                return false;
+                            }
+
+                            if (string.IsNullOrEmpty(roofBeam.Location))
+                            {
+                                message = "Yours Beam Missed Beam Location";
+                                return false;
+                            }
+                        }
+                    }
+
+
                 }
-
-                if (Level.RoofBeams.Count != 0)
-                {
-                    int countBeam = 0;
-                    foreach (var roofBeam in Level.RoofBeams)
-                    {
-                        if (roofBeam.MaterialType!=MaterialTypes.Steel)
-                        {
-                            countBeam++;
-                        }
-                    }
-                    if (countBeam>10)
-                    {
-                        message = "Your's Beams out of beam list in excel, please combine some beam";
-                        return false;
-                    }
-                    foreach (var roofBeam in Level.RoofBeams)
-                    {
-                        if (roofBeam.Quantity==0 )
-                        {
-                            message = "You Missed Roof Beam Quantity";
-                            return false;
-                        }
-
-                        if (roofBeam.IsBeamToLongWithStockList)
-                        {
-                            message = "Your's beams has a beam out of stock, please check again";
-                            return false;
-                        }
-
-                        if (roofBeam.TimberInfo==null)
-                        {
-                            message = "You Missed choose beam in your's Beams List, please check againt";
-                            return false;
-                        }
-
-                        if (string.IsNullOrEmpty(roofBeam.Location))
-                        {
-                            message = "Yours Beam Missed Beam Location";
-                            return false;
-                        }
-                    }
-                }
-                
             }
             
 
@@ -1050,8 +1222,15 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         public string Title
         {
-            get => this._title;
-            set => this.SetProperty(ref this._title, value);
+            get
+            {
+                if (this.SelectedClient!=null)
+                {
+                    return this.SelectedClient.Name + " - " + this.Level.LevelName;
+                }
+
+                return string.Empty;
+            }
         }
 
         /// <summary>
@@ -1098,11 +1277,12 @@ namespace WallFrameInputModule.ViewModels
 
         public ICommand AddBracingCommand { get; private set; }
         public ICommand ExportDataToExcelCommand { get; private set; }
+        private List<WarnervaleExportData> WarnervaleExportDataList { get; set; }
 
         #endregion
 
         #region Public Method
-
+       
         /// <summary>
         /// The on navigated to.
         /// </summary>
@@ -1112,7 +1292,11 @@ namespace WallFrameInputModule.ViewModels
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);
-            this.Title = "Prenai - " + this.Level.LevelName;
+            //if (this.SelectedClient!=null)
+            //{
+            //    //this.Title = this.SelectedClient.Name + " - " + this.Level.LevelName;
+            //}
+            
             //this.WallLevelName = this.Level.WallLevelName;
             // this.Studs = this.SelectedClient.Studs;
             // this.RibbonPlates = this.SelectedClient.RibbonPlates;
@@ -1166,6 +1350,7 @@ namespace WallFrameInputModule.ViewModels
 
         public void CalculatorWallLength()
         {
+            this.Level.TotalWallLength = 0;
             if (EntitiesManager.Entities != null && this.Level != null && this.Level.WallLayers != null && this.Level.WallLayers.Count != 0)
             {
                 var wallayers = this.Level.WallLayers;
@@ -1190,9 +1375,11 @@ namespace WallFrameInputModule.ViewModels
                     }
 
                     levelWallLayer.TempLength = tempLength / 1000;
+                    Level.TotalWallLength += levelWallLayer.WallLength;
                 }
 
             }
+            this.RecalculatorWallTypeId();
         }
         private void PrenailFloorInputViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -1303,11 +1490,67 @@ namespace WallFrameInputModule.ViewModels
         {
             this._startItemId = this.Level.WallLayers.Count + 1;
             var data = WallLayerFactory.CreateWallLayer(JobModel.Info.Client.Name, _startItemId, this.Level.LevelInfo,
-                this.SelectedClient.WallTypes[0]);
+                this.SelectedClient.WallTypes[0],this.Level.LevelName);
+            if (SelectedClient.Name == "Warnervale")
+            {
+               SetWallTypeIdForWall(data);
+            }
+            data.PropertyChanged += WallLayerPropertyChanged;
             this.Level.WallLayers.Add(data);
             //SelectedWall = data;
         }
 
+        private void WallLayerPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (SelectedClient.Name=="Warnervale")
+            {
+                if (e.PropertyName==nameof(SelectedWall.WallType))
+                {
+                    //SetWallTypeIdForWall(SelectedWall);
+                    //RecalculatorWallTypeId();
+                    this.OnWallInputSort();
+                    this.RecalculatorWallTypeId();
+                }
+            }
+        }
+
+        private void SetWallTypeIdForWall(WallBase wall)
+        {
+            var wallTypeId = 1;
+
+            foreach (var levelWallLayer in Level.WallLayers)
+            {
+                if (levelWallLayer.WallType == wall.WallType && levelWallLayer!=wall)
+                {
+                    if (levelWallLayer.TypeId >= wallTypeId)
+                    {
+                        wallTypeId = levelWallLayer.TypeId + 1;
+                    }
+                }
+            }
+            wall.TypeId = wallTypeId;
+        }
+
+        private void RecalculatorWallTypeId()
+        {
+            var wallCountDic = new Dictionary<string, int>();
+
+            foreach (var levelWallLayer in Level.WallLayers)
+            {
+                if (wallCountDic.ContainsKey(levelWallLayer.WallType.AliasName))
+                {
+                    wallCountDic[levelWallLayer.WallType.AliasName] += 1;
+                    levelWallLayer.TypeId = wallCountDic[levelWallLayer.WallType.AliasName];
+                }
+                else
+                {
+                   
+                    wallCountDic.Add(levelWallLayer.WallType.AliasName, 1);
+                    levelWallLayer.TypeId = 1;
+                }
+            }
+
+        }
 
         /// <summary>
         /// The on delete wall row.
@@ -1324,6 +1567,7 @@ namespace WallFrameInputModule.ViewModels
                 return;
             }
 
+            this.Level.WallLayers[recordId].PropertyChanged -= WallLayerPropertyChanged;
             this.Level.WallLayers.RemoveAt(recordId);
 
             if (this.Level.WallLayers.Count == 0)

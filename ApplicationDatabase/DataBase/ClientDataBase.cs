@@ -201,6 +201,10 @@ namespace AppDataBase.DataBase
                 },
                 Builders = new List<string>() { "Jason Home", "Kenvin Home", "Happy Home", "Crazy Home" },
                 Customers = new List<Customer>(),
+                Studs = this.CreateWarnervaleMaterial(),
+                TopPlates = this.CreateWarnervaleMaterial(),
+                BottomPlates = this.CreateWarnervaleMaterial(),
+                RibbonPlates = this.CreateWarnervaleMaterial(),
                 WallTypes = new List<WallTypePoco>()
                                 {
                                     new WallTypePoco() { Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "EXT WALL" },
@@ -258,6 +262,7 @@ namespace AppDataBase.DataBase
                                     new WallTypePoco() { Id = 6, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_IntRaking", WallLocationType = WallLocationTypes.Internal },
                                     new WallTypePoco() { Id = 7, IsLoadBearingWall = false, IsRaked = false, AliasName = "NLB_PartiWall", WallLocationType = WallLocationTypes.Internal },
                                     new WallTypePoco() { Id = 8, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_Raked_PartiWall", WallLocationType = WallLocationTypes.Internal }
+                                    //new WallTypePoco() { Id = 8, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_Raked_PartiWall", WallLocationType = WallLocationTypes.Internal }
             }
             };
 
@@ -410,6 +415,38 @@ namespace AppDataBase.DataBase
             studs.Add("LBW", lbw);
             studs.Add("NONLBW", nonlbw);
             return studs;
+        }
+
+        private Dictionary<string, List<TimberBase>> CreateWarnervaleMaterial()
+        {
+            var warnervaleFile = "WarnervaleList.csv";
+            var warnervaleMaterial = this.LoadTimberListOnCvsFile<TimberBase>(warnervaleFile);
+            List<TimberBase> list90 = new List<TimberBase>();
+            List<TimberBase> list70 = new List<TimberBase>();
+            List<TimberBase> list120 = new List<TimberBase>();
+            foreach (var timberBase in warnervaleMaterial)
+            {
+                if (timberBase.Thickness ==90)
+                {
+                    list90.Add(timberBase);
+                }
+
+                if (timberBase.Thickness == 70)
+                {
+                    list70.Add(timberBase);
+                }
+
+                if (timberBase.Thickness == 120)
+                {
+                    list120.Add(timberBase);
+                }
+            }
+            Dictionary<string,List<TimberBase>> materials = new Dictionary<string, List<TimberBase>>();
+            materials.Add("90",list90);
+            materials.Add("70", list70);
+            materials.Add("120", list120);
+
+            return materials;
         }
 
         /// <summary>

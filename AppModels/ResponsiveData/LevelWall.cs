@@ -45,7 +45,7 @@ namespace AppModels.ResponsiveData
 		/// <summary>
 		/// The _total wall length.
 		/// </summary>
-		private int _totalWallLength;
+		private double _totalWallLength;
 
 		/// <summary>
 		/// The _cost delivery.
@@ -141,7 +141,7 @@ namespace AppModels.ResponsiveData
 		/// <summary>
 		/// Gets or sets the total wall length.
 		/// </summary>
-		public int TotalWallLength
+		public double TotalWallLength
 		{
 			get => this._totalWallLength;
 			set => this.SetProperty(ref this._totalWallLength, value);
@@ -265,7 +265,7 @@ namespace AppModels.ResponsiveData
 		{
 			foreach (var wallLayerPoco in wallLayers)
 			{
-				var wallLayer = WallLayerFactory.CreateWallLayer(LevelInfo.GlobalInfo.Client.Name, wallLayerPoco.Id, LevelInfo, wallLayerPoco.WallType);
+                var wallLayer = WallLayerFactory.CreateWallLayer(LevelInfo.GlobalInfo.Client.Name, wallLayerPoco.Id, LevelInfo, wallLayerPoco.WallType,LevelName);
 				wallLayer.LoadWallInfo(wallLayerPoco);
 				WallLayers.Add(wallLayer);
 			}

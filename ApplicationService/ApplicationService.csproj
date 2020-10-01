@@ -164,6 +164,7 @@
     <Compile Include="RegionService.cs" />
     <Compile Include="RemoveLayerEventService.cs" />
     <Compile Include="SaveDrawingEvent.cs" />
+    <Compile Include="ScaleDrawingsChangedEvent.cs" />
     <Compile Include="TreatmentService.cs" />
     <Compile Include="WallEventService.cs" />
     <Compile Include="WindCategoryService.cs" />

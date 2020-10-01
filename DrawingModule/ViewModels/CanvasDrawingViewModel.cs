@@ -10,6 +10,7 @@ using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Graphics;
+using devDept.Serialization;
 using DrawingModule.CustomControl.PaperSpaceControl;
 using DrawingModule.DrawToolBase;
 using DrawingModule.Views;
@@ -62,12 +63,21 @@ namespace DrawingModule.ViewModels
         {
             if (e.PropertyName == "X" || e.PropertyName == "Y")
             {
-                if (_paperSpace!=null)
-                {
-                    _paperSpace.Entities.Regen();
-                    _paperSpace.Invalidate();
-                }
             }
+
+            if (e.PropertyName=="Scale"&& SelectedEntity is VectorViewVm vectorView)
+            {
+                OnDrawingScaleChanged(vectorView.Scale);
+            }
+
+            if (e.PropertyName == "FloorName" && SelectedEntity is BlockReferenceVm blockRef)
+            {
+                OnDrawingFloorNameChanged(blockRef.FloorName);
+            }
+
+            if (_paperSpace == null) return;
+            _paperSpace.Entities.Regen();
+            _paperSpace.Invalidate();
         }
 
         public string ActiveLevel { get=>_activeLevel; set=>SetProperty(ref _activeLevel,value); }
@@ -119,8 +129,42 @@ namespace DrawingModule.ViewModels
             CanvasDrawingMouseEnter = new DelegateCommand(OnCanvasDrawingMouseEnter);
             this.EventAggregator.GetEvent<CommandExcuteStringEvent>().Subscribe(ExcuteCommand);
             this.EventAggregator.GetEvent<LevelNameService>().Subscribe(OnSelectedLevelChanged);
+            //this.EventAggregator.GetEvent<ScaleDrawingsChangedEvent>().Subscribe(OnDrawingScaleChanged);
         }
-        
+
+        private void OnDrawingScaleChanged(string scale)
+        {
+            var sheetRef = _canvasDrawingView?.GetFormatBlockReference(_paperSpace.ActiveSheet);
+            //var vectorRef = _canvasDrawingView?.GetVecterViewRef(_paperSpace.ActiveSheet);
+            if (sheetRef!=null )
+            {
+                if (sheetRef.Attributes.ContainsKey("Scale"))
+                {
+                    sheetRef.Attributes["Scale"].Value = scale;
+                }
+            }
+        }
+
+        private void OnDrawingFloorNameChanged(string floorName)
+        {
+            if (SelectedEntity is BlockReferenceVm blokcRef && blokcRef.Entity is BlockReference)
+            {
+                var floorRef = _canvasDrawingView.GetFloorNameRef(_paperSpace.ActiveSheet);
+                if (floorRef!=null && floorRef.Attributes.ContainsKey("Title"))
+                {
+                    floorRef.Attributes["Title"].Value = floorName;
+                }
+            }
+            else
+            {
+                var floorNameRef = _canvasDrawingView?.GetFormatBlockReference(_paperSpace.ActiveSheet);
+                if (floorNameRef!=null && floorNameRef.Attributes.ContainsKey("Title"))
+                {
+                    floorNameRef.Attributes["Title"].Value = floorName;
+                }
+            }
+            
+        }
         private void OnSelectedLevelChanged(string para)
         {
             _canvasDrawing?.SetActivelevel(para);
@@ -277,6 +321,7 @@ namespace DrawingModule.ViewModels
             {
                 return;
             }
+
             canvasDrawingView.CanvasDrawing.SetView(viewType.Top);
             canvasDrawingView.CanvasDrawing.Camera.ProjectionMode = projectionType.Orthographic;
             this._canvasDrawing = canvasDrawingView.CanvasDrawing;

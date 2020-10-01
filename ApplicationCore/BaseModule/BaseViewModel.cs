@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ApplicationInterfaceCore;
@@ -87,6 +88,7 @@ namespace ApplicationCore.BaseModule
         /// <summary>
         /// Gets the unity container.
         /// </summary>
+         public List<string> TimberGradeList { get; set; } = new List<string>(){ "MGP10", "MGP12", "F5" ,"F7","F17","P10","P12"};
         protected IUnityContainer UnityContainer { get; private set; }
         public ILayerManager LayerManager => _layerManager;
         public IRegionManager RegionManager { get; set; }

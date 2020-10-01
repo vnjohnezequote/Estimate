@@ -48,13 +48,17 @@ namespace WallFrameInputModule.Helper
             }
 
             var wallInfor = record as PrenailWallLayer;
+            
             string wallKey = "LBW";
             if (!wallInfor.WallType.IsLoadBearingWall)
             {
                 wallKey = "NONLBW";
             }
             var wallThickness = wallInfor.WallThickness;
-
+            if (wallInfor.GlobalWallInfo.GlobalInfo.Client.Name == "Warnervale")
+            {
+                wallKey = wallThickness.ToString();
+            }
 
             if (dataContext is PrenailFloorInputViewModel viewModel && viewModel.SelectedClient.Studs.ContainsKey(wallKey))
             {

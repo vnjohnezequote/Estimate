@@ -167,7 +167,7 @@ namespace AppModels.ResponsiveData
                 }
                 else
                 {
-                    return this.Size + " " + this._timberGrade;
+                    return this.Size + " " + this.TimberGrade;
                 }
             }
 

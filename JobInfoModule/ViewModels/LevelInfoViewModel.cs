@@ -117,7 +117,7 @@ namespace JobInfoModule.ViewModels
         #endregion
         #region Property
         public List<int> WallSpacings { get; set; } = new List<int>(){300,350,400,450,600};
-        public List<string> TimberGradeList { get; set; } = new List<string>(){ "MGP10", "MGP12", "F5" ,"F7","F17"};
+        
         /// <summary>
         /// Gets or sets the job.
         /// </summary>
@@ -375,13 +375,7 @@ namespace JobInfoModule.ViewModels
             this.CreatFloor(levelItem.SelectedIndex + 1);
             this.LoadCostDelivery();
             this.LoadFloorNumber();
-
-
         }
-
-
-
-        
 
         #endregion
 

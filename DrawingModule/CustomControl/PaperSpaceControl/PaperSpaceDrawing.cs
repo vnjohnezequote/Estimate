@@ -8,6 +8,7 @@ using System.Windows.Input;
 using AppDataBase.DataBase;
 using ApplicationInterfaceCore;
 using AppModels;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -68,6 +69,11 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                     view.X += x;
                     view.Y += y;
                 }
+
+                if (SelectedEntity is WallName wall)
+                {
+                    wall.Translate(movement);
+                }
                 //SelectedEntity.Translate(movement);
                 //SelectedEntity.TransformBy();
                 Entities.Regen();
@@ -92,16 +98,23 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                 var index = GetEntityUnderMouseCursor(mousePosition);
                 if (index != -1)
                 {
-                    var view = Entities[index] as devDept.Eyeshot.Entities.View;
-                    if (view != null)
+                    var entity = Entities[index];
+                    if (entity is View || entity is WallName || entity is BlockReference)
                     {
-                        view.Selected = true;
-                        SelectedEntity = view;
+                        entity.Selected = true;
+                        SelectedEntity = entity;
                     }
-
-                    var selectedViewArg = new EntityEventArgs(view);
-                    if (EntitiesSelectedChanged != null)
-                        EntitiesSelectedChanged.Invoke(this, selectedViewArg);
+                    else
+                    {
+                        if (SelectedEntity != null)
+                        {
+                            SelectedEntity.Selected = false;
+                            SelectedEntity = null;
+                            EntitiesSelectedChanged?.Invoke(this, null);
+                        }
+                    }
+                    var selectedViewArg = new EntityEventArgs(entity);
+                    EntitiesSelectedChanged?.Invoke(this, selectedViewArg);
                 }
                 else
                 {
@@ -109,7 +122,7 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                     {
                         SelectedEntity.Selected = false;
                         SelectedEntity = null;
-                        EntitiesSelectedChanged.Invoke(this, null);
+                        EntitiesSelectedChanged?.Invoke(this, null);
                     }
 
 

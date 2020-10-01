@@ -23,7 +23,7 @@ namespace AppModels.PocoDataModel
         /// <summary>
         /// Gets or sets the total wall length.
         /// </summary>
-        public int TotalWallLength
+        public double TotalWallLength
         {
             get; set;
         }

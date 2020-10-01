@@ -61,7 +61,7 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
         {
             if (e.PropertyName == nameof(JobInfo.Customer))
             {
-                //this.RebuildLogo();
+                this.RebuildLogo();
             }
         }
 
@@ -76,17 +76,17 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                 return null;
             }
             if (string.IsNullOrEmpty(Job.Info.Customer))
-                {
-                    return null; 
-                }
-                var curFile = Job.Info.Customer+".png";
-                if (File.Exists(curFile))
-                {
-                    var img = Image.FromFile(curFile);
-                    _logoEntity = new PictureEntity(Plane.XY, logoInsertPoint, 37.648, 6.136, img);
-                    return _logoEntity;
-                }
-                return null;
+            {
+                return null; 
+            }
+            var curFile = Job.Info.Customer+".png";
+            if (File.Exists(curFile))
+            {
+                var img = Image.FromFile(curFile);
+                _logoEntity = new PictureEntity(Plane.XY, logoInsertPoint, 37.648, 6.136, img);
+                return _logoEntity;
+            }
+            return null;
 
         }
 
@@ -107,7 +107,14 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                 if (this.Entities.Contains(_logoEntity))
                     this.Entities.Remove(_logoEntity);
                 var img = Image.FromFile(curFile);
-                _logoEntity.Image = img;
+                if (_logoEntity!=null)
+                {
+                    _logoEntity.Image = img;
+                }
+                else
+                {
+                    _logoEntity = new PictureEntity(Plane.XY, _logoInsertPoint,37.648,6.136,img);
+                }
                 this.Entities.Add(_logoEntity);
 
             }
@@ -176,7 +183,7 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             Color myColor = Color.Black;
 
            //double textHeight = 1.3;
-            double attributeHeight = 2.3*unitsConversionFactor;
+            double attributeHeight = 2.25*unitsConversionFactor;
             //double height = 3.0 * unitsConversionFactor;
             //CustomTable table = new CustomTable(Plane.XY, 9, 1, tableHeights, columnsWidths, textHeight);
             CustomTable table = new CustomTable(Plane.XY, 9, 2, tableHeights, tableWidths, textHeight);
@@ -212,10 +219,12 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             {
                 Alignment = Text.alignmentType.MiddleLeft
             });
-            table.SetTextString(3,0,"PLATE HAS BEEN DESIGNED AT ");
+            table.SetTextString(3,0,"PLATE HAS BEEN DESIGNED ");
             table.SetAlignment(3, 0, Text.alignmentType.TopLeft);
             table.SetTextHeight(3,0,attributeHeight);
             baseAtributePoint = table.GetCenter(3, 0);
+            var aT = new Text((baseAtributePoint.X - 20) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y-2.25,0,"AT",attributeHeight);
+            lists.Add(aT);
             basePoint2 = new Point3D((baseAtributePoint.X-15) * pageSize.ScaleFactor * unitsConversionFactor, baseAtributePoint.Y);
             lists.Add(new devDept.Eyeshot.Entities.Attribute(basePoint2, "TieDown", String.Empty, attributeHeight)
             {
@@ -228,7 +237,7 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             var logo = BuildLogo(_logoInsertPoint);
             if (logo!=null)
             {
-                //this.Entities.Add(logo);
+                this.Entities.Add(logo);
             }
             
             //lists.Add(logo);
@@ -484,6 +493,19 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             return blockName ?? string.Format("{0} {1}", this.Name, paperSizeName);
         }
 
+        public void AddWallPlaceHolder(WallName wallName, Drawings drawings,string placeHolderText)
+        {
+            if (drawings.Blocks.Contains(wallName.BlockName)) return;
+            var block = new Block(wallName.BlockName);
+            block.Entities.Add(new Line(new Point3D(0,0,0),new Point3D(50,0,0)){LayerName = drawings.WiresLayerName,ColorMethod = colorMethodType.byEntity,Color = Color.Red,LineWeightMethod = colorMethodType.byEntity});
+            drawings.Blocks.Add(block);
+            if (this == drawings.ActiveSheet)
+            {
+                drawings.Entities.Add(wallName);
+                return;
+            }
+            this.Entities.Add(wallName);
+        }
         #endregion
 
         #region MyRegion

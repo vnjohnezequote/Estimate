@@ -66,7 +66,11 @@ namespace ApplicationCore.BaseModule
 		#region Properties
 		public LevelWall Level { get => this._level; set => this.SetProperty(ref this._level, value); }
 		public ClientPoco SelectedClient { get=>this._selectedClient;
-			set => this.SetProperty(ref _selectedClient, value);
+            set
+            {
+                this.SetProperty(ref _selectedClient, value);
+                OnRaisePropertiesChanged();
+			} 
 		}
 		#endregion Properties
 
@@ -76,17 +80,23 @@ namespace ApplicationCore.BaseModule
 		{
 			if (selectedClient != null)
 				this.SelectedClient = selectedClient;
-		}
-	public virtual void OnNavigatedTo(NavigationContext navigationContext)
+            
+        }
+	    public virtual void OnNavigatedTo(NavigationContext navigationContext)
 		{
 			if (!(navigationContext.Parameters["Level"] is LevelWall level)) return;
 			this.Level = level;
 			if (!(navigationContext.Parameters["SelectedClient"] is ClientPoco client)) return;
 			{
 				this.SelectedClient = client;
-			}
+            }
 
 		}
+
+        protected virtual void OnRaisePropertiesChanged()
+        {
+
+        }
 
 		public virtual bool IsNavigationTarget(NavigationContext navigationContext)
 		{

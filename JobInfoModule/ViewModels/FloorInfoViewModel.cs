@@ -16,7 +16,7 @@ namespace JobInfoModule.ViewModels
         #region Property
 
         public List<int> WallSpacings { get; set; } = new List<int>() { 300, 350, 400, 450, 600 };
-        public List<string> TimberGradeList { get; set; } = new List<string>() { "MGP10", "MGP12", "F5", "F7", "F17" };
+        //public List<string> TimberGradeList { get; set; } = new List<string>() { "MGP10", "MGP12", "F5", "F7", "F17","P10","P12" };
 
         #endregion
         #region Constructor

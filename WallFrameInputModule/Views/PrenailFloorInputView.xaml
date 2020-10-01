@@ -38,6 +38,18 @@
                             <x:Type TypeName="appModelEnum:BeamType"/>
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
+                    <ObjectDataProvider x:Key="OpeningTypes"
+                                        MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="appModelEnum:OpeningType"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <ObjectDataProvider x:Key="DoorTypes"
+                                        MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="appModelEnum:DoorTypes"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
                     <converter:IntToBooleanConverter x:Key="IntToBooleanConverter"/>
                     <converter:PitchingHeightToWallHeightConverter x:Key="PitchingToWallHeightConverter"/>
                     <converter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
@@ -86,7 +98,7 @@
                                 <TextBox materialDesign:HintAssist.Hint="Ceiling Pitch" Text ="{Binding Level.LevelInfo.GlobalInfo.CeilingPitch}" HorizontalAlignment="Left" />
                                 <TextBox materialDesign:HintAssist.Hint="Step Down" Text="{Binding Level.LevelInfo.GlobalInfo.StepDown}" Margin="10 0 0 0" HorizontalAlignment="Left"/>
                                 <TextBox materialDesign:HintAssist.Hint="Raised Celing Height" Text="{Binding Level.LevelInfo.GlobalInfo.RaisedCeilingHeight}" Margin="10 0 0 0" HorizontalAlignment="Left"/>
-                                <TextBox materialDesign:HintAssist.Hint="Lintel over 3.6" Text="{Binding Level.LintelLm}" Margin="10 0 0 0" />
+                                <TextBox materialDesign:HintAssist.Hint="Lintel over 3.6" Text="{Binding Level.LintelLm}" Margin="10 0 0 0" Visibility="{Binding PrenailVisibility}" />
                             </DockPanel>
                         </StackPanel>
                     </StackPanel>
@@ -95,7 +107,7 @@
                         <Button Content="Reset Wall" Style="{StaticResource MaterialDesignRaisedAccentButton}"/>
                         <Button Content="Sort" Command="{Binding WallInputSortCommand}"/>
                         <Button Content="Undo" />
-                        <Button Content="Check" />
+                        <Button Content="Refresh" Command="{Binding ReFreshWallCommand}" />
                         <Button Content="Add" Command= "{Binding NewWallRowInputCommand}"/>
                         <Button Content="Delete" Command = "{Binding DeleteWallRowCommand}" CommandParameter = "{Binding ElementName = WallInput}"/>
                     </StackPanel>
@@ -139,6 +151,17 @@
                     <StackPanel.Resources>
                         <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
                             <Setter Property="Foreground" Value="{Binding WallColorLayer.Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=IsNeedTobeDesign}" Value="True"/>
+                                        <Condition Binding="{Binding Path=IsDesigned}" Value="False"/>
+                                        <Condition Binding="{Binding Path=GlobalWallInfo.GlobalInfo.Client.Name}" Value="Warnervale"/>
+                                        </MultiDataTrigger.Conditions>
+                                    <Setter Property="Foreground" Value="Red"/>
+                                    <Setter Property="Background" Value="DarkOrange"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </StackPanel.Resources>
                     <!-- Input Wall -->
@@ -299,19 +322,20 @@
                             <syncfusion:GridCheckBoxColumn HeaderText="Designed"
                                                            MappingName="IsDesigned"/>-->
                             <syncfusion:GridTextColumn HeaderText="Wall Name"
-                                                       MappingName="WallName" Width="200"/>
+                                                       MappingName="WallName"
+                                                       Width="450"/>
                         </syncfusion:SfDataGrid.Columns>
                     </syncfusion:SfDataGrid>
                     <StackPanel Orientation="Horizontal" Margin="0 20 0 0 " HorizontalAlignment="Left">
                         <Label Content="Total linear meter" FontSize="20" Padding="10"/>
                         <TextBlock FontSize="20" Background="DarkRed" Padding="10">
-					        <Run Text="100m" />
+					        <Run Text="{Binding Level.TotalWallLength}" />
                         </TextBlock>
                     </StackPanel>
-                    <!-- Input Length -->
-                    <!--<syncfusion:SfDataGrid ItemsSource="{Binding Level.TempLengths}"></syncfusion:SfDataGrid>-->
                 </StackPanel>
-                <materialDesign:ColorZone Mode="PrimaryDark" Margin="0 10 0 10">
+                <!-- Prenail Beam Input Wall -->
+                <StackPanel Visibility="{Binding PrenailVisibility}">
+                    <materialDesign:ColorZone Mode="PrimaryDark" Margin="0 10 0 10">
                     <Label Content="Beam and Bracing Input" FontSize="18" Margin="50 0 0 0"/>
                 </materialDesign:ColorZone>
                 <StackPanel Orientation="Horizontal">
@@ -396,7 +420,6 @@
                                         </Style>
                                     </syncfusion:GridTextColumn.CellStyle>
                                 </syncfusion:GridTextColumn>
-
                                 <syncfusion:GridTextColumn HeaderText="Unit Price"
                                                            MappingName="TimberInfo.UnitPrice"/>
                                 <syncfusion:GridTextColumn HeaderText="Maximum Length Available"
@@ -478,6 +501,100 @@
                         <!-- Bracing Input -->
 
                     </StackPanel>
+                </StackPanel>
+                </StackPanel>
+                <!-- Warnervale Door Input -->
+                <StackPanel Visibility="{Binding WarnervaleVisibility}">
+                    <StackPanel.Resources>
+                        <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
+                            <Setter Property="Foreground" Value="{Binding WallReference.WallColorLayer.Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <materialDesign:ColorZone Mode="Accent">
+                        <Label FontSize="18" Content="Door Input" />
+                    </materialDesign:ColorZone>
+                    <syncfusion:SfDataGrid Name="DoorInput"
+                                           AllowDeleting="True"
+                                           AllowEditing="True"
+                                           AllowResizingColumns="True"
+                                           AllowResizingHiddenColumns ="True"
+                                           AutoGenerateColumns="False"
+                                           ColumnSizer="Auto"
+                                           EditTrigger="OnTap"
+                                           SelectionUnit="Row"
+                                           ItemsSource="{Binding Level.Openings}"
+                                           SelectedItem="{Binding SelectedDoor}"
+                                           RowStyle="{StaticResource TextRowStyle}">
+                        <syncfusion:SfDataGrid.Resources>
+                            <Style TargetType="TextBox"/>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                        </syncfusion:SfDataGrid.Resources>
+                        <syncfusion:SfDataGrid.Columns>
+                            <syncfusion:GridTextColumn HeaderText="ID"
+                                               MappingName="Id"
+                                               UseBindingValue="True"/>
+                            <syncfusion:GridComboBoxColumn HeaderText="Door/Window Name"
+                                                   UseBindingValue="True"
+                                                   MappingName="DoorWindowInfo"
+                                                   ItemsSource="{Binding JobModel.DoorSchedules}">
+                                <syncfusion:GridComboBoxColumn.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock  Text="{Binding Name}" Foreground="{Binding WallColorLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </syncfusion:GridComboBoxColumn.ItemTemplate>
+                            </syncfusion:GridComboBoxColumn>
+                            <syncfusion:GridComboBoxColumn HeaderText="Door/Window"
+                                                   UseBindingValue="True"
+                                                   MappingName="OpeningType"
+                                                   ItemsSource="{Binding Source={StaticResource OpeningTypes}}"/>
+                            <syncfusion:GridComboBoxColumn HeaderText="Wall Belong to"
+                                                           UseBindingValue="True"
+                                                           MappingName="WallReference"
+                                                           ItemsSource="{Binding Level.WallLayers}">
+                                <syncfusion:GridComboBoxColumn.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock  Text="{Binding WallThickness}" Foreground="{Binding WallColorLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"/>
+                                            <TextBlock  Text="{Binding WallType.AliasName}" Margin="10 0 0 0"  Foreground="{Binding WallColorLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"/>
+                                            <TextBlock Text="{Binding WallSpacing}" Margin="10 0 0 0" Foreground="{Binding WallColorLayer.Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
+                                            <TextBlock Text="{Binding NoggingLength}" Margin="10 0 0 0" Foreground="{Binding WallColorLayer.Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
+                                            <TextBlock Text="{Binding FinalWallHeight}" Margin="10 0 0 0" Foreground="{Binding WallColorLayer.Color,FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </syncfusion:GridComboBoxColumn.ItemTemplate>
+                            </syncfusion:GridComboBoxColumn>
+                            <syncfusion:GridTextColumn HeaderText="Door width"
+                                               MappingName="Width"/>
+                            <syncfusion:GridTextColumn HeaderText="Door/Window Height"
+                                               MappingName="Height"/>
+                            <syncfusion:GridTextColumn HeaderText="Door/Window Header Height"
+                                               MappingName="DoorHeaderHeight"/>
+                            <syncfusion:GridComboBoxColumn HeaderText="Door Type"
+                                                   UseBindingValue="True"
+                                                   MappingName="DoorType"
+                                                   ItemsSource="{Binding Source={StaticResource DoorTypes}}"/>
+                            <syncfusion:GridTemplateColumn MappingName="Delete Row"
+                                                   syncfusion:FocusManagerHelper.WantsKeyInput="True"
+                                                   UseBindingValue="True">
+                                <syncfusion:GridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button  Content="Delete" syncfusion:FocusManagerHelper.FocusedElement="True" 
+                                         Command="{Binding Path=DataContext.DeleteOpeningRowCommand, ElementName=DoorInput}"
+                                         CommandParameter="{Binding ElementName=DoorInput}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Padding="5 0 5 0"/>
+                                    </DataTemplate>
+                                </syncfusion:GridTemplateColumn.CellTemplate>
+                            </syncfusion:GridTemplateColumn>
+                        </syncfusion:SfDataGrid.Columns>
+                    </syncfusion:SfDataGrid>
+                    <Button Content="Add New Door"
+                            Command="{ Binding AddNewDoorCommand}"/>
                 </StackPanel>
             </StackPanel>
         </materialDesign:DialogHost>

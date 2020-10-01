@@ -30,6 +30,7 @@ namespace AppModels.PocoDataModel
         public int Width { get; set; }
         public int DoorHeaderHeight { get; set; }
         public LintelBeamPoco Lintel { get ; set; }
+        public int SupportSpan { get; set; }
 
         public OpeningPoco()
         {
@@ -58,6 +59,7 @@ namespace AppModels.PocoDataModel
             Height = openingInfo.Height;
             Width = openingInfo.Width;
             DoorHeaderHeight = openingInfo.DoorHeaderHeight;
+            SupportSpan = openingInfo.SupportSpan;
             Lintel = new LintelBeamPoco(openingInfo.Lintel);
         }
 

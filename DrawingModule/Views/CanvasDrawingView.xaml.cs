@@ -17,6 +17,7 @@ using DrawingModule.CustomControl;
 using DrawingModule.CustomControl.PaperSpaceControl;
 using DrawingModule.Helper;
 using DrawingModule.ViewModels;
+using MathExtension;
 using Block = devDept.Eyeshot.Block;
 using Environment = devDept.Eyeshot.Environment;
 
@@ -33,6 +34,7 @@ namespace DrawingModule.Views
     public partial class CanvasDrawingView : UserControl
     {
         private MyViewBuilder _viewBuilder;
+        private WallNameBuilder _wallNameBuilder;
         private CanvasDrawingViewModel _viewModel;
         public static readonly DependencyProperty ActiveLayerNameProperty =
             DependencyProperty.Register("ActiveLayerName", typeof(string), typeof(CanvasDrawingView),
@@ -130,7 +132,7 @@ namespace DrawingModule.Views
             
         }
 
-        private BlockReference GetFormatBlockReference(Sheet sheet)
+        public BlockReference GetFormatBlockReference(Sheet sheet)
         {
             if (!_formatBlockNames.ContainsKey(sheet.Name)) return null;
 
@@ -151,53 +153,86 @@ namespace DrawingModule.Views
             return blockReference is devDept.Eyeshot.Entities.View == false ;
                 //&& blockReference.Attributes.ContainsKey("Format")
         }
-        private void TestPaperSpace_WorkCompleted(object sender, WorkCompletedEventArgs e)
+
+        public WallName GetFloorNameRef(Sheet sheet)
         {
-            if (_viewBuilder != null)
+            foreach (var sheetEntity in sheet.Entities)
             {
-                _viewBuilder.AddToDrawings(PaperSpace);
+                if (sheetEntity is WallName wallName)
+                    return wallName;
+            }
+            return null;
+        }
 
-                if (PaperSpace.ActiveSheet == null)
+        public VectorView GetVecterViewRef(Sheet sheet)
+        {
+            foreach (var entity in sheet.Entities)
+            {
+                if (entity is VectorView vectorView)
                 {
-                    var sheet = PaperSpace.Sheets[0];
-                    PaperSpace.ActiveSheet = sheet;
-                    PaperSpace.ZoomFit();
-                }
-                PaperSpace.Entities.Regen();
-                PaperSpace.Invalidate();
-                
-                if (!_viewBuilder.QueueCompleted)
-                {
-                    PaperSpace.StartWork(_viewBuilder);
-                }
-                else
-                {
-                    _viewBuilder.Dispose();
-                    _viewBuilder = null;
-                }
-
-                if (PaperSpace.IsToReload && !PaperSpace.IsImported && PaperSpace.IsModified)
-                {
-                    PaperSpace.IsToReload = false;
+                    return vectorView;
                 }
             }
 
+            return null;
+        }
+        private void TestPaperSpace_WorkCompleted(object sender, WorkCompletedEventArgs e)
+        {
+            if (_wallNameBuilder == null)
+            {
+                _wallNameBuilder = new WallNameBuilder(PaperSpace, _viewModel.JobModel);
+                PaperSpace.StartWork(_wallNameBuilder);
+            }
+            else
+            {
+                if (_wallNameBuilder!=null)
+                {
+                    _wallNameBuilder.AddToDrawings();
+                }
+                if (_viewBuilder != null)
+                {
+                    _viewBuilder.AddToDrawings(PaperSpace);
 
-            //var drawings1 = this.PaperSpace;
-            //ViewBuilder vb = e.WorkUnit as ViewBuilder;
-            //if (vb != null && PaperSpace.Sheets.Count != 0)
-            //{
-            //    vb.AddToDrawings(drawings1);
-            //    this.PaperSpace.SetActiveSheet(this._viewModel.ActiveLevel);
-            //    CustomSheet activeSheet = (CustomSheet)PaperSpace.GetActiveSheet();
-            //    var formatBlockReference = GetFormatBlockReference(activeSheet);
-            //if (formatBlockReference != null)
-            //{
-            //    drawings1.ZoomFit();
-            //}
+                    if (PaperSpace.ActiveSheet == null)
+                    {
+                        var sheet = PaperSpace.Sheets[0];
+                        PaperSpace.ActiveSheet = sheet;
+                        var blockRefSheet = GetFormatBlockReference(PaperSpace.ActiveSheet);
+                        var vectorView = GetVecterViewRef(PaperSpace.ActiveSheet);
+                        if (blockRefSheet!=null && vectorView!=null)
+                        {
+                            if (blockRefSheet.Attributes.ContainsKey("Scale"))
+                            {
+                                var f = (Rational)vectorView.Scale;
+                                var scale =  f.ToString().Replace('/', ':');
+                                blockRefSheet.Attributes["Scale"].Value = scale;
+                            }
+                        }
+                        PaperSpace.ZoomFit();
+                    }
+                    PaperSpace.Entities.Regen();
+                    PaperSpace.Invalidate();
 
-            //    drawings1.Invalidate();
-            //}
+                    if (!_viewBuilder.QueueCompleted)
+                    {
+                        PaperSpace.StartWork(_viewBuilder);
+                    }
+                    else
+                    {
+                        _viewBuilder.Dispose();
+                        _viewBuilder = null;
+                        _wallNameBuilder.Dispose();
+                        _wallNameBuilder = null;
+                    }
+
+                    if (PaperSpace.IsToReload && !PaperSpace.IsImported && PaperSpace.IsModified)
+                    {
+                        PaperSpace.IsToReload = false;
+                    }
+                }
+            }
+
+            
         }
 
 
@@ -323,7 +358,7 @@ namespace DrawingModule.Views
             var nowDate = today.ToString("MM/dd/yyyy");
             br.Attributes["Date"] = new AttributeReference(nowDate);
             br.Attributes["JobNo"] = new AttributeReference(job.Info.JobNumber);
-            br.Attributes["Scale"] = new AttributeReference("1:50");
+            br.Attributes["Scale"] = new AttributeReference("ScaleFactor");
             return br;
         }
         public void AddDefaultViews(CustomSheet sheet)
@@ -331,7 +366,10 @@ namespace DrawingModule.Views
             double unitsConversionFactor = Utility.GetLinearUnitsConversionFactor(linearUnitsType.Millimeters, sheet.Units);
             double extensionAmount = Math.Min(sheet.Width, sheet.Height) / 200;
             // adds Front vector view
-            var view = new CustomVectorView(-100 * unitsConversionFactor, -300 , viewType.Top, 0.01, GetViewName(sheet, viewType.Front,false)){CenterlinesExtensionAmount = extensionAmount};
+            //var view = new CustomVectorView(-100 * unitsConversionFactor, -300 , viewType.Top, 0.01, GetViewName(sheet, viewType.Front,false)){CenterlinesExtensionAmount = extensionAmount};
+            var view = new CustomVectorView(127.5, 105, viewType.Top, 0.02, GetViewName(sheet, viewType.Front, false)) { CenterlinesExtensionAmount = extensionAmount };
+            var wallName = new WallName(new Point3D(0,0,0),sheet.Name+"Wall" );
+            wallName.Attributes["Title"] = new AttributeReference(sheet.Name);
             ////{ CenterlinesExtensionAmount = extensionAmount}
             view.KeepEntityColor = true;
             view.KeepEntityLineType = true;
@@ -339,7 +377,9 @@ namespace DrawingModule.Views
             //view.HiddenSegments = false;
             //view.ColorMethod = colorMethodType.byEntity;
             //view.LineTypeMethod = colorMethodType.byEntity;
+            sheet.AddWallPlaceHolder(wallName, PaperSpace, "Wall Name Place");
             sheet.AddViewPlaceHolder(view,CanvasDrawing,PaperSpace,view.BlockName.Replace(sheet.Name,String.Empty));
+            
             //var view = new RasterView(7 * unitsConversionFactor, 100 * unitsConversionFactor, viewType.Top, 0.5, GetViewName(sheet, viewType.Top, true));
             //view.ColorMethod = colorMethodType.byLayer;
             //view.LineTypeMethod = colorMethodType.byLayer;
@@ -360,10 +400,7 @@ namespace DrawingModule.Views
             if (initViewBuilder)
             {
                 _viewBuilder = new MyViewBuilder(CanvasDrawing,PaperSpace,dirtyOnly,ViewBuilder.operatingType.Queue);
-                //var viewBuilder = new ViewBuilder(CanvasDrawing, PaperSpace, dirtyOnly, ViewBuilder.operatingType.Queue);
-                //var myViewBuilder = new MyViewBuilder(CanvasDrawing,PaperSpace,dirtyOnly, ViewBuilder.operatingType.Queue);
             }
-
             if (singleView!=null)
             {
                 if (initViewBuilder)
@@ -385,8 +422,8 @@ namespace DrawingModule.Views
             if (!PaperSpace.IsBusy)
             {
                 PaperSpace.StartWork(_viewBuilder);
-                
             }
+
         }
 
         #endregion

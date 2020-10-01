@@ -38,10 +38,26 @@ namespace DrawingModule.ViewModels
         {
             get => _entitiesManger;
         }
+
+        public Visibility FloorNameVisibility
+        {
+            get
+            {
+                if (SelectedEntity is BlockReferenceVm blockRef && blockRef.IsBorderPage)
+                {
+                    return Visibility.Visible;
+                }
+                else
+                {
+                    return Visibility.Collapsed;
+                }
+            }
+        }
         public Visibility LayerVisibility => _selectedEntity==null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility ColorVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility ColorMethodVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility LeaderVisibility => SelectedEntity is LeaderVM ? Visibility.Visible : Visibility.Collapsed;
+        public List<string> ScaleList { get; } = new List<string>(){"1:50","1:75","1:100","1:125","1:150","1:175","1:200","1:225","1:250","1:275","1:300","1:325","1:350"};
         public Visibility BeamVisibility =>
             SelectedEntity is BeamEntityVm ? Visibility.Visible : Visibility.Collapsed;
         public Visibility LevelVisibility
@@ -63,6 +79,8 @@ namespace DrawingModule.ViewModels
             }
         }
 
+        public Visibility VectorViewVisibility =>
+            SelectedEntity is VectorViewVm ? Visibility.Visible : Visibility.Collapsed;
         public Visibility TextContentVisibility
         {
             get
@@ -89,6 +107,8 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(TextContentVisibility));
                 RaisePropertyChanged(nameof(LeaderVisibility));
                 RaisePropertyChanged(nameof(BeamVisibility));
+                RaisePropertyChanged(nameof(VectorViewVisibility));
+                RaisePropertyChanged(nameof(FloorNameVisibility));
             }
         }
         public ObservableCollection<LevelWall> Levels { get; private set; }
@@ -212,7 +232,15 @@ namespace DrawingModule.ViewModels
             {
              GeneralTimberList();   
             }
-            EntitiesManager.Refresh();
+
+            //if (e.PropertyName=="Scale" && SelectedEntity is VectorViewVm vectorView)
+            //{
+            //    if (this.EventAggregator != null)
+            //    {
+            //        this.EventAggregator.GetEvent<ScaleDrawingsChangedEvent>().Publish(vectorView.Scale);
+            //    }
+            //}
+            EntitiesManager?.Refresh();
         }
 
         private void GeneralTimberList()

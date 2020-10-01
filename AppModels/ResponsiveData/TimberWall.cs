@@ -42,7 +42,7 @@ namespace AppModels.ResponsiveData
         #endregion
 
 
-        public TimberWall(int id, IGlobalWallInfo globalWallInfo, WallTypePoco wallType) : base(id, globalWallInfo, wallType)
+        public TimberWall(int id, IGlobalWallInfo globalWallInfo, WallTypePoco wallType,string levelName) : base(id, globalWallInfo, wallType,levelName)
         {
         }
     }

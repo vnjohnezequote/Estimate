@@ -138,57 +138,100 @@
                               SelectedItem="{Binding SelectedWall.WallSpacing}"
                               Margin="15 0 0 0"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Ribbon Place" Width="170" VerticalAlignment="Bottom"/>
                     <ComboBox SelectedItem="{Binding SelectedWall.RibbonPlate.SizeGrade}"
                               ItemsSource="{Binding RibbonPlates}"
                               Text="{Binding SelectedWall.RibbonPlate.SizeGrade,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                               Margin="15 0 0 0"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Top Place" Width="170" VerticalAlignment="Bottom"/>
                     <ComboBox ItemsSource="{Binding TopPlates}"
                               SelectedItem="{Binding SelectedWall.TopPlate.SizeGrade,Mode=TwoWay}"
                               Text="{Binding SelectedWall.TopPlate.SizeGrade}"
                               Margin="15 0 0 0"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Stud" Width="170" VerticalAlignment="Bottom"/>
                     <ComboBox ItemsSource="{Binding Studs}"
                               SelectedItem="{Binding SelectedWall.Stud.SizeGrade,Mode=TwoWay}"
                               Text="{Binding SelectedWall.Stud.SizeGrade}"
                               Margin="15 0 0 0"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Bottom Place" Width="170" VerticalAlignment="Bottom"/>
                     <ComboBox ItemsSource="{Binding BottomPlates}"
                               SelectedItem="{Binding SelectedWall.BottomPlate.SizeGrade,Mode=TwoWay}"
                               Text="{Binding SelectedWall.BottomPlate.SizeGrade}"
                               Margin="15 0 0 0"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Stud Height" Width="170" VerticalAlignment="Bottom"/>
                     <TextBox Text="{Binding SelectedWall.StudHeight, Mode=OneWay}" Margin="15 0 0 0"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Wall Length" Width="170" VerticalAlignment="Bottom"/>
                     <TextBox Text="{Binding SelectedWall.WallLength, Mode=OneWay}"
                              Margin="15 0 0 0"
                              IsEnabled="False"
                              Foreground="LimeGreen"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Extra Length" Width="170" VerticalAlignment="Bottom"/>
                     <TextBox Text="{Binding SelectedWall.ExtraLength}" Margin="15 0 0 0"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Temporary Length" Width="170" VerticalAlignment="Bottom"/>
                     <TextBox Text="{Binding SelectedWall.TempLength, Mode=OneWay}" Margin="15 0 0 0"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Wall Name" Width="170" VerticalAlignment="Bottom"/>
-                    <TextBox Text="{Binding SelectedWall.WallName, Mode=OneWay}" Margin="15 0 0 0"/>
+                    <TextBox Text="{Binding SelectedWall.WallName, Mode=OneWay}" Margin="15 0 0 0" IsEnabled="False"/>
                 </DockPanel>
+                <materialDesign:Card Background="{StaticResource DarkBackGround}" Margin="0 10 0 0"  Foreground="GreenYellow">
+                    <Expander Header="Warnervale Properties" Background="Transparent">
+                        <StackPanel>
+                            <DockPanel>
+                                <TextBlock Text="No of Beam Pockets" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBox Text="{Binding SelectedWall.BeamPockets}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="No of Corners" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBox Text="{Binding SelectedWall.Corners}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="No of T Corners" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBox Text="{Binding SelectedWall.TCorners}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="Supports" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBox Text="{Binding SelectedWall.InWallSupports}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="Number if same Walls" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBox Text="{Binding SelectedWall.NumberOfSameWall}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 10 0 0">
+                                <TextBlock Text="Bath Checkouts" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBox Text="{Binding SelectedWall.BathCheckout,Mode=TwoWay}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 10 0 0">
+                                <TextBlock Text="Wet Area Length" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBox Text="{Binding SelectedWall.WetAreaLength,Mode=TwoWay}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 10 0 0">
+                                <TextBlock Text="Is Need To be Design" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <CheckBox IsChecked="{Binding SelectedWall.IsNeedTobeDesign,Mode=OneWay}" IsEnabled="False" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 10 0 0">
+                                <TextBlock Text="Is Designed" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <CheckBox IsChecked="{Binding SelectedWall.IsDesigned,Mode=TwoWay}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                            </DockPanel>
+                            
+                        </StackPanel>
+                    </Expander>
+                </materialDesign:Card>
             </StackPanel>
         </ScrollViewer>
 

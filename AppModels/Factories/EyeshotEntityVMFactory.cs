@@ -41,5 +41,10 @@ namespace AppModels.Factories
         {
             return new VectorViewVm(vectorView);
         }
+
+        public static BlockReferenceVm CreateBlockReferenceVm(this BlockReference blockRef)
+        {
+            return new BlockReferenceVm(blockRef);
+        }
     }
 }

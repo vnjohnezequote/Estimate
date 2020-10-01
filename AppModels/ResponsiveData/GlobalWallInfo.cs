@@ -156,7 +156,15 @@ namespace AppModels.ResponsiveData
             ExternalDoorHeight = 2100;
             ExternalWallThickness = 90;
             ExternalWallTimberDepth = 35;
-            ExternalWallTimberGrade = "MGP10";
+            if (globalInfo.Client!=null && globalInfo.Client.Name=="Warnervale")
+            {
+                ExternalWallTimberGrade = "P10";
+            }
+            else
+            {
+                ExternalWallTimberGrade = "MGP10";
+            }
+            
             ExternalWallSpacing = 450;
             GlobalExternalWallInfo = new BasicWallInfor(this,new WallTypePoco(){IsLoadBearingWall = true});
             GlobalInternalWallInfo= new BasicWallInfor(this, new WallTypePoco(){IsLoadBearingWall = false});
@@ -165,8 +173,39 @@ namespace AppModels.ResponsiveData
             GlobalIntWallDetailInfo = new GlobalWallDetailInfo(GlobalInternalWallInfo, GlobalNoggingInfo);
             GlobalDoorJambInfo = new GlobalWallMemberInfo(GlobalExternalWallInfo,WallMemberType.DoorJamb,GlobalExtWallDetailInfo.Stud);
             PropertyChanged += GlobalWallInfo_PropertyChanged;
+            GlobalInfo.PropertyChanged += GlobalInfo_PropertyChanged;
         }
-       
+
+        private void GlobalInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(GlobalInfo.Client))
+            {
+                if (GlobalInfo.Client.Name=="Warnervale")
+                {
+                    if (ExternalWallTimberGrade == "MGP10")
+                    {
+                        ExternalWallTimberGrade = "P10";
+                    }
+
+                    if (ExternalWallTimberGrade == "MGP12")
+                    {
+                        ExternalWallTimberGrade = "P10";
+                    }
+                }
+                else
+                {
+                    if (ExternalWallTimberGrade == "P10")
+                    {
+                        ExternalWallTimberGrade = "MGP10";
+                    }
+                    if (ExternalWallTimberGrade == "P12")
+                    {
+                        ExternalWallTimberGrade = "MGP12";
+                    }
+                }
+            }
+        }
+
         private void GlobalWallInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)

@@ -28,6 +28,10 @@ namespace AppModels.Factories
                     return leader.CreateLeaderVm();
                 case BeamEntity beam:
                     return beam.CreateEntityVm();
+                //case WallName wall:
+                //    return wall.CreateEntityVm();
+                case BlockReference block:
+                    return block.CreateBlockReferenceVm();
                 case Entity entiti:
                     entiti.CreateEntityVm();
                     break;

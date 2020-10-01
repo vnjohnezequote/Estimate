@@ -47,6 +47,15 @@ namespace AppModels.ResponsiveData
         private int _typeId;
         private double _tempLength;
         private double _extraLength;
+        private string _levelName;
+        private int _beamPockets;
+        private int _corners;
+        private int _tCorners;
+        private int _inWallSupports;
+        private int _bathCheckOut;
+        private int _numberOfSameWall;
+        private double _wetAreaLength;
+
         #endregion
 
         #region Property
@@ -291,16 +300,13 @@ namespace AppModels.ResponsiveData
                 return totalDepth;
             }
         }
-
         public int NoggingLength => WallSpacing - Stud.NoItem * Stud.Depth;
-
-        public string WallName => WallType.AliasName.Replace('_',' ') +" "+ FinalWallHeight + "mm";
+        public virtual string WallName { get; }
         public WallMemberBase RibbonPlate { get; private set; }
         public WallMemberBase TopPlate { get; private set; }
         public WallMemberBase BottomPlate { get; private set; }
         public WallStud Stud { get; private set; }
         public WallMemberBase Nogging { get; private set; }
-
         public double TempLength
         {
             get=>_tempLength; 
@@ -311,14 +317,22 @@ namespace AppModels.ResponsiveData
             set => SetProperty(ref _extraLength, value);
         }
         public double WallLength => Math.Ceiling(TempLength + ExtraLength);
-
+        public string LevelName { get=>_levelName; set=>SetProperty(ref _levelName,value); }
+        public int BeamPockets { get=>_beamPockets; set=>SetProperty(ref _beamPockets,value); }
+        public int Corners { get=>_corners; set=>SetProperty(ref _corners,value); }
+        public int TCorners { get=>_tCorners; set=>SetProperty(ref _tCorners,value); }
+        public int InWallSupports { get=>_inWallSupports; set=>SetProperty(ref _inWallSupports,value); }
+        public int BathCheckout { get=>_bathCheckOut; set=>SetProperty(ref _bathCheckOut,value); }
+        public int NumberOfSameWall { get=>_numberOfSameWall; set=>SetProperty(ref _numberOfSameWall,value); }
+        public double WetAreaLength { get=>_wetAreaLength; set=>SetProperty(ref _wetAreaLength,value); }
         #endregion
         #region Constructor
-        public WallBase(int id ,IGlobalWallInfo globalWallInfo,WallTypePoco wallType,int typeId = 1)
+        public WallBase(int id ,IGlobalWallInfo globalWallInfo,WallTypePoco wallType,string levelName,int typeId = 1)
         {
             WallType = wallType;
             this.Id = id;
             TypeId = typeId;
+            LevelName = levelName;
             this.GlobalWallInfo = globalWallInfo;
             this.GlobalWallInfo.PropertyChanged += GlobalWallInfo_PropertyChanged1;
             GlobalWallInfo.GlobalInfo.PropertyChanged += GlobalWallInfo_PropertyChanged;
@@ -358,7 +372,9 @@ namespace AppModels.ResponsiveData
             if (e.PropertyName == "NoItem"|| e.PropertyName == "Depth")
             {
                 RaisePropertyChanged(nameof(NoggingLength));
+                RaisePropertyChanged(nameof(WallName));
             }
+
         }
 
         private void WallPlate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -462,12 +478,20 @@ namespace AppModels.ResponsiveData
         {
             //Id = wall.Id;
             TypeId = wall.TypeId;
+            LevelName = wall.LevelName;
             //WallType = wall.WallType;
+            BeamPockets = wall.BeamPockets;
+            Corners = wall.Corners;
+            TCorners = wall.TCorners;
+            BathCheckout = wall.BathCheckout;
+            InWallSupports = wall.InWallSupports;
             WallColorLayer = wall.WallColorLayer;
             WallThickness = wall.WallThickness;
             WallSpacing = wall.WallSpacing;
             WallPitchingHeight = wall.WallPitchingHeight;
             ForcedWallUnderRakedArea = wall.ForcedWallUnderRakedArea;
+            NumberOfSameWall = wall.NumberOfSameWall;
+            WetAreaLength = wall.WetAreaLength;
             //WallLength = wall.WallLength;
             IsStepDown = wall.IsStepdown;
             IsRaisedCeiling = wall.IsRaisedCeiling;

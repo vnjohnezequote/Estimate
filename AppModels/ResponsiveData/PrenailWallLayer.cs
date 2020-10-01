@@ -53,6 +53,7 @@ namespace AppModels.ResponsiveData
                 }
             }
         }
+        public override string WallName => WallType.AliasName.Replace('_', ' ') + " " + FinalWallHeight + "mm";
 
 
         #endregion
@@ -71,8 +72,8 @@ namespace AppModels.ResponsiveData
         ///// <param name="defaultInfo">
         ///// The default info.
         ///// </param>
-        public PrenailWallLayer(int wallId, IGlobalWallInfo globalWallInfo, WallTypePoco wallType, int typeID = 1) :
-            base(wallId, globalWallInfo, wallType, typeID)
+        public PrenailWallLayer(int wallId, IGlobalWallInfo globalWallInfo, WallTypePoco wallType,string levelName, int typeID = 1) :
+            base(wallId, globalWallInfo, wallType,levelName, typeID)
         {
 
         }

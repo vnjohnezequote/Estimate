@@ -64,46 +64,6 @@ namespace DrawingModule.Views
                 //CanvasDrawing.CanvasDrawingControl.PaperSpace.IsToReload = false;
                 CanvasDrawing.CanvasDrawingControl.StartViewBuilder();
             }
-            //CanvasDrawing.CanvasDrawingControl.StartViewBuilder();
-
-            /*
-            Drawings drawings = CanvasDrawing.PaperSpace;
-            foreach (var canvasDrawingLineType in CanvasDrawing.CanvasDrawing.LineTypes)
-            {
-                if (!drawings.LineTypes.Contains(canvasDrawingLineType))
-                {
-                    drawings.LineTypes.Add(canvasDrawingLineType);
-                }
-            }
-            foreach (var canvasDrawingLayer in CanvasDrawing.CanvasDrawing.Layers)
-            {
-                if (!drawings.Layers.Contains(canvasDrawingLayer))
-                {
-                    drawings.Layers.Add(canvasDrawingLayer);
-                }
-            }
-
-            if (this.CanvasDrawing.TabPaperSpace.IsSelected && drawings.Sheets.Count > 0)
-            {
-                //drawingsUserControl1.EnableUIElements(false);
-
-                // rebuilds all the "dirty" views for all sheets.
-                //drawings.Rebuild(this.CanvasDrawing.CanvasDrawing, true, true);
-                var sheet = CanvasDrawing.PaperSpace.ActiveSheet as CustomSheet;
-                if (sheet == null)
-                {
-                    //CanvasDrawing.PaperSpace.ActiveSheet(CanvasDrawing)
-                    sheet = CanvasDrawing.PaperSpace.Sheets[0] as CustomSheet;
-                    CanvasDrawing.PaperSpace.ActiveSheet = sheet;
-                }
-                //var sheet = CanvasDrawing.PaperSpace.GetActiveSheet() as CustomSheet;
-                if (sheet != null)
-                {
-                   UpDateLayout();
-                }
-                drawings.Entities.Regen();
-                drawings.Invalidate();
-            }*/
         }
 
         private void ReloadDrawings()

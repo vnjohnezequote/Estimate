@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using devDept.Eyeshot.Entities;
+using MathExtension;
+
 
 namespace AppModels.ViewModelEntity
 {
@@ -51,6 +53,33 @@ namespace AppModels.ViewModelEntity
                 }
             }
         }
+
+        public string Scale
+        {
+            get
+            {
+                if (Entity!=null && Entity is VectorView vectorView)
+                {
+
+                    var f = (Rational) vectorView.Scale;
+                    return f.ToString().Replace('/',':');
+
+                }
+
+                return "";
+            }
+            set
+            {
+                if (Entity!=null && Entity is VectorView vectorView)
+                {
+                    //vectorView.Scale = value;
+                    var inputScale = value.Replace(':', '/');
+                    Helper.ConvertStringToDouble(inputScale, out var ouputScale);
+                    vectorView.Scale = ouputScale;
+                    RaisePropertyChanged(nameof(Scale));
+                }
+            }
+        }
         public VectorViewVm(IEntity entity) : base(entity)
         {
            
@@ -60,6 +89,7 @@ namespace AppModels.ViewModelEntity
             base.NotifyPropertiesChanged();
             RaisePropertyChanged(nameof(X));
             RaisePropertyChanged(nameof(Y));
+            RaisePropertyChanged(nameof(Scale));
         }
     }
 }

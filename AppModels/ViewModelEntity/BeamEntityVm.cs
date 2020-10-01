@@ -140,7 +140,13 @@ namespace AppModels.ViewModelEntity
                 if (Entity is BeamEntity beam)
                 {
                     beam.Attributes["Name"].Alignment = value;
+                    beam.BeamNameAttribute.Alignment = value;
+
                     beam.Attributes["Continues"].Alignment = value;
+                    beam.Attributes["Support"].Alignment = value;
+                    beam.Attributes["Treatment"].Alignment = value;
+                    beam.Attributes["Custom"].Alignment = value;
+                    beam.Attributes["Lintel"].Alignment = value;
                     //beam.BeamName.Alignment = value;
                     RaisePropertyChanged(nameof(BeamMarkedAlignmentType));
                 }

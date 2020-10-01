@@ -28,7 +28,7 @@ namespace AppModels.ResponsiveData
 
         #region Constructor
 
-        public StickFrameWallLayer(int id, IGlobalWallInfo globalWallInfo, WallTypePoco wallType, int typeId = 1) : base(id, globalWallInfo, wallType, typeId)
+        public StickFrameWallLayer(int id, IGlobalWallInfo globalWallInfo, WallTypePoco wallType,string levelName, int typeId = 1) : base(id, globalWallInfo, wallType,levelName, typeId)
         {
         }
 

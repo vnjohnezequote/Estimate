@@ -46,6 +46,7 @@ namespace AppModels.ResponsiveData
                     value = 0;
                 }
                 this.SetProperty(ref this._wallHeight, value);
+                RaisePropertyChanged(nameof(InternalWallHeight));
             }
         }
         public int InternalWallHeight => WallHeight - 35;
@@ -171,8 +172,8 @@ namespace AppModels.ResponsiveData
             switch (e.PropertyName)
             {
                 case nameof(WallHeight):
-                    RaisePropertyChanged(nameof(InternalWallHeight));
                     RaisePropertyChanged(nameof(WallHeight));
+                    RaisePropertyChanged(nameof(InternalWallHeight));
                     break;
                 case nameof(ExternalDoorHeight):
                     RaisePropertyChanged(nameof(ExternalDoorHeight));

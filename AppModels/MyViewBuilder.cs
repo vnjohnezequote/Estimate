@@ -55,108 +55,37 @@ namespace AppModels
         public new void AddToDrawings(Drawings drawings)
         {
             base.AddToDrawings(drawings);
-
-            //var line = new Line(new Point3D(0, 0, 0), new Point3D(10000, 0, 0));
-            //line.Color = Color.Blue;
-            //line.ColorMethod = colorMethodType.byEntity;
-            //line.LineWeight = 0.5f;
-            //line.LineWeightMethod = colorMethodType.byEntity;
-            //drawings.Blocks[2].Entities.Add(line);
-            //var line = new Line(new Point3D(0,0,0),new Point3D(0,10,100));
-            //line.Color = Color.Blue;
-            //line.ColorMethod = colorMethodType.byEntity;
-            //line.LineWeight = 0.1f;
-            //line.LineWeightMethod = colorMethodType.byEntity;
-            //drawings.Blocks[2].Entities.Add(line);
             var numberOfFloor = drawings.Blocks.Count;
             List<Block> floorBlocks = new List<Block>();
-            switch (numberOfFloor)
+            foreach (var drawingsBlock in drawings.Blocks)
             {
-                case 3:
-                    floorBlocks.Clear();
-                    floorBlocks.Add(drawings.Blocks[2]);
-                    break;
-                case 5:
-                    floorBlocks.Clear();
-                    floorBlocks.Add(drawings.Blocks[2]);
-                    floorBlocks.Add(drawings.Blocks[4]);
-                    break;
-                case 7:
-                    floorBlocks.Clear();
-                    floorBlocks.Add(drawings.Blocks[2]);
-                    floorBlocks.Add(drawings.Blocks[4]);
-                    floorBlocks.Add(drawings.Blocks[6]);
-                    break;
-                case 9:
-                    floorBlocks.Clear();
-                    floorBlocks.Add(drawings.Blocks[2]);
-                    floorBlocks.Add(drawings.Blocks[4]);
-                    floorBlocks.Add(drawings.Blocks[6]);
-                    floorBlocks.Add(drawings.Blocks[8]);
-                    break;
-                case 11:
-                    floorBlocks.Clear();
-                    floorBlocks.Add(drawings.Blocks[2]);
-                    floorBlocks.Add(drawings.Blocks[4]);
-                    floorBlocks.Add(drawings.Blocks[6]);
-                    floorBlocks.Add(drawings.Blocks[8]);
-                    floorBlocks.Add(drawings.Blocks[10]);
-                    break;
-                case 13:
-                    floorBlocks.Clear();
-                    floorBlocks.Add(drawings.Blocks[2]);
-                    floorBlocks.Add(drawings.Blocks[4]);
-                    floorBlocks.Add(drawings.Blocks[6]);
-                    floorBlocks.Add(drawings.Blocks[8]);
-                    floorBlocks.Add(drawings.Blocks[10]);
-                    floorBlocks.Add(drawings.Blocks[12]);
-                    break;
-                case 15:
-                    floorBlocks.Clear();
-                    floorBlocks.Add(drawings.Blocks[2]);
-                    floorBlocks.Add(drawings.Blocks[4]);
-                    floorBlocks.Add(drawings.Blocks[6]);
-                    floorBlocks.Add(drawings.Blocks[8]);
-                    floorBlocks.Add(drawings.Blocks[10]);
-                    floorBlocks.Add(drawings.Blocks[12]);
-                    floorBlocks.Add(drawings.Blocks[14]);
-                    break;
-                default:
-                    break;
-                
-            }
-
-            foreach (var floorBlock in floorBlocks)
-            {
-                floorBlock.Entities.Clear();
-                //var listPicEntities = new List<PictureEntity>();
-                //foreach (var modelEntity in _model.Entities)
-                //{
-                //    if (modelEntity is PictureEntity pictureEntity)
-                //    {
-                //        listPicEntities.Add(pictureEntity);
-                //        //_model.Entities.Remove(modelEntity);
-                //    }
-                //}
-
-                //foreach (var pictureEntity in listPicEntities)
-                //{
-                //    _model.Entities.Remove(pictureEntity);
-                //}
-
-                //_model.Entities.AddRange(listPicEntities);
-                foreach (var modelEntity in _model.Entities)
+                if (drawingsBlock.Name.Contains("View"))
                 {
-                    switch (modelEntity)
-                    {
-                        case BeamEntity beamEntity:
+                    //floorBlocks.Add(drawingsBlock);
+                    ReCalculatorFloorBlockColor(drawingsBlock);
+                }
+            }
+            //foreach (var floorBlock in floorBlocks)
+            //{
+               
+            //}
+        }
+
+        private void ReCalculatorFloorBlockColor(Block floorBlock)
+        {
+            floorBlock.Entities.Clear();
+            foreach (var modelEntity in _model.Entities)
+            {
+                switch (modelEntity)
+                {
+                    case BeamEntity beamEntity:
                         {
                             var beamLine = beamEntity.BeamLine.Clone() as Entity;
                             if (beamLine != null)
                             {
                                 beamLine.LineWeight = 0.7f;
                                 beamLine.LineWeightMethod = colorMethodType.byEntity;
-                                beamLine.LineTypeScale = 1;
+                                beamLine.LineTypeScale = 0.5f;
                                 floorBlock.Entities.Add(beamLine);
                             }
 
@@ -165,64 +94,33 @@ namespace AppModels
                             {
                                 beamLeader.LineWeight = 0.3f;
                                 beamLeader.LineWeightMethod = colorMethodType.byEntity;
-
                                 floorBlock.Entities.Add(beamLeader);
                             }
-                                
+
                             if (beamEntity.BeamNameAttribute is Text beamText)
                             {
-                                var newBeamText = new Text(Plane.XY, beamText.InsertionPoint, beamEntity.Attributes["Name"].Value,beamText.Height,beamText.Alignment);
+                                var newBeamText = new Text(Plane.XY, beamText.InsertionPoint, beamEntity.Attributes["Name"].Value, beamText.Height, beamEntity.Attributes["Name"].Alignment);
                                 newBeamText.Color = beamText.Color;
                                 newBeamText.ColorMethod = colorMethodType.byEntity;
-                                //var beamTextMesh = newBeamText.ConvertToMesh(_drawings);
                                 floorBlock.Entities.Add(newBeamText);
-                                //floorBlock.Entities.AddRange(beamTextMesh);
                             }
 
                             continue;
                         }
-                        case BlockReference _:
-                            continue;
-                    }
-
-                    var cloneEntitiy = modelEntity.Clone() as Entity;
-                    //if (cloneEntitiy is PictureEntity pictureEntity)
-                    //{
-                    //    listPicEntities.Add(pictureEntity);
-                    //    continue;
-                    //}
-                    cloneEntitiy.LineWeight = 0.8f;
-                    cloneEntitiy.LineWeightMethod = colorMethodType.byEntity;
-                    floorBlock.Entities.Add(cloneEntitiy);
-                    floorBlock.Entities.Regen();
+                    case BlockReference _:
+                        continue;
                 }
 
-                //foreach (var pictureEntity in listPicEntities)
-                //{
-                //    floorBlock.Entities.AddRange(listPicEntities);
-                //}
+                var cloneEntitiy = modelEntity.Clone() as Entity;
+                if (cloneEntitiy != null)
+                {
+                    cloneEntitiy.LineWeight = 0.6f;
+                    cloneEntitiy.LineWeightMethod = colorMethodType.byEntity;
+                    floorBlock.Entities.Add(cloneEntitiy);
+                }
+
+                floorBlock.Entities.Regen();
             }
-
-            //if (drawings.Blocks[2]!=null)
-            //{
-            //   //drawings.Blocks[2].Entities.Clear();
-            //    //foreach (var modelEntity in _model.Entities)
-            //    //{
-            //    //    var layoutEntity = modelEntity.Clone() as Entity;
-            //    //    //layoutEntity.LayerName = "";
-            //    //    //layoutEntity.Color = modelEntity.Color;
-            //    //    //layoutEntity.ColorMethod = colorMethodType.byEntity;
-            //    //    //layoutEntity.LineWeight = 0.8f;
-            //    //    //layoutEntity.LineWeightMethod = colorMethodType.byEntity;
-            //    //    drawings.Blocks[2].Entities.Add(layoutEntity);
-            //    //}
-            //    //foreach (var entity in drawings.Blocks[2].Entities)
-            //    //{
-            //    //    entity.Color= Color.Blue;
-            //    //    entity.ColorMethod = colorMethodType.byEntity;
-            //    //}
-            //}
-
         }
     }
 }
