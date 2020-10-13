@@ -57,7 +57,7 @@
                    VerticalContentAlignment="Bottom"
                    Background="{StaticResource MahApps.Brushes.Accent2}"/>
             <CheckBox VerticalContentAlignment="Bottom" IsChecked="{Binding JobInfo.UpToLength}" Margin="10 0 10 0"/>
-            <TextBox materialDesign:HintAssist.Hint="Length Size" Text="{Binding JobInfo.QuoteTolengthSize}"/>
+            <TextBox materialDesign:HintAssist.Hint="Length Size" Text="{Binding JobInfo.QuoteToLengthSize}"/>
         </DockPanel>
         <DockPanel VerticalAlignment="Center" Margin="0 10 0 0 ">
             <Label Content="Quote Ceiling Batten"

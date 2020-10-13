@@ -10,13 +10,13 @@ using devDept.Eyeshot.Entities;
 namespace AppModels.ViewModelEntity
 {
     [Serializable]
-    public class Wall2DVm : EntityVmBase,IWall2D
+    public class WallLine2DVm : EntityVmBase,IWall2D
     {
         public string WallLevelName
         {
             get
             {
-                if (Entity!=null &&Entity is Wall2D wall2D)
+                if (Entity!=null &&Entity is WallLine2D wall2D)
                 {
                     return wall2D.WallLevelName;
                 }
@@ -25,9 +25,9 @@ namespace AppModels.ViewModelEntity
             }
             set
             {
-                if (Entity != null && Entity is Wall2D)
+                if (Entity != null && Entity is WallLine2D)
                 {
-                    ((Wall2D) Entity).WallLevelName = value;
+                    ((WallLine2D) Entity).WallLevelName = value;
                     RaisePropertyChanged(nameof(WallLevelName));
                 }
                 
@@ -44,7 +44,7 @@ namespace AppModels.ViewModelEntity
             return 0;
         }
 
-        public Wall2DVm(Entity entity) : base(entity)
+        public WallLine2DVm(Entity entity) : base(entity)
         {
         }
 

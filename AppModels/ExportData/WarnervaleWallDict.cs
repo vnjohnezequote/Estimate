@@ -123,7 +123,7 @@ namespace AppModels.ExportData
                             wallDataRange.StudSize = levelSheet.Range["C181"].Offset[offsetValue, 0];
                             wallDataRange.TopPlate = levelSheet.Range["F185"].Offset[offsetValue, 0];
                             wallDataRange.BottomPlate = levelSheet.Range["F186"].Offset[offsetValue, 0];
-                            wallDataRange.WallSpacing = levelSheet.Range["C1182"].Offset[offsetValue, 0];
+                            wallDataRange.WallSpacing = levelSheet.Range["C182"].Offset[offsetValue, 0];
                             wallDataRange.WallLength = levelSheet.Range["G179"].Offset[offsetValue, 0];
                             wallDataRange.WallHeight = levelSheet.Range["G180"].Offset[offsetValue, 0];
                             wallDataRange.TCorners = levelSheet.Range["G181"].Offset[offsetValue, 0];
@@ -146,7 +146,7 @@ namespace AppModels.ExportData
                             wallDataRange.StudSize = levelSheet.Range["C181"].Offset[offsetValue, 0];
                             wallDataRange.TopPlate = levelSheet.Range["F185"].Offset[offsetValue, 0];
                             wallDataRange.BottomPlate = levelSheet.Range["F186"].Offset[offsetValue, 0];
-                            wallDataRange.WallSpacing = levelSheet.Range["C1182"].Offset[offsetValue, 0];
+                            wallDataRange.WallSpacing = levelSheet.Range["C182"].Offset[offsetValue, 0];
                             wallDataRange.WallLength = levelSheet.Range["C185"].Offset[offsetValue, 0];
                             wallDataRange.WallHeight = levelSheet.Range["G180"].Offset[offsetValue, 0];
                             wallDataRange.TCorners = levelSheet.Range["G181"].Offset[offsetValue, 0];

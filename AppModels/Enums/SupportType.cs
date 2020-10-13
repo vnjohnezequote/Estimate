@@ -4,6 +4,7 @@
     {
         Jamb,
         Post,
-        SteelPost
+        SteelPost,
+        Hanger
     }
 }

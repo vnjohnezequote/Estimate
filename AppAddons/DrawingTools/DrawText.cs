@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net.Mime;
 using System.Text;
@@ -71,6 +72,8 @@ namespace AppAddons.DrawingTools
             var text = new Text(insertPoint, TextInput, TextHeight);
             var rad = Utility.DegToRad(TextAngle);
             text.Rotate(rad, Vector3D.AxisZ, insertPoint);
+            //text.ColorMethod = colorMethodType.byEntity;
+            //text.ColorMethod = Color.FromArgb(127, Color.BlueViolet);
             EntitiesManager.AddAndRefresh(text,LayerManager.SelectedLayer.Name);
         }
 

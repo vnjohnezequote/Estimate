@@ -448,26 +448,6 @@ namespace DrawingModule.CustomControl.CanvasControl
         #endregion
 
         #region Override Method
-
-
-        //protected override void OnKeyDown(KeyEventArgs e)
-        //{
-        //    base.OnKeyDown(e);
-        //    switch (e.Key)
-        //    {
-        //        case Key.Enter:
-        //            if (this.IsProcessingTool & this._waitingForSelection)
-        //            {
-        //                this._waitingForSelection = false;
-        //                this.PromptStatus = PromptStatus.OK;
-        //            }
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
-        //private bool _firstTime = false;
-        //private TextureBase texture = null;
         protected override void DrawOverlay(DrawSceneParams data)
         {
 

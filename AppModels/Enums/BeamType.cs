@@ -10,8 +10,11 @@ namespace AppModels.Enums
         [ProtoEnum]
         Lintel,
         [ProtoEnum]
-        RoofBeam,
+        TrussBeam,
         [ProtoEnum]
-        FloorBeam
+        FloorBeam,
+        [ProtoEnum]
+        RafterBeam
+
     }
 }

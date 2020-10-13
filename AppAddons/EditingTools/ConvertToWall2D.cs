@@ -17,7 +17,7 @@ namespace AppAddons.EditingTools
 {
     public class ConvertToWall2D: ToolBase
     {
-        public override string ToolName => "Convert To Wall2D";
+        public override string ToolName => "Convert To WallLine2D";
         public List<Entity> SelectedEntities { get; protected set; }
         public bool WaitingForSelection { get; protected set; }
         public override Point3D BasePoint { get; protected set; }
@@ -122,13 +122,13 @@ namespace AppAddons.EditingTools
                         var lines = linePath.ConvertToLines();
                         foreach (var line in lines)
                         {
-                            EntitiesManager.AddAndRefresh(new Wall2D(line),line.LayerName );
+                            EntitiesManager.AddAndRefresh(new WallLine2D(line),line.LayerName );
                         }
                         EntitiesManager.RemoveEntity(selectedEntity);
                             continue;
                     }
                     case Line line2:
-                        EntitiesManager.AddAndRefresh(new Wall2D(line2),line2.LayerName );
+                        EntitiesManager.AddAndRefresh(new WallLine2D(line2),line2.LayerName );
                         EntitiesManager.RemoveEntity(selectedEntity);
                         continue;
                 }

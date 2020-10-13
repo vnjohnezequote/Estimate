@@ -103,7 +103,6 @@ namespace AppModels.ResponsiveData.Openings
                         return 1;
                 }
             }
-
         }
 
         public WallLocationTypes? DoorTypeLocation
@@ -123,7 +122,6 @@ namespace AppModels.ResponsiveData.Openings
         public IGlobalWallInfo GlobalWallInfo { get; set; }
         public Suppliers Suppliers => GlobalWallInfo.GlobalInfo.Supplier;
         public int Id { get=>_id; set=>SetProperty(ref _id,value); }
-
         public OpeningType? OpeningType
         {
             get

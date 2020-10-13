@@ -53,12 +53,14 @@ namespace AppModels.ExportData
             RoofPitch = wall.CeilingPitch;
             if (wall.WallType.IsRaked)
             {
-                if (NumberOfSameWalls == 0)
+                if (wall.NumberOfSameWall == 0)
                 {
                     NumberOfSameWalls = 1;
                 }
-                WallLength = (int) (WallLength * 1000 / NumberOfSameWalls);
-                WallHeight = (int)Math.Ceiling(wall.FinalWallHeight-WallLength* Math.Tan(Utility.DegToRad(wall.CeilingPitch)));
+                else
+                    NumberOfSameWalls = wall.NumberOfSameWall;
+                WallLength = (int) (wall.WallLength * 1000 / NumberOfSameWalls);
+                WallHeight = (int)Math.Round(wall.FinalWallHeight-WallLength* Math.Tan(Utility.DegToRad(wall.CeilingPitch)));
             }
             else
             {
@@ -221,7 +223,7 @@ namespace AppModels.ExportData
                 if (Windows.Count>16)
                 {
                     MessageBox.Show(
-                        "Your Wall Contains Two Much Window, exceed Window range in Excel please check againt ");
+                        "Your Wall2D Contains Two Much Window, exceed Window range in Excel please check againt ");
                     return;
                 }
                 else
@@ -242,7 +244,7 @@ namespace AppModels.ExportData
                 if (Doors.Count>11)
                 {
                     MessageBox.Show(
-                        "Your Wall Contains Two Much Door, exceed Door range in Excel please check againt ");
+                        "Your Wall2D Contains Two Much Door, exceed Door range in Excel please check againt ");
                     return;
                 }
                 else
@@ -264,7 +266,7 @@ namespace AppModels.ExportData
                 if (Doors.Count > 11)
                 {
                     MessageBox.Show(
-                        "Your Wall Contains Two Much Door, exceed Door range in Excel please check againt ");
+                        "Your Wall2D Contains Two Much Door, exceed Door range in Excel please check againt ");
                     return;
                 }
                 else

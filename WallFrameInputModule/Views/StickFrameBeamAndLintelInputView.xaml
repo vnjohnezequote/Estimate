@@ -174,7 +174,7 @@
                                                    ItemsSource="{Binding Source={StaticResource WallTypeLocations}}"/>
                     <Syncfusion:GridTextColumn HeaderText="Door Location"
                                                MappingName="Location"/>
-                    <Syncfusion:GridComboBoxColumn HeaderText="Wall Belong to"
+                    <Syncfusion:GridComboBoxColumn HeaderText="Wall2D Belong to"
                                                    UseBindingValue="True"
                                                    MappingName="WallReference"
                                                    ItemsSource="{Binding LevelInfo.WallLayers}">
@@ -431,7 +431,7 @@
                                                    MappingName="TimberInfo"
                                                    DisplayMemberPath="SizeTreatment"
                                                    ItemsSourceSelector="{StaticResource BeamSelectConverter}"/>
-                    <Syncfusion:GridComboBoxColumn HeaderText="Wall Reference"
+                    <Syncfusion:GridComboBoxColumn HeaderText="Wall2D Reference"
                                                    UseBindingValue="True"
                                                    MappingName="WallReference"
                                                    ItemsSource="{Binding LevelInfo.WallLayers}">

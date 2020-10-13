@@ -111,10 +111,12 @@
     <Compile Include="DrawingTools\DrawingAngularDim.cs" />
     <Compile Include="DrawingTools\DrawAlignDim.cs" />
     <Compile Include="DrawingTools\DrawingLine.cs" />
+    <Compile Include="DrawingTools\DrawingWallLine.cs" />
     <Compile Include="DrawingTools\DrawingRectangle.cs" />
     <Compile Include="DrawingTools\DrawLeader.cs" />
     <Compile Include="DrawingTools\DrawText.cs" />
     <Compile Include="DrawingTools\DrawLinearDim.cs" />
+    <Compile Include="DrawingTools\DrawWall.cs" />
     <Compile Include="DrawingTools\MTextTool.cs" />
     <Compile Include="EditingTools\ConvertToWall2D.cs" />
     <Compile Include="EditingTools\CopyTool.cs" />

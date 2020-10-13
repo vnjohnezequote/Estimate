@@ -49,6 +49,18 @@ namespace DrawingModule.Views
         public CanvasDrawingView()
         {
             InitializeComponent();
+            try
+            {
+                this.CanvasDrawing.Unlock("PF20-21MV5-0NHNJ-WYUX-F6CQ");
+                this.PaperSpace.Unlock("PF20-21MV5-0NHNJ-WYUX-F6CQ");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
+            
+            //this.PaperSpace.Unlock("PF20 - 21MV5 - 0NHNJ - WYUX - F6CQ");
             if (this.DataContext != null)
             {
                 _viewModel = this.DataContext as CanvasDrawingViewModel;
@@ -368,7 +380,7 @@ namespace DrawingModule.Views
             // adds Front vector view
             //var view = new CustomVectorView(-100 * unitsConversionFactor, -300 , viewType.Top, 0.01, GetViewName(sheet, viewType.Front,false)){CenterlinesExtensionAmount = extensionAmount};
             var view = new CustomVectorView(127.5, 105, viewType.Top, 0.02, GetViewName(sheet, viewType.Front, false)) { CenterlinesExtensionAmount = extensionAmount };
-            var wallName = new WallName(new Point3D(0,0,0),sheet.Name+"Wall" );
+            var wallName = new WallName(new Point3D(0,0,0),sheet.Name+"Wall2D" );
             wallName.Attributes["Title"] = new AttributeReference(sheet.Name);
             ////{ CenterlinesExtensionAmount = extensionAmount}
             view.KeepEntityColor = true;
@@ -377,7 +389,7 @@ namespace DrawingModule.Views
             //view.HiddenSegments = false;
             //view.ColorMethod = colorMethodType.byEntity;
             //view.LineTypeMethod = colorMethodType.byEntity;
-            sheet.AddWallPlaceHolder(wallName, PaperSpace, "Wall Name Place");
+            sheet.AddWallPlaceHolder(wallName, PaperSpace, "Wall2D Name Place");
             sheet.AddViewPlaceHolder(view,CanvasDrawing,PaperSpace,view.BlockName.Replace(sheet.Name,String.Empty));
             
             //var view = new RasterView(7 * unitsConversionFactor, 100 * unitsConversionFactor, viewType.Top, 0.5, GetViewName(sheet, viewType.Top, true));

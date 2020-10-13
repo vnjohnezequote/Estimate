@@ -186,6 +186,10 @@ namespace AppModels
             {
                 foreach (var block in _wallNameBlockDict)
                 {
+                    if (block.Value == null)
+                    {
+                        continue;
+                    }
                     if (drawingsBlock.Name == block.Value.Name)
                     {
                         drawingsBlock.Entities.Clear();

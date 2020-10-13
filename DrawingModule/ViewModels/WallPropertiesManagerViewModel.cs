@@ -18,12 +18,12 @@ namespace DrawingModule.ViewModels
 {
     public class WallPropertiesManagerViewModel : BaseViewModel
     {
-        private Wall2DVm _wall;
+        private WallLine2DVm _wallLine;
 
-        public Wall2DVm Wall
+        public WallLine2DVm WallLine
         {
-            get => _wall;
-            set => SetProperty(ref _wall, value);
+            get => _wallLine;
+            set => SetProperty(ref _wallLine, value);
         }
         public WallPropertiesManagerViewModel()
         {

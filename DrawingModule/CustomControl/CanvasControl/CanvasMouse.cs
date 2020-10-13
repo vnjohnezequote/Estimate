@@ -44,6 +44,8 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         protected override void OnMouseMove(MouseEventArgs e)
         {
+            //PaintBackBuffer();
+            //SwapBuffers();
             _mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
             this.CurrentPoint = GetCurrentPoint(_mousePosition);
             CurrentIndex = this.GetEntityUnderMouseCursor(_mousePosition, false);
@@ -74,6 +76,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             PaintBackBuffer();
             SwapBuffers();
             base.OnMouseMove(e);
+            
 
         }
 
@@ -102,21 +105,6 @@ namespace DrawingModule.CustomControl.CanvasControl
 
             if (this.ActionMode == actionType.None && e.ChangedButton == MouseButton.Left)
             {
-                //if (test.Count == 2)
-                //{
-                //    var beamEntity = new BeamEntity(test[0], "B1" , test[0],test[1], "Prenail", "GroundFloor", 0);
-                //    Blocks.Add(beamEntity.BeamBlock);
-                //    beamEntity.Attributes.Add("Name", "195x65 GL17C @ 1/3.3");
-                //    beamEntity.ColorMethod = colorMethodType.byEntity;
-                //    beamEntity.LineTypeMethod = colorMethodType.byEntity;
-                //    //beamEntity.LineTypeScale = 0.5f;
-                //    beamEntity.LineWeightMethod = colorMethodType.byEntity;
-                //    Entities.Add(beamEntity, "Beam");
-                //    Entities.Regen();
-                //    Invalidate();
-                //}
-
-
                 this.PolaTrackingPoints.Clear();
                 if (IsProcessingTool)
                 {
@@ -248,19 +236,10 @@ namespace DrawingModule.CustomControl.CanvasControl
 
 
         }
-
-
         private void OnUserInteractionMessage()
         {
             UserInteraction?.Invoke();
         }
-
         
-
-
-
-
-
-
     }
 }

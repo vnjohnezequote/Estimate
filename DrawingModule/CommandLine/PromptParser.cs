@@ -14,57 +14,57 @@ namespace DrawingModule.CommandLine
 
         internal string Prompt => m_prompt;
 
-        internal unsafe void Parse(string promptAndKeywords, string globalKeywords)
+        internal void Parse(string promptAndKeywords, string globalKeywords)
         {
-            int num = promptAndKeywords.LastIndexOf("[");
-            int num2 = promptAndKeywords.LastIndexOf("]");
-            if (num >= 0 && num2 > num + 1)
-            {
-                if (num > 0)
-                {
-                    m_prompt = promptAndKeywords.Substring(0, num).TrimEnd(null);
-                }
-                else
-                {
-                    m_prompt = "";
-                }
-                string[] array = promptAndKeywords.Substring(num + 1, num2 - num - 1).Split("/".ToCharArray());
-                int num3 = array.Length;
-                string[] array2 = new string[num3];
-                int num4 = num3;
-                if (num4 > 0)
-                {
-                    int num5 = 0;
-                    if (0 < num4)
-                    {
-                        do
-                        {
-                            array2[num5] = ParseLocalKeyword(array[num5]);
-                            num5++;
-                        }
-                        while (num5 < num4);
-                    }
-                    string[] array3 = SplitByWhitespace(globalKeywords);
-                    if ((IntPtr)num4 == (IntPtr)(void*)array3.LongLength)
-                    {
-                        m_keywords = new KeywordCollection();
-                        int num6 = 0;
-                        if (0 < num4)
-                        {
-                            do
-                            {
-                                m_keywords.Add(array3[num6], array2[num6], array[num6]);
-                                num6++;
-                            }
-                            while (num6 < num4);
-                        }
-                        return;
-                    }
-                    throw new ArgumentException("Mismatched number of global and local keywords");
-                }
-                throw new ArgumentException("Bracketed keyword list is empty");
-            }
-            throw new ArgumentException("No bracketed keyword list");
+            //int num = promptAndKeywords.LastIndexOf("[");
+            //int num2 = promptAndKeywords.LastIndexOf("]");
+            //if (num >= 0 && num2 > num + 1)
+            //{
+            //    if (num > 0)
+            //    {
+            //        m_prompt = promptAndKeywords.Substring(0, num).TrimEnd(null);
+            //    }
+            //    else
+            //    {
+            //        m_prompt = "";
+            //    }
+            //    string[] array = promptAndKeywords.Substring(num + 1, num2 - num - 1).Split("/".ToCharArray());
+            //    int num3 = array.Length;
+            //    string[] array2 = new string[num3];
+            //    int num4 = num3;
+            //    if (num4 > 0)
+            //    {
+            //        int num5 = 0;
+            //        if (0 < num4)
+            //        {
+            //            do
+            //            {
+            //                array2[num5] = ParseLocalKeyword(array[num5]);
+            //                num5++;
+            //            }
+            //            while (num5 < num4);
+            //        }
+            //        string[] array3 = SplitByWhitespace(globalKeywords);
+            //        if ((IntPtr)num4 == (IntPtr)(void*)array3.LongLength)
+            //        {
+            //            m_keywords = new KeywordCollection();
+            //            int num6 = 0;
+            //            if (0 < num4)
+            //            {
+            //                do
+            //                {
+            //                    m_keywords.Add(array3[num6], array2[num6], array[num6]);
+            //                    num6++;
+            //                }
+            //                while (num6 < num4);
+            //            }
+            //            return;
+            //        }
+            //        throw new ArgumentException("Mismatched number of global and local keywords");
+            //    }
+            //    throw new ArgumentException("Bracketed keyword list is empty");
+            //}
+            //throw new ArgumentException("No bracketed keyword list");
         }
 
         private protected static string[] SplitByWhitespace(string text)

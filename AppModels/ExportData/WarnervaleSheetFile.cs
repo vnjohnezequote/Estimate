@@ -41,12 +41,12 @@ namespace AppModels.ExportData
 
             if (floorWallList.Count>0)
             {
-                WarnervaleWallDiscs.Add("Normal Wall", new WarnervaleWallDict(floorWallList, openings));
+                WarnervaleWallDiscs.Add("Normal Wall2D", new WarnervaleWallDict(floorWallList, openings));
             }
 
             if (rakeWallList.Count>0)
             {
-                WarnervaleWallDiscs.Add("Raked Wall", new WarnervaleWallDict(rakeWallList, openings));
+                WarnervaleWallDiscs.Add("Raked Wall2D", new WarnervaleWallDict(rakeWallList, openings));
             }
         }
 
@@ -132,7 +132,7 @@ namespace AppModels.ExportData
             bool inputToRakedWall = false;
             foreach (var warnervaleWallDisc in WarnervaleWallDiscs)
             {
-                if (warnervaleWallDisc.Key=="Normal wall" )
+                if (warnervaleWallDisc.Key== "Normal Wall2D")
                 {
                     if (isUpperLevel)
                     {

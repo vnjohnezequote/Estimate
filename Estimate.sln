@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWPFReporting", "Simpl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAddonsModule", "AppAddons\AppAddonsModule.csproj", "{9F9D1096-28D5-4F67-985E-79D041EDA04F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloorAndRafterInput", "FloorAndRafterInput\FloorAndRafterInput.csproj", "{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -411,6 +413,22 @@ Global
 		{9F9D1096-28D5-4F67-985E-79D041EDA04F}.XInput 1.4|Any CPU.Build.0 = Release|Any CPU
 		{9F9D1096-28D5-4F67-985E-79D041EDA04F}.XInput 1.4|x64.ActiveCfg = Release|x64
 		{9F9D1096-28D5-4F67-985E-79D041EDA04F}.XInput 1.4|x64.Build.0 = Release|x64
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.Debug|x64.Build.0 = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.Release|x64.ActiveCfg = Release|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.Release|x64.Build.0 = Release|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.XInput 1.3|Any CPU.ActiveCfg = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.XInput 1.3|Any CPU.Build.0 = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.XInput 1.3|x64.ActiveCfg = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.XInput 1.3|x64.Build.0 = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.XInput 1.4|Any CPU.ActiveCfg = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.XInput 1.4|Any CPU.Build.0 = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.XInput 1.4|x64.ActiveCfg = Debug|Any CPU
+		{D890CFE6-8D4E-42FF-B5FF-96FFE2F0486F}.XInput 1.4|x64.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

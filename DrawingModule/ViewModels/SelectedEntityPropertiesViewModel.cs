@@ -68,7 +68,7 @@ namespace DrawingModule.ViewModels
                 {
                     case null:
                         return Visibility.Collapsed;
-                    case Wall2DVm _:
+                    case WallLine2DVm _:
                     case BeamEntityVm _:
                         return Visibility.Visible;
                     case LinearPathWall2DVm _:
@@ -109,6 +109,7 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(BeamVisibility));
                 RaisePropertyChanged(nameof(VectorViewVisibility));
                 RaisePropertyChanged(nameof(FloorNameVisibility));
+                RaisePropertyChanged(nameof(BeamGradeList));
             }
         }
         public ObservableCollection<LevelWall> Levels { get; private set; }
@@ -216,30 +217,19 @@ namespace DrawingModule.ViewModels
                                 beam.BeamReference.InitGlobalInfor(newLevel.LevelInfo);
                                 beam.BeamReference.Id = newLevel.RoofBeams.Count + 1;
                                 beam.BeamName = beam.BeamReference.Name;
+                                //beam.BlockName = beam.BeamReference.Name+beam.WallLevelName;
                                 beam.EngineerMember = null;
                                 newLevel.RoofBeams.Add(beam.BeamReference);
-
                             }
-
-
                         }
                     }
                 }
-                
             }
 
             if (e.PropertyName=="BeamGrade")
             {
              GeneralTimberList();   
             }
-
-            //if (e.PropertyName=="Scale" && SelectedEntity is VectorViewVm vectorView)
-            //{
-            //    if (this.EventAggregator != null)
-            //    {
-            //        this.EventAggregator.GetEvent<ScaleDrawingsChangedEvent>().Publish(vectorView.Scale);
-            //    }
-            //}
             EntitiesManager?.Refresh();
         }
 

@@ -60,7 +60,7 @@ namespace AppDataBase.DataBase
         {
             if (SelectedEntities.Count>0)
             {
-                //if (SelectedEntities[0] is Wall2D wall2D)
+                //if (SelectedEntities[0] is WallLine2D wall2D)
                 //{
                 //    SelectedEntity =wall2D.GetEntityVm();
                 //    return;
@@ -87,6 +87,10 @@ namespace AppDataBase.DataBase
             foreach (var selectedEntity in SelectedEntities)
             {
                 selectedEntity.LayerName = selectedLayer.Name;
+                if (selectedEntity is WallLine2D)
+                {
+                    selectedEntity.Color = selectedLayer.Color;
+                }
                 if (selectedEntity.LineTypeMethod != colorMethodType.byLayer) continue;
                 if (selectedLayer.LineTypeName == "Continues")
                 {

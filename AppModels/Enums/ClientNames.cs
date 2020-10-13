@@ -23,6 +23,13 @@ namespace AppModels.Enums
         [ProtoEnum]
         StickFrame,
         [ProtoEnum]
-        ITMTumu
+        ITMTumu,
+        [ProtoEnum]
+        ITM,
+        [ProtoEnum]
+        BunningSA,
+        [ProtoEnum]
+        Lang,
+
     }
 }

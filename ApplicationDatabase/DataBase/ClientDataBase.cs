@@ -183,6 +183,18 @@ namespace AppDataBase.DataBase
         /// </summary>
         private void CreateTestDataBase()
         {
+            CreateWarnervale();
+            CreatePrenail();
+            CreateRivo();
+            CreateStickFrame();
+            CreateITM();
+            CreateITMTumu();
+            CreateLangBuilding();
+            CreateBunningSA();
+        }
+
+        private void CreateWarnervale()
+        {
             var client = new ClientPoco()
             {
                 Name = ClientNames.Warnervale.ToString(),
@@ -206,12 +218,12 @@ namespace AppDataBase.DataBase
                 BottomPlates = this.CreateWarnervaleMaterial(),
                 RibbonPlates = this.CreateWarnervaleMaterial(),
                 WallTypes = new List<WallTypePoco>()
-                                {
-                                    new WallTypePoco() { Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "EXT WALL" },
-                                    new WallTypePoco() { Id = 1, IsLoadBearingWall = false, IsRaked = false, AliasName = "INT WALL" },
-                                    new WallTypePoco() { Id = 2, IsLoadBearingWall = true, IsRaked = true, AliasName = "EXT RAKED WALL" },
-                                    new WallTypePoco() { Id = 3, IsLoadBearingWall = false, IsRaked = true, AliasName = "INT RAKED WALL" }
-                                }
+                {
+                    new WallTypePoco() { Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "EXT WALL" ,WallLocationType = WallLocationTypes.External},
+                    new WallTypePoco() { Id = 1, IsLoadBearingWall = false, IsRaked = false, AliasName = "INT WALL" ,WallLocationType = WallLocationTypes.Internal},
+                    new WallTypePoco() { Id = 2, IsLoadBearingWall = true, IsRaked = true, AliasName = "EXT RAKED WALL" ,WallLocationType = WallLocationTypes.External},
+                    new WallTypePoco() { Id = 3, IsLoadBearingWall = false, IsRaked = true, AliasName = "INT RAKED WALL" ,WallLocationType = WallLocationTypes.Internal}
+                }
             };
 
 
@@ -224,9 +236,10 @@ namespace AppDataBase.DataBase
                 this._clients.Insert(client);
                 this._clients.EnsureIndex(x => x.Name);
             }
-
-
-            client = new ClientPoco()
+        }
+        private void CreatePrenail()
+        {
+           var client = new ClientPoco()
             {
                 Name = ClientNames.Prenail.ToString(),
                 ClientIcon = "AlphabetP",
@@ -243,7 +256,7 @@ namespace AppDataBase.DataBase
                     "Sheets","Tiles"
                 },
                 Builders = new List<string>() { "Funny Home", "Teddy Home", "America Home", "Dalat Home" },
-                Customers = new List<Customer>(){new Customer( "Noosa Truss")},
+                Customers = new List<Customer>() { new Customer("Noosa Truss") },
                 Studs = this.CreatePrenailStuds(),
                 RibbonPlates = this.CreatePrenailRibbonPlates(),
                 TopPlates = this.CreatPrenailTopPlates(),
@@ -275,8 +288,10 @@ namespace AppDataBase.DataBase
                 this._clients.Insert(client);
                 this._clients.EnsureIndex(x => x.Name);
             }
-
-            client = new ClientPoco()
+        }
+        private void CreateRivo()
+        {
+            var client = new ClientPoco()
             {
                 Name = ClientNames.Rivo.ToString(),
                 ClientIcon = "AlphabetR",
@@ -316,8 +331,10 @@ namespace AppDataBase.DataBase
                 this._clients.Insert(client);
                 this._clients.EnsureIndex(x => x.Name);
             }
-
-            client = new ClientPoco()
+        }
+        private void CreateStickFrame()
+        {
+           var client = new ClientPoco()
             {
                 Name = ClientNames.StickFrame.ToString(),
                 ClientIcon = "AlphabetS",
@@ -334,7 +351,7 @@ namespace AppDataBase.DataBase
                     "Sheets","Tiles"
                 },
                 Builders = new List<string>() { "Privium", "Privium Homes" },
-                Customers = new List<Customer>(){new Customer("Bunnings Trade"),new Customer("Finlaysons"),new Customer("Bunnings Trade Victoria"),new Customer("Bunnings Hallam Frame And Truss")},
+                Customers = new List<Customer>() { new Customer("Bunnings Trade"), new Customer("Finlaysons"), new Customer("Bunnings Trade Victoria"), new Customer("Bunnings Hallam Frame And Truss") },
                 WallTypes = new List<WallTypePoco>
                 {
                     new WallTypePoco(){Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "LOAD BEARING WALL"},
@@ -354,24 +371,26 @@ namespace AppDataBase.DataBase
                 this._clients.Insert(client);
                 this._clients.EnsureIndex(x => x.Name);
             }
-
-            client = new ClientPoco()
+        }
+        private void CreateITMTumu()
+        {
+            var client = new ClientPoco()
             {
                 Name = ClientNames.ITMTumu.ToString(),
-                ClientIcon = "AlphabetI",
+                ClientIcon = "AlphabetT",
                 WinRates = new List<string>()
                 {
                     "Extra High","Very High","High Wind","Medium Wind","Low Wind"
                 },
                 Treatments = new List<string>()
                 {
-                    "Untreated", "H2","H2S Treated", "H2F Treated","H3 Treated","T2 Treated","T2 Blue Treated", "T2 Red Treated","T3 Green Treated","LOSP"
+                    "H1.2", "H3.2"
                 },
                 RoofMaterials = new List<string>()
                 {
                     "LongRun","Tiles"
                 },
-                Builders = new List<string>() { "nha 1", "nha 2", "nha 3", "nha vang vang", "Nha Kiem Tra xem thu da duoc chua" },
+                Builders = new List<string>() {  },
                 Customers = new List<Customer>(),
                 WallTypes = new List<WallTypePoco>
                 {
@@ -392,13 +411,126 @@ namespace AppDataBase.DataBase
                 this._clients.Insert(client);
                 this._clients.EnsureIndex(x => x.Name);
             }
+        }
+        private void CreateITM()
+        {
+            var client = new ClientPoco()
+            {
+                Name = ClientNames.ITM.ToString(),
+                ClientIcon = "AlphabetI",
+                WinRates = new List<string>()
+                {
+                    "Extra High","Very High","High Wind","Medium Wind","Low Wind"
+                },
+                Treatments = new List<string>()
+                {
+                    "H1.2", "H3.2","H4","H5"
+                },
+                RoofMaterials = new List<string>()
+                {
+                    "LongRun","Tiles"
+                },
+                Builders = new List<string>() {  },
+                Customers = new List<Customer>(),
+                WallTypes = new List<WallTypePoco>
+                {
+                    new WallTypePoco(){Id = 0, IsLoadBearingWall = true, IsRaked = false, AliasName = "LOAD BEARING WALL"},
+                    new WallTypePoco(){Id = 1, IsLoadBearingWall = true, IsRaked = false, AliasName = "RAKED LOAD BEARING WALL"},
+                    new WallTypePoco(){Id = 2, IsLoadBearingWall = true, IsRaked = false, AliasName = "NONE LOAD BEARING WALL"},
+                    new WallTypePoco(){Id = 3, IsLoadBearingWall = true, IsRaked = false, AliasName = "RAKED NONE LOAD BEARING WALL"}
+                }
 
+            };
 
+            if (this._clients.Exists(x => x.Name == ClientNames.ITM.ToString()))
+            {
+                this._clients.Update(client);
+            }
+            else
+            {
+                this._clients.Insert(client);
+                this._clients.EnsureIndex(x => x.Name);
+            }
+        }
+        private void CreateLangBuilding()
+        {
+            var client = new ClientPoco()
+            {
+                Name = ClientNames.Lang.ToString(),
+                ClientIcon = "AlphabetL",
+                WinRates = new List<string>()
+                {
+                    "N1","N2","N3","N4","N5","C1","C2","C3","C4","C5"
+                },
+                Treatments = new List<string>()
+                {
+                    "H2","H2S","H2F","H3","Untreated"
+                },
+                RoofMaterials = new List<string>()
+                {
+                    "Sheets","Tiles"
+                },
+                Builders = new List<string>() { },
+                Customers = new List<Customer>(),
+                WallTypes = new List<WallTypePoco>
+                {
+                }
 
+            };
 
+            if (this._clients.Exists(x => x.Name == ClientNames.Lang.ToString()))
+            {
+                this._clients.Update(client);
+            }
+            else
+            {
+                this._clients.Insert(client);
+                this._clients.EnsureIndex(x => x.Name);
+            }
+
+        }
+        private void CreateBunningSA()
+        {
+            var client = new ClientPoco()
+            {
+                Name = ClientNames.BunningSA.ToString(),
+                ClientIcon = "AlphabetB",
+                WinRates = new List<string>()
+                {
+                    "N1","N2","N3","N4","N5","C1","C2","C3","C4","C5"
+                },
+                Treatments = new List<string>()
+                {
+                    "H2","H2S","H2F","H3","Untreated"
+                },
+                RoofMaterials = new List<string>()
+                {
+                    "Sheets","Tiles"
+                },
+                Builders = new List<string>() { },
+                Customers = new List<Customer>(),
+                WallTypes = new List<WallTypePoco>(),
+                FloorRafterMaterialList =  CreateFloorAndRafterList()
+
+            };
+
+            if (this._clients.Exists(x => x.Name == ClientNames.BunningSA.ToString()))
+            {
+                this._clients.Update(client);
+            }
+            else
+            {
+                this._clients.Insert(client);
+                this._clients.EnsureIndex(x => x.Name);
+            }
 
         }
 
+        private List<TimberBase> CreateFloorAndRafterList()
+        {
+            var floorMatList = "FloorAndRafterMaterialList.csv";
+            return this.LoadTimberListOnCvsFile<TimberBase>(floorMatList);
+        }
         /// <summary>
         /// The create prenail dict stud.
         /// </summary>

@@ -144,7 +144,7 @@ namespace AppModels
         {
             for (int i = 0; i < 16; i++)
             {
-                var newLayer = new LayerItem(){Name ="Wall"+ i,LineWeight = 5};
+                var newLayer = new LayerItem(){Name ="Wall2D"+ i,LineWeight = 5};
                 Add(newLayer);
             }
             Layers[0].Color = Color.Blue;

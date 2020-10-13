@@ -231,7 +231,7 @@ namespace WallFrameInputModule.ViewModels
         private void OnCreateBeamCommand()
         {
             this._startBeamId = LevelInfo.RoofBeams.Count + 1;
-            var beam = new Beam(BeamType.RoofBeam,this.LevelInfo.LevelInfo){Id = _startBeamId};
+            var beam = new Beam(BeamType.TrussBeam,this.LevelInfo.LevelInfo){Id = _startBeamId};
             LevelInfo.RoofBeams.Add(beam);
         }
 

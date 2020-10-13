@@ -114,7 +114,8 @@ namespace WallFrameInputModule.ViewModels
         #endregion
 
         #region Properties
-
+        public List<int> SupportSpans { get; set; } = new List<int>(){3000,6000,9000,12000,15000};
+        public List<int> ExtDoorListHeights { get; set; } = new List<int> { 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000 };
         public Visibility PrenailVisibility
         {
             get
@@ -274,14 +275,28 @@ namespace WallFrameInputModule.ViewModels
             {
                 case 1:
                     //InputJobWarnervaleInfo(infoSheet);
-                    GeneralFileForWarnervale(workbook,JobModel.Levels[0],true);
+                    if (!GeneralFileForWarnervale(workbook, JobModel.Levels[0], true))
+                    {
+                        MessageBox.Show("Export failure");
+                        excel.Quit();
+                        System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excel);
+                        return;
+                    }
+                    
                     break;
                 case 2:
                     foreach (var jobModelLevel in JobModel.Levels)
                     {
                         var levelName = jobModelLevel.LevelName.Replace(" Floor", "");
+                        if (!GeneralFileForWarnervale(workbook, jobModelLevel, true))
+                        {
+                            MessageBox.Show("Export failure");
+                            excel.Quit();
+                            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excel);
+                            return;
+                        }
                         //InputJobWarnervaleInfo(infoSheet,levelName,jobModelLevel);
-                        GeneralFileForWarnervale(workbook, jobModelLevel, true);
+                        
                     }
                     //InputJobWarnervaleInfo(infoSheet);
                     break;
@@ -289,7 +304,14 @@ namespace WallFrameInputModule.ViewModels
                     foreach (var jobModelLevel in JobModel.Levels)
                     {
                         //InputJobWarnervaleInfo(infoSheet, jobModelLevel.LevelName, jobModelLevel,true);
-                        GeneralFileForWarnervale(workbook, JobModel.Levels[0], true);
+                        if (!GeneralFileForWarnervale(workbook, JobModel.Levels[0], true))
+                        {
+                            MessageBox.Show("Export failure");
+                            excel.Quit();
+                            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excel);
+                            return;
+                        }
+                        
                     }
                     //InputJobWarnervaleInfo(infoSheet);
                     break;
@@ -297,7 +319,14 @@ namespace WallFrameInputModule.ViewModels
                     foreach (var jobModelLevel in JobModel.Levels)
                     {
                         //InputJobWarnervaleInfo(infoSheet, jobModelLevel.LevelName, jobModelLevel,true);
-                        GeneralFileForWarnervale(workbook, JobModel.Levels[0], true);
+                        
+                        if (!GeneralFileForWarnervale(workbook, JobModel.Levels[0], true))
+                        {
+                            MessageBox.Show("Export failure");
+                            excel.Quit();
+                            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excel);
+                            return;
+                        }
                     }
                     //InputJobWarnervaleInfo(infoSheet);
                     break;
@@ -313,7 +342,7 @@ namespace WallFrameInputModule.ViewModels
             MessageBox.Show("Export Complete");
         }
 
-        private void GeneralFileForWarnervale(Excel.Workbook workbook,LevelWall level,bool includeLevelName)
+        private bool GeneralFileForWarnervale(Excel.Workbook workbook,LevelWall level,bool includeLevelName)
         {
             var fileSave = JobModel.Info.JobNumber;
             if (JobModel.Info.JobLocation.EndsWith("\\"))
@@ -336,8 +365,19 @@ namespace WallFrameInputModule.ViewModels
                 fileSave = fileSave.Replace(" Floor", "");
             }
             var warnervaleExportData = new WarnervaleExportData(level,fileSave);
-            warnervaleExportData.SaveFile(workbook);
-            WarnervaleExportDataList.Add(warnervaleExportData);
+            try
+            {
+                warnervaleExportData.SaveFile(workbook);
+                WarnervaleExportDataList.Add(warnervaleExportData);
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Please Close your file before export data");
+                return false;
+            }
+            
+            
             
         }
 
@@ -350,6 +390,7 @@ namespace WallFrameInputModule.ViewModels
                 return;
             }
             var excel = new Excel.Application();
+            
             var workbook = excel.Workbooks.Open(System.AppDomain.CurrentDomain.BaseDirectory + "PrenailTemplate.xlsm");
             var sheets = workbook.Worksheets;
             var isNeedSecondWorkBook = false;
@@ -406,7 +447,16 @@ namespace WallFrameInputModule.ViewModels
             }
             if (!isNeedSecondWorkBook)
             {
-                workbook.SaveAs(fileSave);
+                try
+                {
+                    workbook.SaveAs(fileSave);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Please close your File Before Export Data");
+                    return;
+                }
+                
             }
 
             if (isNeedSecondWorkBook)
@@ -436,7 +486,16 @@ namespace WallFrameInputModule.ViewModels
                         break;
                 }
                 var fileSave2 = fileSave + "-Sheet 2";
-                workbook.SaveAs(fileSave2);
+                try
+                {
+                    workbook.SaveAs(fileSave2);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Please close your file before export Data");
+                    return;
+                }
+                
             }
             excel.Quit();
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excel);
@@ -880,7 +939,7 @@ namespace WallFrameInputModule.ViewModels
             }
             if (string.IsNullOrEmpty(JobModel.Info.Treatment))
             {
-                message = "You Missed Wall Treatment, Please Check";
+                message = "You Missed Wall2D Treatment, Please Check";
                 return false;
             }
 
@@ -904,7 +963,7 @@ namespace WallFrameInputModule.ViewModels
             {
                 if (jobModelLevel.WallLayers.Count==0)
                 {
-                    message = "Are you sure "+jobModelLevel.LevelName+" has no any Wall?";
+                    message = "Are you sure "+jobModelLevel.LevelName+" has no any Wall2D?";
                     return false;
                 }
 
@@ -912,19 +971,19 @@ namespace WallFrameInputModule.ViewModels
                 {
                     if (wall.WallType == null)
                     {
-                        message = "You Missed Wall Type";
+                        message = "You Missed Wall2D Type";
                         return false;
                     }
 
                     if (wall.WallColorLayer==null)
                     {
-                        message = "You Missed Wall Layer";
+                        message = "You Missed Wall2D Layer";
                         return false;
                     }
 
                     if (wall.WallLength==0)
                     {
-                        message = "You Missed Wall Length";
+                        message = "You Missed Wall2D Length";
                         return false;
                     }
                 }
@@ -937,13 +996,13 @@ namespace WallFrameInputModule.ViewModels
                         {
                             if (wallbracing.Quantity == 0)
                             {
-                                message = "You Missed Wall Bracings Quantity";
+                                message = "You Missed Wall2D Bracings Quantity";
                                 return false;
                             }
 
                             if (wallbracing.BracingInfo == null)
                             {
-                                message = "You Missed Wall Bracings Type";
+                                message = "You Missed Wall2D Bracings Type";
                                 return false;
                             }
                         }
@@ -1402,7 +1461,7 @@ namespace WallFrameInputModule.ViewModels
                 this.Level.RoofBeams = new ObservableCollection<Beam>();
             }
             var beamId = Level.RoofBeams.Count + 1;
-            var newBeam = new Beam(BeamType.RoofBeam, Level.LevelInfo) { Id = beamId };
+            var newBeam = new Beam(BeamType.TrussBeam, Level.LevelInfo) { Id = beamId };
             this.Level.RoofBeams.Add(newBeam);
         }
 

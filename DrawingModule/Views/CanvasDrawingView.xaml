@@ -27,7 +27,6 @@
                     <Grid>
                         <canvasControl:CanvasDrawing x:Name="CanvasDrawing"
 										Units="Millimeters"
-                                        AutoRefresh="True"
                                         EntitiesManager="{Binding EntitiesManager}"
                                         LayersManager="{Binding LayerManager}"
                                         JobModel="{Binding JobModel}"

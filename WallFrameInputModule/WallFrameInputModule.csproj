@@ -74,12 +74,12 @@
     <Reference Include="CsvHelper, Version=15.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.15.0.5\lib\net47\CsvHelper.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Eyeshot.Control.Wpf.v2020"/>
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v2020" />
     <Reference Include="devDept.Geometry.v2020">
-  <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
-	</Reference>
-    <Reference Include="devDept.Graphics.Shaders.v2020"/>
-    <Reference Include="devDept.Graphics.Wpf.v2020"/>
+      <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Graphics.Shaders.v2020" />
+    <Reference Include="devDept.Graphics.Wpf.v2020" />
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.2.0.0\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -171,6 +171,7 @@
   <ItemGroup>
     <Compile Include="Helper\BeamSelectConverter.cs" />
     <Compile Include="Helper\BottomPlatesSelectConverter.cs" />
+    <Compile Include="Helper\DoorWidthsSelector.cs" />
     <Compile Include="Helper\RibbonPlatesSelectConverter.cs" />
     <Compile Include="Helper\TopPlatesSelectConverter.cs" />
     <Compile Include="Helper\WallStudSelectBehavior.cs" />

@@ -32,6 +32,7 @@ namespace Estimate.Views
         {
             
             this.InitializeComponent();
+            
             if (this.DataContext!=null && this.DataContext is MainWindowViewModel viewModel)
             {
                 _viewModel = viewModel;

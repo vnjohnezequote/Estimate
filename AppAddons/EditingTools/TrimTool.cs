@@ -36,27 +36,21 @@ namespace AppAddons.EditingTools
         [CommandMethod("Trim")]
         public void Trim()
         {
-            
+
             OnProcessCommand();
         }
         protected virtual void OnProcessCommand()
         {
             while (_processingTool)
             {
-                
+
             }
-            
+
         }
 
-        private void ProcessTrimedEntities()
+       public override void OnJigging(object sender, DrawInteractiveArgs e)
         {
-            
-        }
-
-
-        public override void OnJigging(object sender, DrawInteractiveArgs e)
-        {
-            DrawInteractiveTrim((ICadDrawAble)sender,e);
+            DrawInteractiveTrim((ICadDrawAble)sender, e);
 
         }
 
@@ -66,7 +60,7 @@ namespace AppAddons.EditingTools
             var mousePosition = RenderContextUtility.ConvertPoint(canvas.GetMousePosition(e));
             var index = canvas.GetEntityUnderMouseCursor(mousePosition);
             if (_firstSelectedEntity != null && _secondSelectedEntity != null) return;
-            if (index >-1)
+            if (index > -1)
             {
                 _selectedEntityIndex = index;
             }
@@ -90,7 +84,7 @@ namespace AppAddons.EditingTools
 
             if (_firstSelectedEntity == null)
             {
-                DrawInteractiveUntilities.DrawSelectionMark(canvas,e.MousePosition);
+                DrawInteractiveUntilities.DrawSelectionMark(canvas, e.MousePosition);
                 ToolMessage = "Please select trim entity";
                 if (_selectedEntityIndex != -1)
                 {
@@ -107,7 +101,7 @@ namespace AppAddons.EditingTools
                 }
                 else
                 {
-                    DrawInteractiveUntilities.DrawSelectionMark(canvas,e.MousePosition);
+                    DrawInteractiveUntilities.DrawSelectionMark(canvas, e.MousePosition);
                     ToolMessage = "Please select Trimed Entity";
                 }
             }
@@ -116,8 +110,10 @@ namespace AppAddons.EditingTools
                 if (_firstSelectedEntity is ICurve trimmingCurve && _secondSelectedEntity is ICurve curve)
                 {
 
-#if NURBS
-                    Point3D[] intersetionPoints = Curve.Intersection(trimmingCurve, curve);
+
+                    Point3D[] intersetionPoints = trimmingCurve.IntersectWith(curve); 
+                    
+
                     if (intersetionPoints.Length > 0 && _trimPoint !=null)
                     {
                         List<double> parameters = new List<double>();
@@ -178,7 +174,7 @@ namespace AppAddons.EditingTools
                                     
                                     if (trimmedCurve is Line)
                                     {
-                                        var wall2D = new Wall2D(trimmedCurve.StartPoint,trimmedCurve.EndPoint);
+                                        var wall2D = new WallLine2D(trimmedCurve.StartPoint,trimmedCurve.EndPoint);
                                         EntitiesManager.AddAndRefresh(wall2D, wall2D.LayerName);
                                     }
                                     else if(trimmedCurve is LinearPath linearPath)
@@ -204,11 +200,10 @@ namespace AppAddons.EditingTools
                     _firstSelectedEntity = null;
                     _secondSelectedEntity = null;
                     _trimPoint = null;
-#endif
                 }
 
             }
 
         }
-            }
+    }
 }

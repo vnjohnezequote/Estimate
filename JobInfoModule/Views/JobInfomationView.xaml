@@ -25,7 +25,7 @@
     <StackPanel>
         <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
                                   Mode="PrimaryMid" DockPanel.Dock="Top">
-            <TextBlock Text="{Binding JobModel.Info.ClientName}" HorizontalAlignment="Center" FontSize="22" />
+            <TextBlock Text="{Binding JobModel.Info.Client.Name}" HorizontalAlignment="Center" FontSize="22" />
         </materialDesign:ColorZone>
         <materialDesign:Card Background="{StaticResource MaterialDesignBackground}">
             <StackPanel>
@@ -56,7 +56,7 @@
                     Height="1"
                     HorizontalAlignment="Stretch"
                     SnapsToDevicePixels="True" Visibility="{Binding IsDesignVisibility}" />
-                <Expander Header="Wall Info">
+                <Expander Header="Wall2D Info">
                     <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainFloorChooseRegion}"/>
                 </Expander>
             </StackPanel>

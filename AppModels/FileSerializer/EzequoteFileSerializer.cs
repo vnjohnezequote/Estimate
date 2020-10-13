@@ -27,7 +27,7 @@ namespace AppModels.FileSerializer
         {
             base.FillModel();
             Model[typeof(Line)]
-                .AddSubType(1001, typeof(Wall2D));
+                .AddSubType(1001, typeof(WallLine2D));
             Model[typeof(LineSurrogate)]
                 .AddSubType(1001, typeof(Wall2DSurrogate));
             Model[typeof(Wall2DSurrogate)]

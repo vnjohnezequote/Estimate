@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Openings;
 using LiteDB;
 
 namespace AppModels.PocoDataModel
@@ -75,6 +76,9 @@ namespace AppModels.PocoDataModel
         /// Gets or sets the beams.
         /// </summary>
         public Dictionary<string, List<TimberBase>> Beams { get; set; }
+        public List<Hanger> Hangers { get; set; }
+
+        public List<TimberBase> FloorRafterMaterialList { get; set; }
 
         /// <summary>
         /// Gets or sets the timber bracing bases.

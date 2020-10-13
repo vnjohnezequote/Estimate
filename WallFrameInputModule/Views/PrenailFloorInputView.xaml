@@ -58,6 +58,7 @@
                     <helper:TopPlatesSelectConverter x:Key="TopPlatesSelectConverter"/>
                     <helper:RibbonPlatesSelectConverter x:Key="RibbonPlatesSelectConverter"/>
                     <helper:BeamSelectConverter x:Key="BeamSelectConverter"/>
+                    <helper:DoorWidthsSelector x:Key="DoorWidthsSelector"/>
                     <modelCompare:WallTypeComparer x:Key="WallTypeComparer"/>
                      <Style x:Key="BeamMaximumLengthHeaderStyle" TargetType="syncfusion:GridHeaderCellControl">
                         <Setter Property="Background" Value="Teal" />
@@ -85,14 +86,14 @@
 
                         <StackPanel Margin="0 10 0 0">
                             <StackPanel Orientation="Horizontal">
-                                <TextBox materialDesign:HintAssist.Hint="External Wall Height" Text="{Binding Level.LevelInfo.WallHeight}" />
+                                <TextBox materialDesign:HintAssist.Hint="External Wall2D Height" Text="{Binding Level.LevelInfo.WallHeight}" />
                                 <TextBox materialDesign:HintAssist.Hint="External WallThickness" Text="{Binding Level.LevelInfo.ExternalWallThickness}" Margin="10 0 0 0" />
-                                <TextBox materialDesign:HintAssist.Hint="External Wall Spacing" Text="{Binding Level.LevelInfo.ExternalWallSpacing}" Margin="10 0 0 0"/>
+                                <TextBox materialDesign:HintAssist.Hint="External Wall2D Spacing" Text="{Binding Level.LevelInfo.ExternalWallSpacing}" Margin="10 0 0 0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
-                                <TextBox materialDesign:HintAssist.Hint="Internal Wall Height" Text="{Binding Level.LevelInfo.InternalWallHeight,Mode=OneWay}" />
+                                <TextBox materialDesign:HintAssist.Hint="Internal Wall2D Height" Text="{Binding Level.LevelInfo.InternalWallHeight,Mode=OneWay}" />
                                 <TextBox materialDesign:HintAssist.Hint="Internal WallThickness" Text="{Binding Level.LevelInfo.InternalWallThickness}" Margin="10 0 0 0" />
-                                <TextBox materialDesign:HintAssist.Hint="Internal Wall Spacing" Text="{Binding Level.LevelInfo.InternalWallSpacing}" Margin="10 0 0 0"/>
+                                <TextBox materialDesign:HintAssist.Hint="Internal Wall2D Spacing" Text="{Binding Level.LevelInfo.InternalWallSpacing}" Margin="10 0 0 0"/>
                             </StackPanel>
                             <DockPanel Margin="0 10 0 0" HorizontalAlignment="Left" LastChildFill="True" >
                                 <TextBox materialDesign:HintAssist.Hint="Ceiling Pitch" Text ="{Binding Level.LevelInfo.GlobalInfo.CeilingPitch}" HorizontalAlignment="Left" />
@@ -104,7 +105,7 @@
                     </StackPanel>
                     <!-- Button -->
                     <StackPanel Margin="50 10 0 0">
-                        <Button Content="Reset Wall" Style="{StaticResource MaterialDesignRaisedAccentButton}"/>
+                        <Button Content="Reset Wall2D" Style="{StaticResource MaterialDesignRaisedAccentButton}"/>
                         <Button Content="Sort" Command="{Binding WallInputSortCommand}"/>
                         <Button Content="Undo" />
                         <Button Content="Refresh" Command="{Binding ReFreshWallCommand}" />
@@ -166,7 +167,7 @@
                     </StackPanel.Resources>
                     <!-- Input Wall -->
                     <materialDesign:ColorZone Mode="Accent" HorizontalAlignment="Stretch" Margin="0 0 0 10">
-                        <Label FontSize="18" Content="Wall Input" Margin="50 0 0 0"/>
+                        <Label FontSize="18" Content="Wall2D Input" Margin="50 0 0 0"/>
                     </materialDesign:ColorZone>
                     <syncfusion:SfDataGrid Name="WallInput"
                                            AllowDeleting="True"
@@ -240,7 +241,7 @@
                             <!--<syncfusion:GridTextColumn HeaderText="Wall End Height"
                                                        MappingName="WallEndHeight"/>-->
                             <syncfusion:GridComboBoxColumn DisplayMemberPath="AliasName"
-														   HeaderText="Wall Type"
+														   HeaderText="Wall2D Type"
 														   ItemsSource="{Binding SelectedClient.WallTypes}"
 														   MappingName="WallType" 
 														   UseBindingValue="True"/>
@@ -321,7 +322,7 @@
                                                            MappingName="IsNeedTobeDesign"/>
                             <syncfusion:GridCheckBoxColumn HeaderText="Designed"
                                                            MappingName="IsDesigned"/>-->
-                            <syncfusion:GridTextColumn HeaderText="Wall Name"
+                            <syncfusion:GridTextColumn HeaderText="Wall2D Name"
                                                        MappingName="WallName"
                                                        Width="450"/>
                         </syncfusion:SfDataGrid.Columns>
@@ -549,7 +550,7 @@
                                                    UseBindingValue="True"
                                                    MappingName="OpeningType"
                                                    ItemsSource="{Binding Source={StaticResource OpeningTypes}}"/>
-                            <syncfusion:GridComboBoxColumn HeaderText="Wall Belong to"
+                            <syncfusion:GridComboBoxColumn HeaderText="Wall2D Belong to"
                                                            UseBindingValue="True"
                                                            MappingName="WallReference"
                                                            ItemsSource="{Binding Level.WallLayers}">
@@ -565,16 +566,19 @@
                                     </DataTemplate>
                                 </syncfusion:GridComboBoxColumn.ItemTemplate>
                             </syncfusion:GridComboBoxColumn>
-                            <syncfusion:GridTextColumn HeaderText="Door width"
-                                               MappingName="Width"/>
-                            <syncfusion:GridTextColumn HeaderText="Door/Window Height"
-                                               MappingName="Height"/>
-                            <syncfusion:GridTextColumn HeaderText="Door/Window Header Height"
-                                               MappingName="DoorHeaderHeight"/>
-                            <syncfusion:GridComboBoxColumn HeaderText="Door Type"
-                                                   UseBindingValue="True"
-                                                   MappingName="DoorType"
-                                                   ItemsSource="{Binding Source={StaticResource DoorTypes}}"/>
+                            <syncfusion:GridComboBoxColumn HeaderText="Door/Window Height"
+                                                           UseBindingValue="True"
+                                                           MappingName="Height"
+                                                           ItemsSource="{Binding ExtDoorListHeights}"/>
+                            <syncfusion:GridComboBoxColumn HeaderText="Door width"
+                                                           UseBindingValue="True"
+                                                           MappingName="Width"
+                                                           ItemsSourceSelector="{StaticResource DoorWidthsSelector}">
+                            </syncfusion:GridComboBoxColumn>
+                            <syncfusion:GridComboBoxColumn HeaderText="Door Support Span"
+                                                           UseBindingValue="True"
+                                                           MappingName="SupportSpan"
+                                                           ItemsSource="{Binding SupportSpans}"/>
                             <syncfusion:GridTemplateColumn MappingName="Delete Row"
                                                    syncfusion:FocusManagerHelper.WantsKeyInput="True"
                                                    UseBindingValue="True">

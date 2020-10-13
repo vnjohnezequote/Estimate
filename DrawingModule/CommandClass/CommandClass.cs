@@ -116,8 +116,25 @@ namespace DrawingModule.CommandClass
             
             bool flag = (temFlag >> 11 & temFlag2) != temFlag3;
             CommandThunk commandThunk = new CommandThunk(this, ca.GlobalName, localName, mi, false);
-            //this.mCommandGroups.Add(groupName);
-            this.mCommandThunks.Add(commandThunk);
+
+            if (!CheckIfCommandExisting(commandThunk))
+            {
+                this.mCommandThunks.Add(commandThunk);
+            }
+
+        }
+
+        private bool CheckIfCommandExisting(CommandThunk commandThunk)
+        {
+            foreach (var mCommandThunk in this.mCommandThunks)
+            {
+                if (mCommandThunk.GlobalName == commandThunk.GlobalName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
         
     }

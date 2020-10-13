@@ -246,6 +246,10 @@ namespace AppModels.ViewModelEntity
             {
                 if (Entity is BeamEntity beam)
                 {
+                    if (value == beam.BeamNameString)
+                    {
+                        return;
+                    }
                     beam.BeamNameString = value;
                     RaisePropertyChanged(nameof(BeamName));
                 }
@@ -281,7 +285,7 @@ namespace AppModels.ViewModelEntity
                     return beam.BeamType;
                 }
 
-                return BeamType.RoofBeam;
+                return BeamType.TrussBeam;
             }
             set
             {

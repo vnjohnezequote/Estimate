@@ -481,12 +481,15 @@ namespace DrawingModule.Helper
                     }
                     else
                     {
+                        if (cadDraw.Entities[index].Vertices == null)
+                        {
+                            continue;
+                        }
                         foreach (var vertex in cadDraw.Entities[index].Vertices)
                         {
                             snapPoints.Add(new SnapPoint(vertex, ObjectSnapType.End));
                         }
                     }
-                    
                 }
 
                 countIndex++;

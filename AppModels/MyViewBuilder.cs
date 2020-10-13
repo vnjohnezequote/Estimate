@@ -111,9 +111,15 @@ namespace AppModels
                         continue;
                 }
 
+                if (modelEntity is Dimension)
+                {
+                    continue;
+                }
                 var cloneEntitiy = modelEntity.Clone() as Entity;
                 if (cloneEntitiy != null)
                 {
+                    cloneEntitiy.Color = modelEntity.Color;
+                    cloneEntitiy.ColorMethod = colorMethodType.byEntity;
                     cloneEntitiy.LineWeight = 0.6f;
                     cloneEntitiy.LineWeightMethod = colorMethodType.byEntity;
                     floorBlock.Entities.Add(cloneEntitiy);

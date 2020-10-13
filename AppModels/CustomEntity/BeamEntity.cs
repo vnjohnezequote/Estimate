@@ -94,12 +94,17 @@ namespace AppModels.CustomEntity
             } 
             set
             {
-                _beamName = value;
+                
                 if (BeamReference !=null)
                 {
-                    BeamReference.Name = value;
+                    if (BeamReference.Name != value)
+                    {
+                        BeamReference.Name = value;
+                        _beamName = value;
+                    }
+                    
                 }
-                
+
                 if (ShowBeamNameOnly)
                 {
                     if (string.IsNullOrEmpty(value))
@@ -219,7 +224,7 @@ namespace AppModels.CustomEntity
                     return BeamReference.Type;
                 }
 
-                return BeamType.RoofBeam;
+                return BeamType.TrussBeam;
             }
             set
             {
@@ -230,7 +235,13 @@ namespace AppModels.CustomEntity
                 }
             }
         }
-        public BeamEntity(BlockReference another) : base(another)
+
+        public BeamEntity(BeamEntity another) : base(another)
+        {
+
+        }
+
+        public BeamEntity(BlockReference another): base(another)
         {
 
         }
@@ -311,7 +322,7 @@ namespace AppModels.CustomEntity
             ContinuesAttribute.ColorMethod = colorMethodType.byEntity;
             ContinuesAttribute.Color = _beamMarkedColor;
 
-            SupportWallAttribute = new Attribute(beamNamePoint, "Support", "Support Wall Over", 500);
+            SupportWallAttribute = new Attribute(beamNamePoint, "Support", "Support Wall2D Over", 500);
             SupportWallAttribute.Alignment = beamMarkAlignmentType;
             SupportWallAttribute.ColorMethod = colorMethodType.byEntity;
             SupportWallAttribute.Color = _beamMarkedColor;
@@ -415,7 +426,7 @@ namespace AppModels.CustomEntity
                 supportWallMovement = 800;
                 if (this.Attributes.ContainsKey("Support"))
                 {
-                    this.Attributes["Support"].Value = "Support Wall Over";
+                    this.Attributes["Support"].Value = "Support Wall2D Over";
                 }
                 
             }
@@ -648,6 +659,16 @@ namespace AppModels.CustomEntity
         public override EntitySurrogate ConvertToSurrogate()
         {
             return new BeamEntitySurrogate(this);
+        }
+
+        public override object Clone()
+        {
+            //return new BeamEntity(this);
+            return base.Clone();
+        }
+        protected override void Draw(DrawParams data)
+        {
+            base.Draw(data);
         }
     }
 }

@@ -21,8 +21,6 @@ namespace AppAddons.EditingTools
 
         public override Point3D BasePoint { get; protected set; }
         public override string ToolName => "Extend";
-        private Entity _trimedEntity;
-        private Point3D _trimPoint;
         private bool _processingTool;
         private Entity _firstSelectedEntity;
         private Entity _secondSelectedEntity;
@@ -52,13 +50,6 @@ namespace AppAddons.EditingTools
             }
 
         }
-
-        private void ProcessTrimedEntities()
-        {
-
-        }
-
-
         public override void OnJigging(object sender, DrawInteractiveArgs e)
         {
             DrawInteractiveExtend((ICadDrawAble)sender, e);
@@ -78,7 +69,6 @@ namespace AppAddons.EditingTools
 
             if (_secondSelectedEntity != null) return;
             canvas.ScreenToPlane(mousePosition, canvas.DrawingPlane, out var clickPoint);
-            _trimPoint = clickPoint;
         }
 
         public override void NotifyPreviewKeyDown(object sender, KeyEventArgs e)
@@ -284,24 +274,25 @@ namespace AppAddons.EditingTools
 
             // Get intersection points for input line and boundary
             // If not intersecting and boundary is line, we can try with extended boundary
-            
-            //Point3D[] intersetionPoints = Curve.Intersection(boundary, tempLine);
-            //if (intersetionPoints.Length == 0)
-            //    intersetionPoints = Curve.Intersection(Utils.GetExtendedBoundary(boundary), tempLine);
+
+            Point3D[] intersetionPoints = boundary.IntersectWith(tempLine);
+            //Curve.Intersection(boundary, tempLine);
+            if (intersetionPoints.Length == 0)
+                intersetionPoints = Utils.GetExtendedBoundary(boundary).IntersectWith(tempLine);
 
             // Modify line start/end point as closest intersection point
 
-            //if (intersetionPoints.Length > 0)
-            //{
-            //    if (nearStart)
-            //        line.StartPoint = Utils.GetClosestPoint(line.StartPoint, intersetionPoints);
-            //    else
-            //        line.EndPoint = Utils.GetClosestPoint(line.EndPoint, intersetionPoints);
+            if (intersetionPoints.Length > 0)
+            {
+                if (nearStart)
+                    line.StartPoint = Utils.GetClosestPoint(line.StartPoint, intersetionPoints);
+                else
+                    line.EndPoint = Utils.GetClosestPoint(line.EndPoint, intersetionPoints);
 
-            //    var tempEntity = (Entity)line.Clone();
-            //    EntitiesManager.AddAndRefresh(tempEntity, tempEntity.LayerName);
-            //    return true;
-            //}
+                var tempEntity = (Entity)line.Clone();
+                EntitiesManager.AddAndRefresh(tempEntity, tempEntity.LayerName);
+                return true;
+            }
             return false;
         }
         private bool ExtendSpline(ICurve curve, ICurve boundary, bool nearStart)
@@ -434,11 +425,11 @@ namespace AppAddons.EditingTools
 
             direction.Normalize();
             tempLine.EndPoint = tempLine.EndPoint + direction * _extensionLength;
-#if NURBS
-            Point3D[] intersetionPoints = Curve.Intersection(boundary, tempLine);
+
+            Point3D[] intersetionPoints = boundary.IntersectWith(tempLine);
             if (intersetionPoints.Length == 0)
-                intersetionPoints = Curve.Intersection(Utils.GetExtendedBoundary(boundary), tempLine);
-               if (intersetionPoints.Length > 0)
+                intersetionPoints = Utils.GetExtendedBoundary(boundary).IntersectWith(tempLine);
+            if (intersetionPoints.Length > 0)
             {
                 if (nearStart)
                     tempVertices[0] = Utils.GetClosestPoint(line.StartPoint, intersetionPoints);
@@ -450,8 +441,7 @@ namespace AppAddons.EditingTools
                 EntitiesManager.AddAndRefresh(tempEntity, tempEntity.LayerName);
                 return true;
             }
-#endif
-            
+
             return false;
         }
 

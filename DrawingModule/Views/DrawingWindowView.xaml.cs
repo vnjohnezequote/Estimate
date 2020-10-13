@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Reactive.Joins;
 using System.Windows;
 using System.Windows.Input;
 using AppModels.CustomEntity;
@@ -16,7 +17,10 @@ using DrawingModule.CustomControl.PaperSpaceControl;
 using DrawingModule.ViewModels;
 using DynamicData;
 using ReactiveUI;
+using Serilog.Core;
+using TriangleNet;
 using Attribute = devDept.Eyeshot.Entities.Attribute;
+using Region = devDept.Eyeshot.Entities.Region;
 using Size = System.Drawing.Size;
 
 namespace DrawingModule.Views
@@ -98,96 +102,90 @@ namespace DrawingModule.Views
             var model1 = this.CanvasDrawing.CanvasDrawing;
 
             if (!(e.WorkUnit is ReadFileAsyncWithDrawings)) return;
-           
-            var rfa = (ReadFileAsyncWithDrawings)e.WorkUnit;
-           
-            rfa.AddToScene(model1);
-            //if (_drawingWindowViewModel != null && _drawingWindowViewModel.EntitiesManager != null)
-            //{
-            //    _drawingWindowViewModel.EntitiesManager.SetEntitiesList(model1.Entities);
-            //}
-
-            var listPicEntitiesToRemove = new List<Entity>();
-            var listPicEntitiesToAdd = new List<Entity>();
-            foreach (var rfaEntity in model1.Entities)
+            try
             {
-                if (rfaEntity is Picture picEntity)
+                var rfa = (ReadFileAsyncWithDrawings)e.WorkUnit;
+                rfa.AddToScene(model1);
+                var listPicEntitiesToRemove = new List<Entity>();
+                var listPicEntitiesToAdd = new List<Entity>();
+                foreach (var rfaEntity in model1.Entities)
                 {
-                    var myPic = new PictureEntity(picEntity);
-                    listPicEntitiesToAdd.Add(myPic);
-                    listPicEntitiesToRemove.Add(rfaEntity);
-                }
-            }
-
-            foreach (var model1Entity in listPicEntitiesToRemove)
-            {
-                model1.Entities.Remove(model1Entity);
-            }
-            model1.Entities.AddRange(listPicEntitiesToAdd);
-
-            model1.Entities.Regen();
-
-            var drawings = this.CanvasDrawing.PaperSpace;
-
-            model1.Units = rfa.Units;
-            
-            rfa.AddToDrawings(drawings);
-
-            //// If there are no sheets adds a default one to have a ready-to-use paper space.
-            if (drawings.Sheets.Count == 0)
-                this.CanvasDrawing.AddDefaultSheet();
-            model1.LayersManager.SetLayerList(model1.Layers);
-            if (_drawingWindowViewModel != null && _drawingWindowViewModel.EntitiesManager != null)
-            {
-                //_drawingWindowViewModel.EntitiesManager.Blocks = model1.Blocks;
-                _drawingWindowViewModel.EntitiesManager.Entities = model1.Entities;
-                var lisEntitiesRemove = new List<BeamEntity>();
-                var listBlock = new List<Block>();
-                foreach (var model1Entity in model1.Entities)
-                {
-                    if (model1Entity is BeamEntity beam)
+                    if (rfaEntity is Picture picEntity)
                     {
-                        foreach (var entitiesManagerBlock in _drawingWindowViewModel.EntitiesManager.Blocks)
-                        {
-                            if (entitiesManagerBlock.Name == beam.BlockName)
-                            {
-                                listBlock.Add(entitiesManagerBlock);
-                            }
-                        }
-                        lisEntitiesRemove.Add(beam);
+                        var myPic = new PictureEntity(picEntity);
+                        listPicEntitiesToAdd.Add(myPic);
+                        listPicEntitiesToRemove.Add(rfaEntity);
                     }
                 }
 
-                foreach (var block in listBlock)
+                foreach (var model1Entity in listPicEntitiesToRemove)
                 {
-                    _drawingWindowViewModel.EntitiesManager.Blocks.Remove(block);
+                    model1.Entities.Remove(model1Entity);
                 }
+                model1.Entities.AddRange(listPicEntitiesToAdd);
 
-                foreach (var entity in lisEntitiesRemove)
+                model1.Entities.Regen();
+
+                var drawings = this.CanvasDrawing.PaperSpace;
+
+                model1.Units = rfa.Units;
+
+                rfa.AddToDrawings(drawings);
+
+                //// If there are no sheets adds a default one to have a ready-to-use paper space.
+                if (drawings.Sheets.Count == 0)
+                    this.CanvasDrawing.AddDefaultSheet();
+                model1.LayersManager.SetLayerList(model1.Layers);
+                if (_drawingWindowViewModel != null && _drawingWindowViewModel.EntitiesManager != null)
                 {
-                    _drawingWindowViewModel.EntitiesManager.Entities.Remove(entity);
-                }
+                    //_drawingWindowViewModel.EntitiesManager.Blocks = model1.Blocks;
+                    _drawingWindowViewModel.EntitiesManager.Entities = model1.Entities;
+                    var lisEntitiesRemove = new List<BeamEntity>();
+                    var listBlock = new List<Block>();
+                    foreach (var model1Entity in model1.Entities)
+                    {
+                        if (model1Entity is BeamEntity beam)
+                        {
+                            foreach (var entitiesManagerBlock in _drawingWindowViewModel.EntitiesManager.Blocks)
+                            {
+                                if (entitiesManagerBlock.Name == beam.BlockName)
+                                {
+                                    listBlock.Add(entitiesManagerBlock);
+                                }
+                            }
+                            lisEntitiesRemove.Add(beam);
+                        }
+                    }
 
-                foreach (var entity in lisEntitiesRemove)
-                {
-                    _drawingWindowViewModel.EntitiesManager.Blocks.Add(entity.BeamBlock);
-                    _drawingWindowViewModel.EntitiesManager.Entities.Add(entity);
-                }
-                ReloadBeamReferenceForBeamLayout();
-                //_drawingWindowViewModel.EntitiesManager.Blocks.Clear();
-                //_drawingWindowViewModel.EntitiesManager.Blocks = model1.Blocks;
-                //model1.Blocks.Clear();
-                //foreach (var model1Entity in model1.Entities)
-                //{
-                //    if (model1Entity is BeamEntity beam)
-                //    {
-                //        model1.Blocks.Add(beam.BeamBlock);
-                //    }
-                //}
-                //model1.Entities.Regen();
-                //model1.Invalidate();
+                    foreach (var block in listBlock)
+                    {
+                        _drawingWindowViewModel.EntitiesManager.Blocks.Remove(block);
+                    }
 
+                    foreach (var entity in lisEntitiesRemove)
+                    {
+                        _drawingWindowViewModel.EntitiesManager.Entities.Remove(entity);
+                    }
+
+                    foreach (var entity in lisEntitiesRemove)
+                    {
+                        _drawingWindowViewModel.EntitiesManager.Blocks.Add(entity.BeamBlock);
+                        _drawingWindowViewModel.EntitiesManager.Entities.Add(entity);
+                    }
+                    ReloadBeamReferenceForBeamLayout();
+
+                }
             }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Can not open Job File");
+                Logger.None.Error(exception,"Can not open Job File");
+                throw;
+            }
+           
+           
+
+            
         }
         private void ReloadBeamReferenceForBeamLayout()
         {
@@ -244,6 +242,7 @@ namespace DrawingModule.Views
             this.CanvasDrawing.CanvasDrawing.Rendered.ShowEdges = false;
             CanvasDrawing.CanvasDrawing.Camera.ProjectionMode = projectionType.Orthographic;
             CanvasDrawing.CanvasDrawing.CurrentBlock.Units = linearUnitsType.Millimeters;
+            CanvasDrawing.CanvasDrawing.SelectionColor = Color.Gold;
 
             //this.CanvasDrawing.PaperSpace.Rebuild(this.CanvasDrawing.CanvasDrawing, true, true);
         }
@@ -258,24 +257,16 @@ namespace DrawingModule.Views
         //    //}
         //    base.OnContentRendered(e);
 
-            //BuildTestBeamBlock();
+            BuildTestPlannar();
             base.OnContentRendered(e);
 
         //    //CanvasDrawing.TestPaperSpace.LineTypes.ReplaceItem(new LinePattern(CanvasDrawing.HiddenSegmentsLineTypeName, new float[] { 0.8f, -0.4f }));
         }
 
-        private void BuildTestBeamBlock()
+        private void BuildTestPlannar()
         {
-            var line = new Line(new Point3D(200, 3000, 0), new Point3D(3200, 3000, 0));
-            CanvasDrawing.CanvasDrawing.Entities.Add(line);
-            var beamEntity = new BeamEntity(new Point3D(0, 0, 0), "B1", new Point3D(200, 3000, 0), new Point3D(3200,3000, 0), "Prenail", "GroundFloor", 0, BeamMarkedLocation.bottom);
-            CanvasDrawing.CanvasDrawing.Blocks.Add(beamEntity.BeamBlock);
-            beamEntity.Attributes.Add("Name", "195x65 GL17C @ 1/3.3");
-            beamEntity.ColorMethod = colorMethodType.byEntity;
-            beamEntity.LineTypeMethod = colorMethodType.byEntity;
-            beamEntity.LineTypeScale = 0.5f;
-            beamEntity.LineWeightMethod = colorMethodType.byEntity;
-            CanvasDrawing.CanvasDrawing.Entities.Add(beamEntity);
+            CanvasDrawing.CanvasDrawing.Entities.Regen();
+
         }
 
         //protected override void OnSourceInitialized(System.EventArgs e)
@@ -342,6 +333,12 @@ namespace DrawingModule.Views
         private void UpdateLayoutClick(object sender, RoutedEventArgs e)
         {
             UpDateLayout();
+        }
+
+        protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnPreviewMouseDown(e);
+           
         }
 
         private void UpDateLayout()

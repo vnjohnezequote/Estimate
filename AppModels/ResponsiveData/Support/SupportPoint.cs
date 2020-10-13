@@ -100,7 +100,7 @@ namespace AppModels.ResponsiveData.Support
             }
         }
 
-        //public WallBase Wall
+        //public WallBase Wall2D
         //{
         //    get => _wall;
         //    set => SetProperty(ref _wall, value);

@@ -39,10 +39,11 @@ namespace AppModels.CustomEntity
 
         //}
 
-        //protected override void DrawFlatSelected(DrawParams data)
-        //{
-        //   this.DrawFlat(data);
-        //}
+        protected override void DrawFlatSelected(DrawParams data)
+        {
+            data.RenderContext.SetState(depthStencilStateType.DepthTestEqual);
+            this.DrawFlat(data);
+        }
 
         //protected override void DrawOnScreenWireframe(DrawOnScreenWireframeParams myParams)
         //{
@@ -62,6 +63,7 @@ namespace AppModels.CustomEntity
         }
         protected override void DrawWireframeSelected(DrawParams data)
         {
+            //data.RenderContext.SetState(depthStencilStateType.DepthTestOff);
             base.DrawWireframeSelected(data);
         }
     }

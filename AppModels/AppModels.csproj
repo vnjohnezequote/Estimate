@@ -179,6 +179,8 @@
     <Compile Include="CustomEntity\CustomEntitySurrogate\Wall2DSurrogate.cs" />
     <Compile Include="CustomEntity\CustomVectorView.cs" />
     <Compile Include="CustomEntity\PaperBolderReference.cs" />
+    <Compile Include="CustomEntity\Wall2D.cs" />
+    <Compile Include="Database\FramingMaterialBase.cs" />
     <Compile Include="Enums\BeamMarkedLocation.cs" />
     <Compile Include="Enums\BeamType.cs" />
     <Compile Include="Enums\CeilingBattensType.cs" />
@@ -190,7 +192,6 @@
     <Compile Include="Enums\NoggingMethod.cs" />
     <Compile Include="Enums\OpeningType.cs" />
     <Compile Include="Enums\RoofFrameType.cs" />
-    <Compile Include="Enums\RoofType.cs" />
     <Compile Include="Enums\StickFrameCustomers.cs" />
     <Compile Include="Enums\Suppliers.cs" />
     <Compile Include="Enums\SupportType.cs" />
@@ -222,6 +223,22 @@
     <Compile Include="Interaface\IWallMemberDetailInfo.cs" />
     <Compile Include="Interaface\IWallMemberInfo.cs" />
     <Compile Include="MyViewBuilder.cs" />
+    <Compile Include="NewReposiveData\Floor\FloorJob.cs" />
+    <Compile Include="NewReposiveData\Floor\Interface\IFloorJob.cs" />
+    <Compile Include="NewReposiveData\Hardware\HarwareJob.cs" />
+    <Compile Include="NewReposiveData\Hardware\Interface\IHardwareJob.cs" />
+    <Compile Include="NewReposiveData\Interface\IJob.cs" />
+    <Compile Include="NewReposiveData\Rafter\Interface\IRafterJob.cs" />
+    <Compile Include="NewReposiveData\Job.cs" />
+    <Compile Include="NewReposiveData\Rafter\RafterJob.cs" />
+    <Compile Include="NewReposiveData\Wall\Interface\IWallJob.cs" />
+    <Compile Include="NewReposiveData\Wall\Wallderived\ITMJob.cs" />
+    <Compile Include="NewReposiveData\Wall\Wallderived\ITMTumuJob.cs" />
+    <Compile Include="NewReposiveData\Wall\Wallderived\PrenailJob.cs" />
+    <Compile Include="NewReposiveData\Wall\Wallderived\RivoJob.cs" />
+    <Compile Include="NewReposiveData\Wall\Wallderived\StickFrameJob.cs" />
+    <Compile Include="NewReposiveData\Wall\WallJob.cs" />
+    <Compile Include="NewReposiveData\Wall\Wallderived\WarnervaleJob.cs" />
     <Compile Include="PocoDataModel\Customer.cs" />
     <Compile Include="PocoDataModel\EngineerMember\EngineerMemberInfoPoco.cs" />
     <Compile Include="PocoDataModel\Openings\LintelBeamPoco.cs" />
@@ -246,9 +263,16 @@
     <Compile Include="ResponsiveData\BasicWallInfor.cs" />
     <Compile Include="ResponsiveData\EngineerMember\MyObservableCollection.cs" />
     <Compile Include="ResponsiveData\EngineerMember\EngineerMemberInfo.cs" />
+    <Compile Include="ResponsiveData\Framings\Blocking\BlockingList.cs" />
+    <Compile Include="ResponsiveData\Framings\FloorAndRafters\Floor\Joist.cs" />
+    <Compile Include="ResponsiveData\Framings\FloorAndRafters\Layouts.cs" />
+    <Compile Include="ResponsiveData\Framings\Blocking\Blocking.cs" />
+    <Compile Include="ResponsiveData\Framings\FramingBase.cs" />
+    <Compile Include="Database\TieDown.cs" />
     <Compile Include="ResponsiveData\GlobalWallDetailInfo.cs" />
     <Compile Include="ResponsiveData\GlobalWallMemberInfo.cs" />
     <Compile Include="ResponsiveData\LevelWallDetailInfo.cs" />
+    <Compile Include="ResponsiveData\Openings\Hanger.cs" />
     <Compile Include="ResponsiveData\Openings\Jamb.cs" />
     <Compile Include="ResponsiveData\Openings\LintelBeam.cs" />
     <Compile Include="ResponsiveData\Openings\OpeningInfo.cs" />
@@ -260,7 +284,7 @@
     <Compile Include="PocoDataModel\ClientPoco.cs" />
     <Compile Include="Comparer\WallTypeComparer.cs" />
     <Compile Include="CustomEntity\LinearPathWall2D.cs" />
-    <Compile Include="CustomEntity\Wall2D.cs" />
+    <Compile Include="CustomEntity\WallLine2D.cs" />
     <Compile Include="ResponsiveData\DesignInfor.cs" />
     <Compile Include="DynamicObject\AutoNotifyProxy.cs" />
     <Compile Include="EventArg\DrawInteractiveArgs.cs" />
@@ -301,7 +325,7 @@
     <Compile Include="ViewModelEntity\LineVm.cs" />
     <Compile Include="ViewModelEntity\TextVm.cs" />
     <Compile Include="ViewModelEntity\VectorViewVm.cs" />
-    <Compile Include="ViewModelEntity\Wall2DVm.cs" />
+    <Compile Include="ViewModelEntity\WallLine2DVm.cs" />
     <Compile Include="ResponsiveData\WallMemberData\WallStud.cs" />
     <Compile Include="ResponsiveData\TimberBase.cs" />
     <Compile Include="ResponsiveData\WallBase.cs" />
@@ -319,10 +343,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ResponsiveData\Framings\Beams\" />
+    <Folder Include="ResponsiveData\Framings\FloorAndRafters\Rafter\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>

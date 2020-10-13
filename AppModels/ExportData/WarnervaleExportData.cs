@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -53,7 +55,17 @@ namespace AppModels.ExportData
         {
             foreach (var warnervaleSheetFile in Sheets)
             {
-                workbook.SaveAs(warnervaleSheetFile.SheetFile);
+                try
+                {
+                    workbook.SaveAs(warnervaleSheetFile.SheetFile);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Please closed your excel file before export data");
+                    return;
+                }
+                
+
             }
         }
 

@@ -62,9 +62,25 @@ namespace DrawingModule.ViewModels
 
         private void PrepareLineTypes()
         {
-            LineTypes.Add(new LinePattern("Continues",null,"Continues __________________"));
-            LineTypes.Add(new LinePattern("Dash Dot",new []{ 5f, -1f, 1f, -1f },"Dash dot _ . _ . _ . _ ."));
-            LineTypes.Add(new LinePattern("Dash Space", new []{5f,-5f}, "Dash space __ __ __ __ __"));
+            //LineTypes.Add(new LinePattern("Continues",null,"Continues __________________"));
+            var continues = new LinePattern("Continues", null, "Continues __________________");
+            if (!LineTypes.Contains(continues))
+            {
+                LineTypes.Add(continues);
+            }
+            var dashDot =  new LinePattern("Dash Dot", new[] { 5f, -1f, 1f, -1f }, "Dash dot _ . _ . _ . _ .");
+            if (!LineTypes.Contains(continues))
+            {
+                LineTypes.Add(dashDot);
+            }
+            var dashSpace = new LinePattern("Dash Space", new[] { 5f, -5f }, "Dash space __ __ __ __ __");
+
+            if (!LineTypes.Contains(dashSpace))
+            {
+                LineTypes.Add(dashSpace);
+            }
+            
+            
         }
 
         private void PrepareLayers()

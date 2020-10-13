@@ -19,6 +19,7 @@ using AppModels.AppData;
 using AppModels.FileSerializer;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
+using devDept.Diagnostic;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
@@ -100,6 +101,7 @@ namespace DrawingModule.ViewModels
             get => this._isOrthorMode;
             set => this.SetProperty(ref this._isOrthorMode, value);
         }
+        
 
         #endregion
         #region Command

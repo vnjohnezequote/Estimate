@@ -46,6 +46,26 @@ namespace AppModels.PocoDataModel
         public DesignInfor FrameDesignInfor { get; set; }
         public DesignInfor BeamDesignInfor { get; set; }
         public DesignInfor BracingDesignInfor { get; set; }
+        public DesignInfor FloorDesignInfo { get; set; }
+        public DesignInfor RafterDesignInfor { get; set; }
+        public bool QuoteWallFrame { get; set; }
+        public bool QuoteFloorFrame { get; set; }
+        public bool QuoteRafterFrame { get; set; }
+        public bool QuoteEavesSoffit { get; set; }
+        public bool QuoteCladding { get; set; }
+        public bool QuoteFlooring { get; set; }
+        public bool QuoteFrameHardware { get; set; }
+        public bool QuoteInsulation { get; set; }
+        public bool QuoteLookUp { get; set; }
+        public bool QuoteFixout { get; set; }
+        public bool QuoteFinalFix { get; set; }
+        public bool QuotePost { get; set; }
+        public bool QuoteShelving { get; set; }
+        public bool QuoteRoofBattentInHardware { get; set; }
+        public bool QuoteScreen { get; set; }
+        public int RaisedTrussHeel { get; set; }
+
+
         public int StepDown { get; set; }
         #endregion
 
@@ -95,13 +115,34 @@ namespace AppModels.PocoDataModel
             RaisedCeilingHeight = info.RaisedCeilingHeight;
             NoggingsAndSillInLM = info.NoggingsAndSillInLM;
             UpToLength = info.UpToLength;
-            QuoteTolengthSize = info.QuoteTolengthSize;
+            QuoteTolengthSize = info.QuoteToLengthSize;
             JambBeamSupport = info.JambBeamSupport;
             QuoteCeilingBattent = info.QuoteCeilingBattent;
             CeilingBattensType = info.CeilingBattensType;
             FrameDesignInfor = info.FrameDesignInfor;
             BeamDesignInfor = info.BeamDesignInfor;
             BracingDesignInfor = info.BracingDesignInfor;
+             /*** Floor ***/
+            RaisedTrussHeel = info.RaisedTrussHeel;
+
+            FloorDesignInfo = info.FloorDesignInfor;
+            RafterDesignInfor = info.RafterDesignInfo;
+            QuoteWallFrame = info.QuoteWallFrame;
+            QuoteFloorFrame = info.QuoteFloorFrame;
+            QuoteRafterFrame = info.QuoteRafterFrame;
+            QuoteEavesSoffit = info.QuoteEavesSoffit;
+            QuoteCladding = info.QuoteCladding;
+            QuoteFlooring = info.QuoteFlooring;
+            QuoteFrameHardware = info.QuoteFrameHardware;
+            QuoteInsulation = info.QuoteInsulation;
+            QuoteLookUp = info.QuoteLookUp;
+            QuoteFixout = info.QuoteFixout;
+            QuoteFinalFix = info.QuoteFinalFix;
+            QuotePost = info.QuotePost;
+            QuoteShelving = info.QuoteShelving;
+            QuoteRoofBattentInHardware = info.QuoteRoofBattentInHardware;
+            QuoteScreen = info.QuoteScreen;
+
             StepDown = info.StepDown;
         }
         #endregion

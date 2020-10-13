@@ -14,13 +14,13 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
         #region Properties
         public string WallLevelName { get; set; }
         #endregion
-        public Wall2DSurrogate(Wall2D wall2D) : base(wall2D)
+        public Wall2DSurrogate(WallLine2D wallLine2D) : base(wallLine2D)
         {
         }
         protected override Entity ConvertToObject()
         {
             Entity ent;
-            ent = new Wall2D(new Line(Vertices[0],Vertices[1]));
+            ent = new WallLine2D(new Line(Vertices[0],Vertices[1]));
 
             CopyDataToObject(ent);
 
@@ -28,7 +28,7 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
         }
         protected override void CopyDataToObject(Entity entity)
         {
-            var wall2D = entity as Wall2D;
+            var wall2D = entity as WallLine2D;
             if (wall2D != null)
                 wall2D.WallLevelName = WallLevelName;
 
@@ -41,7 +41,7 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
         /// <remarks>Use this method to fill ALL the properties of this surrogate. It is called by the empty constructor to initialize the surrogates properties.</remarks>        
         protected override void CopyDataFromObject(Entity entity)
         {
-            var wall2D = entity as Wall2D;
+            var wall2D = entity as WallLine2D;
             if (wall2D != null)
                 WallLevelName = wall2D.WallLevelName;
 
@@ -61,7 +61,7 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
             {
                 if (Vertices == null || Vertices.Length == 0)
                 {
-                    WriteLog(logMessage != null ? logMessage : "Warning wall2D with no vertices.");
+                    WriteLog(logMessage != null ? logMessage : "Warning wallLine2D with no vertices.");
                     return false;
                 }
             }

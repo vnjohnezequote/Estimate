@@ -113,10 +113,7 @@ namespace DrawingModule.CommandLine
             m_imp = new ArrayList();
         }
 
-        internal unsafe KeywordCollection(char* interopString)
-        {
-            
-        }
+        
 
         internal Keyword GetDefaultKeyword()
         {
@@ -179,18 +176,18 @@ namespace DrawingModule.CommandLine
             this.CopyTo(array, index);
         }
 
-        public unsafe void CopyTo(Keyword[] array, int index)
+        public void CopyTo(Keyword[] array, int index)
         {
-            int num = 0;
-            if (0L < (long)(IntPtr)(void*)array.LongLength)
-            {
-                do
-                {
-                    array[num + index] = this[num];
-                    num++;
-                }
-                while ((long)num < (long)(IntPtr)(void*)array.LongLength);
-            }
+            //int num = 0;
+            //if (0L < (long)(IntPtr)(void*)array.LongLength)
+            //{
+            //    do
+            //    {
+            //        array[num + index] = this[num];
+            //        num++;
+            //    }
+            //    while ((long)num < (long)(IntPtr)(void*)array.LongLength);
+            //}
         }
 
         public string GetDisplayString([MarshalAs(UnmanagedType.U1)] bool showNoDefault)

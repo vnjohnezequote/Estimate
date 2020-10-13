@@ -125,7 +125,7 @@ namespace AppModels.ResponsiveData
 
 		#region Property
 
-		public string LevelNameInfo => LevelName + " Wall Infor";
+		public string LevelNameInfo => LevelName + " Wall2D Infor";
 
 		public string DoorNameInfo => LevelName + " Door Infor";
 
@@ -275,7 +275,7 @@ namespace AppModels.ResponsiveData
 		{
 			foreach (var roofBeam in roofBeams)
 			{
-				var rBeam = new Beam(BeamType.RoofBeam,this.LevelInfo);
+				var rBeam = new Beam(BeamType.TrussBeam,this.LevelInfo);
 				rBeam.LoadBeamInfo(roofBeam,LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList(),this.WallLayers.ToList(),timberInfoDict);
 				RoofBeams.Add(rBeam);
 			}

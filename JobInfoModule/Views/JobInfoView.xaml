@@ -29,8 +29,7 @@
         <Button Content="Brower" Margin="0 10 0 0"/>
         <TextBox Margin="0 10 0 0" x:Name="TxtJobNumber"
                  materialDesign:HintAssist.Hint="Job Number"
-                 Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-        </TextBox>
+                 Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <ComboBox Margin="0 10 0 0"
                   materialDesign:HintAssist.Hint="Customer"
                   HorizontalAlignment="Stretch"
@@ -62,12 +61,10 @@
         <TextBox Margin="0 10 0 0"
                  x:Name="TxtAddress"
                  materialDesign:HintAssist.Hint="Address"
-                 Text="{Binding JobInfo.FullAddress, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
-        </TextBox>
+                 Text="{Binding JobInfo.FullAddress, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
         <TextBox Margin="0 10 0 0" x:Name="TxtUnitNumber"
                  HorizontalAlignment="Stretch"
                  materialDesign:HintAssist.Hint="Unit Number"
-                 Text="{Binding JobInfo.UnitNumber, Mode=TwoWay}">
-        </TextBox>
+                 Text="{Binding JobInfo.UnitNumber, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>

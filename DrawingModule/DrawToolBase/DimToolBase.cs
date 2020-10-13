@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,6 +82,8 @@ namespace DrawingModule.DrawToolBase
         {
             var linearEntity = new LinearDim(storePlane, p1, p2, p3, dimTextHeight);
             linearEntity.LineTypeMethod = colorMethodType.byLayer;
+            linearEntity.TextSuffix = "mm";
+
             EntitiesManager.AddAndRefresh(linearEntity, this.LayerManager.SelectedLayer.Name);
         }
 

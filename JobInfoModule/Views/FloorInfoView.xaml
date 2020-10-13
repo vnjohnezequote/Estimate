@@ -40,12 +40,12 @@
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>-->
-                <TextBox materialDesign:HintAssist.Hint="Wall Height"
+                <TextBox materialDesign:HintAssist.Hint="Wall2D Height"
                          materialDesign:HintAssist.IsFloating="True"
                          Text="{Binding Level.LevelInfo.WallHeight}"
                          TextChanged="NumericTextBoxTextChanged"/>
                 <ComboBox Name="ExtLevelCmb"
-                          materialDesign:HintAssist.Hint="Load Bearing Wall Spacing"
+                          materialDesign:HintAssist.Hint="Load Bearing Wall2D Spacing"
                           materialDesign:HintAssist.IsFloating="True"
                           materialDesign:TextFieldAssist.HasClearButton="True"
                           ItemsSource="{Binding WallSpacings}"
@@ -59,7 +59,7 @@
                          Visibility="Collapsed"
                          Text="{Binding ElementName=ExtLevelCmb, Path=Text,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox Name="IntLevelCmb"
-                          materialDesign:HintAssist.Hint="None Load Bearing Wall Spacing"
+                          materialDesign:HintAssist.Hint="None Load Bearing Wall2D Spacing"
                           materialDesign:HintAssist.IsFloating="True"
                           materialDesign:TextFieldAssist.HasClearButton="True"
                           Padding="5"
@@ -75,11 +75,11 @@
 
         </DockPanel>
         <DockPanel Margin="0 10 0 0" HorizontalAlignment="Left">
-            <TextBox materialDesign:HintAssist.Hint="External Wall Thickness"
+            <TextBox materialDesign:HintAssist.Hint="External Wall2D Thickness"
                          materialDesign:HintAssist.IsFloating="True"
                          Text="{Binding Level.LevelInfo.ExternalWallThickness}"
                          TextChanged="NumericTextBoxTextChanged"/>
-            <TextBox materialDesign:HintAssist.Hint="Internal Wall Thickness"
+            <TextBox materialDesign:HintAssist.Hint="Internal Wall2D Thickness"
                      Margin="10 0 0 0"
                      materialDesign:HintAssist.IsFloating="True"
                      Text="{Binding Level.LevelInfo.InternalWallThickness}"

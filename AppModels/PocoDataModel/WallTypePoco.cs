@@ -23,14 +23,14 @@ namespace AppModels.PocoDataModel
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the wall type is LoadBearing Wall or Non LoadBearing Wall
+        /// Gets or sets the wall type is LoadBearing Wall2D or Non LoadBearing Wall2D
         /// </summary>
         public bool IsLoadBearingWall { get; set; }
 
         public WallLocationTypes WallLocationType { get; set; }
 
         /// <summary>
-        /// Gets or sets the wall type is Raked Wall or Not
+        /// Gets or sets the wall type is Raked Wall2D or Not
         /// </summary>
         public bool IsRaked { get; set; }
 

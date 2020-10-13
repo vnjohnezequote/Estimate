@@ -61,11 +61,23 @@ namespace Estimate
         /// </returns>
         protected override Window CreateShell()
         {
+            try
+            {
+                var shell = ServiceLocator.Current.GetInstance<MainWindowView>();
+                RegionManager.SetRegionManager(shell, this.Container.Resolve<IRegionManager>());
+                //RegionManager.UpdateRegions();
+                return shell;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Fail To Create Window");
+                return null;
+            }
             
-            var shell = ServiceLocator.Current.GetInstance<MainWindowView>();
-            RegionManager.SetRegionManager(shell, this.Container.Resolve<IRegionManager>());
-            //RegionManager.UpdateRegions();
-            return shell;
+            //var shell = ServiceLocator.Current.GetInstance<MainWindowView>();
+            //RegionManager.SetRegionManager(shell, this.Container.Resolve<IRegionManager>());
+            ////RegionManager.UpdateRegions();
+            //return shell;
         }
 
         /// <summary>

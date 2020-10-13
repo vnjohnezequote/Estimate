@@ -172,7 +172,6 @@ namespace AppModels.ResponsiveData
             }
 
         }
-
         public string SizeTreatment
         {
             get
@@ -187,7 +186,6 @@ namespace AppModels.ResponsiveData
                 }
             }
         }
-
         public string SizeGradeTreatment
         {
             get

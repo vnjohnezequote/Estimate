@@ -28,7 +28,39 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel>
-        <materialDesign:Card>
+        <GroupBox Header="Quote Frame" Margin="0 10 0 0">
+            <DockPanel Margin="0 10 0 0">
+                <CheckBox Content="Wall2D Frame" IsChecked="{Binding JobInfo.QuoteWallFrame}"/>
+                <CheckBox Content="Floor Frame" Margin="20 0 0 0" IsChecked="{Binding JobInfo.QuoteFloorFrame}"/>
+                <CheckBox Content="Rafter Frame" Margin="20 0 0 0" IsChecked="{Binding JobInfo.QuoteRafterFrame}"/>
+            </DockPanel>
+        </GroupBox>
+        <GroupBox Header="Quote HardWare" Margin="0 10 0 0">
+            <StackPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <CheckBox Content="Eaves Soffit" IsChecked="{Binding JobInfo.QuoteEavesSoffit}"/>
+                    <CheckBox Content="Cladding" Margin="20 0 0 0" IsChecked="{Binding JobInfo.QuoteCladding}"/>
+                    <CheckBox Content="Flooring" Margin="20 0 0 0" IsChecked="{Binding JobInfo.QuoteFlooring}"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <CheckBox Content="Frame Hardware" IsChecked="{Binding JobInfo.QuoteFrameHardware}"/>
+                    <CheckBox Content="Insulation" Margin="20 0 0 0" IsChecked="{Binding JobInfo.QuoteInsulation}"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <CheckBox Content="Lookup" IsChecked="{Binding JobInfo.QuoteLookUp}"/>
+                    <CheckBox Content="Fixout" Margin="20 0 0 0" IsChecked="{Binding JobInfo.QuoteFixout}"/>
+                    <CheckBox Content="FinalFix" Margin="20 0 0 0" IsChecked="{Binding JobInfo.QuoteFinalFix}"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <CheckBox Content="Post in Hardware File" IsChecked="{Binding JobInfo.QuoteShelving}"/>
+                    <CheckBox Content="Shelving" Margin="20 0 0 0" IsChecked="{Binding JobInfo.QuoteShelving}"/>
+                    <CheckBox Content="Roof Batten In Hardware File" Margin="20 0 0 0" IsChecked="{Binding JobInfo.QuoteRoofBattentInHardware}"/>
+                    <CheckBox Content="Screen" Margin="20 0 0 0" IsChecked="{Binding JobInfo.QuoteScreen}"/>
+                </DockPanel>
+            </StackPanel>
+        </GroupBox>
+        
+        <materialDesign:Card Margin="0 10 0 0">
             <ListBox Name="CustomerMenu"
             Style="{DynamicResource MaterialListBox}"
             ItemsSource="{Binding Clients}"
@@ -68,6 +100,9 @@
             </ListBox.ItemTemplate>
             </ListBox>
         </materialDesign:Card>
+        <!--<ComboBox ItemsSource="{Binding Clients}"
+                  SelectedItem="{Binding JobInfo.Client,Mode=TwoWay}"
+                  DisplayMemberPath="Name"/>-->
         <TextBox Margin="0 10 0 0" materialDesign:HintAssist.Hint="Please Choose Your's Folder...!"
                  Text="{Binding JobInfo.JobLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Content="Browser"

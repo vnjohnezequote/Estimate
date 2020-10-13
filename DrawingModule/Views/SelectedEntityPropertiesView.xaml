@@ -110,11 +110,11 @@
         <TextBlock Text="Beam Name" Grid.Row="16" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
         <TextBlock Text="Beam Type" Grid.Row="17" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
         <TextBlock Text="Is Continues Beam" Grid.Row="18" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Beam Support Wall Over" Grid.Row="19" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="Beam Support Wall2D Over" Grid.Row="19" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
         <TextBlock Text="Custom Notes" Grid.Row="20" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
         <TextBlock Text="Scale" Grid.Row="21" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding VectorViewVisibility}"/>
         <TextBlock Text="Floor Name" Grid.Row="22" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding FloorNameVisibility}"/>
-        <TextBlock Text="Wall Name Scale" Grid.Row="23" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding FloorNameVisibility}"/>
+        <TextBlock Text="Wall2D Name Scale" Grid.Row="23" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding FloorNameVisibility}"/>
         <GridSplitter Grid.Column="1"
                       Grid.Row="0"
                       Grid.RowSpan="3"

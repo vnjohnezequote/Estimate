@@ -23,7 +23,6 @@ namespace AppModels.ResponsiveData
     {
         #region Field
         private string _jobLocation;
-        private string _clientName;
         private string _jobNumber;
         private string _unitNumber;
         private DesignInfor _beamDesignInfor;
@@ -31,8 +30,6 @@ namespace AppModels.ResponsiveData
         private DesignInfor _bracingDesignInfor;
         private DateTime _planIssueDate;
         private bool _isEPlan;
-        private bool _isEngineer;
-        private bool _isBracingPlan;
         private Suppliers _supplier;
         private string _treatMent;
         private string _roofMaterial;
@@ -55,6 +52,27 @@ namespace AppModels.ResponsiveData
         private string _subAddress;
         private ClientPoco _client;
 
+        /*** Bo sung thuoc tinh ***/
+        private int _raisedTrussHeel;
+        /*** For Floor Job***/
+        private DesignInfor _floorDesignInfor;
+        private DesignInfor _rafterDesignInfo;
+        private bool _quoteWallFrame;
+        private bool _quoteFloorFrame;
+        private bool _quoteRafterFrame;
+        private bool _quoteEavesSoffit;
+        private bool _quoteCladding;
+        private bool _quoteFlooring;
+        private bool _quoteFrameHardware;
+        private bool _quoteInsulation;
+        private bool _quoteLookUp;
+        private bool _quoteFixout;
+        private bool _quoteFinalFix;
+        private bool _quotePost;
+        private bool _quoteShelving;
+        private bool _quoteRoofBattentInHardware;
+        private bool _quoteScreen;
+
         #endregion
         #region Property
         public JobModel JobModel { get; set; }
@@ -63,12 +81,6 @@ namespace AppModels.ResponsiveData
             get => this._jobLocation;
             set => this.SetProperty(ref this._jobLocation, value);
         }
-        //public string ClientName
-        //{
-        //    get => this._clientName;
-        //    set => this.SetProperty(ref this._clientName, value);
-        //}
-
         public ClientPoco Client
         {
             get => this._client;
@@ -83,7 +95,7 @@ namespace AppModels.ResponsiveData
                 {
                     return;
                 }
-                 this.SetProperty(ref _customer, value);
+                this.SetProperty(ref _customer, value);
             }
         }
         public string BuilderName
@@ -117,7 +129,6 @@ namespace AppModels.ResponsiveData
             }
 
         }
-
         public string SubAddress
         {
             get=>_subAddress;
@@ -225,7 +236,6 @@ namespace AppModels.ResponsiveData
             }
             //set => this.SetProperty(ref this._isBracingPlan, value);
         }
-
         public string IssuesInfor { get; set; }
         public string Treatment
         {
@@ -304,7 +314,7 @@ namespace AppModels.ResponsiveData
         }
         public bool NoggingsAndSillInLM { get; set; }
         public bool UpToLength { get; set; }
-        public int QuoteTolengthSize { get; set; } = 5400;
+        public int QuoteToLengthSize { get; set; } = 5400;
         public bool JambBeamSupport { get; set; }
         public bool QuoteCeilingBattent
         {
@@ -352,22 +362,61 @@ namespace AppModels.ResponsiveData
                 this.SetProperty(ref this._bracingDesignInfor, value);
             } 
         }
+        public List<string> Units { get; set; } = new List<string>();
         public int StepDown
         {
             get => this._stepDown;
             set => this.SetProperty(ref this._stepDown, value);
         }
 
-        /// <summary>
-        /// Gets or sets the excel notes.
-        /// </summary>
         //public ExcelNote ExcelNotes {get;set;}
-
-        /// <summary>
-        /// Gets or sets the word notes.
-        /// </summary>
         //public ObservableCollection<string> WordNotes {get;set;}
 
+        /*** Bo sung thuoc tinh ***/
+        public int RaisedTrussHeel { get=>_raisedTrussHeel; set=>SetProperty(ref _raisedTrussHeel,value); }
+        /*** Foor Floor ***/
+        public DesignInfor FloorDesignInfor
+        {
+            get=>_floorDesignInfor;
+            set
+            {
+                if (value==null)
+                {
+                    return;
+                }
+
+                SetProperty(ref _floorDesignInfor, value);
+            }
+        }
+        public DesignInfor RafterDesignInfo
+        {
+            get => _rafterDesignInfo;
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+
+                SetProperty(ref _rafterDesignInfo, value);
+            }
+        }
+        public bool QuoteWallFrame { get=>_quoteWallFrame; set=>SetProperty(ref _quoteWallFrame,value); }
+
+        public bool QuoteFloorFrame { get=>_quoteFloorFrame; set=>SetProperty(ref _quoteFloorFrame,value); }
+        public bool QuoteRafterFrame { get=>_quoteRafterFrame; set=>SetProperty(ref _quoteRafterFrame,value); }
+        public bool QuoteEavesSoffit { get=>_quoteEavesSoffit; set=>SetProperty(ref _quoteEavesSoffit,value); }
+        public bool QuoteCladding { get=>_quoteCladding; set=>SetProperty(ref _quoteCladding,value); }
+        public bool QuoteFlooring { get=>_quoteFlooring; set=>SetProperty(ref _quoteFlooring,value); }
+        public bool QuoteFrameHardware { get=>_quoteFrameHardware; set=>SetProperty(ref _quoteFrameHardware,value); }
+        public bool QuoteInsulation { get=>_quoteInsulation; set=>SetProperty(ref _quoteInsulation,value); }
+        public bool QuoteLookUp { get=>_quoteLookUp; set=>SetProperty(ref _quoteLookUp,value); }
+        public bool QuoteFixout { get=>_quoteFixout; set=>SetProperty(ref _quoteFixout,value ); }
+        public bool QuoteFinalFix { get=>_quoteFinalFix; set=>SetProperty(ref _quoteFinalFix,value); }
+        public bool QuotePost { get=>_quotePost; set=>SetProperty(ref _quotePost,value); }
+        public bool QuoteShelving { get=>_quoteShelving; set=>SetProperty(ref _quoteShelving,value); }
+        public bool QuoteRoofBattentInHardware { get=>_quoteRoofBattentInHardware; set=>SetProperty(ref _quoteRoofBattentInHardware,value); }
+        public bool QuoteScreen { get=>_quoteScreen; set=>SetProperty(ref _quoteScreen,value); }
 
         #endregion
 
@@ -536,7 +585,7 @@ namespace AppModels.ResponsiveData
             RaisedCeilingHeight = info.RaisedCeilingHeight;
             NoggingsAndSillInLM = info.NoggingsAndSillInLM;
             UpToLength = info.UpToLength;
-            QuoteTolengthSize = info.QuoteTolengthSize;
+            QuoteToLengthSize = info.QuoteTolengthSize;
             JambBeamSupport = info.JambBeamSupport;
             QuoteCeilingBattent = info.QuoteCeilingBattent;
             CeilingBattensType = info.CeilingBattensType;

@@ -1,53 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
+using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-//using System.Windows.Media.Media3D;
-using AppModels.CustomEntity.CustomEntitySurrogate;
-using AppModels.Interaface;
-using AppModels.ViewModelEntity;
+using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
+using devDept.Graphics;
 using devDept.Serialization;
+using Point = System.Drawing.Point;
 
 namespace AppModels.CustomEntity
 {
-    [Serializable]
-    public class Wall2D: Line,IEntityVmCreateAble,IWall2D
+    public class Wall2D: Text
     {
-        #region Field
-        //private string _wallLevelName;
-        //private int _wallHeight;
-        //private string _wallLength;
-        #endregion
+        public int WallThickness { get; set; }
+        public bool IsLoadBearingWall { get; set; }
+        public bool IsShowDemension { get; set; }
+        public Point3D StartPoint { get; set; }
+        public Point3D EndPoint { get; set; }
+        public Point3D PointDimension { get; set; }
+        public double Distance { get; set; }
+        public new Point3D InsertionPoint => Plane.Origin;
 
-        #region Properties
-
-        public string WallLevelName { get; set; }
-
-        #endregion
-
-        public Wall2D(Line another) : base(another)
+        public Wall2D(Plane textPlane, Point3D startPoint, Point3D endPoint,int wallThickness, bool isLoadBearingWall = true, bool isShowDimension =true, alignmentType alignment = alignmentType.BaselineCenter) : base(textPlane, startPoint, 300, alignment)
         {
-            
+            StartPoint = startPoint;
+            EndPoint = endPoint;
+            Plane.Origin = new Point3D((StartPoint.X+EndPoint.X)/2,(StartPoint.Y+EndPoint.Y)/2);
+            this.TextString = "T";
         }
 
-        public Wall2D(Point3D start, Point3D end) : base(start, end)
+        protected override void Draw(DrawParams data)
         {
+           //data.RenderContext.DrawBufferedLine(Vertices[0],Vertices[1]);
+           data.RenderContext.DrawBufferedLine(StartPoint,EndPoint);
+           data.RenderContext.DrawQuads(Vertices,new Vector3D[]
+           {
+               Vector3D.AxisZ
+           });
+        }
+        
 
-        }
-        public IEntityVm CreateEntityVm()
-        {
-            return new Wall2DVm(this);
-        }
-        public override EntitySurrogate ConvertToSurrogate()
-        {
-            return new Wall2DSurrogate(this);
-        }
     }
-
-
-
 }

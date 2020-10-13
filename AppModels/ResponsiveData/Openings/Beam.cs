@@ -21,6 +21,7 @@ using AppModels.PocoDataModel.Openings;
 using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Support;
+using devDept.Geometry;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Openings
@@ -47,6 +48,7 @@ namespace AppModels.ResponsiveData.Openings
         private int _noItem;
         private TimberBase _timberInfo;
         private string _timberGrade;
+        private double _beamPitch;
 
         //private string _size;
 
@@ -73,6 +75,8 @@ namespace AppModels.ResponsiveData.Openings
 
         public ObservableCollection<SupportPoint> LoadPointSupports { get;} 
             = new ObservableCollection<SupportPoint>();
+
+        public List<Hanger> Hangers { get; private set; } = new List<Hanger>();
         public SupportType? PointSupportType
         {
             get
@@ -148,7 +152,7 @@ namespace AppModels.ResponsiveData.Openings
                     return _name;
                 }
 
-                if (Type == BeamType.RoofBeam || Type == BeamType.FloorBeam)
+                if (Type == BeamType.TrussBeam || Type == BeamType.FloorBeam)
                 {
                     return "B" + Id;
                 }
@@ -158,7 +162,14 @@ namespace AppModels.ResponsiveData.Openings
                 }
 
             } 
-            set => SetProperty(ref _name, value);
+            set
+            {
+                if (value == Name)
+                {
+                    return;
+                }
+                SetProperty(ref _name, value);
+            }
         }
         public int SpanLength
         {
@@ -178,6 +189,17 @@ namespace AppModels.ResponsiveData.Openings
                 RaisePropertyChanged(nameof(QuoteLength));
             }
         }
+
+        /*** Moi them vao ***/
+        public double BeamPitch
+        {
+            get=>_beamPitch;
+            set
+            {
+                SetProperty(ref _beamPitch, value);
+                RaisePropertyChanged(nameof(QuoteLength));
+            } 
+        }
         public double QuoteLength {
             get
             {
@@ -189,8 +211,11 @@ namespace AppModels.ResponsiveData.Openings
                         supportWidth += LoadPointSupports[i].SupportWidth;
                     }
                 }
-                
-                return (double)((SpanLength+supportWidth).RoundUpTo300()) / 1000 + ExtraLength;
+
+                var quoteLengthInmm = (int)Math.Ceiling((SpanLength + supportWidth) / Math.Cos(Utility.DegToRad(BeamPitch)));
+                var length2 = quoteLengthInmm.RoundUpTo300();
+                var quoteLength = (double)length2/1000+ExtraLength;
+                return quoteLength;
             }
         }
         public int TotalSupportWidth
@@ -211,7 +236,6 @@ namespace AppModels.ResponsiveData.Openings
         }
         public int Quantity { get=>_quantity; set=>SetProperty(ref _quantity,value); }
         public IGlobalWallInfo GlobalInfo { get; set; }
-
         public EngineerMemberInfo EngineerMemberInfo
         {
             get=> _engineerTimberInfo; 
@@ -225,7 +249,6 @@ namespace AppModels.ResponsiveData.Openings
                 
             }
         }
-
         public EngineerMemberInfo SupportReference
         {
             get => _supportReference;
@@ -484,7 +507,6 @@ namespace AppModels.ResponsiveData.Openings
               SetProperty(ref _timberInfo, value);  
             } 
         }
-
         public bool IsBeamToLongWithStockList
         {
             get
@@ -510,7 +532,7 @@ namespace AppModels.ResponsiveData.Openings
             InitGlobalInfor(globalInfo);
             PropertyChanged += Beam_PropertyChanged;
             InitializedBeamSupportPoint();
-            //GLobalSupportInfo = gLobalSupportInfo;
+            InitializerHanger();
         }
 
         public void InitGlobalInfor(IGlobalWallInfo globalWallInfo)
@@ -569,6 +591,15 @@ namespace AppModels.ResponsiveData.Openings
             }
             
 
+        }
+
+        private void InitializerHanger()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                var hanger = new Hanger();
+                Hangers.Add(hanger);
+            }
         }
         public void NotifyPropertyChanged()
         {
@@ -633,6 +664,8 @@ namespace AppModels.ResponsiveData.Openings
             LoadWallInfo(walls, beam);
             LoadEngineerInfo(engineerSchedules, beam);
             TimberInfo = LoadTimberInfor(timberInfos, beam.TimberInfoId,beam.TimberGrade);
+            BeamPitch = beam.BeamPitch;
+            Hangers = beam.Hangers;
             Location = beam.Location;
             PointSupportType = beam.PointSupportType;
             Type = beam.Type;

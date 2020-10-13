@@ -149,7 +149,7 @@ namespace DrawingModule.CommandLine
 
         }
 
-        public unsafe int Count { get; set; }
+        //public unsafe int Count { get; set; }
 
         bool ICollection.IsSynchronized
         {
@@ -432,6 +432,8 @@ namespace DrawingModule.CommandLine
             }
         }
 
+        public int Count { get; }
+
         void ICollection.CopyTo(Array array, int index)
         {
             //ILSpy generated this explicit interface implementation from .override directive in CopyTo
@@ -443,31 +445,31 @@ namespace DrawingModule.CommandLine
             DocumentToBeDestroyed += OnDocumentToBeDestroyed;
         }
 
-        internal unsafe void cleanUp()
-        {
-            //IL_0016: Expected I, but got I8
-            //IL_001f: Expected I, but got I8
-            /*CDocCollReactorImpl* docReactor = m_docReactor;
-            if (docReactor != null)
-            {
-                CDocCollReactorImpl* ptr = docReactor;
-                ;
-                m_docReactor = null;
-            }*/
-            m_pDocumentCreateStartedEvent = null;
-            m_pDocumentToBeDestroyedEvent = null;
-            m_pDocumentLockModeChangedEvent = null;
-            m_pDocumentCreationCanceledEvent = null;
-            m_pDocumentToBeDeactivatedEvent = null;
-            m_pDocumentActivationChangedEvent = null;
-            m_pDocumentActivatedEvent = null;
-            m_pDocumentToBeActivatedEvent = null;
-            m_pDocumentBecameCurrentEvent = null;
-            m_pDocumentLockModeWillChangeEvent = null;
-            m_pDocumentCreatedEvent = null;
-            m_pDocumentLockModeChangeVetoedEvent = null;
-            m_pDocumentDestroyedEvent = null;
-        }
+        //internal unsafe void cleanUp()
+        //{
+        //    //IL_0016: Expected I, but got I8
+        //    //IL_001f: Expected I, but got I8
+        //    /*CDocCollReactorImpl* docReactor = m_docReactor;
+        //    if (docReactor != null)
+        //    {
+        //        CDocCollReactorImpl* ptr = docReactor;
+        //        ;
+        //        m_docReactor = null;
+        //    }*/
+        //    m_pDocumentCreateStartedEvent = null;
+        //    m_pDocumentToBeDestroyedEvent = null;
+        //    m_pDocumentLockModeChangedEvent = null;
+        //    m_pDocumentCreationCanceledEvent = null;
+        //    m_pDocumentToBeDeactivatedEvent = null;
+        //    m_pDocumentActivationChangedEvent = null;
+        //    m_pDocumentActivatedEvent = null;
+        //    m_pDocumentToBeActivatedEvent = null;
+        //    m_pDocumentBecameCurrentEvent = null;
+        //    m_pDocumentLockModeWillChangeEvent = null;
+        //    m_pDocumentCreatedEvent = null;
+        //    m_pDocumentLockModeChangeVetoedEvent = null;
+        //    m_pDocumentDestroyedEvent = null;
+        //}
 
         /*internal Document LookupDocument(Document doc)
         {
@@ -505,26 +507,26 @@ namespace DrawingModule.CommandLine
             <Module>.StringToWchar.{dtor}(&stringToWchar);*/
         }
 
-        public unsafe void AppContextOpenDocument(string fileName)
-        {
-            /*//IL_0012: Expected I, but got I8
-            //IL_0023: Expected I, but got I8
-            StringToWchar stringToWchar;
-            StringToWchar* ptr = <Module>.StringToWchar.{ctor}(&stringToWchar, fileName);
-            try
-            {
-                AcApDocManager* ptr2 = <Module>.acDocManagerPtr();
-                char* ptr3 = (char*)(*(long*)ptr);
-                Autodesk.AutoCAD.Runtime.Interop.Check((int));
-            }
-            catch
-            {
-                //try-fault
-                <Module>.___CxxCallUnwindDtor(__ldftn(<Module>.StringToWchar.{dtor}), &stringToWchar);
-                throw;
-            }
-            <Module>.StringToWchar.{dtor}(&stringToWchar);*/
-        }
+        //public unsafe void AppContextOpenDocument(string fileName)
+        //{
+        //    /*//IL_0012: Expected I, but got I8
+        //    //IL_0023: Expected I, but got I8
+        //    StringToWchar stringToWchar;
+        //    StringToWchar* ptr = <Module>.StringToWchar.{ctor}(&stringToWchar, fileName);
+        //    try
+        //    {
+        //        AcApDocManager* ptr2 = <Module>.acDocManagerPtr();
+        //        char* ptr3 = (char*)(*(long*)ptr);
+        //        Autodesk.AutoCAD.Runtime.Interop.Check((int));
+        //    }
+        //    catch
+        //    {
+        //        //try-fault
+        //        <Module>.___CxxCallUnwindDtor(__ldftn(<Module>.StringToWchar.{dtor}), &stringToWchar);
+        //        throw;
+        //    }
+        //    <Module>.StringToWchar.{dtor}(&stringToWchar);*/
+        //}
 
         /*public unsafe void AppContextRecoverDocument(string fileName)
         {

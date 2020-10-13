@@ -82,7 +82,6 @@ namespace AppModels.ResponsiveData
             }
             
         }
-
         private void LoadLevel(List<LevelWallPoco> levels,Dictionary<string,List<TimberBase>> timberInforDict )
         {
             foreach (var levelWallPoco in levels)
@@ -91,9 +90,7 @@ namespace AppModels.ResponsiveData
                 level.LoadLevelInfo(levelWallPoco,timberInforDict);
                 Levels.Add(level);
             }
-
         }
-
         private void LoadDoorSchedules(List<OpeningInfoPoco> doorSchedulePocos)
         {
             foreach (var doorSchedulePoco in doorSchedulePocos)
@@ -104,7 +101,6 @@ namespace AppModels.ResponsiveData
             }
 
         }
-
         private void LoadEngineerList(List<EngineerMemberInfoPoco> engineerList,Dictionary<string,List<TimberBase>> timberInfos)
         {
             foreach (var memberInfo  in engineerList)
