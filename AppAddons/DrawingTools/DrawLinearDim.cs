@@ -124,7 +124,7 @@ namespace AppAddons.DrawingTools
 
             pts.Add(canvas.WorldToScreen(pt1));
             pts.Add(canvas.WorldToScreen(pt2));
-
+            canvas.renderContext.SetColorWireframe(Color.Brown);
             canvas.renderContext.DrawLines(pts.ToArray());
 
             //store dimensioning plane
@@ -135,7 +135,7 @@ namespace AppAddons.DrawingTools
 
             string dimText = "L " + _extPt1.DistanceTo(_extPt2).ToString("f3");
             canvas.DrawTextString(e.MousePosition.X, (int)canvas.Size.Height - e.MousePosition.Y + 10, dimText,
-               new Font("Tahoma", 8.25f), Color.Blue, ContentAlignment.BottomLeft);
+               new Font("Tahoma", 16f), Color.Chartreuse, ContentAlignment.BottomLeft);
         }
 
 

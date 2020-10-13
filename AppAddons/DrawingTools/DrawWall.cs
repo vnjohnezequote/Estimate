@@ -54,7 +54,7 @@ namespace AppAddons.DrawingTools
                 var index2 = Points.Count - 1;
                 var startPoint = (Point3D)Points[index2 - 1].Clone();
                 var endPoint = (Point3D)Points[index2].Clone();
-                var wall = new Wall2D(Plane.XY,startPoint,endPoint,90);
+                //var wall = new Wall2D(Plane.XY,startPoint,endPoint,90);
 
                 //wall.LineTypeMethod = colorMethodType.byLayer;
                 //{
@@ -67,7 +67,7 @@ namespace AppAddons.DrawingTools
                 //wall.ColorMethod = colorMethodType.byEntity;
                 //wall.LineTypeMethod = colorMethodType.byEntity;
                 //wall.LineWeight = 1;
-                this.EntitiesManager.AddAndRefresh(wall, this.LayerManager.SelectedLayer.Name);
+                //this.EntitiesManager.AddAndRefresh(wall, this.LayerManager.SelectedLayer.Name);
             }
         }
         #region Implement IDrawInteractive

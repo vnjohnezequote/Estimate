@@ -11,7 +11,7 @@ namespace AppModels.ExportData
         private int _width;
         private OpeningType _doorTypes;
         private int _qty;
-        private int _trussSpan;
+        private int _supportSpan;
         #endregion
 
         #region Properties
@@ -20,14 +20,14 @@ namespace AppModels.ExportData
 
         public OpeningType DoorType { get => _doorTypes; set => SetProperty(ref _doorTypes, value); }
         public int Qty { get => _qty; set => SetProperty(ref _qty, value); }
-        public int TrussSpan { get=>_trussSpan; set=>SetProperty(ref _trussSpan,value); }
+        public int SupportSpan { get=>_supportSpan; set=>SetProperty(ref _supportSpan,value); }
         #endregion
         public ExportDoorData(Opening opening)
         {
             if (opening.OpeningType != null) DoorType = (OpeningType) opening.OpeningType;
             Height = opening.Height;
             Width = opening.Width;
-            TrussSpan = opening.SupportSpan;
+            SupportSpan = opening.SupportSpan;
         }
     }
 }

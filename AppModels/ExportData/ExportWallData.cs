@@ -124,8 +124,16 @@ namespace AppModels.ExportData
             {
                 if (exportDoorData.Width == door.Width && exportDoorData.Height == door.Height)
                 {
-                    doorIndex = Doors.IndexOf(exportDoorData);
-                    return true;
+                    if (this.IsLoadbearingWall && exportDoorData.SupportSpan == door.SupportSpan )
+                    {
+                        doorIndex = Doors.IndexOf(exportDoorData);
+                        return true;
+                    }
+                    else if(!this.IsLoadbearingWall)
+                    {
+                        doorIndex = Doors.IndexOf(exportDoorData);
+                        return true;
+                    }
                 }
             }
 
@@ -234,7 +242,7 @@ namespace AppModels.ExportData
                         wallDataRange.StartWindowHeight.Offset[i,0].Value = window.Height;
                         wallDataRange.StartWindowWidth.Offset[i, 0].Value = window.Width;
                         wallDataRange.StartWindowQty.Offset[i, 0].Value = window.Qty;
-                        wallDataRange.StartWindowTrussSpan.Offset[i, 0].Value = window.TrussSpan;
+                        wallDataRange.StartWindowTrussSpan.Offset[i, 0].Value = window.SupportSpan;
                         i++;
                     }
 
@@ -254,7 +262,7 @@ namespace AppModels.ExportData
                     {
                         wallDataRange.StartDoorWidth.Offset[i, 0].Value =door.Width;
                         wallDataRange.StartDoorQty.Offset[i, 0].Value = door.Qty;
-                        wallDataRange.StartDoorTrussSpan.Offset[i, 0].Value = door.TrussSpan;
+                        wallDataRange.StartDoorTrussSpan.Offset[i, 0].Value = door.SupportSpan;
                         i++;
                     }
 

@@ -107,6 +107,7 @@ namespace AppAddons.DrawingTools
             //Draw dimension line
             pts.Add(canvas.WorldToScreen(dimPt1));
             pts.Add(canvas.WorldToScreen(dimPt2));
+            canvas.renderContext.SetColorWireframe(Color.Brown);
 
             canvas.renderContext.DrawLines(pts.ToArray());
 

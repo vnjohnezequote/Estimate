@@ -75,6 +75,10 @@ namespace DrawingModule.ViewModels
                 OnDrawingFloorNameChanged(blockRef.FloorName);
             }
 
+            if (e.PropertyName == "LayerName")
+            {
+                EntitiesManager.ChangLayerForSelectedEntities(LayerManager.SelectedLayer);
+            }
             if (_paperSpace == null) return;
             _paperSpace.Entities.Regen();
             _paperSpace.Invalidate();

@@ -41,7 +41,7 @@ namespace AppModels.CustomEntity
 
         protected override void DrawFlatSelected(DrawParams data)
         {
-            data.RenderContext.SetState(depthStencilStateType.DepthTestEqual);
+            data.RenderContext.SetState(depthStencilStateType.DepthTestOff);
             this.DrawFlat(data);
         }
 
@@ -58,13 +58,10 @@ namespace AppModels.CustomEntity
         {
             data.RenderContext.SetState(depthStencilStateType.DepthTestOff);
             base.DrawWireframe(data);
-            this.DrawFlat(data);
-            
+           this.DrawFlat(data);
+
         }
-        protected override void DrawWireframeSelected(DrawParams data)
-        {
-            //data.RenderContext.SetState(depthStencilStateType.DepthTestOff);
-            base.DrawWireframeSelected(data);
-        }
+        
+
     }
 }

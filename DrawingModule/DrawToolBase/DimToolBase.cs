@@ -87,7 +87,7 @@ namespace DrawingModule.DrawToolBase
             EntitiesManager.AddAndRefresh(linearEntity, this.LayerManager.SelectedLayer.Name);
         }
 
-        private CommandLoopType PrepairEntityForDim(Editor editor)
+        private CommandLoopType  PrepairEntityForDim(Editor editor)
         {
             ToolMessage = "Please Select object segment for dim, press SpaceBar to switch dim by Point Mode";
             var entityOption = new PromptSelectionOptions();
@@ -118,6 +118,7 @@ namespace DrawingModule.DrawToolBase
                     }
                     else 
                     {
+
                         this._startPoint = result.ClickedPoint;
                         var check = PrepairPointForDim(editor);
                         switch (check)
@@ -140,9 +141,24 @@ namespace DrawingModule.DrawToolBase
                 {
                     this._startPoint = line.StartPoint;
                     this._endPoint = line.EndPoint;
+                    return CommandLoopType.Continues;
                 }
+                else
+                {
+                    this._startPoint = result.ClickedPoint;
+                var check = PrepairPointForDim(editor);
+                switch (check)
+                {
+                    case CommandLoopType.BreakLoop:
+                        return CommandLoopType.BreakLoop;
+                    case CommandLoopType.Continues:
+                        return CommandLoopType.Continues;
+                    case CommandLoopType.ResetLoop:
+                        return CommandLoopType.ResetLoop;
+                }
+            }
 
-                return CommandLoopType.Continues;
+            return CommandLoopType.Continues;
         }
 
         public virtual CommandLoopType PrepairForDim(Editor editor)
