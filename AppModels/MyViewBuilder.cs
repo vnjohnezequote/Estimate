@@ -111,7 +111,7 @@ namespace AppModels
                         continue;
                 }
 
-                if (modelEntity is Dimension)
+                if (modelEntity is Dimension || modelEntity is DoorCountEntity)
                 {
                     continue;
                 }

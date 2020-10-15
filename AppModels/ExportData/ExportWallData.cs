@@ -143,9 +143,20 @@ namespace AppModels.ExportData
         {
             foreach (var exportDoorData in Windows)
             {
-                if (exportDoorData.Width != window.Width || exportDoorData.Height != window.Height) continue;
-                windowIndex = Doors.IndexOf(exportDoorData);
-                return true;
+                if (exportDoorData.Width == window.Width || exportDoorData.Height == window.Height)
+                {
+                    if (this.IsLoadbearingWall && exportDoorData.SupportSpan == window.SupportSpan)
+                    {
+                        windowIndex = Windows.IndexOf(exportDoorData);
+                        return true;
+                    }
+                    else if(!IsLoadbearingWall)
+                    {
+                        windowIndex = Windows.IndexOf(exportDoorData);
+                        return true;
+                    }
+                }
+                
             }
             return false;
         }

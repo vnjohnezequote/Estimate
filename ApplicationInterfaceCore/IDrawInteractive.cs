@@ -35,10 +35,12 @@ namespace ApplicationInterfaceCore
         bool IsUsingMultilineTextBox { get; }
         bool IsUsingOffsetDistance { get; }
         bool IsUsingSwitchMode { get; }
+        bool IsUsingInsideLength { get; }
         double CurrentWidth { get; set; }
         double CurrentHeight { get; set; }
         double CurrentAngle { get; set; }
         double ScaleFactor { get; set; }
+        int InsideLengthDistance { get; }
         IJob JobModel { get; set; }
         UnderMouseDrawingType EntityUnderMouseDrawingType { get; }
         FocusType DefaultDynamicInputTextBoxToFocus { get; }

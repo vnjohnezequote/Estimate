@@ -251,6 +251,10 @@ namespace DrawingModule.ViewModels
             set
             {
                 var checkConvertDouble = Utils.ConvertStringToDouble(value, out var outputDouble);
+                if (this.CurrentTool!=null && this.CurrentTool.IsUsingInsideLength)
+                {
+                    outputDouble = outputDouble + this.CurrentTool.InsideLengthDistance;
+                }
                 if (checkConvertDouble && Math.Abs(outputDouble) > 0.0001 & this.CurrentCanvas != null)
                 {
                     this.CurrentCanvas.UpdateCurrentPointByLengthAndAngle(outputDouble, Convert.ToDouble(AngleDimension), Convert.ToDouble(this.ScaleFactor));

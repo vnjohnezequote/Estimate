@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using AppModels.CustomEntity;
@@ -12,10 +13,11 @@ namespace AppModels.FileSerializer
 {
     public class EzequoteFileSerializer: devDept.Serialization.FileSerializer
     {
+        
 
         public EzequoteFileSerializer()
         {
-
+            
         }
 
         public EzequoteFileSerializer(contentType contentType) : base(contentType)
@@ -57,6 +59,14 @@ namespace AppModels.FileSerializer
                 .Add(17, "ContinuesBeam")
                 .Add(18, "SupportWallOver")
                 .Add(19, "CustomAtrributeString")
+                .UseConstructor = false;
+            Model[typeof(Text)]
+                .AddSubType(1001, typeof(DoorCountEntity));
+            Model[typeof(TextSurrogate)]
+                .AddSubType(1001, typeof(DoorCountEntitySurrogate));
+            Model[typeof(DoorCountEntitySurrogate)]
+                .Add(1, "LevelName")
+                .Add(2, "DoorReferenceId")
                 .UseConstructor = false;
 
         }

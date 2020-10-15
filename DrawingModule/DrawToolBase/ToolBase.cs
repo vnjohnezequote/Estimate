@@ -25,6 +25,7 @@ namespace DrawingModule.DrawToolBase
         public virtual double CurrentHeight { get; set; }
         public virtual double CurrentAngle { get; set; }
         public virtual double ScaleFactor { get; set; }
+        public int InsideLengthDistance { get; protected set; }
         protected bool _isInit = false;
         public virtual string ToolMessage
         {
@@ -52,6 +53,7 @@ namespace DrawingModule.DrawToolBase
         public bool IsUsingMultilineTextBox { get; protected set; }
         public bool IsUsingOffsetDistance { get; protected set; }
         public bool IsUsingSwitchMode { get; protected set; }
+        public bool IsUsingInsideLength { get; protected set; }
         public IJob JobModel { get; set; }
         public UnderMouseDrawingType EntityUnderMouseDrawingType { get; protected set; }
         public FocusType DefaultDynamicInputTextBoxToFocus { get; protected set; }
@@ -81,6 +83,8 @@ namespace DrawingModule.DrawToolBase
             IsUsingScaleFactorTextBox = false;
             IsUsingSwitchMode = false;
             IsUsingOffsetDistance = false;
+            IsUsingInsideLength = false;
+            InsideLengthDistance = 0;
             DefaultDynamicInputTextBoxToFocus = FocusType.Length;
             ScaleFactor = 1;
             EntityUnderMouseDrawingType = UnderMouseDrawingType.ByObject;

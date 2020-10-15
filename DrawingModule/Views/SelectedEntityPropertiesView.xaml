@@ -49,6 +49,12 @@
                             <x:Type TypeName="appModelEnum:BeamType"/>
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
+                    <ObjectDataProvider x:Key="OpeningTypes"
+                                        MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="appModelEnum:OpeningType"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
                     <applicationConverter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
                     <applicationConverter:ColorToColorConverter x:Key="ColorToColorConverter"/>
                     <applicationConverter:ColorToStringConverter x:Key="ColorToStringConverter"/>
@@ -64,6 +70,11 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -115,6 +126,11 @@
         <TextBlock Text="Scale" Grid.Row="21" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding VectorViewVisibility}"/>
         <TextBlock Text="Floor Name" Grid.Row="22" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding FloorNameVisibility}"/>
         <TextBlock Text="Wall2D Name Scale" Grid.Row="23" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding FloorNameVisibility}"/>
+        <TextBlock Text="Wall Belong to" Grid.Row="24" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding DoorVisibility}"/>
+        <TextBlock Text="Door Types" Grid.Row="25" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding DoorVisibility}"/>
+        <TextBlock Text="Door Width" Grid.Row="26" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding DoorVisibility}"/>
+        <TextBlock Text="Door Height" Grid.Row="27" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding DoorVisibility}"/>
+        <TextBlock Text="Door Support Span" Grid.Row="28" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding DoorVisibility}"/>
         <GridSplitter Grid.Column="1"
                       Grid.Row="0"
                       Grid.RowSpan="3"
@@ -290,6 +306,40 @@
                  Text="{Binding SelectedEntity.ScaleWallName}"
                  Visibility="{Binding FloorNameVisibility}"
                  Margin="0 5 0 5"/>
+        <ComboBox Grid.Row="24"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.WallBelongTo}"
+                  ItemsSource="{Binding WallList}"
+                  Visibility="{Binding DoorVisibility}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="{Binding WallName}" Foreground="{Binding WallColorLayer.Color, Mode=TwoWay,Converter={StaticResource ColorToBrushConverter}}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox Grid.Row="25"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.OpeningType}"
+                  ItemsSource="{Binding Source={StaticResource OpeningTypes}}"
+                  Visibility="{Binding DoorVisibility}"/>
+        <ComboBox Grid.Row="26"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.DoorWidth}"
+                  ItemsSource="{Binding DoorWidthList}"
+                  Visibility="{Binding DoorVisibility}">
+        </ComboBox>
+        <ComboBox Grid.Row="27"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.DoorHeight}"
+                  ItemsSource="{Binding ExtDoorListHeights}"
+                  Visibility="{Binding DoorVisibility}"/>
+        <ComboBox Grid.Row="28"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.DoorSupportSpan}"
+                  ItemsSource="{Binding DoorSupportSpanList}"
+                  Visibility="{Binding DoorVisibility}"/>
 
     </Grid>
 

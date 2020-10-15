@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using devDept.Geometry;
 
 namespace AppModels
 {
@@ -43,6 +44,10 @@ namespace AppModels
             }
 
             return false;
+        }
+        public static Point3D ConvertPoint2DtoPoint3D(this Point2D point)
+        {
+            return new Point3D(point.X, point.Y, 0);
         }
     }
 }

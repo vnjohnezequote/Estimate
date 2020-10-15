@@ -173,7 +173,7 @@ namespace DrawingModule.Views
                         _drawingWindowViewModel.EntitiesManager.Entities.Add(entity);
                     }
                     ReloadBeamReferenceForBeamLayout();
-
+                    ReloadOpeningReferenceForLayout();
                 }
             }
             catch (Exception exception)
@@ -225,6 +225,42 @@ namespace DrawingModule.Views
 
         }
 
+        private void ReloadOpeningReferenceForLayout()
+        {
+            var entitiesManager = _drawingWindowViewModel.EntitiesManager;
+            var jobModel = _drawingWindowViewModel.JobModel;
+            if (entitiesManager != null && entitiesManager.Entities != null &&
+                entitiesManager.Entities.Count != 0 && jobModel != null && jobModel.Levels != null &&
+                jobModel.Levels.Count != 0)
+            {
+                foreach (var entity in entitiesManager.Entities)
+                {
+                    LevelWall level = null;
+                    if (entity is DoorCountEntity door)
+                    {
+                        foreach (var jobModelLevel in jobModel.Levels)
+                        {
+                            if (door.LevelName == jobModelLevel.LevelName)
+                            {
+                                level = jobModelLevel;
+                            }
+                        }
+
+                        if (level != null)
+                        {
+                            foreach (var opening in level.Openings)
+                            {
+                                if (opening.Id == door.DoorReferenceId)
+                                {
+                                    door.DoorReference = opening;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
         private void DrawingWindowView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             this.CanvasDrawing.CanvasDrawing.Renderer = rendererType.Native;
@@ -240,7 +276,7 @@ namespace DrawingModule.Views
             this.CanvasDrawing.CanvasDrawing.Shaded.ShowEdges = false;
             this.CanvasDrawing.CanvasDrawing.Shaded.ShowInternalWires = false;
             this.CanvasDrawing.CanvasDrawing.Rendered.ShowEdges = false;
-            CanvasDrawing.CanvasDrawing.Camera.ProjectionMode = projectionType.Orthographic;
+            CanvasDrawing.CanvasDrawing.Camera.ProjectionMode = projectionType.Perspective;
             CanvasDrawing.CanvasDrawing.CurrentBlock.Units = linearUnitsType.Millimeters;
             CanvasDrawing.CanvasDrawing.SelectionColor = Color.Gold;
 

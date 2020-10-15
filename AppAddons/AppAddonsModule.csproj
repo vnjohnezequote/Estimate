@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppAddonsModuleControl.cs" />
+    <Compile Include="DrawingTools\CountDoor.cs" />
     <Compile Include="DrawingTools\DrawBeamCommand.cs" />
     <Compile Include="DrawingTools\DrawingAngularDim.cs" />
     <Compile Include="DrawingTools\DrawAlignDim.cs" />

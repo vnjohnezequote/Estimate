@@ -3,6 +3,7 @@ using System.Drawing;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels;
 using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;

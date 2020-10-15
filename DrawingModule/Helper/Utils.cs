@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
 using ApplicationInterfaceCore;
+using AppModels;
 using AppModels.CustomEntity;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -41,10 +42,10 @@ namespace DrawingModule.Helper
             return default(T);
         }
 
-        public static Point3D ConvertPoint2DtoPoint3D(this Point2D point)
-        {
-            return new Point3D(point.X,point.Y,0);
-        }
+        //public static Point3D ConvertPoint2DtoPoint3D(this Point2D point)
+        //{
+        //    return new Point3D(point.X,point.Y,0);
+        //}
 
         public static bool ConvertStringToDouble(string inputString, out double outputDouble)
         {
@@ -343,6 +344,10 @@ namespace DrawingModule.Helper
             var countIndex = 0;
             foreach (var index in entityIndexs)
             {
+                if (index>cadDraw.Entities.Count-1)
+                {
+                    return snapPoints;
+                }
                 if (cadDraw.Entities[index] is ICurve entCurve)
                 {
                     var indexVertex = 0;

@@ -33,12 +33,17 @@ namespace DrawingModule.ViewModels
         private IEntitiesManager _entitiesManger;
         private IEntityVm _selectedEntity;
         private List<TimberBase> _timberList;
+        private ObservableCollection<WallBase> _wallList;
+        private List<int> _doorWidthList;
         public ObservableCollection<EngineerMemberInfo> EngineerList { get; }
+        public List<int> DoorWidthList { get=>_doorWidthList; set=>SetProperty(ref _doorWidthList,value); }  
+        public List<int> ExtDoorListHeights { get; set; } = new List<int> { 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000 };
+        public List<int> DoorSupportSpanList { get; set; } = new List<int>(){  3000, 6000, 9000, 12000, 15000 };
+
         public IEntitiesManager EntitiesManager
         {
             get => _entitiesManger;
         }
-
         public Visibility FloorNameVisibility
         {
             get
@@ -57,6 +62,9 @@ namespace DrawingModule.ViewModels
         public Visibility ColorVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility ColorMethodVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility LeaderVisibility => SelectedEntity is LeaderVM ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility DoorVisibility =>
+            SelectedEntity is DoorCountEntityVm ? Visibility.Visible : Visibility.Collapsed;
         public List<string> ScaleList { get; } = new List<string>(){"1:50","1:75","1:100","1:125","1:150","1:175","1:200","1:225","1:250","1:275","1:300","1:325","1:350"};
         public Visibility BeamVisibility =>
             SelectedEntity is BeamEntityVm ? Visibility.Visible : Visibility.Collapsed;
@@ -70,7 +78,6 @@ namespace DrawingModule.ViewModels
                         return Visibility.Collapsed;
                     case WallLine2DVm _:
                     case BeamEntityVm _:
-                        return Visibility.Visible;
                     case LinearPathWall2DVm _:
                         return Visibility.Visible;
                     default:
@@ -78,7 +85,6 @@ namespace DrawingModule.ViewModels
                 }
             }
         }
-
         public Visibility VectorViewVisibility =>
             SelectedEntity is VectorViewVm ? Visibility.Visible : Visibility.Collapsed;
         public Visibility TextContentVisibility
@@ -110,6 +116,7 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(VectorViewVisibility));
                 RaisePropertyChanged(nameof(FloorNameVisibility));
                 RaisePropertyChanged(nameof(BeamGradeList));
+                RaisePropertyChanged(nameof(DoorVisibility));
             }
         }
         public ObservableCollection<LevelWall> Levels { get; private set; }
@@ -123,6 +130,12 @@ namespace DrawingModule.ViewModels
                     return new List<string>(this.JobModel.Info.Client.Beams.Keys);
                 else return null;
             }
+        }
+        
+        public ObservableCollection<WallBase> WallList
+        {
+            get=>_wallList;
+            set=>SetProperty(ref _wallList,value);
         }
         public List<TimberBase> TimberList { get=>_timberList; set=>SetProperty(ref _timberList,value); } 
         public SelectedEntityPropertiesViewModel(): base()
@@ -141,15 +154,25 @@ namespace DrawingModule.ViewModels
             {
                 this.Levels = jobModel.Levels;
             }
-
             this.EventAggregator.GetEvent<EntityService>().Subscribe(OnPaperSpaceSelectedChanged);
-
+            //this.EventAggregator.GetEvent<LevelNameService>().Subscribe(OnLevelChange);
         }
 
         private void OnPaperSpaceSelectedChanged(IEntityVm selEntity)
         {
             SelectedEntity = selEntity;
         }
+
+        //private void OnLevelChange(string levelName)
+        //{
+        //    foreach (var levelWall in Levels)
+        //    {
+        //        if (levelWall.LevelName ==levelName )
+        //        {
+        //            this.WallList = levelWall.WallLayers;
+        //        }
+        //    }
+        //}
 
         private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -161,6 +184,8 @@ namespace DrawingModule.ViewModels
                 this.SelectedEntity.PropertyChanged += SelectedEntity_PropertyChanged;
                 GeneralTimberList();
                 GeneralEngineerList();
+                GeneralWallList();
+                GeneralDoorWidthList();
             }
             else
             {
@@ -230,6 +255,11 @@ namespace DrawingModule.ViewModels
             {
              GeneralTimberList();   
             }
+
+            if (e.PropertyName == "WallBelongTo")
+            {
+                GeneralDoorWidthList();
+            }
             EntitiesManager?.Refresh();
         }
 
@@ -267,6 +297,45 @@ namespace DrawingModule.ViewModels
                 }
             }
             
+        }
+
+        private void GeneralWallList()
+        {
+            if (SelectedEntity is DoorCountEntityVm door)
+            {
+                //WallList.Clear();
+                if (JobModel!=null && JobModel.Levels!=null)
+                {
+                    foreach (var jobModelLevel in JobModel.Levels)
+                    {
+                        if (jobModelLevel.LevelName == door.WallLevelName)
+                        {
+                            WallList = jobModelLevel.WallLayers;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void GeneralDoorWidthList()
+        {
+            if (SelectedEntity is DoorCountEntityVm door)
+            {
+                if (door.WallBelongTo!=null)
+                {
+                    if (door.WallBelongTo.WallType!=null )
+                    {
+                        if (door.WallBelongTo.WallType.IsLoadBearingWall)
+                        {
+                            this.DoorWidthList = new List<int>() { 660, 960, 1260, 1560, 1860, 2160, 2460, 2760, 3060, 3360, 3660 };
+                        }
+                        else
+                        {
+                            this.DoorWidthList = new List<int>() { 875, 930, 1201, 1501, 1801, 2101, 2401, 2701, 3001, 3301, 3601, 4201 };
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -108,6 +108,36 @@ namespace DrawingModule.CustomControl.CanvasControl
 
                                 this.Blocks.Remove(beam.BeamBlock);
                             }
+
+                            if (entitiesManagerSelectedEntity is DoorCountEntity doorCount)
+                            {
+                                if (JobModel != null)
+                                {
+                                    LevelWall level = null;
+                                    foreach (var jobModelLevel in JobModel.Levels)
+                                    {
+                                        if (jobModelLevel.LevelName == doorCount.LevelName)
+                                        {
+                                            level = jobModelLevel;
+                                        }
+                                    }
+
+                                    if (level != null)
+                                    {
+                                        if (level.Openings.Contains(doorCount.DoorReference))
+                                        {
+                                            level.Openings.Remove(doorCount.DoorReference);
+                                        }
+                                        var i = 1;
+                                        foreach (var door in level.Openings)
+                                        {
+                                            door.Id = i;
+                                            i++;
+                                        }
+                                    }
+
+                                }
+                            }
                         }
                     }
                     return true;

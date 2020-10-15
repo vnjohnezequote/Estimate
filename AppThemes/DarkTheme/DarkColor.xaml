@@ -57,4 +57,5 @@
     <SolidColorBrush x:Key="RedAccent400Color" Color="{StaticResource RedAccent400}"/>
     <SolidColorBrush x:Key="RedAccent200Color" Color="{StaticResource RedAccent200}"/>
     <SolidColorBrush x:Key="BlackBackGround" Color="Black"/>
+    <SolidColorBrush x:Key="InputBackground" Color="White"/>
 </ResourceDictionary>

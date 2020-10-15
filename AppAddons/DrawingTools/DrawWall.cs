@@ -8,6 +8,7 @@ using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels;
 using AppModels.CustomEntity;
 using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
@@ -16,6 +17,7 @@ using devDept.Graphics;
 using DrawingModule.CommandClass;
 using DrawingModule.DrawToolBase;
 using DrawingModule.UserInteractive;
+using Region = devDept.Eyeshot.Entities.Region;
 
 namespace AppAddons.DrawingTools
 {
@@ -27,6 +29,8 @@ namespace AppAddons.DrawingTools
 
         public DrawWall() : base()
         {
+            IsUsingInsideLength = true;
+            InsideLengthDistance = 90;
         }
         #endregion
         [CommandMethod("Wall2D")]
@@ -54,7 +58,19 @@ namespace AppAddons.DrawingTools
                 var index2 = Points.Count - 1;
                 var startPoint = (Point3D)Points[index2 - 1].Clone();
                 var endPoint = (Point3D)Points[index2].Clone();
-                //var wall = new Wall2D(Plane.XY,startPoint,endPoint,90);
+                //var wallCenterSegment = new Segment2D(startPoint,endPoint);
+                //Utility.OffsetPoint(startPoint, endPoint, 90, out var endWallPoint);
+                var wall = new WallRegion(Plane.XY, startPoint,startPoint,endPoint);
+                wall.Color = Color.FromArgb(127, Color.CornflowerBlue);
+                wall.ColorMethod = colorMethodType.byEntity;
+                wall.LineTypeName = "Dash Space";
+                wall.LineTypeMethod = colorMethodType.byEntity;
+                wall.IsLoadBearingWall = false;
+                //wall.LineTypeName = "";
+                this.EntitiesManager.AddAndRefresh(wall,this.LayerManager.SelectedLayer.Name);
+                //Region region = WallRegion.CreateRectangle(Plane.XY, 2000, 90,true);
+                //this.EntitiesManager.AddAndRefresh(region,this.LayerManager.SelectedLayer.Name);
+                //var wall = new Wall2D(startPoint,endPoint,startPoint,);
 
                 //wall.LineTypeMethod = colorMethodType.byLayer;
                 //{

@@ -148,10 +148,11 @@
                     </StackPanel>-->
                 </StackPanel>
                 <StackPanel Orientation="Vertical"
-                            Margin="0 20 0 0">
+                            Margin="0 20 0 0"
+                            Background="{StaticResource InputBackground}">
                     <StackPanel.Resources>
                         <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
-                            <Setter Property="Foreground" Value="{Binding WallColorLayer.Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
+                            <Setter Property="Foreground" Value="{Binding WallColorLayer.Color, FallbackValue=Black, Converter={StaticResource ColorToBrushConverter}}" />
                             <Style.Triggers>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
@@ -505,10 +506,11 @@
                 </StackPanel>
                 </StackPanel>
                 <!-- Warnervale Door Input -->
-                <StackPanel Visibility="{Binding WarnervaleVisibility}">
+                <StackPanel Visibility="{Binding WarnervaleVisibility}"
+                            Background="{StaticResource InputBackground}">
                     <StackPanel.Resources>
                         <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
-                            <Setter Property="Foreground" Value="{Binding WallReference.WallColorLayer.Color, FallbackValue=White, Converter={StaticResource ColorToBrushConverter}}" />
+                            <Setter Property="Foreground" Value="{Binding WallReference.WallColorLayer.Color, FallbackValue=Black, Converter={StaticResource ColorToBrushConverter}}" />
                         </Style>
                     </StackPanel.Resources>
                     <materialDesign:ColorZone Mode="Accent">

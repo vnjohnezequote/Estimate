@@ -470,6 +470,11 @@ namespace AppModels.ResponsiveData
                 case nameof(WallSpacing):
                     RaisePropertyChanged(nameof(NoggingLength));
                     break;
+                case nameof(CeilingPitch):
+                    RaisePropertyChanged(nameof(HPitching));
+                    RaisePropertyChanged(nameof(WallEndHeight));
+                    RaisePropertyChanged(nameof(WallHeight));
+                    break;
                     
             }
         }

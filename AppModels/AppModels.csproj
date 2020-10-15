@@ -176,10 +176,13 @@
     <Compile Include="AppData\LayerItem.cs" />
     <Compile Include="CustomEntity\BeamEntity.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\BeamEntitySurrogate.cs" />
+    <Compile Include="CustomEntity\CustomEntitySurrogate\DoorCountEntitySurrogate.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\Wall2DSurrogate.cs" />
     <Compile Include="CustomEntity\CustomVectorView.cs" />
+    <Compile Include="CustomEntity\DoorCountEntity.cs" />
     <Compile Include="CustomEntity\PaperBolderReference.cs" />
     <Compile Include="CustomEntity\Wall2D.cs" />
+    <Compile Include="CustomEntity\WallRegion.cs" />
     <Compile Include="Database\FramingMaterialBase.cs" />
     <Compile Include="Enums\BeamMarkedLocation.cs" />
     <Compile Include="Enums\BeamType.cs" />
@@ -317,6 +320,7 @@
     <Compile Include="ResponsiveData\WarnervaleWallLayer.cs" />
     <Compile Include="ViewModelEntity\BeamEntityVm.cs" />
     <Compile Include="ViewModelEntity\BlockReferenceVm.cs" />
+    <Compile Include="ViewModelEntity\DoorCountEntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVmBase.cs" />
     <Compile Include="ViewModelEntity\LeaderVM.cs" />

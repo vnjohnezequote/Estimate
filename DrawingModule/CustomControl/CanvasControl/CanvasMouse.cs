@@ -49,7 +49,11 @@ namespace DrawingModule.CustomControl.CanvasControl
             _mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
             this.CurrentPoint = GetCurrentPoint(_mousePosition);
             CurrentIndex = this.GetEntityUnderMouseCursor(_mousePosition, false);
-            _entityUnderMouse = CurrentIndex > -1 ? this.Entities[CurrentIndex] : null;
+            if (CurrentIndex < this.Entities.Count-1)
+            {
+                _entityUnderMouse = CurrentIndex > -1 ? this.Entities[CurrentIndex] : null;
+            }
+            
             if (!IsProcessingTool && this._selectTool.StartPoint != null)
             {
                 this._selectTool.ProcessMouseMoveForSelection(e, this);
@@ -85,6 +89,11 @@ namespace DrawingModule.CustomControl.CanvasControl
             var entIndex = GetEntityUnderMouseCursor(mousePosition);
             if (entIndex > -1)
             {
+                if (entIndex > this.Entities.Count-1)
+                {
+                    _entityUnderMouse = null;
+                    return false;
+                }
                 _entityUnderMouse = this.Entities[entIndex];
                 return true;
             }
