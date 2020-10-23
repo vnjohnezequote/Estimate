@@ -47,6 +47,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         private void SetCurrentPoint(System.Drawing.Point mouseLocation, bool getEndPoint = false)
         {
             _snapPoints = Utils.GetSnapPoints(mouseLocation,this);
+
             
             if (_snapPoints.Count == 0)
             {

@@ -50,7 +50,7 @@ namespace DrawingModule.EditingTools
             var resutl = acadEditor.GetPoint(prompPointOptions);
             if (resutl.Status == PromptStatus.OK)
             {
-                var inserPoint = resutl.Value;
+                var inserPoint = new Point3D(resutl.Value.X,resutl.Value.Y,-0.10);
                 var picPlan = Plane.XY.Offset(-10);
                 var insertPick = new PictureEntity(picPlan, inserPoint, _imgWidth, _imgHeight, _insertImage);
                 

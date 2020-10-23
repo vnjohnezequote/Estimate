@@ -39,6 +39,7 @@ namespace AppModels.Interaface
         int RaisedCeiling { get; }
         string WallName { get; }
         int NoggingLength { get; }
+        bool IsExportToUpper { get ; }
         WallMemberBase RibbonPlate { get; }
         WallMemberBase TopPlate { get; }
         WallMemberBase BottomPlate { get; }

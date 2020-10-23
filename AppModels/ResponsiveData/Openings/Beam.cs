@@ -50,6 +50,7 @@ namespace AppModels.ResponsiveData.Openings
         private string _timberGrade;
         private double _beamPitch;
 
+        private bool _isBeamExportToExcel = true;
         //private string _size;
 
         //private string _sizeGrade;
@@ -65,7 +66,11 @@ namespace AppModels.ResponsiveData.Openings
 
 
         #region Property
-       
+       public bool IsBeamExportToExcel
+       {
+           get => _isBeamExportToExcel;
+           set => SetProperty(ref _isBeamExportToExcel,value);
+       }
         public string Location
         {
             get => _location;
@@ -679,6 +684,7 @@ namespace AppModels.ResponsiveData.Openings
             Thickness = beam.Thickness;
             Depth = beam.Depth;
             MaterialType = beam.MaterialType;
+            IsBeamExportToExcel = beam.IsBeamExportToExcel;
         }
 
         private TimberBase LoadTimberInfor(Dictionary<string,List<TimberBase>> timberInfos, int timberId,string timberGrade)

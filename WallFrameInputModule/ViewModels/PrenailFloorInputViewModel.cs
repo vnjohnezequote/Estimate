@@ -148,7 +148,7 @@ namespace WallFrameInputModule.ViewModels
             }
         }
         public ICommand AddNewDoorCommand { get; private set; }
-
+        public ICommand DeleteBracingCommand { get; private set; }
         public ICommand DeleteOpeningRowCommand { get; private set; }
 
         #endregion
@@ -192,10 +192,24 @@ namespace WallFrameInputModule.ViewModels
             this.AddBeamCommand = new DelegateCommand(this.OnAddNewBeam);
             this.AddBracingCommand = new DelegateCommand(OnAddBracing);
             this.ReFreshWallCommand = new DelegateCommand(this.CalculatorWallLength);
+            DeleteBracingCommand = new DelegateCommand<SfDataGrid>(OnDeleteBracing);
             AddNewDoorCommand = new DelegateCommand(OnAddNewDoorCommand);
             DeleteOpeningRowCommand = new DelegateCommand<SfDataGrid>(OnDeleteOpening);
             ExportDataToExcelCommand = new DelegateCommand(OnExportData);
             JobModel.EngineerMemberList.CollectionChanged += EngineerMemberList_CollectionChanged;
+        }
+
+        private void OnDeleteBracing(SfDataGrid bracingGrid)
+        {
+            var recordId = bracingGrid.SelectedIndex;
+
+            if (recordId < 0)
+            {
+                return;
+            }
+
+            this.Level.TimberWallBracings.RemoveAt(recordId);
+
         }
 
         private void OnDeleteOpening(SfDataGrid openingGrid)

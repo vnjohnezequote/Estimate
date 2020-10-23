@@ -30,6 +30,7 @@ namespace AppModels.PocoDataModel.Openings
         public int TimberInfoId { get; set; }
         public double BeamPitch { get; set; }
         public List<Hanger> Hangers { get; set; }
+        public bool IsBeamExportToExcel { get; set; }
 
         public BeamPoco()
         {
@@ -75,7 +76,7 @@ namespace AppModels.PocoDataModel.Openings
             Depth = beamInfo.Depth;
             TimberGrade = beamInfo.TimberGrade;
             MaterialType = beamInfo.MaterialType;
-
+            IsBeamExportToExcel = beamInfo.IsBeamExportToExcel;
             //GLobalSupportInfo = beamInfo.GLobalSupportInfo;
 
         }

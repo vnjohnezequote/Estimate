@@ -49,5 +49,40 @@ namespace AppModels
         {
             return new Point3D(point.X, point.Y, 0);
         }
+
+        public static Point2D ConvertToPoint2D(this Point3D point)
+        {
+            return new Point2D(point.X,point.Y);
+        }
+
+        public static List<Point3D> SortPointInLine(List<Point3D> points)
+        {
+            var listocheck = new List<Point3D>(points);
+                listocheck.Remove(points[0]);
+                listocheck.Remove(points[points.Count - 1]);
+
+                List<Point3D> sortedPoints = new List<Point3D>();
+                sortedPoints.Add(points[0]);
+                var i = 0;
+                while (listocheck.Count > 0)
+                {
+                    var distance = double.MaxValue;
+                    Point3D pointadd = null;
+                    foreach (var point3D in listocheck)
+                    {
+                        var d = sortedPoints[i].DistanceTo(point3D);
+                        if (d < distance)
+                        {
+                            pointadd = point3D;
+                            distance = d;
+                        }
+                    }
+                    sortedPoints.Add(pointadd);
+                    listocheck.Remove(pointadd);
+                    i++;
+                }
+                sortedPoints.Add(points[points.Count - 1]);
+                return sortedPoints;
+        }
     }
 }

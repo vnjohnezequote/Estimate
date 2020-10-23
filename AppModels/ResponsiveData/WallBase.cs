@@ -55,11 +55,11 @@ namespace AppModels.ResponsiveData
         private int _bathCheckOut;
         private int _numberOfSameWall;
         private double _wetAreaLength;
-
+        private bool _isExportToUpper;
         #endregion
 
         #region Property
-
+        public bool IsExportToUpper { get=>_isExportToUpper; set=>SetProperty(ref _isExportToUpper,value); }
         public int Id
         {
             get => this._id;
@@ -510,6 +510,7 @@ namespace AppModels.ResponsiveData
             Stud.LoadMemberInfo(wall.Stud);
             BottomPlate.LoadMemberInfo(wall.BottomPlate);
             Nogging.LoadMemberInfo(wall.Nogging);
+            IsExportToUpper = wall.IsExportToUpper;
         }
         #endregion
     }

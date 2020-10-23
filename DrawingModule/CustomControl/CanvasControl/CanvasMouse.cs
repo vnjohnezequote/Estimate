@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationService;
+using AppModels;
 using AppModels.CustomEntity;
 using AppModels.EventArg;
 using devDept.Eyeshot;
@@ -48,12 +49,17 @@ namespace DrawingModule.CustomControl.CanvasControl
             //SwapBuffers();
             _mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
             this.CurrentPoint = GetCurrentPoint(_mousePosition);
-            CurrentIndex = this.GetEntityUnderMouseCursor(_mousePosition, false);
-            if (CurrentIndex < this.Entities.Count-1)
+            CurrentIndex = this.GetEntityUnderMouseCursor(_mousePosition, true);
+            _entityUnderMouse = CurrentIndex > -1 ? this.Entities[CurrentIndex] : null;
+            if (_entityUnderMouse is PictureEntity picture)
             {
-                _entityUnderMouse = CurrentIndex > -1 ? this.Entities[CurrentIndex] : null;
+                bool isPointInsidePicture = Utility.PointInRect(CurrentPoint,picture.BoxMin,picture.BoxMax);
+                //picture.Visible = false;
+                if (isPointInsidePicture)
+                {
+                    _entityUnderMouse = null;
+                }
             }
-            
             if (!IsProcessingTool && this._selectTool.StartPoint != null)
             {
                 this._selectTool.ProcessMouseMoveForSelection(e, this);
@@ -95,6 +101,17 @@ namespace DrawingModule.CustomControl.CanvasControl
                     return false;
                 }
                 _entityUnderMouse = this.Entities[entIndex];
+                if (_entityUnderMouse is Picture picture)
+                {
+                    bool isPointInsidePicture = Utility.PointInRect(CurrentPoint, picture.BoxMin, picture.BoxMax);
+                    //picture.Visible = false;
+                    if (isPointInsidePicture)
+                    {
+                        _entityUnderMouse = null;
+                        return false;
+                    }
+                }
+
                 return true;
             }
             else
@@ -108,6 +125,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         {
             var mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
             var check = GetEntitiesUnderMouse(mousePosition);
+            
             _isUserClicked = true;
             this.LastClickPoint = CurrentPoint;
             //test.Add(LastClickPoint);

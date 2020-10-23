@@ -16,6 +16,7 @@ using DrawingModule.EditingTools;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CommandClass(typeof(ImportImageTool))]
+[assembly: CommandClass(typeof(RegenTool))]
 //[assembly: CommandClass(typeof(MoveTool))]
 
 

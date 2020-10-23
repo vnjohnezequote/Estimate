@@ -20,6 +20,7 @@ using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
 using AppModels.Interaface;
 using devDept.Eyeshot;
@@ -621,6 +622,11 @@ namespace DrawingModule.CustomControl.CanvasControl
                 renderContext.DrawLineStrip(screenVertex);
 
             }
+            else if (entity is Wall2D wall)
+            {
+                var wallLine = new Line(wall.StartPoint,wall.EndPoint);
+                DrawInteractiveUntilities.DrawCurveOrBlockRef(wallLine,this);
+            }
             else
             {
                 DrawInteractiveUntilities.DrawCurveOrBlockRef(entity, this);
@@ -640,6 +646,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         private Point3D GetCurrentPoint(System.Drawing.Point mouseLocations)
         {
             this.ScreenToPlane(mouseLocations, this._drawingPlane, out var currentPoint);
+            currentPoint = new Point3D((int)currentPoint.X,(int)currentPoint.Y,(int)currentPoint.Z);
             return currentPoint;
         }
 

@@ -87,12 +87,12 @@
                         <StackPanel Margin="0 10 0 0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBox materialDesign:HintAssist.Hint="External Wall2D Height" Text="{Binding Level.LevelInfo.WallHeight}" />
-                                <TextBox materialDesign:HintAssist.Hint="External WallThickness" Text="{Binding Level.LevelInfo.ExternalWallThickness}" Margin="10 0 0 0" />
+                                <TextBox materialDesign:HintAssist.Hint="External Thickness" Text="{Binding Level.LevelInfo.ExternalWallThickness}" Margin="10 0 0 0" />
                                 <TextBox materialDesign:HintAssist.Hint="External Wall2D Spacing" Text="{Binding Level.LevelInfo.ExternalWallSpacing}" Margin="10 0 0 0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
                                 <TextBox materialDesign:HintAssist.Hint="Internal Wall2D Height" Text="{Binding Level.LevelInfo.InternalWallHeight,Mode=OneWay}" />
-                                <TextBox materialDesign:HintAssist.Hint="Internal WallThickness" Text="{Binding Level.LevelInfo.InternalWallThickness}" Margin="10 0 0 0" />
+                                <TextBox materialDesign:HintAssist.Hint="Internal Thickness" Text="{Binding Level.LevelInfo.InternalWallThickness}" Margin="10 0 0 0" />
                                 <TextBox materialDesign:HintAssist.Hint="Internal Wall2D Spacing" Text="{Binding Level.LevelInfo.InternalWallSpacing}" Margin="10 0 0 0"/>
                             </StackPanel>
                             <DockPanel Margin="0 10 0 0" HorizontalAlignment="Left" LastChildFill="True" >
@@ -268,7 +268,7 @@
                             <syncfusion:GridTextColumn HeaderText="Quote Height"
                                                        MappingName="FinalWallHeight"/>
                             <syncfusion:GridComboBoxColumn HeaderText="Thickness"
-                                                           MappingName="WallThickness"
+                                                           MappingName="Thickness"
                                                            ItemsSource="{Binding WallThicknessList}"
                                                            UseBindingValue="True"/>
                             <syncfusion:GridComboBoxColumn HeaderText="Spacing"
@@ -437,7 +437,7 @@
 
                             </syncfusion:SfDataGrid.Columns>
                         </syncfusion:SfDataGrid>
-                        <Button Content="Add Beam" Command="{Binding AddBeamCommand}"/>
+                        <!--<Button Content="Add Beam" Command="{Binding AddBeamCommand}"/>-->
                         <!--<local:StickFrameBeamAndLintelInputView x:Name="BeamInput"/>-->
 
                     </StackPanel>
@@ -481,7 +481,8 @@
                                                ColumnSizer="Auto"
                                                AllowResizingColumns="False"
                                                EditorSelectionBehavior="SelectAll"
-                                               EditTrigger="OnTap">
+                                               EditTrigger="OnTap"
+                                               Name="BracingGrid">
                             <syncfusion:SfDataGrid.Resources>
                                 <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
                                 <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
@@ -495,10 +496,24 @@
                                                            MappingName="BracingInfo.UnitPrice"/>
                                 <syncfusion:GridTextColumn HeaderText="Quantity"
                                                            MappingName="Quantity"/>
-                            </syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTemplateColumn MappingName="Delete Row"
+                                                               syncfusion:FocusManagerHelper.WantsKeyInput="True">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button  Content="Delete" syncfusion:FocusManagerHelper.FocusedElement="True" 
+                                                     Command="{Binding Path=DataContext.DeleteBracingCommand, ElementName=BracingGrid}"
+                                                     CommandParameter="{Binding ElementName=BracingGrid}"
+                                                     HorizontalContentAlignment="Center"
+                                                     VerticalContentAlignment="Center"
+                                                     VerticalAlignment="Center"
+                                                     HorizontalAlignment="Center"
+                                                     Padding="5 0 5 0"/>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+                                </syncfusion:SfDataGrid.Columns>
                         </syncfusion:SfDataGrid>
                         <Button Content="Add Bracing" Command="{Binding AddBracingCommand}"/>
-
 
                         <!-- Bracing Input -->
 

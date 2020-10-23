@@ -138,6 +138,11 @@ namespace DrawingModule.CustomControl.CanvasControl
 
                                 }
                             }
+
+                            if (entitiesManagerSelectedEntity is Wall2D wall)
+                            {
+                                this.EntitiesManager.Walls.Remove(wall);
+                            }
                         }
                     }
                     return true;

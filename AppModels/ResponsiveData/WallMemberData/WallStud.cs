@@ -38,7 +38,7 @@ namespace AppModels.ResponsiveData.WallMemberData
 
         private void WallInfo_PropertyChanged1(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName=="WallThickness")
+            if (e.PropertyName=="Thickness")
             {
                 RaisePropertyChanged(nameof(Thickness));
             }

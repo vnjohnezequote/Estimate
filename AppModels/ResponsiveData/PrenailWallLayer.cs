@@ -53,7 +53,7 @@ namespace AppModels.ResponsiveData
                 }
             }
         }
-        public override string WallName => WallType.AliasName.Replace('_', ' ') + " " + FinalWallHeight + "mm";
+        public override string WallName => WallType.AliasName.Replace('_', ' ') + " " + FinalWallHeight + "mm"+ "(Stud "+WallThickness+"mm)";
 
 
         #endregion

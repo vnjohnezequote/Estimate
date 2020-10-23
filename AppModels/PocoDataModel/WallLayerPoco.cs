@@ -32,6 +32,7 @@ namespace AppModels.PocoDataModel
         public int StepDown { get; set; }
         public int RaisedCeiling { get; set; }
         public string LevelName { get; set; }
+        public bool IsExportToUpper { get; set; }
         public WallMemberBasePoco RibbonPlate { get; set; }
         public WallMemberBasePoco TopPlate { get; set; }
         public WallMemberBasePoco BottomPlate { get; set; }
@@ -81,7 +82,8 @@ namespace AppModels.PocoDataModel
             Stud = new WallMemberBasePoco(wall.Stud);
             BottomPlate = new WallMemberBasePoco(wall.BottomPlate);
             Nogging = new WallMemberBasePoco(wall.Nogging);
-            
+            IsExportToUpper = wall.IsExportToUpper;
+
         }
     }
 }

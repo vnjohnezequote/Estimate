@@ -19,49 +19,27 @@ namespace AppModels.CustomEntity
         {
 
         }
-        //protected override void DrawForSelection(GfxDrawForSelectionParams data)
-        //{
-        //    //data.RenderContext.DrawLineLoop(this.Vertices);
-        //}
-
-        //protected override void DrawForSelection(GfxDrawForSelectionParams data)
-        //{
-
-        //}
-
-        //protected override void DrawEntity(RenderContextBase context, object myParams)
-        //{
-
-        //}
-
-        //protected override void DrawFlat(DrawParams data)
-        //{
-
-        //}
 
         protected override void DrawFlatSelected(DrawParams data)
         {
+            var currentState = data.RenderContext.CurrentDepthStencilState;
             data.RenderContext.SetState(depthStencilStateType.DepthTestOff);
-            this.DrawFlat(data);
+            base.DrawFlatSelected(data);
+            data.RenderContext.SetState(currentState);
+
         }
 
-        //protected override void DrawOnScreenWireframe(DrawOnScreenWireframeParams myParams)
-        //{
 
-        //}
-
-        //protected override void DrawWireEntity(RenderContextBase context, object myParams)
-        //{
-        //    this.DrawF
-        //}
         protected override void DrawWireframe(DrawParams data)
         {
+            var currentState = data.RenderContext.CurrentDepthStencilState;
             data.RenderContext.SetState(depthStencilStateType.DepthTestOff);
             base.DrawWireframe(data);
-           this.DrawFlat(data);
+            this.DrawFlat(data);
+            data.RenderContext.SetState(currentState);
 
         }
-        
+
 
     }
 }

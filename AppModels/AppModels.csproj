@@ -174,6 +174,7 @@
   <ItemGroup>
     <Compile Include="AppData\ColorItem.cs" />
     <Compile Include="AppData\LayerItem.cs" />
+    <Compile Include="CustomEntity\Beam2D.cs" />
     <Compile Include="CustomEntity\BeamEntity.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\BeamEntitySurrogate.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\DoorCountEntitySurrogate.cs" />
@@ -181,8 +182,9 @@
     <Compile Include="CustomEntity\CustomVectorView.cs" />
     <Compile Include="CustomEntity\DoorCountEntity.cs" />
     <Compile Include="CustomEntity\PaperBolderReference.cs" />
+    <Compile Include="CustomEntity\TimberJoist.cs" />
     <Compile Include="CustomEntity\Wall2D.cs" />
-    <Compile Include="CustomEntity\WallRegion.cs" />
+    <Compile Include="CustomMesh.cs" />
     <Compile Include="Database\FramingMaterialBase.cs" />
     <Compile Include="Enums\BeamMarkedLocation.cs" />
     <Compile Include="Enums\BeamType.cs" />
@@ -198,6 +200,7 @@
     <Compile Include="Enums\StickFrameCustomers.cs" />
     <Compile Include="Enums\Suppliers.cs" />
     <Compile Include="Enums\SupportType.cs" />
+    <Compile Include="Enums\WallIntersectionType.cs" />
     <Compile Include="Enums\WallLocationTypes.cs" />
     <Compile Include="Enums\WallMemberType.cs" />
     <Compile Include="Enums\WallType.cs" />

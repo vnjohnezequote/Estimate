@@ -124,7 +124,7 @@ namespace AppAddons.EditingTools
             {
                 DrawInteractiveUntilities.DrawInteractiveSpotLine(BasePoint, e.CurrentPoint, canvas);
             }
-           //DrawInteractiveUntilities.DrawPositionMark(e.CurrentPoint,canvas);
+            //DrawInteractiveUntilities.DrawPositionMark(e.CurrentPoint,canvas);
         }
 
         private Entity CalculatorOffsetEntity(Entity selEntity, Point3D offsetPoint)
@@ -143,8 +143,19 @@ namespace AppAddons.EditingTools
             {
                 offsetDist = this.OffsetDistance;
             }
-            
 
+            //if (selEntity is Line line)
+            //{
+            //    var pline = new LinearPath(line.Vertices);
+            //    var offsetCurve = pline.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
+            //    success = offsetCurve.Project(offsetPoint, out t);
+            //    projectedPt = offsetCurve.PointAt(t);
+            //    if (projectedPt.DistanceTo(offsetPoint) > 1e-3)
+            //        offsetCurve = pline.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
+            //    return offsetCurve as Entity;
+            //}
+
+            //return null;
             ICurve offsetCurve = selCurve.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
             success = offsetCurve.Project(offsetPoint, out t);
             projectedPt = offsetCurve.PointAt(t);

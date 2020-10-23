@@ -233,6 +233,17 @@ namespace DrawingModule.Helper
 
                     }
                 }
+                //else if (entity is Wall2D wall)
+                //{
+                //    var wallLine = new Line(wall.StartPoint,wall.EndPoint);
+                //    var tempPerdicularPoint = GetPerpendicularPoints(wallLine, basePoint);
+                //    if (tempPerdicularPoint != null)
+                //    {
+                //        snapPoints.Add(
+                //            new SnapPoint(tempPerdicularPoint, ObjectSnapType.Perpendicular));
+
+                //    }
+                //}
             }
 
             return snapPoints;
@@ -255,6 +266,7 @@ namespace DrawingModule.Helper
             var tempSegment = new Segment2D(line.StartPoint, line.EndPoint);
             var temptDistance = tempSegment.ClosestPointTo(basePoint);
             var tempPoint = tempSegment.PointAt(temptDistance);
+            tempPoint = new Point3D((int)tempPoint.X,(int)tempPoint.Y);
             return tempPoint.ConvertPoint2DtoPoint3D();
 
         }
@@ -413,7 +425,7 @@ namespace DrawingModule.Helper
 
                     }
 
-                    // Find EndPoit and Midpoint 
+                    // Find EndPoitt and Midpoint 
                     foreach (var vertex in cadDraw.Entities[index].Vertices)
                     {
                         snapPoints.Add(new SnapPoint(vertex, ObjectSnapType.End));
@@ -464,11 +476,12 @@ namespace DrawingModule.Helper
 
                         foreach (var vertex in vertices)
                         {
+
                             snapPoints.Add(new SnapPoint(vertex, ObjectSnapType.End));
                         }
 
                         if(!Utils.CheckPointInSnapPoints(beamEntity.BeamLine.MidPoint, snapPoints))
-                            snapPoints.Add(new SnapPoint(beamEntity.BeamLine.MidPoint,ObjectSnapType.Nearest));
+                            snapPoints.Add(new SnapPoint(beamEntity.BeamLine.MidPoint,ObjectSnapType.Mid));
 
                         tempLine = beamEntity.BeamLine;
 
@@ -481,7 +494,58 @@ namespace DrawingModule.Helper
                                 snapPoints.Add(new SnapPoint(nearPoint, ObjectSnapType.Nearest));
                             }
                         }
+                    }
 
+                    else if (cadDraw.Entities[index] is Wall2D wall)
+                    {
+                        var wallLines = new List<Line>();
+                        var wallLine = new Line(wall.StartPoint, wall.EndPoint);
+                        wallLines.Add(wallLine);
+                        wallLine = new Line(wall.StartPoint1,wall.EndPoint1);
+                        wallLines.Add(wallLine);
+                        wallLine = new Line(wall.StartPoint2,wall.EndPoint2);
+                        wallLines.Add(wallLine);
+                        foreach (var line in wallLines)
+                        {
+                            if (Utils.GetPerpenticalSnapPoints(cadDraw.LastClickPoint, line as ICurve).Count > 0)
+                            {
+                                snapPoints.UnionWith(Utils.GetPerpenticalSnapPoints(cadDraw.LastClickPoint, line as ICurve));
+                            }
+                            var vertices = line.Vertices;
+                            foreach (var vertex in vertices)
+                            {
+                                if (!Utils.CheckPointInSnapPoints(vertex, snapPoints))
+                                {
+                                    snapPoints.Add(new SnapPoint(vertex, ObjectSnapType.End));
+                                }
+                            }
+                            if (!Utils.CheckPointInSnapPoints(line.MidPoint, snapPoints))
+                                snapPoints.Add(new SnapPoint(line.MidPoint, ObjectSnapType.Mid));
+                            if (wallLines.IndexOf(line) == 0) 
+                            {
+                                foreach (var wallBoxVertex in wall.WallBoxVerticesStart)
+                                {
+                                    if (!Utils.CheckPointInSnapPoints(wallBoxVertex, snapPoints))
+                                    {
+                                        snapPoints.Add(new SnapPoint(wallBoxVertex, ObjectSnapType.End));
+                                    }
+                                }
+                                foreach (var wallBoxVertex in wall.WallBoxVerticesEnd)
+                                {
+                                    if (!Utils.CheckPointInSnapPoints(wallBoxVertex, snapPoints))
+                                    {
+                                        snapPoints.Add(new SnapPoint(wallBoxVertex, ObjectSnapType.End));
+                                    }
+                                }
+                            }
+                            
+                            cadDraw.ScreenToPlane(mouseLocation, cadDraw.DrawingPlane, out var mousePos);
+                            var nearPoint = Utils.GetPerpendicularPoints(line, mousePos);
+                            if (!Utils.CheckPointInSnapPoints(nearPoint, snapPoints))
+                            {
+                                snapPoints.Add(new SnapPoint(nearPoint, ObjectSnapType.Nearest));
+                            }
+                        }
 
                     }
                     else

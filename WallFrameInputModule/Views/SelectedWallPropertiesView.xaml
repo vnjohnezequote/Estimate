@@ -228,7 +228,10 @@
                                 <TextBlock Text="Is Designed" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
                                 <CheckBox IsChecked="{Binding SelectedWall.IsDesigned,Mode=TwoWay}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
                             </DockPanel>
-                            
+                            <DockPanel Margin="0 10 0 0">
+                                <TextBlock Text="Export Wall To Upper" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <CheckBox IsChecked="{Binding SelectedWall.IsExportToUpper,Mode=TwoWay}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                            </DockPanel>
                         </StackPanel>
                     </Expander>
                 </materialDesign:Card>

@@ -9,6 +9,7 @@ using System.Windows.Shapes;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels;
 using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -83,8 +84,10 @@ namespace DrawingModule.DrawToolBase
             var linearEntity = new LinearDim(storePlane, p1, p2, p3, dimTextHeight);
             linearEntity.LineTypeMethod = colorMethodType.byLayer;
             linearEntity.TextSuffix = "mm";
+            //var testLinear = new LinearTest(linearEntity);
 
             EntitiesManager.AddAndRefresh(linearEntity, this.LayerManager.SelectedLayer.Name);
+            //EntitiesManager.AddAndRefresh(testLinear, this.LayerManager.SelectedLayer.Name);
         }
 
         private CommandLoopType  PrepairEntityForDim(Editor editor)

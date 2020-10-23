@@ -27,11 +27,16 @@ namespace AppModels.ExportData
             WarnervaleWallDiscs = new Dictionary<string, WarnervaleWallDict>();
             var floorWallList = new List<WallBase>();
             var rakeWallList = new List<WallBase>();
+            var upperWallList = new List<WallBase>();
             foreach (var wallBase in walls)
             {
                 if (wallBase.WallType.IsRaked)
                 {
                     rakeWallList.Add(wallBase);
+                }
+                else if (wallBase.IsExportToUpper)
+                {
+                    upperWallList.Add(wallBase);
                 }
                 else
                 {
@@ -47,6 +52,11 @@ namespace AppModels.ExportData
             if (rakeWallList.Count>0)
             {
                 WarnervaleWallDiscs.Add("Raked Wall2D", new WarnervaleWallDict(rakeWallList, openings));
+            }
+
+            if (upperWallList.Count>0)
+            {
+                WarnervaleWallDiscs.Add("Upper Wall2D", new WarnervaleWallDict(upperWallList,openings));
             }
         }
 
@@ -144,6 +154,11 @@ namespace AppModels.ExportData
                         worksheet = worksheets["Input(LowerStorey)"];
                         inputToRakedWall = false;
                     }
+                }
+                else if(warnervaleWallDisc.Key == "Upper Wall2D")
+                {
+                    worksheet = worksheets["Input(Single-UpperStorey)"];
+                    inputToRakedWall = false;
                 }
                 else
                 {

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Documents;
 using AppModels.AppData;
+using AppModels.CustomEntity;
 using AppModels.DynamicObject;
 using AppModels.Interaface;
 using AppModels.ViewModelEntity;
@@ -19,6 +20,7 @@ namespace ApplicationInterfaceCore
         BlockKeyedCollection Blocks { get; set; }
         IEntityVm SelectedEntity { get; }
         ObservableCollection<Entity> SelectedEntities { get; }
+        List<Wall2D> Walls { get; } 
         ICadDrawAble CanvasDrawing { get; }
         void AddAndRefresh(Entity entity, string layerName);
         void RemoveEntity(Entity entity);
@@ -32,6 +34,7 @@ namespace ApplicationInterfaceCore
         void SetCanvasDrawing(ICadDrawAble cadDraw);
         void NotifyEntitiesListChanged();
         void ResetSelection();
+        void Insert(int index, Entity entity);
         Entity GetEntity(int index);
         List<Entity> GetSelectedEntities();
         void ChangLayerForSelectedEntities(LayerItem layer);

@@ -34,6 +34,7 @@ namespace AppModels.ExportData
         public int BathCheckOuts { get; set; }
         public int AdditionalStuds { get; set; }
         public double RoofPitch { get; set; }
+        public bool IsExportToUpper { get; set; }
 
         public ObservableCollection<ExportDoorData> Doors { get; set; }
         public ObservableCollection<ExportDoorData> Windows { get; set; }
@@ -51,6 +52,7 @@ namespace AppModels.ExportData
             InwallSupport = wall.InWallSupports;
             BathCheckOuts = wall.BathCheckout;
             RoofPitch = wall.CeilingPitch;
+            IsExportToUpper = wall.IsExportToUpper;
             if (wall.WallType.IsRaked)
             {
                 if (wall.NumberOfSameWall == 0)

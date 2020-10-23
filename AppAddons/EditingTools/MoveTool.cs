@@ -30,7 +30,8 @@ namespace AppAddons.EditingTools
                 selEntity.Translate(movement);
                 selEntity.Selected = false;
             }
-            EntitiesManager.Refresh();
+            EntitiesManager.EntitiesRegen();
+            //EntitiesManager.Refresh();
         }
 
     }

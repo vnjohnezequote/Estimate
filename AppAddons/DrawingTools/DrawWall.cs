@@ -58,32 +58,17 @@ namespace AppAddons.DrawingTools
                 var index2 = Points.Count - 1;
                 var startPoint = (Point3D)Points[index2 - 1].Clone();
                 var endPoint = (Point3D)Points[index2].Clone();
-                //var wallCenterSegment = new Segment2D(startPoint,endPoint);
-                //Utility.OffsetPoint(startPoint, endPoint, 90, out var endWallPoint);
-                var wall = new WallRegion(Plane.XY, startPoint,startPoint,endPoint);
-                wall.Color = Color.FromArgb(127, Color.CornflowerBlue);
+                var wall = new Wall2D(Plane.XY, startPoint,endPoint,90,false,true);
+                //wall.Color = Color.FromArgb(127, Color.CornflowerBlue);
+                wall.Color = Color.CornflowerBlue;
+                //wall.Color = Color.CadetBlue;
                 wall.ColorMethod = colorMethodType.byEntity;
                 wall.LineTypeName = "Dash Space";
                 wall.LineTypeMethod = colorMethodType.byEntity;
-                wall.IsLoadBearingWall = false;
-                //wall.LineTypeName = "";
-                this.EntitiesManager.AddAndRefresh(wall,this.LayerManager.SelectedLayer.Name);
-                //Region region = WallRegion.CreateRectangle(Plane.XY, 2000, 90,true);
-                //this.EntitiesManager.AddAndRefresh(region,this.LayerManager.SelectedLayer.Name);
-                //var wall = new Wall2D(startPoint,endPoint,startPoint,);
+                //wall.IsBeamUnder = false;
 
-                //wall.LineTypeMethod = colorMethodType.byLayer;
-                //{
-                //    if (LayerManager.SelectedLayer.LineTypeName != "Continues")
-                //    {
-                //        wall.LineTypeName = LayerManager.SelectedLayer.LineTypeName;
-                //    }
-                //}
-                //wall.Color = Color.FromArgb(127,Color.CadetBlue);
-                //wall.ColorMethod = colorMethodType.byEntity;
-                //wall.LineTypeMethod = colorMethodType.byEntity;
-                //wall.LineWeight = 1;
-                //this.EntitiesManager.AddAndRefresh(wall, this.LayerManager.SelectedLayer.Name);
+               //wall.LineTypeName = "";
+                this.EntitiesManager.AddAndRefresh(wall,this.LayerManager.SelectedLayer.Name);
             }
         }
         #region Implement IDrawInteractive
