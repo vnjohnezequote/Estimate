@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using AppModels.Enums;
+using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -20,6 +21,7 @@ namespace AppModels.CustomEntity
         private Point3D _startPoint2;
         private Point3D _endPoint1;
         private Point3D _endPoint2;
+        private bool _isOuttrigger;
         public Point3D StartPoint { get; set; }
         public Point3D EndPoint { get; set; }
         public int Thickness { get; set; }
@@ -80,13 +82,25 @@ namespace AppModels.CustomEntity
         public List<Point3D> JoistVertices { get; set; } = new List<Point3D>();
         public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
 
-        public Joist2D(Plane wallPlan, Point3D startPoint, Point3D endPoint,
+        public bool IsOutrigger
+        {
+            get => _isOuttrigger;
+            set
+            {
+                _isOuttrigger = value;
+                this.RegenMode = regenType.RegenAndCompile;
+            }
+        }
+        public Joist JoistReference { get; private set; }
+
+        public Joist2D(Plane wallPlan, Point3D startPoint, Point3D endPoint, Joist joistReference,
             int thickness = 90, bool isShowHanger = false, bool isDoubleJoits = false,bool isShowJoistName= false, double textHeight = 90) :
             base(wallPlan, startPoint, textHeight, Text.alignmentType.BaselineCenter)
         {
             Thickness = thickness;
             IsShowHanger = isShowHanger;
             IsDoubleJoits = isDoubleJoits;
+            this.JoistReference = joistReference;
             InitializerWallLine(startPoint, endPoint);
             this.LineTypeScale = 10;
         }

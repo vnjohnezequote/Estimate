@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ApplicationService;
 using AppModels.CustomEntity;
+using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
@@ -46,11 +47,20 @@ namespace AppAddons.DrawingTools
                 var index2 = Points.Count - 1;
                 var startPoint = (Point3D)Points[index2 - 1].Clone();
                 var endPoint = (Point3D)Points[index2].Clone();
-                var joists = new Joist2D(Plane.XY, startPoint,endPoint,45);
-                //var beam = new Beam2D(Plane.XY, startPoint, endPoint, 45, false, true);
-                joists.Color = this.LayerManager.SelectedLayer.Color;
-                joists.ColorMethod = colorMethodType.byEntity;
-                this.EntitiesManager.AddAndRefresh(joists, LayerManager.SelectedLayer.Name);
+                var joistMember = new Joist();
+                if (this.JobModel.ActiveFloorSheet != null)
+                {
+                    var index = this.JobModel.ActiveFloorSheet.Joists.Count;
+                    joistMember.Id = index;
+                    joistMember.SheetName = this.JobModel.ActiveFloorSheet.Name;
+                    this.JobModel.ActiveFloorSheet.Joists.Add(joistMember);
+                    var joists = new Joist2D(Plane.XY, startPoint, endPoint, joistMember,45);
+                    //var beam = new Beam2D(Plane.XY, startPoint, endPoint, 45, false, true);
+                    joists.Color = this.LayerManager.SelectedLayer.Color;
+                    joists.ColorMethod = colorMethodType.byEntity;
+                    this.EntitiesManager.AddAndRefresh(joists, LayerManager.SelectedLayer.Name);
+                }
+                
             }
         }
 

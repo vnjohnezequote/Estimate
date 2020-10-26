@@ -18,6 +18,7 @@ using AppModels.PocoDataModel;
 using AppModels.PocoDataModel.Openings;
 using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;
 using Newtonsoft.Json;
 using Prism.Mvvm;
@@ -178,7 +179,9 @@ namespace AppModels.ResponsiveData
 			get => this._generalBracingList;
 			set=>this.SetProperty(ref this._generalBracingList,value);
 		}
-		//public ObservableCollection<Opening> DoorAndWindowList { get; }
+
+        public ObservableCollection<FramingSheet> FloorSheets { get; set; } = new ObservableCollection<FramingSheet>();
+        public ObservableCollection<FramingSheet> RafterSheets { get; set; } = new ObservableCollection<FramingSheet>();
 		/// <summary>
 		/// Gets or sets the cost delivery.
 		/// </summary>

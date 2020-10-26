@@ -9,20 +9,24 @@ namespace AppModels.ResponsiveData.Framings
 {
     public abstract class FramingBase: BindableBase
     {
-        #region Field
+        #region Field\
+
+        private int _id;
         private double _pitch;
         private bool _isExisting;
-        private FramingBase _framingInfo;
+        private TimberBase _framingInfo;
         private int _framingSpan;
-        private int _quantities;
+        private string _sheetName;
         #endregion
 
         #region Properties
+        public int Id { get=>_id; set=>SetProperty(ref _id,value); }
         public bool IsExisting { get => _isExisting; set => SetProperty(ref _isExisting, value); }
         public abstract double QuoteLength { get; }
         public int FramingSpan { get=>_framingSpan; set=>SetProperty(ref _framingSpan,value); }
         public double Pitch { get=>_pitch; set=>SetProperty(ref _pitch,value); }
-        public FramingBase FramingInfo { get=>_framingInfo; set=>SetProperty(ref _framingInfo,value); }
+        public string SheetName { get=>_sheetName; set=>SetProperty(ref _sheetName,value); }
+        public TimberBase FramingInfo { get=>_framingInfo; set=>SetProperty(ref _framingInfo,value); }
         #endregion
 
         #region Constructor

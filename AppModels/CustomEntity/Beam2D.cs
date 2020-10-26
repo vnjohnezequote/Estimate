@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AppModels.Enums;
+using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Graphics;
@@ -16,6 +17,7 @@ namespace AppModels.CustomEntity
         private Point3D _startPoint2;
         private Point3D _endPoint1;
         private Point3D _endPoint2;
+        private Beam _beamReference;
         public Point3D StartPoint { get; set; }
         public Point3D EndPoint { get; set; }
         public int Thickness { get; set; }
@@ -26,7 +28,7 @@ namespace AppModels.CustomEntity
         public Segment2D Line1 { get; set; }
         public Segment2D Line2 { get; set; }
         public Segment2D DimensionLine { get; set; }
-
+        public Beam BeamReference { get; private set; }
         public List<Point3D> StartVerticesBox { get; set; }
         public List<Point3D> EndVerticesBox { get; set; }
 
@@ -74,13 +76,14 @@ namespace AppModels.CustomEntity
         public List<Point3D> BeamVertices { get; set; } = new List<Point3D>();
         public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
         
-        public Beam2D(Plane wallPlan, Point3D startPoint, Point3D endPoint,
+        public Beam2D(Plane wallPlan, Point3D startPoint, Point3D endPoint,Beam beamRef,
             int thickness = 90, bool isbeamUnder = true, bool showDimension = false, double textHeight = 90) :
             base(wallPlan, startPoint, textHeight, Text.alignmentType.BaselineCenter)
         {
             Thickness = thickness;
             IsBeamUnder = isbeamUnder;
             ShowDimension = showDimension;
+            this.BeamReference = beamRef;
             InitializerWallLine(startPoint, endPoint);
             this.LineTypeScale = 10;
         }

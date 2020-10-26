@@ -14,6 +14,7 @@ using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;
 using devDept.Geometry;
 using Prism.Mvvm;
@@ -39,6 +40,16 @@ namespace AppModels.ResponsiveData
         /// </summary>
         private ObservableCollection<LevelWall> _levels;
 
+        private FramingSheet _activeFloorSheet;
+
+        public FramingSheet ActiveFloorSheet
+        {
+            get => _activeFloorSheet;
+            set
+            {
+                SetProperty(ref _activeFloorSheet, value);
+            }
+        }
 
         #endregion
 

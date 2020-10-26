@@ -9,9 +9,11 @@
 
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Windows.Controls;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels.CustomEntity;
@@ -22,6 +24,7 @@ using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;
 using AppModels.ResponsiveData.WallMemberData;
 using devDept.Eyeshot;
@@ -129,6 +132,16 @@ namespace WallFrameInputModule.ViewModels
             }
         }
 
+        public Visibility FloorRafterFramingVisibility
+        {
+            get
+            {
+                if (JobModel.Info.QuoteFloorFrame)
+                    return Visibility.Visible;
+                else return Visibility.Collapsed;
+            }
+        }
+
         public Opening SelectedDoor
         {
             get=>_selectedDoor;
@@ -150,6 +163,9 @@ namespace WallFrameInputModule.ViewModels
         public ICommand AddNewDoorCommand { get; private set; }
         public ICommand DeleteBracingCommand { get; private set; }
         public ICommand DeleteOpeningRowCommand { get; private set; }
+        public ICommand AddNewFloorSheetCommand { get; private set; }
+        public ICommand RemoveFloorSheetCommand { get; private set; }
+        public ICommand SelectedFloorFramingChanged { get; private set; }
 
         #endregion
         #region Constructor
@@ -196,9 +212,55 @@ namespace WallFrameInputModule.ViewModels
             AddNewDoorCommand = new DelegateCommand(OnAddNewDoorCommand);
             DeleteOpeningRowCommand = new DelegateCommand<SfDataGrid>(OnDeleteOpening);
             ExportDataToExcelCommand = new DelegateCommand(OnExportData);
+            AddNewFloorSheetCommand = new DelegateCommand(AddNewFloorSheet);
+            RemoveFloorSheetCommand = new DelegateCommand(RemoveFloorSheet);
+            SelectedFloorFramingChanged = new DelegateCommand<FramingSheet>(SetSelectedFloorFraming);
             JobModel.EngineerMemberList.CollectionChanged += EngineerMemberList_CollectionChanged;
+            JobModel.Info.PropertyChanged += JobInfoPropertyChanged;
         }
 
+        private void SetSelectedFloorFraming(FramingSheet floorSheet)
+        {
+            if (floorSheet!=null)
+            {
+                this.JobModel.ActiveFloorSheet = floorSheet;
+            }
+            else
+            {
+                this.JobModel.ActiveFloorSheet = null;
+            }
+        }
+        private void RemoveFloorSheet( )
+        {
+            if (this.JobModel.ActiveFloorSheet != null)
+            {
+                if (this.Level.FloorSheets.Contains(this.JobModel.ActiveFloorSheet))
+                {
+                    this.Level.FloorSheets.Remove(this.JobModel.ActiveFloorSheet);
+                }
+            }
+        }
+        private void AddNewFloorSheet()
+        {
+            var floorSheet = new FramingSheet();
+            floorSheet.FloorName = "Floor - "+ this.Level.LevelName;
+            var id = Level.FloorSheets.Count+1;
+            if (id>1)
+            {
+                floorSheet.ShowSheetId = true;
+                Level.FloorSheets[0].ShowSheetId = true;
+            }
+            floorSheet.Id = id;
+            Level.FloorSheets.Add(floorSheet);
+
+        }
+        private void JobInfoPropertyChanged(object sender,PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(JobModel.Info.QuoteFloorFrame))
+            {
+                RaisePropertyChanged(nameof(FloorRafterFramingVisibility));
+            }
+        }
         private void OnDeleteBracing(SfDataGrid bracingGrid)
         {
             var recordId = bracingGrid.SelectedIndex;

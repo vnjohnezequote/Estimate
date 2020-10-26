@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;
 
 namespace AppModels.Interaface
@@ -15,7 +16,7 @@ namespace AppModels.Interaface
         //ObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
         MyObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
         ObservableCollection<OpeningInfo> DoorSchedules { get; }
-
+        FramingSheet ActiveFloorSheet { get; set; }
         void LoadJob(JobModelPoco jobOpen,List<ClientPoco> clients);
     }
 }

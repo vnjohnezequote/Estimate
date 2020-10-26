@@ -143,6 +143,14 @@ namespace DrawingModule.CustomControl.CanvasControl
                             {
                                 this.EntitiesManager.Walls.Remove(wall);
                             }
+
+                            if (entitiesManagerSelectedEntity is Joist2D joist)
+                            {
+                                if(this.JobModel.ActiveFloorSheet!=null)
+                                    if(this.JobModel.ActiveFloorSheet.Joists.Contains(joist.JoistReference))
+                                        this.JobModel.ActiveFloorSheet.Joists.Remove(joist.JoistReference);
+                            }
+                                
                         }
                     }
                     return true;

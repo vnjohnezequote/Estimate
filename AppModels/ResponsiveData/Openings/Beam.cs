@@ -526,6 +526,7 @@ namespace AppModels.ResponsiveData.Openings
                 }
             }
         }
+        public string SheetName { get; set; }
 
         #endregion
 

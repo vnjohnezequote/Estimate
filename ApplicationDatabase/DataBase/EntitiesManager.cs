@@ -243,8 +243,8 @@ namespace AppDataBase.DataBase
                     //    index = 0;
                     //}
                     entity.LayerName = layerName;
-                    //Entities.Insert(index, entity);
-                    Entities.Add(entity);
+                    Entities.Insert(0, entity);
+                    //Entities.Add(entity);
                     
                 }
                 Entities.Regen();

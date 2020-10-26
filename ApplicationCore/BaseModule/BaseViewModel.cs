@@ -13,6 +13,7 @@ using System.Linq;
 using ApplicationInterfaceCore;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Framings;
 using LiteDB;
 
 namespace ApplicationCore.BaseModule
@@ -32,7 +33,6 @@ namespace ApplicationCore.BaseModule
     {
         #region Field
         private ILayerManager _layerManager;
-
 
         #endregion
 
@@ -88,7 +88,7 @@ namespace ApplicationCore.BaseModule
         /// <summary>
         /// Gets the unity container.
         /// </summary>
-         public List<string> TimberGradeList { get; set; } = new List<string>(){ "MGP10", "MGP12", "F5" ,"F7","F17","P10","P12"};
+        public List<string> TimberGradeList { get; set; } = new List<string>(){ "MGP10", "MGP12", "F5" ,"F7","F17","P10","P12"};
         protected IUnityContainer UnityContainer { get; private set; }
         public ILayerManager LayerManager => _layerManager;
         public IRegionManager RegionManager { get; set; }
