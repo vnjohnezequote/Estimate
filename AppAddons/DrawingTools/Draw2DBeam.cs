@@ -68,11 +68,16 @@ namespace AppAddons.DrawingTools
                     newBeam = new Beam(BeamType.FloorBeam, level.LevelInfo) { Id = beamId };
                     newBeam.Quantity = 1;
                     newBeam.SpanLength = (int)(startPoint.DistanceTo(endPoint))-90;
+                    newBeam.SheetName = JobModel.ActiveFloorSheet.Name;
+                    var beamThickness = 45;
+                    if (JobModel.SelectedJoitsMaterial != null)
+                    {
+                        newBeam.TimberInfo = JobModel.SelectedJoitsMaterial;
+                        beamThickness = newBeam.TimberInfo.NoItem * newBeam.TimberInfo.Depth;
+                    }
                     this.JobModel.ActiveFloorSheet.Beams.Add(newBeam);
-                    var beamBlockName = newBeam.Name + ActiveLevel;
-                    var beam = new Beam2D(Plane.XY, startPoint, endPoint, newBeam,45, false, true);
-                    beam.Color = Color.Brown;
-                    beam.ColorMethod = colorMethodType.byEntity;
+                    //var beamBlockName = newBeam.Name + ActiveLevel;
+                    var beam = new Beam2D(Plane.XY, startPoint, endPoint, newBeam,beamThickness, false, true);
                     beam.LineTypeName = "Dash Space";
                     beam.LineTypeMethod = colorMethodType.byEntity;
                     this.EntitiesManager.AddAndRefresh(beam, LayerManager.SelectedLayer.Name);

@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Timers;
 using System.Windows;
@@ -57,6 +58,8 @@ namespace DrawingModule.ViewModels
         private ObservableCollection<LevelWall> _levels;
         private Timer _autoSaveTimer = new Timer(1 * 60 * 1000);
         private Entity _selectedEntity;
+        private bool _isSaving;
+
         #endregion
         #region public Property
         public IEntitiesManager EntitiesManager { get; }
@@ -75,6 +78,7 @@ namespace DrawingModule.ViewModels
                 this.RaisePropertyChanged(SelectedLevel);
             }
         }
+        public List<int> WallThicknessList { get; set; } = new List<int>() { 70, 90, 140, 200, 230 };
         public string SelectedLevel
         {
             get
@@ -101,7 +105,7 @@ namespace DrawingModule.ViewModels
             get => this._isOrthorMode;
             set => this.SetProperty(ref this._isOrthorMode, value);
         }
-        
+
 
         #endregion
         #region Command
@@ -338,16 +342,23 @@ namespace DrawingModule.ViewModels
                 );
                 _drawingModel.StartWork(writeFile);
             }*/
-
-            if (this.JobModel != null)
+            if (!_isSaving)
             {
-                var fileName = JobModel.Info.JobLocation + "\\" + JobModel.Info.JobNumber + ".eye";
-                WriteFile writeFile = new WriteFile(
-                    new WriteFileParams(_drawingModel)
-                    , fileName,
-                    new EzequoteFileSerializer()
-                );
-                _drawingModel.StartWork(writeFile);
+                _isSaving = true;
+            
+                if (this.JobModel != null )
+                {
+                    _isSaving = true;
+                    var fileName = JobModel.Info.JobLocation + "\\" + JobModel.Info.JobNumber + ".eye";
+                    WriteFile writeFile = new WriteFile(
+                        new WriteFileParams(_drawingModel)
+                        , fileName,
+                        new EzequoteFileSerializer()
+                    );
+                    _drawingModel.StartWork(writeFile);
+                    
+                }
+                _isSaving = false;
             }
         }
 

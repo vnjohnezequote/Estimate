@@ -27,7 +27,7 @@
             <TextBox Margin="0 10 0 0"
                      x:Name="TxtRoofPitch"
                      materialDesign:HintAssist.Hint="Roof Pitch"
-                     Text="{Binding JobInfo.RoofPitch,UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding JobInfo.RoofPitch}"/>
             <TextBox Margin="0 10 0 0"
                      x:Name="TxtCeilingPitch"
                      materialDesign:HintAssist.Hint="Ceiling Pitch"

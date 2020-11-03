@@ -11,18 +11,23 @@ using ApplicationService;
 using AppModels;
 using AppModels.CustomEntity;
 using AppModels.EventArg;
+using AppModels.NewReposiveData;
+using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
 using DrawingModule.CommandClass;
 using DrawingModule.DrawToolBase;
 using DrawingModule.UserInteractive;
+using GeometryGym.Ifc;
+using TriangleNet.Geometry;
 using Region = devDept.Eyeshot.Entities.Region;
 
 namespace AppAddons.DrawingTools
 {
     public class DrawWall: DrawingLine
     {
+        
         //public DrawInteractiveDelegate DrawInteractiveHandler { get; private set; }
         public override string ToolName => "Drawing 2D Wall";
         #region Constructor
@@ -58,20 +63,27 @@ namespace AppAddons.DrawingTools
                 var index2 = Points.Count - 1;
                 var startPoint = (Point3D)Points[index2 - 1].Clone();
                 var endPoint = (Point3D)Points[index2].Clone();
-                var wall = new Wall2D(Plane.XY, startPoint,endPoint,90,false,true);
+                var wallThickness = 90;
+                if (JobModel.SelectedWallThickness!=0)
+                {
+                    wallThickness = JobModel.SelectedWallThickness;
+                }
+                var wall = new Wall2D(Plane.XY, startPoint,endPoint,wallThickness,false,true);
                 //wall.Color = Color.FromArgb(127, Color.CornflowerBlue);
                 wall.Color = Color.CornflowerBlue;
                 //wall.Color = Color.CadetBlue;
                 wall.ColorMethod = colorMethodType.byEntity;
                 wall.LineTypeName = "Dash Space";
                 wall.LineTypeMethod = colorMethodType.byEntity;
+                //var wall2 = new Wall2D(wall);
                 //wall.IsBeamUnder = false;
-
-               //wall.LineTypeName = "";
+                //wall.LineTypeName = "";
                 this.EntitiesManager.AddAndRefresh(wall,this.LayerManager.SelectedLayer.Name);
             }
         }
         #region Implement IDrawInteractive
+
+
 
         #endregion
     }

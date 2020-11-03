@@ -18,7 +18,7 @@ namespace AppModels.ViewModelEntity
     public abstract class EntityVmBase: BindableBase, IEntityVm
     {
         public IEntity Entity { get; }
-        [PropertyGrid(NestedPropertyDisplayMode = NestedPropertyDisplayMode.None)]
+        //[PropertyGrid(NestedPropertyDisplayMode = NestedPropertyDisplayMode.None)]
         public Color? Color
         {
             get => Entity?.Color;

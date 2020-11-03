@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.ModelBinding;
 using AppModels.Enums;
+using AppModels.Interaface;
+using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -17,17 +19,69 @@ using Region = devDept.Eyeshot.Entities.Region;
 
 namespace AppModels.CustomEntity
 {
-    public class Wall2D: Text
+    public class Wall2D: Text, IEntityVmCreateAble
     {
         private Point3D _startPoint1;
         private Point3D _startPoint2;
         private Point3D _endPoint1;
         private Point3D _endPoint2;
-        public Point3D StartPoint { get; set; }
-        public Point3D EndPoint { get; set; }
-        public int WallThickness { get; set; }
-        public bool IsLoadBearingWall { get; set; }
-        public bool ShowWallDimension { get; set; }
+        private int _wallThickness;
+        private bool _isLoadBearingWall;
+        private bool _showDimension;
+        private Point3D _startPoint;
+        private Point3D _endPoint;
+
+        public Point3D StartPoint
+        {
+            get => _startPoint;
+            set
+            {
+                _startPoint = value;
+                this.RegenMode = regenType.RegenAndCompile;
+            }
+        }
+
+        public Point3D EndPoint
+        {
+            get => _endPoint;
+            set
+            {
+                _endPoint = value;
+                this.RegenMode = regenType.RegenAndCompile;
+            }
+        }
+
+        public int WallThickness
+        {
+            get => _wallThickness;
+            set
+            {
+                _wallThickness = value;
+                this.RegenEntityGeometry(StartPoint,EndPoint);
+                this.RegenMode = regenType.RegenAndCompile;
+            }
+        }
+
+        public bool IsLoadBearingWall
+        {
+            get => _isLoadBearingWall;
+            set
+            {
+                _isLoadBearingWall = value;
+                this.RegenMode = regenType.RegenAndCompile;
+            }
+        }
+
+        public bool ShowWallDimension
+        {
+            get => _showDimension;
+            set
+            {
+                _showDimension = value;
+                this.RegenMode = regenType.RegenAndCompile;
+            }
+        }
+
         public Segment2D CenterLine { get; set; }
         public Segment2D WallLine1 { get; set; }
         public Segment2D WallLine2 { get; set; }
@@ -91,22 +145,22 @@ namespace AppModels.CustomEntity
             int wallThickness = 90, bool isLoadBearingWall = true, bool showDimension = false, double textHeight = 90) :
             base(wallPlan, startPoint, textHeight, Text.alignmentType.BaselineCenter)
         {
-            StartPoint = startPoint;
-            EndPoint = endPoint;
+            _startPoint = startPoint;
+            _endPoint = endPoint;
             CenterlineVertices = new List<Point3D>(){StartPoint,EndPoint};
-            WallThickness = wallThickness;
-            IsLoadBearingWall = isLoadBearingWall;
-            ShowWallDimension = showDimension;
+            _wallThickness = wallThickness;
+            _isLoadBearingWall = isLoadBearingWall;
+            _showDimension = showDimension;
             CenterLine = new Segment2D(startPoint, endPoint);
             ShowStartWallLine = true;
             ShowEndWallLine = true;
-            InitializerWallLine(startPoint, endPoint);
+            RegenEntityGeometry(startPoint, endPoint);
             this.LineTypeScale = 10;
             //this.InsertionPoint = new Point3D(DimensionLine.MidPoint.X,DimensionLine.MidPoint.Y, 0);
             //var distace = StartPoint.DistanceTo(EndPoint);
             //this.TextString = ((int)(StartPoint.DistanceTo(EndPoint)-Thickness)).ToString();
         }
-        private void InitializerWallLine(Point3D startPoint, Point3D endPoint)
+        private void RegenEntityGeometry(Point3D startPoint, Point3D endPoint)
         {
             //var offsetLine = CenterLine.Offset(Thickness / 2, Vector3D.AxisZ);
             var offsetLine = CenterLine.Offset((double)WallThickness / 2);
@@ -277,7 +331,7 @@ namespace AppModels.CustomEntity
             //var currentState = data.RenderContext.CurrentDepthStencilState;
             //data.RenderContext.SetState(depthStencilStateType.DepthMaskFalse_DepthTestGreater);
             
-            data.RenderContext.SetLineSize(1);
+            data.RenderContext.SetLineSize(4);
             data.RenderContext.SetColorWireframe(Color.Black);
             //data.RenderContext.SetColorWireframe(Color.Crimson);
             data.RenderContext.PushModelView();
@@ -507,6 +561,11 @@ namespace AppModels.CustomEntity
                     walls.Add(otherWall);
                     return false;
             }
+        }
+
+        public IEntityVm CreateEntityVm()
+        {
+            return new Wall2DVm(this);
         }
     }
 }

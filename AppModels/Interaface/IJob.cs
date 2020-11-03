@@ -17,6 +17,8 @@ namespace AppModels.Interaface
         MyObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
         ObservableCollection<OpeningInfo> DoorSchedules { get; }
         FramingSheet ActiveFloorSheet { get; set; }
+        TimberBase SelectedJoitsMaterial { get; set; }
+        int SelectedWallThickness { get; set; }
         void LoadJob(JobModelPoco jobOpen,List<ClientPoco> clients);
     }
 }

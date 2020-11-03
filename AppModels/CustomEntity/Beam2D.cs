@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
 using AppModels.Enums;
+using AppModels.Interaface;
 using AppModels.ResponsiveData.Openings;
+using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Graphics;
@@ -11,18 +15,60 @@ using Vector3D = devDept.Geometry.Vector3D;
 
 namespace AppModels.CustomEntity
 {
-    public class Beam2D: Text
+    public class Beam2D: Text,IEntityVmCreateAble
     {
+        #region private Field
         private Point3D _startPoint1;
         private Point3D _startPoint2;
         private Point3D _endPoint1;
         private Point3D _endPoint2;
         private Beam _beamReference;
+        private int _thickness;
+        private int _depth;
+        private bool _isBeamUnder;
+
+
+        #endregion
+
+        #region Properties
         public Point3D StartPoint { get; set; }
         public Point3D EndPoint { get; set; }
-        public int Thickness { get; set; }
-        public int Depth { get; set; }
-        public bool IsBeamUnder { get; set; }
+        public int Thickness
+        {
+            get => _thickness;
+            set
+            {
+                _thickness = value;
+                this.RegenGeometry(this.StartPoint1,this.EndPoint1);
+                this.RegenMode = regenType.RegenAndCompile;
+            }
+        }
+        public int Depth
+        {
+            get => _depth;
+            set
+            {
+                _depth = value;
+                this.RegenGeometry(this.StartPoint1, this.EndPoint1);
+                this.RegenMode = regenType.RegenAndCompile;
+            }
+        }
+        public bool IsBeamUnder {
+            get=>_isBeamUnder;
+            set
+            {
+                _isBeamUnder = value;
+                if (_isBeamUnder )
+                {
+                    Color = Color.FromArgb(100, 255, 0, 127);
+                }
+
+                else
+                {
+                    Color = Color.Crimson;
+                }
+            }
+        }
         public bool ShowDimension { get; set; }
         public Segment2D CenterLine { get; set; }
         public Segment2D Line1 { get; set; }
@@ -31,7 +77,6 @@ namespace AppModels.CustomEntity
         public Beam BeamReference { get; private set; }
         public List<Point3D> StartVerticesBox { get; set; }
         public List<Point3D> EndVerticesBox { get; set; }
-
         public Point3D StartPoint1
         {
             get => _startPoint1;
@@ -41,7 +86,6 @@ namespace AppModels.CustomEntity
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-
         public Point3D StartPoint2
         {
             get => _startPoint2;
@@ -51,7 +95,6 @@ namespace AppModels.CustomEntity
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-
         public Point3D EndPoint1
         {
             get => _endPoint1;
@@ -61,7 +104,6 @@ namespace AppModels.CustomEntity
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-
         public Point3D EndPoint2
         {
             get => _endPoint2;
@@ -75,19 +117,51 @@ namespace AppModels.CustomEntity
         public List<Segment2D> BoxLines { get; set; } = new List<Segment2D>();
         public List<Point3D> BeamVertices { get; set; } = new List<Point3D>();
         public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
-        
+        #endregion
         public Beam2D(Plane wallPlan, Point3D startPoint, Point3D endPoint,Beam beamRef,
-            int thickness = 90, bool isbeamUnder = true, bool showDimension = false, double textHeight = 90) :
+            int thickness = 45, bool isBeamUnder = true, bool showDimension = false, double textHeight = 90) :
             base(wallPlan, startPoint, textHeight, Text.alignmentType.BaselineCenter)
         {
-            Thickness = thickness;
-            IsBeamUnder = isbeamUnder;
+            ColorMethod = colorMethodType.byEntity;
+            if (isBeamUnder)
+            {
+                Color = Color.FromArgb(100,255,0,127);
+            }
+
+            else
+            {
+                Color = Color.Crimson;
+            }
+            _thickness = thickness;
+            IsBeamUnder = isBeamUnder;
             ShowDimension = showDimension;
             this.BeamReference = beamRef;
-            InitializerWallLine(startPoint, endPoint);
+            if (BeamReference.TimberInfo!=null )
+            {
+                _depth = BeamReference.Thickness;
+            }
+            BeamReference.PropertyChanged += BeramReferencePropertiesChanged;
+            RegenGeometry(startPoint, endPoint);
             this.LineTypeScale = 10;
         }
-        private void InitializerWallLine(Point3D startPoint, Point3D endPoint)
+        private void BeramReferencePropertiesChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(BeamReference.TimberInfo):
+                    if (BeamReference.TimberInfo!=null)
+                    {
+                        Thickness = BeamReference.Depth * BeamReference.NoItem;
+                        Depth = BeamReference.Thickness;
+                    }
+                    
+                    break;
+
+                default: break;
+            }
+        }
+
+        private void RegenGeometry(Point3D startPoint, Point3D endPoint)
         {
             StartPoint1 = startPoint;
             EndPoint1 = endPoint;
@@ -212,7 +286,6 @@ namespace AppModels.CustomEntity
         //    }
         //    data.RenderContext.PopModelView();
         //}
-
         public override void Regen(RegenParams data)
         {
             var distance = (int)StartPoint.DistanceTo(EndPoint) - Thickness;
@@ -254,7 +327,6 @@ namespace AppModels.CustomEntity
             base.UpdateBoundingBox(data);
             this.RegenMode = regenType.CompileOnly;
         }
-
         public WallIntersectionType GetInterSection(Wall2D other, out Point3D intersectionPoint, out LinearPath centerLinePath)
         {
             intersectionPoint = null;
@@ -295,6 +367,9 @@ namespace AppModels.CustomEntity
             }
             return WallIntersectionType.None;
         }
-
+        public IEntityVm CreateEntityVm()
+        {
+            return new Beam2DVm(this);
+        }
     }
 }

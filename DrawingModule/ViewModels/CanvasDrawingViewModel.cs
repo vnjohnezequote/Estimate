@@ -38,6 +38,7 @@ namespace DrawingModule.ViewModels
         private CanvasDrawingView _canvasDrawingView;
         private string _activeLevel;
         private IEntityVm _selectedEntity;
+        
 
         private DynamicInputViewModel  _dynamciInputViewModel;
         #endregion

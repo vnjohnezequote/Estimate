@@ -93,7 +93,7 @@ namespace ApplicationCore.BaseModule
         public ILayerManager LayerManager => _layerManager;
         public IRegionManager RegionManager { get; set; }
         protected IEventAggregator EventAggregator { get; private set; }
-        public IJob JobModel { get; private set; }
+        public IJob JobModel { get; set; }
         /// <summary>
         /// Gets or sets the beam design infors.
         /// </summary>

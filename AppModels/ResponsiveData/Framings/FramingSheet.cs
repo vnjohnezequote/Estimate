@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using AppModels.ResponsiveData.Openings;
 using Prism.Mvvm;
@@ -17,7 +18,7 @@ namespace AppModels.ResponsiveData.Framings
         private int _id;
         private string _floorName;
         private bool _showSheetId;
-
+        public IGlobalWallInfo GloaWallInfo { get; }
         public int Id
         {
             get => _id;
@@ -64,8 +65,9 @@ namespace AppModels.ResponsiveData.Framings
         public ObservableCollection<Joist> Joists { get; set; } = new ObservableCollection<Joist>();
         public ObservableCollection<Beam> Beams { get; set; } = new ObservableCollection<Beam>();
 
-        public FramingSheet()
+        public FramingSheet(IGlobalWallInfo globalInfo)
         {
+            GloaWallInfo = globalInfo;
             this.PropertyChanged+=OnPropertyChanged;
         }
 
@@ -76,6 +78,11 @@ namespace AppModels.ResponsiveData.Framings
                 foreach (var joist in Joists)
                 {
                     joist.SheetName = this.Name;
+                }
+
+                foreach (var beam in Beams )
+                {
+                    beam.SheetName = this.Name;
                 }
             }
         }

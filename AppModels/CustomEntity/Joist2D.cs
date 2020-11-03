@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using AppModels.Enums;
+using AppModels.Interaface;
+using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
+using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -15,53 +20,79 @@ using devDept.Serialization;
 
 namespace AppModels.CustomEntity
 {
-    public class Joist2D : Text
+    public class Joist2D : Text,IEntityVmCreateAble
     {
         private Point3D _startPoint1;
         private Point3D _startPoint2;
         private Point3D _endPoint1;
         private Point3D _endPoint2;
         private bool _isOuttrigger;
+        private int _thickness;
+        private int _depth;
         public Point3D StartPoint { get; set; }
         public Point3D EndPoint { get; set; }
-        public int Thickness { get; set; }
-        public int Depth { get; set; }
+        public int Thickness
+        {
+            get => _thickness;
+            set
+            {
+                _thickness = value;
+                this.RegenGeometry(this.StartPoint1, this.EndPoint1);
+                this.RegenMode = regenType.RegenAndCompile;
+            }
+        }
+        public int Depth
+        {
+            get => _depth;
+            set
+            {
+                _depth = value;
+                this.RegenGeometry(this.StartPoint1,this.EndPoint1);
+                this.RegenMode = regenType.RegenAndCompile;
+            }
+        }
         public bool IsShowHanger { get; set; }
-        public bool IsDoubleJoits { get; set; }
+        //public bool IsDoubleJoits { get; set; }
         public Segment2D CenterLine { get; set; }
         public Segment2D Line1 { get; set; }
         public Segment2D Line2 { get; set; }
-        
         public Point3D StartPoint1
         {
             get => _startPoint1;
             set
             {
                 _startPoint1 = value;
+                if (_startPoint1 ==null|| _endPoint1 ==null )
+                {
+                    return;
+                }
+                this.RegenGeometry(_startPoint1,_endPoint1);
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-
         public Point3D StartPoint2
         {
             get => _startPoint2;
             set
             {
                 _startPoint2 = value;
+                this.RegenGeometry(_startPoint1,_endPoint1);
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-
         public Point3D EndPoint1
         {
             get => _endPoint1;
             set
             {
                 _endPoint1 = value;
+                if (_startPoint1 == null || _endPoint1 == null)
+                {
+                    return;
+                }
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-
         public Point3D EndPoint2
         {
             get => _endPoint2;
@@ -72,7 +103,6 @@ namespace AppModels.CustomEntity
             }
 
         }
-
         public bool IsShowJoistName
         {
             get;
@@ -81,7 +111,6 @@ namespace AppModels.CustomEntity
         public List<Segment2D> BoxLines { get; set; } = new List<Segment2D>();
         public List<Point3D> JoistVertices { get; set; } = new List<Point3D>();
         public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
-
         public bool IsOutrigger
         {
             get => _isOuttrigger;
@@ -93,36 +122,97 @@ namespace AppModels.CustomEntity
         }
         public Joist JoistReference { get; private set; }
 
+        public double FullLength
+        {
+            get;
+            set;
+        }
+
         public Joist2D(Plane wallPlan, Point3D startPoint, Point3D endPoint, Joist joistReference,
-            int thickness = 90, bool isShowHanger = false, bool isDoubleJoits = false,bool isShowJoistName= false, double textHeight = 90) :
+            int thickness = 90, bool isShowHanger = false, bool isShowJoistName= false, double textHeight = 90) :
             base(wallPlan, startPoint, textHeight, Text.alignmentType.BaselineCenter)
         {
-            Thickness = thickness;
+            _thickness = thickness;
             IsShowHanger = isShowHanger;
-            IsDoubleJoits = isDoubleJoits;
             this.JoistReference = joistReference;
-            InitializerWallLine(startPoint, endPoint);
-            this.LineTypeScale = 10;
+            _startPoint1 = startPoint;
+            _endPoint1 = endPoint;
+            JoistReference.PropertyChanged+=JoistReferenceOnPropertyChanged;
+
+            RegenGeometry(startPoint, endPoint);
+            //this.LineTypeScale = 10;
         }
-        private void InitializerWallLine(Point3D startPoint, Point3D endPoint)
+
+        public Joist2D(Joist2D another): base(another)
         {
-            StartPoint1 = startPoint;
-            EndPoint1 = endPoint;
-            var thickness = IsDoubleJoits ? Thickness * 2 : Thickness;
+            this._thickness = another.Thickness;
+            this._depth = another.Depth;
+            this.IsShowHanger = another.IsShowHanger;
+            this.JoistReference = new Joist();
+            FramingSheet currentSheet = another.JoistReference.FloorSheet;
+            var index = currentSheet.Joists.Count;
+            JoistReference.Id = index;
+            JoistReference.SheetName = currentSheet.Name;
+            JoistReference.FramingSpan = another.JoistReference.FramingSpan;
+            JoistReference.FloorSheet = currentSheet;
+            if (another.JoistReference.FramingInfo!=null)
+            {
+                JoistReference.FramingInfo = another.JoistReference.FramingInfo;
+            }
+            this._startPoint1 = (Point3D)another.StartPoint1.Clone();
+            this._endPoint1 = (Point3D)another.EndPoint1.Clone();
+            this.LineTypeScale = 10;
+            RegenGeometry(_startPoint1,_endPoint1);
+
+
+        }
+
+        private void UpdateDistance()
+        {
+            if (this.StartPoint1!=null && this.EndPoint1 !=null)
+            {
+                this.FullLength = StartPoint1.DistanceTo(EndPoint1);
+                if (this.JoistReference!=null)
+                {
+                    this.JoistReference.FullLength = (int)FullLength;
+                }
+            }
+        }
+        private void JoistReferenceOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(JoistReference.FramingInfo):
+                    if (JoistReference.FramingInfo!=null)
+                    {
+                        Thickness = JoistReference.FramingInfo.Depth * JoistReference.FramingInfo.NoItem;
+                        Depth = JoistReference.FramingInfo.Thickness;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void RegenGeometry(Point3D startPoint, Point3D endPoint)
+        {
+            //if (startPoint == null || endPoint == null) return;
+            
+            //StartPoint1 = startPoint;
+            //EndPoint1 = endPoint;
+            var thickness = Thickness;
             Line1 = new Segment2D(StartPoint1, EndPoint1);
             Line2 = Line1.Offset(Thickness);
-            StartPoint2 = Line2.P0.ConvertPoint2DtoPoint3D();
-            EndPoint2 = Line2.P1.ConvertPoint2DtoPoint3D();
+            _startPoint2 = Line2.P0.ConvertPoint2DtoPoint3D();
+            _endPoint2 = Line2.P1.ConvertPoint2DtoPoint3D();
 
             CenterLine = Line1.Offset((double)Thickness / 2);
             CenterLine.ExtendBy(-(double)Thickness / 2, -(double)Thickness / 2);
 
             StartPoint = CenterLine.P0.ConvertPoint2DtoPoint3D();
             EndPoint = CenterLine.P1.ConvertPoint2DtoPoint3D();
-
-            var offsetLine = Line1.Offset(-(double)Thickness / 2);
             
-
+            var offsetLine = Line1.Offset(-(double)Thickness / 2);
             var segment1 = new Segment2D((Point3D)StartPoint1.Clone(), (Point3D)EndPoint1.Clone());
             segment1.ExtendBy(-Thickness, -Thickness);
             var segment2 = new Segment2D((Point3D)StartPoint2.Clone(), (Point3D)EndPoint2.Clone());
@@ -131,7 +221,7 @@ namespace AppModels.CustomEntity
             var p2 = segment2.P0;
             var p3 = segment1.P1;
             var p4 = segment2.P1;
-
+            this.UpdateDistance();
         }
         protected override void Draw(DrawParams data)
         {
@@ -250,6 +340,48 @@ namespace AppModels.CustomEntity
                 }
             }
             return WallIntersectionType.None;
+        }
+
+        public IEntityVm CreateEntityVm()
+        {
+            return new Joist2dVm(this);
+        }
+
+        public override object Clone()
+        {
+            return new Joist2D(this);
+        }
+
+        public Joist2D Offset(double amount, Vector3D planeNormal)
+        {
+            return this.Offset(amount, planeNormal, 0.0, false);
+        }
+
+        public Joist2D Offset(double amount, Vector3D planeNormal, double tolerance, bool sharp)
+        {
+            Joist2D joist = (Joist2D) this.Clone();
+            Line joistline = new Line(joist.StartPoint1, joist.EndPoint1);
+            Vector3D vector3D = Vector3D.Cross(joistline.Tangent,planeNormal);
+            vector3D.Normalize();
+            Vector3D v = vector3D * amount;
+            joistline.Translate(v);
+            joist.StartPoint1 = joistline.StartPoint;
+            joist.EndPoint1 = joistline.EndPoint;
+            joist.InsertionPoint = StartPoint1;
+            return joist;
+        }
+
+        public bool Project(Point3D point, out double t)
+        {
+            Segment3D segment = new Segment3D(this.StartPoint1, this.EndPoint1);
+            Line joistLine = new Line(this.StartPoint1, this.EndPoint1);
+            return joistLine.Project(point, out t);
+        }
+
+        public Point3D PointAt(double t)
+        {
+            var joitsLine = new Line(StartPoint1, EndPoint1);
+            return joitsLine.PointAt(t);
         }
     }
 }

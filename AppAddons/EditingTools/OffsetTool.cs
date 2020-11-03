@@ -7,6 +7,7 @@ using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -86,7 +87,21 @@ namespace AppAddons.EditingTools
                 var offetEntity = CalculatorOffsetEntity(_selectedEntity, _offsetPoint);
                 if (offetEntity != null)
                 {
-                    EntitiesManager.AddAndRefresh(offetEntity, LayerManager.SelectedLayer.Name);
+                    if (offetEntity is Joist2D joist)
+                    {
+                        if (joist.JoistReference!=null && joist.JoistReference.FloorSheet!=null)
+                        {
+                            joist.JoistReference.FloorSheet.Joists.Add(joist.JoistReference);
+                            EntitiesManager.AddAndRefresh(offetEntity, LayerManager.SelectedLayer.Name);
+                        }
+
+                    }
+                    else
+                    {
+                        EntitiesManager.AddAndRefresh(offetEntity, LayerManager.SelectedLayer.Name);
+                    }
+                    
+                   
                 }
 
             }
@@ -119,7 +134,11 @@ namespace AppAddons.EditingTools
             }
 
             var offetEntity = CalculatorOffsetEntity(this._selectedEntity, e.CurrentPoint);
-            DrawInteractiveUntilities.DrawCurveOrBlockRef(offetEntity,canvas);
+            if (offetEntity is ICurve)
+            {
+                DrawInteractiveUntilities.DrawCurveOrBlockRef(offetEntity, canvas);
+            }
+            
             if (BasePoint!=null )
             {
                 DrawInteractiveUntilities.DrawInteractiveSpotLine(BasePoint, e.CurrentPoint, canvas);
@@ -129,39 +148,70 @@ namespace AppAddons.EditingTools
 
         private Entity CalculatorOffsetEntity(Entity selEntity, Point3D offsetPoint)
         {
-            ICurve selCurve = _selectedEntity as ICurve;
-            double t;
-            bool success = selCurve.Project(offsetPoint, out t);
-            Point3D projectedPt = selCurve.PointAt(t);
-            BasePoint = projectedPt;
-            double offsetDist = 0;
-            if (this.OffsetDistance ==0)
+            if (selEntity is ICurve selCurve)
             {
-                offsetDist = projectedPt.DistanceTo(offsetPoint);
+                double t;
+                bool success = selCurve.Project(offsetPoint, out t);
+                Point3D projectedPt = selCurve.PointAt(t);
+                BasePoint = projectedPt;
+                double offsetDist = 0;
+                if (this.OffsetDistance == 0)
+                {
+                    offsetDist = projectedPt.DistanceTo(offsetPoint);
+                }
+                else
+                {
+                    offsetDist = this.OffsetDistance;
+                }
+
+                //if (selEntity is Line line)
+                //{
+                //    var pline = new LinearPath(line.Vertices);
+                //    var offsetCurve = pline.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
+                //    success = offsetCurve.Project(offsetPoint, out t);
+                //    projectedPt = offsetCurve.PointAt(t);
+                //    if (projectedPt.DistanceTo(offsetPoint) > 1e-3)
+                //        offsetCurve = pline.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
+                //    return offsetCurve as Entity;
+                //}
+
+                //return null;
+                ICurve offsetCurve = selCurve.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
+                success = offsetCurve.Project(offsetPoint, out t);
+                projectedPt = offsetCurve.PointAt(t);
+                if (projectedPt.DistanceTo(offsetPoint) > 1e-3)
+                    offsetCurve = selCurve.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
+                return offsetCurve as Entity;
             }
-            else
+            else if(selEntity is Joist2D joist)
             {
-                offsetDist = this.OffsetDistance;
+                double t;
+                bool success = joist.Project(offsetPoint, out t);
+                Point3D projectedPt = joist.PointAt(t);
+                BasePoint = projectedPt;
+                double offsetDist = 0;
+                if (this.OffsetDistance == 0)
+                {
+                    offsetDist = projectedPt.DistanceTo(offsetPoint);
+                }
+                else
+                {
+                    offsetDist = this.OffsetDistance;
+                }
+                var offsetJoist = joist.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
+                success = offsetJoist.Project(offsetPoint, out t);
+                projectedPt = offsetJoist.PointAt(t);
+                if (projectedPt.DistanceTo(offsetPoint)>1e-3)
+                {
+                    offsetJoist = joist.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
+                }
+
+                return offsetJoist as Entity;
             }
+            
 
-            //if (selEntity is Line line)
-            //{
-            //    var pline = new LinearPath(line.Vertices);
-            //    var offsetCurve = pline.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
-            //    success = offsetCurve.Project(offsetPoint, out t);
-            //    projectedPt = offsetCurve.PointAt(t);
-            //    if (projectedPt.DistanceTo(offsetPoint) > 1e-3)
-            //        offsetCurve = pline.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
-            //    return offsetCurve as Entity;
-            //}
+            return null;
 
-            //return null;
-            ICurve offsetCurve = selCurve.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
-            success = offsetCurve.Project(offsetPoint, out t);
-            projectedPt = offsetCurve.PointAt(t);
-            if (projectedPt.DistanceTo(offsetPoint) > 1e-3)
-                offsetCurve = selCurve.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
-            return offsetCurve as Entity;
         }
 
     }

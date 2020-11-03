@@ -150,6 +150,13 @@ namespace DrawingModule.CustomControl.CanvasControl
                                     if(this.JobModel.ActiveFloorSheet.Joists.Contains(joist.JoistReference))
                                         this.JobModel.ActiveFloorSheet.Joists.Remove(joist.JoistReference);
                             }
+
+                            if (entitiesManagerSelectedEntity is Beam2D beam2D)
+                            {
+                                if (this.JobModel.ActiveFloorSheet != null)
+                                    if (this.JobModel.ActiveFloorSheet.Beams.Contains(beam2D.BeamReference))
+                                        this.JobModel.ActiveFloorSheet.Beams.Remove(beam2D.BeamReference);
+                            }
                                 
                         }
                     }

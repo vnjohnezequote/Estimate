@@ -97,13 +97,23 @@ namespace AppModels
                                 floorBlock.Entities.Add(beamLeader);
                             }
 
-                            if (beamEntity.BeamNameAttribute is Text beamText)
+                            foreach (var beamEntityAttribute in beamEntity.Attributes)
                             {
-                                var newBeamText = new Text(Plane.XY, beamText.InsertionPoint, beamEntity.Attributes["Name"].Value, beamText.Height, beamEntity.Attributes["Name"].Alignment);
-                                newBeamText.Color = beamText.Color;
-                                newBeamText.ColorMethod = colorMethodType.byEntity;
-                                floorBlock.Entities.Add(newBeamText);
+                                //var beamText = new Text(Plane.XY, beamEntityAttribute.Value.InsertionPoint, beamEntityAttribute.Value, beamText.Height, beamEntity.Attributes["Name"].Alignment);
+                                var beamText = new Text(Plane.XY, beamEntityAttribute.Value.InsertionPoint,
+                                    beamEntityAttribute.Value.Value, beamEntityAttribute.Value.Height,
+                                    beamEntityAttribute.Value.Alignment);
+                                beamText.Color = beamEntityAttribute.Value.Color;
+                                beamText.ColorMethod = colorMethodType.byEntity;
+                                floorBlock.Entities.Add(beamText);
                             }
+                            //if (beamEntity.BeamNameAttribute is Text beamText)
+                            //{
+                            //    var newBeamText = new Text(Plane.XY, beamText.InsertionPoint, beamEntity.Attributes["Name"].Value, beamText.Height, beamEntity.Attributes["Name"].Alignment);
+                            //    newBeamText.Color = beamText.Color;
+                            //    newBeamText.ColorMethod = colorMethodType.byEntity;
+                            //    floorBlock.Entities.Add(newBeamText);
+                            //}
 
                             continue;
                         }

@@ -35,12 +35,14 @@ namespace AppModels.ResponsiveData
 
         private JobInfo _inFor;
 
+        private int _selectedWallThickness;
         /// <summary>
         /// The levels.
         /// </summary>
         private ObservableCollection<LevelWall> _levels;
 
         private FramingSheet _activeFloorSheet;
+        private TimberBase _selectedJoistMaterial;
 
         public FramingSheet ActiveFloorSheet
         {
@@ -50,7 +52,7 @@ namespace AppModels.ResponsiveData
                 SetProperty(ref _activeFloorSheet, value);
             }
         }
-
+        public int SelectedWallThickness { get=>_selectedWallThickness; set=>SetProperty(ref _selectedWallThickness, value); }
         #endregion
 
         #region Property
@@ -61,6 +63,11 @@ namespace AppModels.ResponsiveData
         {
             get => this._inFor;
             set => this.SetProperty(ref this._inFor, value);
+        }
+        public TimberBase SelectedJoitsMaterial
+        {
+            get => this._selectedJoistMaterial;
+            set => SetProperty(ref _selectedJoistMaterial, value);
         }
         public GlobalWallInfo GlobalWallInfo { get; set; }
         /// <summary>

@@ -29,7 +29,7 @@
 										Units="Millimeters"
                                         EntitiesManager="{Binding EntitiesManager}"
                                         LayersManager="{Binding LayerManager}"
-                                        JobModel="{Binding JobModel}"
+                                        JobModel="{Binding JobModel,Mode=OneWay}"
                                         ActiveLayerName="{Binding LayerManager.SelectedLayer.Name}"
                                         SelectionFilterMode="Entity">
                             <b:Interaction.Triggers>

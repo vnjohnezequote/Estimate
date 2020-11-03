@@ -619,7 +619,7 @@
                 </StackPanel>
 
                 <!-- FloorFramingInput -->
-                <Grid>
+                <Grid Visibility="Visible">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="1"/>

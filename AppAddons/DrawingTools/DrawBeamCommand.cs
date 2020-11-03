@@ -79,11 +79,6 @@ namespace AppAddons.DrawingTools
                     }
                     var beamEntity = new BeamEntity(new Point3D(0, 0, 0), beamBlockName, (Point3D)startPoint.Clone(), (Point3D)endPoint.Clone(), "Prenail", "GroundFloor", 0);
                     EntitiesManager.Blocks.Add(beamEntity.BeamBlock);
-                    
-                    //if (EntitiesManager.Blocks.Contains(beamBlockName))
-                    //{
-                        
-                    //}
                     beamEntity.BeamReference = newBeam;
                     beamEntity.LevelName = ActiveLevel;
                     if (string.IsNullOrEmpty(newBeam.SizeGrade))

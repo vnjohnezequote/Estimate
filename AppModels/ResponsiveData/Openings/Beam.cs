@@ -349,12 +349,20 @@ namespace AppModels.ResponsiveData.Openings
                 {
                     return _noItem;
                 }
-
+                if (TimberInfo != null)
+                {
+                    return TimberInfo.NoItem;
+                }
                 return EngineerMemberInfo?.NoItem ?? 0;
             }
             set
             {
-                if (EngineerMemberInfo!=null && value == EngineerMemberInfo.NoItem)
+                if (TimberInfo != null)
+                {
+                    if(value == TimberInfo.NoItem)
+                        value = 0;
+                }
+                else if (EngineerMemberInfo!=null && value == EngineerMemberInfo.NoItem)
                 {
                     value = 0;
                 }
@@ -369,6 +377,11 @@ namespace AppModels.ResponsiveData.Openings
                 if (_thickness!=0)
                 {
                     return _thickness;
+                }
+
+                if (TimberInfo!=null)
+                {
+                    return TimberInfo.Thickness;
                 }
 
                 return EngineerMemberInfo?.Thickness ?? 0;
@@ -389,6 +402,10 @@ namespace AppModels.ResponsiveData.Openings
                 if (_depth!=0)
                 {
                     return _depth;
+                }
+                if (TimberInfo != null)
+                {
+                    return TimberInfo.Depth;
                 }
 
                 return EngineerMemberInfo?.RealDepth ?? 0;
@@ -507,10 +524,7 @@ namespace AppModels.ResponsiveData.Openings
         public TimberBase TimberInfo
         {
             get => _timberInfo;
-            set
-            {
-              SetProperty(ref _timberInfo, value);  
-            } 
+            set => SetProperty(ref _timberInfo, value);
         }
         public bool IsBeamToLongWithStockList
         {
@@ -570,7 +584,6 @@ namespace AppModels.ResponsiveData.Openings
                 RaisePropertyChanged(nameof(ThicknessTBT));
             }
         }
-
         private void GlobalInfo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "WallHeight")
@@ -578,7 +591,6 @@ namespace AppModels.ResponsiveData.Openings
                 RaisePropertyChanged(nameof(SupportHeight));
             }
         }
-
         private void PlatePropertiesChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Depth" || e.PropertyName == "NoItem")
@@ -587,7 +599,6 @@ namespace AppModels.ResponsiveData.Openings
                 RaisePropertyChanged(nameof(RealSupportHeight));
             }
         }
-
         private void InitializedBeamSupportPoint()
         {
             for (int i = 0; i < 2; i++)
@@ -598,7 +609,6 @@ namespace AppModels.ResponsiveData.Openings
             
 
         }
-
         private void InitializerHanger()
         {
             for (int i = 0; i < 2; i++)
@@ -715,7 +725,6 @@ namespace AppModels.ResponsiveData.Openings
                 }
             }
         }
-
         private void LoadWallInfo(List<WallBase> wallList, BeamPoco beam)
         {
             foreach (var wallBase in wallList)
@@ -726,7 +735,6 @@ namespace AppModels.ResponsiveData.Openings
                 }
             }
         }
-
         private void LoadPointSupportInfo(List<SupportPointPoco> supports,List<EngineerMemberInfo> engineerMemberInfos)
         {
             foreach (var supportPointPoco in supports)

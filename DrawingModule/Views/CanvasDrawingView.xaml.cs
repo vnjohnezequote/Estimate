@@ -64,7 +64,7 @@ namespace DrawingModule.Views
             if (this.DataContext != null)
             {
                 _viewModel = this.DataContext as CanvasDrawingViewModel;
-                if (_viewModel.JobModel!=null && _viewModel.JobModel.Info!=null)
+                if (_viewModel != null && _viewModel.JobModel!=null && _viewModel.JobModel.Info!=null)
                 {
                     _viewModel.JobModel.Info.PropertyChanged += Info_PropertyChanged;
                 }

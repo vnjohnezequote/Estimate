@@ -78,7 +78,7 @@ namespace AppModels.PocoDataModel
         public Dictionary<string, List<TimberBase>> Beams { get; set; }
         public List<Hanger> Hangers { get; set; }
 
-        public List<TimberBase> FloorRafterMaterialList { get; set; }
+        //public List<TimberBase> FloorRafterMaterialList { get; set; }
 
         /// <summary>
         /// Gets or sets the timber bracing bases.
@@ -90,6 +90,7 @@ namespace AppModels.PocoDataModel
         /// </summary>
         public List<GenericBracingBasePoco> GenericBracingBases { get; set; }
 
+        public List<TimberBase> TimberMaterialList { get; set; }
         /// <summary>
         /// Gets or sets the clientPoco icon.
         /// </summary>

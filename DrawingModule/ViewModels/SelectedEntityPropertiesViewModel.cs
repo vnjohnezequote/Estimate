@@ -14,6 +14,7 @@ using AppModels.CustomEntity;
 using AppModels.DynamicObject;
 using AppModels.Factories;
 using AppModels.Interaface;
+using AppModels.NewReposiveData;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Openings;
@@ -36,9 +37,12 @@ namespace DrawingModule.ViewModels
         private ObservableCollection<WallBase> _wallList;
         private List<int> _doorWidthList;
         public ObservableCollection<EngineerMemberInfo> EngineerList { get; }
+        public List<int> WallThicknessList { get; set; } = new List<int>() {70, 90, 140, 200,230};
         public List<int> DoorWidthList { get=>_doorWidthList; set=>SetProperty(ref _doorWidthList,value); }  
         public List<int> ExtDoorListHeights { get; set; } = new List<int> { 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000 };
         public List<int> DoorSupportSpanList { get; set; } = new List<int>(){  3000, 6000, 9000, 12000, 15000 };
+
+        public Visibility WallVisibility => SelectedEntity is Wall2DVm ? Visibility.Visible : Visibility.Collapsed;
 
         public IEntitiesManager EntitiesManager
         {
@@ -62,12 +66,23 @@ namespace DrawingModule.ViewModels
         public Visibility ColorVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility ColorMethodVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility LeaderVisibility => SelectedEntity is LeaderVM ? Visibility.Visible : Visibility.Collapsed;
-
         public Visibility DoorVisibility =>
             SelectedEntity is DoorCountEntityVm ? Visibility.Visible : Visibility.Collapsed;
         public List<string> ScaleList { get; } = new List<string>(){"1:50","1:75","1:100","1:125","1:150","1:175","1:200","1:225","1:250","1:275","1:300","1:325","1:350"};
-        public Visibility BeamVisibility =>
-            SelectedEntity is BeamEntityVm ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility BeamVisibility
+        {
+            get
+            {
+                if (SelectedEntity is BeamEntityVm || SelectedEntity is Beam2DVm || SelectedEntity is Joist2dVm)
+                {
+                    return Visibility.Visible;
+                }
+                else
+                {
+                    return Visibility.Collapsed;
+                }
+            }
+        }
         public Visibility LevelVisibility
         {
             get
@@ -117,6 +132,7 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(FloorNameVisibility));
                 RaisePropertyChanged(nameof(BeamGradeList));
                 RaisePropertyChanged(nameof(DoorVisibility));
+                RaisePropertyChanged(nameof(WallVisibility));
             }
         }
         public ObservableCollection<LevelWall> Levels { get; private set; }
@@ -126,12 +142,33 @@ namespace DrawingModule.ViewModels
         {
             get
             {
-                if (this.JobModel.Info.Client != null && this.JobModel.Info.Client.Beams != null)
-                    return new List<string>(this.JobModel.Info.Client.Beams.Keys);
-                else return null;
+                if (SelectedEntity is BeamEntityVm)
+                {
+                    if (this.JobModel.Info.Client != null && this.JobModel.Info.Client.Beams != null)
+                        return new List<string>(this.JobModel.Info.Client.Beams.Keys);
+                    else return null;
+                }
+                else if(SelectedEntity is Beam2DVm || SelectedEntity is Joist2dVm)
+                {
+                    if (this.JobModel.Info.Client!=null && this.JobModel.Info.Client.TimberMaterialList!=null)
+                    {
+                        var materialGradeList = new List<string>();
+                        foreach ( var timberBase in JobModel.Info.Client.TimberMaterialList)
+                        {
+                            if (!materialGradeList.Contains(timberBase.TimberGrade))
+                            {
+                                materialGradeList.Add(timberBase.TimberGrade);
+                            }
+                        }
+
+                        return materialGradeList;
+                    }
+                }
+
+                return null;
+
             }
         }
-        
         public ObservableCollection<WallBase> WallList
         {
             get=>_wallList;
@@ -145,8 +182,7 @@ namespace DrawingModule.ViewModels
         public SelectedEntityPropertiesViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IEntitiesManager entitiesManager,IJob jobModel)
             : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
         {
-            //HidePropertyItems.Add("Entity");
-            EngineerList = new ObservableCollection<EngineerMemberInfo>();
+            EngineerList = new ObservableCollection<EngineerMemberInfo>(); 
             _entitiesManger = entitiesManager;
             this.RaisePropertyChanged(nameof(EntitiesManager));
             EntitiesManager.PropertyChanged += EntitiesManager_PropertyChanged;
@@ -155,24 +191,12 @@ namespace DrawingModule.ViewModels
                 this.Levels = jobModel.Levels;
             }
             this.EventAggregator.GetEvent<EntityService>().Subscribe(OnPaperSpaceSelectedChanged);
-            //this.EventAggregator.GetEvent<LevelNameService>().Subscribe(OnLevelChange);
         }
 
         private void OnPaperSpaceSelectedChanged(IEntityVm selEntity)
         {
             SelectedEntity = selEntity;
         }
-
-        //private void OnLevelChange(string levelName)
-        //{
-        //    foreach (var levelWall in Levels)
-        //    {
-        //        if (levelWall.LevelName ==levelName )
-        //        {
-        //            this.WallList = levelWall.WallLayers;
-        //        }
-        //    }
-        //}
 
         private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -265,6 +289,7 @@ namespace DrawingModule.ViewModels
 
         private void GeneralTimberList()
         {
+            //TimberList.Clear();
             if (SelectedEntity is BeamEntityVm beam)
             {
                 if (JobModel.Info.Client != null && JobModel.Info.Client.Beams != null)
@@ -274,9 +299,52 @@ namespace DrawingModule.ViewModels
                     if (JobModel.Info.Client.Beams.ContainsKey(beam.BeamGrade))
                     {
                         JobModel.Info.Client.Beams.TryGetValue(beam.BeamGrade, out var timberList);
-                        TimberList = timberList;
+                        TimberList=timberList;
                     }
                 }
+            }
+            else if(SelectedEntity is Beam2DVm beam2D)
+            {
+                if (JobModel.Info.Client!=null && JobModel.Info.Client.TimberMaterialList!=null)
+                {
+                    if (string.IsNullOrEmpty((beam2D.BeamGrade)))
+                    {
+                        return;
+                    }
+
+                    var tempList = new List<TimberBase>();
+                    foreach (var timber in JobModel.Info.Client.TimberMaterialList)
+                    {
+                        if (timber.TimberGrade == beam2D.BeamGrade)
+                        {
+                            tempList.Add(timber);
+                        }
+                    }
+
+                    TimberList = tempList;
+                }
+            }
+            else if(SelectedEntity is Joist2dVm joist)
+            {
+                if (JobModel.Info.Client!=null && JobModel.Info.Client.TimberMaterialList != null)
+                {
+                    if (string.IsNullOrEmpty((joist.BeamGrade)))
+                    {
+                        return;
+                    }
+
+                    var tempList = new List<TimberBase>();
+                    foreach (var timber in JobModel.Info.Client.TimberMaterialList)
+                    {
+                        if (timber.TimberGrade == joist.BeamGrade)
+                        {
+                            tempList.Add(timber);
+                        }
+                    }
+
+                    TimberList = tempList;
+                }
+                
             }
         }
 

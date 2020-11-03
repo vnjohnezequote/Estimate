@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using ApplicationService;
 using AppModels.CustomEntity;
+using AppModels.NewReposiveData;
+using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -15,6 +19,8 @@ namespace AppAddons.DrawingTools
 {
     public class DrawJoist: DrawingLine
     {
+        
+
         public override string ToolName => "Drawing Single Joist";
         public DrawJoist() : base()
         {
@@ -53,12 +59,23 @@ namespace AppAddons.DrawingTools
                     var index = this.JobModel.ActiveFloorSheet.Joists.Count;
                     joistMember.Id = index;
                     joistMember.SheetName = this.JobModel.ActiveFloorSheet.Name;
+                    joistMember.FloorSheet = this.JobModel.ActiveFloorSheet;
+                    var joistThickness = 45;
+                    {
+                        if (JobModel.SelectedJoitsMaterial !=null)
+                        {
+                            joistMember.FramingInfo = JobModel.SelectedJoitsMaterial;
+                            joistThickness = joistMember.FramingInfo.NoItem * joistMember.FramingInfo.Depth;
+                        }
+                    }
+                    joistMember.FramingSpan= (int)(startPoint.DistanceTo(endPoint)) - 90;
                     this.JobModel.ActiveFloorSheet.Joists.Add(joistMember);
-                    var joists = new Joist2D(Plane.XY, startPoint, endPoint, joistMember,45);
+                    var joists = new Joist2D(Plane.XY, startPoint, endPoint, joistMember,joistThickness);
                     //var beam = new Beam2D(Plane.XY, startPoint, endPoint, 45, false, true);
                     joists.Color = this.LayerManager.SelectedLayer.Color;
                     joists.ColorMethod = colorMethodType.byEntity;
                     this.EntitiesManager.AddAndRefresh(joists, LayerManager.SelectedLayer.Name);
+
                 }
                 
             }

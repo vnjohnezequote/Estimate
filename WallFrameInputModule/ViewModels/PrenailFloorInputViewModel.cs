@@ -242,7 +242,7 @@ namespace WallFrameInputModule.ViewModels
         }
         private void AddNewFloorSheet()
         {
-            var floorSheet = new FramingSheet();
+            var floorSheet = new FramingSheet(this.Level.LevelInfo);
             floorSheet.FloorName = "Floor - "+ this.Level.LevelName;
             var id = Level.FloorSheets.Count+1;
             if (id>1)

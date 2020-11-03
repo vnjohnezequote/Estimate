@@ -472,6 +472,7 @@ namespace AppDataBase.DataBase
                 },
                 Builders = new List<string>() { },
                 Customers = new List<Customer>(),
+                TimberMaterialList =  this.CreateFloorAndRafterList(),
                 WallTypes = new List<WallTypePoco>
                 {
                 }
@@ -510,7 +511,7 @@ namespace AppDataBase.DataBase
                 Builders = new List<string>() { },
                 Customers = new List<Customer>(),
                 WallTypes = new List<WallTypePoco>(),
-                FloorRafterMaterialList =  CreateFloorAndRafterList()
+                TimberMaterialList =  CreateFloorAndRafterList()
 
             };
 
@@ -548,6 +549,13 @@ namespace AppDataBase.DataBase
             studs.Add("NONLBW", nonlbw);
             return studs;
         }
+
+        //private List<TimberBase> CreateTimberMaterialList()
+        //{
+        //    var timberListFile = "FloorAndRafterMaterialList.csv";
+        //    var timberList = this.LoadTimberListOnCvsFile<TimberBase>(timberListFile);
+        //    return timberList;
+        //}
 
         private Dictionary<string, List<TimberBase>> CreateWarnervaleMaterial()
         {

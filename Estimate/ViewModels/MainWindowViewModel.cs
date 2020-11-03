@@ -156,6 +156,7 @@ namespace Estimate.ViewModels
         /// </summary>
         private ClientPoco _selectedClient;
 
+        private bool _isSaving;
         /// <summary>
         /// The selected clientPoco index.
         /// </summary>
@@ -382,41 +383,49 @@ namespace Estimate.ViewModels
         }
         private void OnSaveJobCommand()
         {
-            if (this.JobModel != null)
+            if (!_isSaving)
             {
-                var fileName = JobModel.Info.JobLocation + @"\" + JobModel.Info.JobNumber + ".Db";
-                var jobSaved = new JobModelPoco(JobModel);
-                //using (var db = new LiteDatabase("filename=Clients.Db;upgrade=true"))
-                //{
-                //    var jobs = db.GetCollection<JobModel>("Jobs");
-                //    jobs.Insert((JobModel)JobModel);
-                //}
-                //Chuoiluu = JsonConvert.SerializeObject(jobSaved);
-                //Chuoiluu = JsonConvert.SerializeObject(jobSaved, new JsonSerializerSettings()
-                //{
-                //    Formatting = Formatting.Indented,
-                //});
-                JsonSerializer serializer = new JsonSerializer()
-                {
-                    Formatting = Formatting.Indented,
-                    NullValueHandling = NullValueHandling.Ignore
-                };
-                using (var sw = new StreamWriter(fileName))
-                using (JsonWriter writer = new JsonTextWriter(sw))
-                {
-                    serializer.Serialize(writer, jobSaved);
-                }
-                this.EventAggregator.GetEvent<SaveDrawingEvent>().Publish();
-                
-                //Chuoiluu = JsonConvert.SerializeObject(JobModel, new JsonSerializerSettings()
-                //{
-                //    TypeNameHandling = TypeNameHandling.Auto,
-                //    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                //    ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                //    Formatting = Formatting.Indented,
-                //});
 
-                //var jobOpen = JsonConvert.DeserializeObject<JobModelPoco>(Chuoiluu);
+                _isSaving = true;
+                if (this.JobModel != null)
+                {
+                
+                    var fileName = JobModel.Info.JobLocation + @"\" + JobModel.Info.JobNumber + ".Db";
+                    var jobSaved = new JobModelPoco(JobModel);
+                    //using (var db = new LiteDatabase("filename=Clients.Db;upgrade=true"))
+                    //{
+                    //    var jobs = db.GetCollection<JobModel>("Jobs");
+                    //    jobs.Insert((JobModel)JobModel);
+                    //}
+                    //Chuoiluu = JsonConvert.SerializeObject(jobSaved);
+                    //Chuoiluu = JsonConvert.SerializeObject(jobSaved, new JsonSerializerSettings()
+                    //{
+                    //    Formatting = Formatting.Indented,
+                    //});
+                    JsonSerializer serializer = new JsonSerializer()
+                    {
+                        Formatting = Formatting.Indented,
+                        NullValueHandling = NullValueHandling.Ignore
+                    };
+                    using (var sw = new StreamWriter(fileName))
+                    using (JsonWriter writer = new JsonTextWriter(sw))
+                    {
+                        serializer.Serialize(writer, jobSaved);
+                    }
+                    this.EventAggregator.GetEvent<SaveDrawingEvent>().Publish();
+                
+                    //Chuoiluu = JsonConvert.SerializeObject(JobModel, new JsonSerializerSettings()
+                    //{
+                    //    TypeNameHandling = TypeNameHandling.Auto,
+                    //    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                    //    ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                    //    Formatting = Formatting.Indented,
+                    //});
+
+                    //var jobOpen = JsonConvert.DeserializeObject<JobModelPoco>(Chuoiluu);
+                
+                }
+                _isSaving = false;
             }
         }
 

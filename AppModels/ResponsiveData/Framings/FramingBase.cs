@@ -16,7 +16,14 @@ namespace AppModels.ResponsiveData.Framings
         private bool _isExisting;
         private TimberBase _framingInfo;
         private int _framingSpan;
+        private FramingSheet _floorSheet;
         private string _sheetName;
+        private string _timberGrade;
+        private int _fullLength;
+        private double _extraLength;
+        private string _sizeGradeTreatment { get; set; }
+        
+
         #endregion
 
         #region Properties
@@ -24,9 +31,45 @@ namespace AppModels.ResponsiveData.Framings
         public bool IsExisting { get => _isExisting; set => SetProperty(ref _isExisting, value); }
         public abstract double QuoteLength { get; }
         public int FramingSpan { get=>_framingSpan; set=>SetProperty(ref _framingSpan,value); }
+        public int FullLength { 
+            get=>_fullLength; 
+            set
+        {
+            SetProperty(ref _fullLength, value);
+            RaisePropertyChanged(nameof(QuoteLength));
+            }
+        }
+
+        public double ExtraLength
+        {
+            get => _extraLength;
+            set
+            {
+                SetProperty(ref _extraLength, value);
+                RaisePropertyChanged(nameof(QuoteLength));
+            }
+        }
+
         public double Pitch { get=>_pitch; set=>SetProperty(ref _pitch,value); }
         public string SheetName { get=>_sheetName; set=>SetProperty(ref _sheetName,value); }
-        public TimberBase FramingInfo { get=>_framingInfo; set=>SetProperty(ref _framingInfo,value); }
+        public FramingSheet FloorSheet { get; set; }
+        public TimberBase FramingInfo
+        {
+            get => _framingInfo;
+            set
+            {
+                SetProperty(ref _framingInfo, value);
+                TimberGrade = value != null ? value.TimberGrade : string.Empty;
+            }
+        }
+
+        public string TimberGrade
+        {
+            get => _timberGrade;
+            set => SetProperty(ref _timberGrade, value);
+        }
+
+
         #endregion
 
         #region Constructor

@@ -529,21 +529,22 @@ namespace AppModels.CustomEntity
                     this.Attributes["Name"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + wallMoveDisctance);
                 }
             }
-            else 
+            else
             {
-                wallMoveDisctance = -(supportWallMovement + treatmentMovement + continuesMovement + customMovement + lintelMovement);
-                lintelMoveDistance = -(supportWallMovement + treatmentMovement + continuesMovement + customMovement);
-                supportMoveDisctance = -(treatmentMovement + continuesMovement + customMovement);
-                treatMentMoveDistance = -(continuesMovement + customMovement);
-                continuesMoveDisctance = -customMovement;
+
+                wallMoveDisctance = -lintelMovement;
+                lintelMoveDistance =- (supportWallMovement + lintelMovement);
+                supportMoveDisctance = -(treatmentMovement + supportWallMovement + lintelMovement);
+                treatMentMoveDistance = -(continuesMovement + treatmentMovement + supportWallMovement + lintelMovement);
+                continuesMoveDisctance = -(customMovement+continuesMovement+treatmentMovement+supportWallMovement+lintelMovement); ;
                 if (this.Attributes.ContainsKey("Custom"))
                 {
-                    this.Attributes["Custom"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + wallMoveDisctance);
+                    this.Attributes["Custom"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + continuesMoveDisctance);
                 }
 
                 if (this.Attributes.ContainsKey("Continues"))
                 {
-                    this.Attributes["Continues"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + lintelMoveDistance);
+                    this.Attributes["Continues"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + treatMentMoveDistance);
                 }
 
                 if (this.Attributes.ContainsKey("Treatment"))
@@ -553,12 +554,12 @@ namespace AppModels.CustomEntity
 
                 if (this.Attributes.ContainsKey("Support"))
                 {
-                    this.Attributes["Support"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + treatMentMoveDistance);
+                    this.Attributes["Support"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + lintelMoveDistance);
                 }
 
                 if (this.Attributes.ContainsKey("Lintel"))
                 {
-                    this.Attributes["Lintel"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + continuesMoveDisctance);
+                    this.Attributes["Lintel"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + wallMoveDisctance);
                 }
 
                 if (this.Attributes.ContainsKey("Name"))

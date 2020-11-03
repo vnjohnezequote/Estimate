@@ -38,6 +38,16 @@ namespace DrawingModule.Views
         public DrawingWindowView()
         {
             this.InitializeComponent();
+            try
+            {
+                this.CanvasDrawing.CanvasDrawing.Unlock("PF20-21MV5-0NHNJ-WYUX-F6CQ");
+                this.CanvasDrawing.PaperSpace.Unlock("PF20-21MV5-0NHNJ-WYUX-F6CQ");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
             if (this.DataContext != null)
             {
                 _drawingWindowViewModel = this.DataContext as DrawingWindowViewModel;
