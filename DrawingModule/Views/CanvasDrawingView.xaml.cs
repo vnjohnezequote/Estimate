@@ -466,7 +466,7 @@ namespace DrawingModule.Views
                             return;
                         }
                         var entityFactory = new EntitiyVmFactory();
-                        _viewModel.SelectedEntity = entityFactory.creatEntityVm(e.Item);
+                        _viewModel.SelectedEntity = entityFactory.creatEntityVm(e.Item,null);
                     }
         }
     }

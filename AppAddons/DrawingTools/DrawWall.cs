@@ -14,6 +14,7 @@ using AppModels.EventArg;
 using AppModels.NewReposiveData;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
+using devDept.Eyeshot.Labels;
 using devDept.Geometry;
 using devDept.Graphics;
 using DrawingModule.CommandClass;
@@ -45,11 +46,20 @@ namespace AppAddons.DrawingTools
             DynamicInput?.FocusLength();
             while (true)
             {
+                if (JobModel.CCMode)
+                {
+                    this.IsUsingInsideLength = true;
+                }
+                else
+                {
+                    this.IsUsingInsideLength = false;
+                }
                 this.PromptPointOp.Message = ToolMessage;
                 var res = acDoc.Editor.GetPoint(this.PromptPointOp);
                 if (res.Status == PromptStatus.Cancel)
                 {
                     return;
+                    
                 }
 
                 Points.Add(res.Value);
@@ -68,7 +78,7 @@ namespace AppAddons.DrawingTools
                 {
                     wallThickness = JobModel.SelectedWallThickness;
                 }
-                var wall = new Wall2D(Plane.XY, startPoint,endPoint,wallThickness,false,true);
+                var wall = new Wall2D(Plane.XY, startPoint,endPoint,wallThickness,JobModel.CurrentIsLoadBearingWall,JobModel.CCMode,true);
                 //wall.Color = Color.FromArgb(127, Color.CornflowerBlue);
                 wall.Color = Color.CornflowerBlue;
                 //wall.Color = Color.CadetBlue;

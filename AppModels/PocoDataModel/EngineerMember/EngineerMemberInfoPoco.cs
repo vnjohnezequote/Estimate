@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.Enums;
-using AppModels.ResponsiveData;
+﻿using AppModels.Enums;
 using AppModels.ResponsiveData.EngineerMember;
 
-namespace AppModels.PocoDataModel
+namespace AppModels.PocoDataModel.EngineerMember
 {
     public class EngineerMemberInfoPoco
     {

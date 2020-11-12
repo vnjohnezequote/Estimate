@@ -55,6 +55,26 @@ namespace AppModels
             return new Point2D(point.X,point.Y);
         }
 
+        //public static Point3D GetPointFromDirectAndDistance(this Point3D originPoint, Point3D travelPoint,
+        //    double distance)
+        //{
+        //    double originX = originPoint.X;
+        //    double originY = originPoint.Y;
+        //    double toX = travelPoint.X;
+        //    double toY = travelPoint.Y;
+        //    double vx = toX - originX;
+        //    double vy = toY - originY;
+        //    double mag = Math.Sqrt(vx * vx + vy * vy);
+        //    vx /= mag;
+        //    vy /= mag;
+        //    var px = originX + vx * distance;
+        //    var py = originY + vy *  + distance;
+        //    return new Point3D(px, py);
+        //    //double fi = Math.Atan2(toY - originY, toX - originX);
+        //    //double finalX = originX + distance * Math.Cos(fi);
+        //    //double finalY = originY + distance * Math.Sin(fi);
+        //    //return new Point3D(finalX, finalY);
+        //}
         public static List<Point3D> SortPointInLine(List<Point3D> points)
         {
             var listocheck = new List<Point3D>(points);

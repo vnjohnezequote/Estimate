@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
+using AppModels.Enums;
+using AppModels.Interaface;
 using DrawingModule.Enums;
 using DrawingModule.ViewModels;
 

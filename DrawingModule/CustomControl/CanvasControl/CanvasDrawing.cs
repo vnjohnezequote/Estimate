@@ -21,6 +21,7 @@ using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels;
 using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
 using devDept.Eyeshot;

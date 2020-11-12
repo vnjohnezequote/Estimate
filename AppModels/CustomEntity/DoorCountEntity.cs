@@ -132,7 +132,7 @@ namespace AppModels.CustomEntity
             data.RenderContext.DrawLineStrip(pts);
         }
 
-        public IEntityVm CreateEntityVm()
+        public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {
             return new DoorCountEntityVm(this);
         }

@@ -115,7 +115,11 @@
 			<Button Content="{materialDesign:PackIcon ArrowCollapseLeft}" Margin="5 0 0 0" Command="{Binding FilletCommand}"/>
 			<Button Content="{materialDesign:PackIcon ImageFilterNone}" Margin="5 0 0 0" Command="{Binding OffsetCommand}"/>-->
 			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-				<ComboBox VerticalAlignment="Center"
+				<CheckBox IsChecked="{Binding JobModel.CurrentIsLoadBearingWall}"
+                          Content="LBW" Margin="0 0 10 0"/>
+                <CheckBox IsChecked="{Binding JobModel.CCMode}"
+                          Content="Cc Mode" Margin="0 0 10 0"/>
+                <ComboBox VerticalAlignment="Center"
                           Margin="0 0 10 0"
                           Width="150"
                           ItemsSource="{Binding WallThicknessList}"

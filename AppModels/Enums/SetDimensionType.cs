@@ -1,4 +1,4 @@
-﻿namespace ApplicationInterfaceCore.Enums
+﻿namespace AppModels.Enums
 {
     public enum SetDimensionType
     {

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 
-namespace AppModels.ResponsiveData.Framings
+namespace AppModels.Database
 {
     public class TieDown: BindableBase
     {

@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using AppModels.PocoDataModel.EngineerMember;
 using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Framings;
@@ -35,6 +36,8 @@ namespace AppModels.ResponsiveData
 
         private JobInfo _inFor;
 
+        private bool _currentIsLoadBearingWall;
+        private bool _cCMode;
         private int _selectedWallThickness;
         /// <summary>
         /// The levels.
@@ -52,9 +55,10 @@ namespace AppModels.ResponsiveData
                 SetProperty(ref _activeFloorSheet, value);
             }
         }
+        public bool CurrentIsLoadBearingWall { get=>_currentIsLoadBearingWall; set=>SetProperty(ref _currentIsLoadBearingWall,value); }
         public int SelectedWallThickness { get=>_selectedWallThickness; set=>SetProperty(ref _selectedWallThickness, value); }
         #endregion
-
+        public bool CCMode { get=>_cCMode; set=>SetProperty(ref _cCMode,value); }
         #region Property
         /// <summary>
         /// Gets or sets the info.

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot.Entities;

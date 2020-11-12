@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using ApplicationInterfaceCore;
+using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Enums;

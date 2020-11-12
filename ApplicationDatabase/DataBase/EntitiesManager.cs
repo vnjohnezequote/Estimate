@@ -75,7 +75,7 @@ namespace AppDataBase.DataBase
                 //}
                 //SelectedEntity = new EntityVm(SelectedEntities[0]) ;
                 var entityFactory = new EntitiyVmFactory();
-                SelectedEntity = entityFactory.creatEntityVm(SelectedEntities[0]);
+                SelectedEntity = entityFactory.creatEntityVm(SelectedEntities[0],this);
                 return;
             }
 
@@ -222,7 +222,7 @@ namespace AppDataBase.DataBase
                         i = 0;
                         while (i < intersetPointList.Count - 1)
                         {
-                            var newWall = new Wall2D(Plane.XY, intersetPointList[i], intersetPointList[i + 1], wall.WallThickness, wall.IsLoadBearingWall, wall.ShowWallDimension);
+                            var newWall = new Wall2D(Plane.XY, intersetPointList[i], intersetPointList[i + 1], wall.WallThickness, wall.IsLoadBearingWall,true, wall.ShowWallDimension);
                             //newWall.Color = Color.FromArgb(127, Color.CornflowerBlue);
                             newWall.Color = Color.CornflowerBlue;
                             newWall.ColorMethod = colorMethodType.byEntity;

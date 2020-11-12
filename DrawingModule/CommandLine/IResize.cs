@@ -1,4 +1,4 @@
-﻿namespace DrawingModule.Views
+﻿namespace DrawingModule.CommandLine
 {
     public interface IResize
     {

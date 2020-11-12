@@ -7,6 +7,7 @@ using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels.CustomEntity;
 using AppModels.EventArg;
+using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;

@@ -5,6 +5,7 @@ using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels;
 using AppModels.EventArg;
+using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;

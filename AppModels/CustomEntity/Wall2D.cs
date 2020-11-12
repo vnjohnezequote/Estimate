@@ -30,6 +30,8 @@ namespace AppModels.CustomEntity
         private bool _showDimension;
         private Point3D _startPoint;
         private Point3D _endPoint;
+        private bool _showStartWallLine;
+        private bool _showEndWallLine;
 
         public Point3D StartPoint
         {
@@ -142,20 +144,37 @@ namespace AppModels.CustomEntity
 
 
         public Wall2D(Plane wallPlan, Point3D startPoint, Point3D endPoint,
-            int wallThickness = 90, bool isLoadBearingWall = true, bool showDimension = false, double textHeight = 90) :
+            int wallThickness = 90, bool isLoadBearingWall = true,bool ccMode = true, bool showDimension = false, double textHeight = 90) :
             base(wallPlan, startPoint, textHeight, Text.alignmentType.BaselineCenter)
         {
-            _startPoint = startPoint;
-            _endPoint = endPoint;
-            CenterlineVertices = new List<Point3D>(){StartPoint,EndPoint};
             _wallThickness = wallThickness;
             _isLoadBearingWall = isLoadBearingWall;
             _showDimension = showDimension;
-            CenterLine = new Segment2D(startPoint, endPoint);
-            ShowStartWallLine = true;
-            ShowEndWallLine = true;
-            RegenEntityGeometry(startPoint, endPoint);
+            if (ccMode)
+            {
+                _startPoint = startPoint;
+                _endPoint = endPoint;
+                CenterlineVertices = new List<Point3D>() { StartPoint, EndPoint };
+                CenterLine = new Segment2D(startPoint, endPoint);
+                ShowStartWallLine = true;
+                ShowEndWallLine = true;
+                RegenEntityGeometry(startPoint, endPoint);
+            }
+            else
+            {
+                var wallLine = new Segment2D(startPoint, endPoint);
+                var centerLine = wallLine.Offset((double) WallThickness / 2);
+                centerLine.ExtendBy(-(double)WallThickness/2, -(double)WallThickness / 2);
+                CenterLine = centerLine;
+                CenterlineVertices = new List<Point3D>(){ CenterLine.P0.ConvertPoint2DtoPoint3D(), CenterLine.P1.ConvertPoint2DtoPoint3D() };
+                _startPoint = CenterLine.P0.ConvertPoint2DtoPoint3D();
+                _endPoint = CenterLine.P1.ConvertPoint2DtoPoint3D();
+                ShowStartWallLine = true;
+                ShowEndWallLine = true;
+                RegenEntityGeometry(CenterLine.P0.ConvertPoint2DtoPoint3D(),CenterLine.P1.ConvertPoint2DtoPoint3D());
+            }
             this.LineTypeScale = 10;
+
             //this.InsertionPoint = new Point3D(DimensionLine.MidPoint.X,DimensionLine.MidPoint.Y, 0);
             //var distace = StartPoint.DistanceTo(EndPoint);
             //this.TextString = ((int)(StartPoint.DistanceTo(EndPoint)-Thickness)).ToString();
@@ -287,19 +306,19 @@ namespace AppModels.CustomEntity
         //        if (ShowStartWallLine)
         //        {
         //            data.RenderContext.SetColorWireframe(Color.Crimson);
-        //            data.RenderContext.DrawBufferedLine(StartPoint1, StartPoint2);
+        //            data.RenderContext.DrawBufferedLine(OuterStartPoint, InnerStartPoint);
         //        }
 
         //        if (ShowEndWallLine)
         //        {
         //            data.RenderContext.SetColorWireframe(Color.Crimson);
-        //            data.RenderContext.DrawBufferedLine(EndPoint1, EndPoint2);
+        //            data.RenderContext.DrawBufferedLine(OuterEndPoint, InnerEndPoint);
         //        }
 
         //        data.RenderContext.SetColorWireframe(Color.Crimson, true);
-        //        this.DrawDashWallLine(data, StartPoint1, EndPoint1);
+        //        this.DrawDashWallLine(data, OuterStartPoint, OuterEndPoint);
         //        data.RenderContext.SetColorWireframe(Color.LimeGreen);
-        //        this.DrawDashWallLine(data, StartPoint2, EndPoint2);
+        //        this.DrawDashWallLine(data, InnerStartPoint, InnerEndPoint);
 
         //    }
         //    else
@@ -307,18 +326,18 @@ namespace AppModels.CustomEntity
         //        if (ShowStartWallLine)
         //        {
         //            data.RenderContext.SetColorWireframe(Color.Crimson);
-        //            data.RenderContext.DrawBufferedLine(StartPoint1, StartPoint2);
+        //            data.RenderContext.DrawBufferedLine(OuterStartPoint, InnerStartPoint);
         //        }
 
         //        if (ShowEndWallLine)
         //        {
         //            data.RenderContext.SetColorWireframe(Color.Crimson);
-        //            data.RenderContext.DrawBufferedLine(EndPoint1, EndPoint2);
+        //            data.RenderContext.DrawBufferedLine(OuterEndPoint, InnerEndPoint);
         //        }
         //        data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(StartPoint1, EndPoint1);
+        //        data.RenderContext.DrawBufferedLine(OuterStartPoint, OuterEndPoint);
         //        data.RenderContext.SetColorWireframe(Color.LimeGreen);
-        //        data.RenderContext.DrawBufferedLine(StartPoint2, EndPoint2);
+        //        data.RenderContext.DrawBufferedLine(InnerStartPoint, InnerEndPoint);
         //    }
         //    data.RenderContext.PopModelView();
         //}
@@ -341,14 +360,14 @@ namespace AppModels.CustomEntity
                 {
                     //data.RenderContext.SetColorWireframe(Color.Crimson);
                     data.RenderContext.DrawBufferedLine(StartPoint1, StartPoint2);
-                    //data.RenderContext.DrawLine(StartPoint1, StartPoint2);
+                    //data.RenderContext.DrawLine(OuterStartPoint, InnerStartPoint);
                 }
 
                 if (ShowEndWallLine)
                 {
                   //  data.RenderContext.SetColorWireframe(Color.Crimson);
                     data.RenderContext.DrawBufferedLine(EndPoint1, EndPoint2);
-                    //data.RenderContext.DrawLine(EndPoint1, EndPoint2);
+                    //data.RenderContext.DrawLine(OuterEndPoint, InnerEndPoint);
                 }
 
                 //data.RenderContext.SetColorWireframe(Color.Crimson, true);
@@ -510,14 +529,14 @@ namespace AppModels.CustomEntity
             {
                 case segmentIntersectionType.Cross:
                     segmentIntersectionType = segmentIntersectionType.Cross;
-                    var wall = new Wall2D(Plane.XY, this.StartPoint,point1.ConvertPoint2DtoPoint3D(),this.WallThickness,this.IsLoadBearingWall,this.ShowWallDimension);
+                    var wall = new Wall2D(Plane.XY, this.StartPoint,point1.ConvertPoint2DtoPoint3D(),this.WallThickness,this.IsLoadBearingWall,true,this.ShowWallDimension);
                     //wall.Color = Color.FromArgb(127, Color.CornflowerBlue);
                     wall.Color =  Color.CornflowerBlue;
                     wall.ColorMethod = colorMethodType.byEntity;
                     wall.LineTypeName = "Dash Space";
                     wall.LineTypeMethod = colorMethodType.byEntity;
                     walls.Add(wall);
-                    wall = new Wall2D(Plane.XY, point1.ConvertPoint2DtoPoint3D(),this.EndPoint,this.WallThickness,this.IsLoadBearingWall,this.ShowWallDimension);
+                    wall = new Wall2D(Plane.XY, point1.ConvertPoint2DtoPoint3D(),this.EndPoint,this.WallThickness,this.IsLoadBearingWall,true,this.ShowWallDimension);
                     //wall.Color = Color.FromArgb(127, Color.CornflowerBlue);
                     wall.Color = Color.CornflowerBlue;
                     wall.ColorMethod = colorMethodType.byEntity;
@@ -528,14 +547,14 @@ namespace AppModels.CustomEntity
                     return true;
                 case segmentIntersectionType.Touch:
                     segmentIntersectionType = segmentIntersectionType.Touch;
-                    wall = new Wall2D(Plane.XY, this.StartPoint, point1.ConvertPoint2DtoPoint3D(), this.WallThickness, this.IsLoadBearingWall, this.ShowWallDimension);
+                    wall = new Wall2D(Plane.XY, this.StartPoint, point1.ConvertPoint2DtoPoint3D(), this.WallThickness, this.IsLoadBearingWall,true, this.ShowWallDimension);
                     //wall.Color = Color.FromArgb(127, Color.CornflowerBlue);
                     wall.Color = Color.CornflowerBlue;
                     wall.ColorMethod = colorMethodType.byEntity;
                     wall.LineTypeName = "Dash Space";
                     wall.LineTypeMethod = colorMethodType.byEntity;
                     walls.Add(wall);
-                    wall = new Wall2D(Plane.XY, point1.ConvertPoint2DtoPoint3D(), this.EndPoint, this.WallThickness, this.IsLoadBearingWall, this.ShowWallDimension);
+                    wall = new Wall2D(Plane.XY, point1.ConvertPoint2DtoPoint3D(), this.EndPoint, this.WallThickness, this.IsLoadBearingWall,true, this.ShowWallDimension);
                     //wall.Color = Color.FromArgb(127, Color.CornflowerBlue);
                     wall.Color = Color.CornflowerBlue;
                     wall.ColorMethod = colorMethodType.byEntity;
@@ -563,7 +582,7 @@ namespace AppModels.CustomEntity
             }
         }
 
-        public IEntityVm CreateEntityVm()
+        public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {
             return new Wall2DVm(this);
         }

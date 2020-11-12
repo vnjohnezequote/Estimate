@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AppModels.NewReposiveData.Interface
+﻿namespace AppModels.NewReposiveData.Floor.Interface
 {
     public interface IFloorJob
     {

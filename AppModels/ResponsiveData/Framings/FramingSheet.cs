@@ -64,7 +64,8 @@ namespace AppModels.ResponsiveData.Framings
             
         public ObservableCollection<Joist> Joists { get; set; } = new ObservableCollection<Joist>();
         public ObservableCollection<Beam> Beams { get; set; } = new ObservableCollection<Beam>();
-
+        public ObservableCollection<OutTrigger> OutTriggers { get; set; } = new ObservableCollection<OutTrigger>();
+        public ObservableCollection<Hanger> Hangers { get; set; } = new ObservableCollection<Hanger>();
         public FramingSheet(IGlobalWallInfo globalInfo)
         {
             GloaWallInfo = globalInfo;
@@ -83,6 +84,11 @@ namespace AppModels.ResponsiveData.Framings
                 foreach (var beam in Beams )
                 {
                     beam.SheetName = this.Name;
+                }
+
+                foreach (var outTrigger in OutTriggers)
+                {
+                    outTrigger.SheetName = this.Name;
                 }
             }
         }

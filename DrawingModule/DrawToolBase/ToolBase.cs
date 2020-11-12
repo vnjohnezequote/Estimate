@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
 using devDept.Geometry;

@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Documents;
 using AppModels.AppData;
 using AppModels.CustomEntity;
-using AppModels.DynamicObject;
-using AppModels.Interaface;
-using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 
-namespace ApplicationInterfaceCore
+namespace AppModels.Interaface
 {
     public interface IEntitiesManager: INotifyPropertyChanged
     {

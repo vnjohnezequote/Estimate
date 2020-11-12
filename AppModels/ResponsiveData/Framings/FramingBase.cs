@@ -11,7 +11,6 @@ namespace AppModels.ResponsiveData.Framings
     {
         #region Field\
 
-        private int _id;
         private double _pitch;
         private bool _isExisting;
         private TimberBase _framingInfo;
@@ -27,7 +26,7 @@ namespace AppModels.ResponsiveData.Framings
         #endregion
 
         #region Properties
-        public int Id { get=>_id; set=>SetProperty(ref _id,value); }
+        public Guid Id { get; set; }
         public bool IsExisting { get => _isExisting; set => SetProperty(ref _isExisting, value); }
         public abstract double QuoteLength { get; }
         public int FramingSpan { get=>_framingSpan; set=>SetProperty(ref _framingSpan,value); }
@@ -39,7 +38,6 @@ namespace AppModels.ResponsiveData.Framings
             RaisePropertyChanged(nameof(QuoteLength));
             }
         }
-
         public double ExtraLength
         {
             get => _extraLength;
@@ -49,7 +47,6 @@ namespace AppModels.ResponsiveData.Framings
                 RaisePropertyChanged(nameof(QuoteLength));
             }
         }
-
         public double Pitch { get=>_pitch; set=>SetProperty(ref _pitch,value); }
         public string SheetName { get=>_sheetName; set=>SetProperty(ref _sheetName,value); }
         public FramingSheet FloorSheet { get; set; }
@@ -62,7 +59,6 @@ namespace AppModels.ResponsiveData.Framings
                 TimberGrade = value != null ? value.TimberGrade : string.Empty;
             }
         }
-
         public string TimberGrade
         {
             get => _timberGrade;
@@ -74,8 +70,9 @@ namespace AppModels.ResponsiveData.Framings
 
         #region Constructor
 
-        protected FramingBase()
+        public FramingBase()
         {
+            Id = Guid.NewGuid();
             PropertyChanged += FramingBasePropertyChanged;
         }
         #endregion

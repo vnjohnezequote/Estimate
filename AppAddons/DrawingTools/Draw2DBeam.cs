@@ -69,6 +69,7 @@ namespace AppAddons.DrawingTools
                     newBeam.Quantity = 1;
                     newBeam.SpanLength = (int)(startPoint.DistanceTo(endPoint))-90;
                     newBeam.SheetName = JobModel.ActiveFloorSheet.Name;
+                    newBeam.FloorSheet = this.JobModel.ActiveFloorSheet;
                     var beamThickness = 45;
                     if (JobModel.SelectedJoitsMaterial != null)
                     {

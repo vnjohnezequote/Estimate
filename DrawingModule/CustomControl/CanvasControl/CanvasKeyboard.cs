@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.ResponsiveData;
+using AppModels.ViewModelEntity;
 using DrawingModule.Application;
 using DrawingModule.EditingTools;
 
@@ -75,6 +78,8 @@ namespace DrawingModule.CustomControl.CanvasControl
                 case Key.Delete:
                     if (this.EntitiesManager.SelectedEntities!=null && this.EntitiesManager.SelectedEntities.Count!=0)
                     {
+                        List<Hanger2D> hangersRemove = new List<Hanger2D>();
+                        List<OutTrigger2D> outTriggerRemoves = new List<OutTrigger2D>();
                         foreach (var entitiesManagerSelectedEntity in EntitiesManager.SelectedEntities)
                         {
                             if (entitiesManagerSelectedEntity is BeamEntity beam)
@@ -146,19 +151,147 @@ namespace DrawingModule.CustomControl.CanvasControl
 
                             if (entitiesManagerSelectedEntity is Joist2D joist)
                             {
-                                if(this.JobModel.ActiveFloorSheet!=null)
-                                    if(this.JobModel.ActiveFloorSheet.Joists.Contains(joist.JoistReference))
-                                        this.JobModel.ActiveFloorSheet.Joists.Remove(joist.JoistReference);
+                                // Cho nay can viet lai de tim dung floor sheet cua joist de xoa trong truong hop active floor sheet khong phai laf floor sheet cua joist chon xoa
+                                var activesheet = joist.JoistReference.FloorSheet;
+
+                                    if(activesheet.Joists.Contains(joist.JoistReference))
+                                        activesheet.Joists.Remove(joist.JoistReference);
+                                foreach (var entity in EntitiesManager.Entities)
+                                {
+                                    if (entity is Hanger2D hanger && (hanger.Id.ToString().Equals(joist.HangerAId)|| hanger.Id.ToString().Equals(joist.HangerBId)))
+                                    {
+                                        hangersRemove.Add(hanger);
+                                    }
+
+                                    if (entity is OutTrigger2D outTrigger && (outTrigger == joist.OutTriggerA|| outTrigger == joist.OutTriggerB))
+                                    {
+                                        outTriggerRemoves.Add(outTrigger);
+                                    }
+                                }
+
                             }
 
                             if (entitiesManagerSelectedEntity is Beam2D beam2D)
                             {
-                                if (this.JobModel.ActiveFloorSheet != null)
-                                    if (this.JobModel.ActiveFloorSheet.Beams.Contains(beam2D.BeamReference))
-                                        this.JobModel.ActiveFloorSheet.Beams.Remove(beam2D.BeamReference);
+                                var activesheet = beam2D.BeamReference.FloorSheet;
+                                if (activesheet.Beams.Contains(beam2D.BeamReference))
+                                    activesheet.Beams.Remove(beam2D.BeamReference);
+                                foreach (var entity in EntitiesManager.Entities)
+                                {
+                                    if (entity is Hanger2D hanger && (hanger.Id.ToString().Equals(beam2D.HangerAId) || hanger.Id.ToString().Equals(beam2D.HangerBId)))
+                                    {
+                                        hangersRemove.Add(hanger);
+                                    }
+
+                                    if (entity is OutTrigger2D outTrigger && (outTrigger == beam2D.OutTriggerA || outTrigger == beam2D.OutTriggerB))
+                                    {
+                                        outTriggerRemoves.Add(outTrigger);
+                                    }
+                                }
+
+                            }
+
+                            if (entitiesManagerSelectedEntity is Hanger2D hangert)
+                            {
+                                Joist2D joistHangerBelongTo=null;
+                                Beam2D beamHangerBelongTo = null;
+                                foreach ( var entity in EntitiesManager.Entities)
+                                {
+                                    if (entity is Joist2D joistt && (joistt.HangerAId == hangert.Id.ToString()||joistt.HangerBId== hangert.Id.ToString()))
+                                    {
+                                        joistHangerBelongTo = joistt;
+                                    }
+                                    if (entity is Beam2D beamtt && (beamtt.HangerAId == hangert.Id.ToString() || beamtt.HangerBId == hangert.Id.ToString()))
+                                    {
+                                        beamHangerBelongTo = beamtt;
+                                    }
+
+                                }
+
+                                if (joistHangerBelongTo!=null)
+                                {
+                                    var joistVm = (Joist2dVm)joistHangerBelongTo.CreateEntityVm(EntitiesManager);
+                                    if (joistVm.HangerA == hangert)
+                                    {
+                                        joistVm.IsHangerA = false;
+                                    }
+                                    else if(joistVm.HangerB == hangert)
+                                    {
+                                        joistVm.IsHangerB = false;
+                                    }
+                                }
+
+                                if (beamHangerBelongTo!=null)
+                                {
+                                    var beamVm = (Beam2DVm)beamHangerBelongTo.CreateEntityVm(EntitiesManager);
+                                    if (beamVm.HangerA == hangert)
+                                    {
+                                        beamVm.IsHangerA = false;
+                                    }
+                                    else if (beamVm.HangerB == hangert)
+                                    {
+                                        beamVm.IsHangerB = false;
+                                    }
+                                }
+                            }
+
+                            if (entitiesManagerSelectedEntity is OutTrigger2D outTrigger2D)
+                            {
+                                Joist2D joistOutTriggerBelongTo = null;
+                                Beam2D beamOutTriggerBelongTo = null;
+                                foreach (var entity in EntitiesManager.Entities)
+                                {
+                                    if (entity is Joist2D joistt && (joistt.OutTriggerA == outTrigger2D|| joistt.OutTriggerB ==outTrigger2D))
+                                    {
+                                        joistOutTriggerBelongTo = joistt;
+                                    }
+                                    if (entity is Beam2D beamtt && (beamtt.OutTriggerA == outTrigger2D || beamtt.OutTriggerA == outTrigger2D))
+                                    {
+                                        beamOutTriggerBelongTo = beamtt;
+                                    }
+
+                                }
+
+                                if (joistOutTriggerBelongTo != null)
+                                {
+                                    var joistVm = (Joist2dVm)joistOutTriggerBelongTo.CreateEntityVm(EntitiesManager);
+                                    if (joistVm.OutTriggerA == outTrigger2D)
+                                    {
+                                        joistVm.IsOutriggerA = false;
+                                    }
+                                    else if (joistVm.OutTriggerB == outTrigger2D)
+                                    {
+                                        joistVm.IsOutriggerB = false;
+                                    }
+                                }
+
+                                if (beamOutTriggerBelongTo != null)
+                                {
+                                    var beamVm = (Beam2DVm)beamOutTriggerBelongTo.CreateEntityVm(EntitiesManager);
+                                    if (beamVm.OutTriggerA == outTrigger2D)
+                                    {
+                                        beamVm.IsOutriggerA = false;
+                                    }
+                                    else if ((beamVm.OutTriggerB == outTrigger2D))
+                                    {
+                                        beamVm.IsOutriggerB = false;
+                                    }
+                                }
                             }
                                 
                         }
+
+                        foreach (var hanger in hangersRemove)
+                        {
+                            EntitiesManager.RemoveEntity(hanger);
+                        }
+
+                        foreach (var outTriggerRemove in outTriggerRemoves)
+                        {
+                            EntitiesManager.RemoveEntity(outTriggerRemove);
+                        }
+                        EntitiesManager.SelectedEntities.Clear();
+                        //EntitiesManager.SelectedEntity = null;
                     }
                     return true;
                 case Key.LeftShift:

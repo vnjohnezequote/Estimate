@@ -10,6 +10,7 @@ using System.Windows.Media;
 using ApplicationInterfaceCore;
 using AppModels;
 using AppModels.CustomEntity;
+using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CustomControl;

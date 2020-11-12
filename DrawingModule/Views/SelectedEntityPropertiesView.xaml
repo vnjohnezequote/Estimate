@@ -105,6 +105,24 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
 
         </Grid.RowDefinitions>
         <TextBlock Text="Layer" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"/>
@@ -142,6 +160,21 @@
         <TextBlock Text="Show Dimension" Grid.Row="32" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding WallVisibility}"/>
         <TextBlock Text="Joist Pitch" Grid.Row="33" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
         <TextBlock Text="Extra Length" Grid.Row="34" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="HangerA" Grid.Row="35" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="Hanger A Mat" Grid.Row="36" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="HangerB" Grid.Row="37" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="Hanger B Mat" Grid.Row="38" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="Outrigger A" Grid.Row="39" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="Outrigger A Grade" Grid.Row="40" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="Outrigger A Mat" Grid.Row="41" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="Outrigger A Flipped" Grid.Row="42" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="OutTrigger B" Grid.Row="43" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="OutTrigger B Grade" Grid.Row="44" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="Outrigger B Mat" Grid.Row="45" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="Outrigger A Flipped" Grid.Row="46" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="Hanger Material" Grid.Row="47" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding HangerVisibility}"/>
+        <TextBlock Text="OutTrigger OutSize" Grid.Row="48" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
+        <TextBlock Text="OutTrigger InSize" Grid.Row="49" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
         <GridSplitter Grid.Column="1"
                       Grid.Row="0"
                       Grid.RowSpan="3"
@@ -251,7 +284,6 @@
                  Visibility="{Binding BeamVisibility}"
                  Style="{StaticResource MahApps.Styles.ComboBox}"
                  Margin="0 5 0 5"/>
-        <!--<TextBox Text="{Binding SelectedEntity.TimberInfo.SizeTreatment,Mode=OneWay}" Grid.Row="11" Grid.Column="2"/>-->
         <ComboBox Grid.Row="12"
                   Grid.Column="2"
                   Text="{Binding SelectedEntity.BeamMarkedAlignmentType}"
@@ -378,6 +410,85 @@
                  Text="{Binding SelectedEntity.ExtraLength}"
                  Visibility="{Binding BeamVisibility}"
                  Margin="0 5 0 5"/>
+        <CheckBox Grid.Row="35"
+                  Grid.Column="2"
+                  IsChecked="{Binding SelectedEntity.IsHangerA}"
+                  Visibility="{Binding BeamVisibility}"/>
+        <ComboBox Grid.Row="36"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.HangerAMat}"
+                  ItemsSource="{Binding HangerList}"
+                  Visibility="{Binding BeamVisibility}"
+                  DisplayMemberPath="Name"
+                  IsEnabled="{Binding SelectedEntity.IsHangerA}"/>
+        <CheckBox Grid.Row="37"
+                  Grid.Column="2"
+                  IsChecked="{Binding SelectedEntity.IsHangerB}"
+                  Visibility="{Binding BeamVisibility}"/>
+        <ComboBox Grid.Row="38"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.HangerBMat}"
+                  ItemsSource="{Binding HangerList}"
+                  Visibility="{Binding BeamVisibility}"
+                  DisplayMemberPath="Name"
+                  IsEnabled="{Binding SelectedEntity.IsHangerB}"/>
+        <CheckBox Grid.Row="39"
+                  Grid.Column="2"
+                  IsChecked="{Binding SelectedEntity.IsOutriggerA}"
+                  Visibility="{Binding BeamVisibility}"/>
+        <ComboBox Grid.Row="40"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.OutTriggerAGrade}"
+                  ItemsSource="{Binding BeamGradeList}"
+                  Visibility="{Binding BeamVisibility}"
+                  IsEnabled="{Binding SelectedEntity.IsOutriggerA}"/>
+        <ComboBox Grid.Row="41"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.OutTriggerAMat}"
+                  ItemsSource="{Binding OutTriggerATimberList}"
+                  Visibility="{Binding BeamVisibility}"
+                  DisplayMemberPath="SizeTreatment"
+                  IsEnabled="{Binding SelectedEntity.IsOutriggerA}"/>
+        <CheckBox Grid.Row="42"
+                  Grid.Column="2"
+                  IsChecked="{Binding SelectedEntity.OutTriggerAFlipped}"
+                  Visibility="{Binding BeamVisibility}"/>
+        <CheckBox Grid.Row="43"
+                  Grid.Column="2"
+                  IsChecked="{Binding SelectedEntity.IsOutriggerB}"
+                  Visibility="{Binding TimberList}"/>
+        <ComboBox Grid.Row="44"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.OutTriggerBGrade}"
+                  ItemsSource="{Binding BeamGradeList}"
+                  Visibility="{Binding BeamVisibility}"
+                  IsEnabled="{Binding SelectedEntity.IsOutriggerB}"/>
+        <ComboBox Grid.Row="45"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.OutTriggerBMat}"
+                  ItemsSource="{Binding OutTriggerBTimberList}"
+                  Visibility="{Binding BeamVisibility}"
+                  DisplayMemberPath="SizeTreatment"
+                  IsEnabled="{Binding SelectedEntity.IsOutriggerB}"/>
+        <CheckBox Grid.Row="46"
+                  Grid.Column="2"
+                  IsChecked="{Binding SelectedEntity.OutTriggerBFlipped}"
+                  Visibility="{Binding BeamVisibility}"/>
+        <ComboBox Grid.Row="47"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedEntity.Material}"
+                  ItemsSource="{Binding HangerList}"
+                  Visibility="{Binding HangerVisibility}"
+                  DisplayMemberPath="Name"/>
+        <TextBox Grid.Row="48"
+                 Grid.Column="2"
+                 Text="{Binding SelectedEntity.OutTriggerOutSize}"
+                 Visibility="{Binding BeamVisibility}"/>
+        <TextBox Grid.Row="49"
+                 Grid.Column="2" 
+                 Text="{Binding SelectedEntity.OutTriggerInSize}"
+                 Visibility="{Binding BeamVisibility}"/>
+
     </Grid>
 
 </UserControl>

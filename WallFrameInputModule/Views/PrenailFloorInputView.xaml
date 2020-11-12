@@ -268,7 +268,7 @@
                             <syncfusion:GridTextColumn HeaderText="Quote Height"
                                                        MappingName="FinalWallHeight"/>
                             <syncfusion:GridComboBoxColumn HeaderText="Thickness"
-                                                           MappingName="Thickness"
+                                                           MappingName="WallThickness"
                                                            ItemsSource="{Binding WallThicknessList}"
                                                            UseBindingValue="True"/>
                             <syncfusion:GridComboBoxColumn HeaderText="Spacing"
@@ -646,6 +646,9 @@
                     <StackPanel Grid.Column="2">
                         <syncfusion:SfDataGrid x:Name="FloorJoistGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Joists}"/>
                         <syncfusion:SfDataGrid x:Name="FloorBeamstGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Beams}"/>
+                        <syncfusion:SfDataGrid x:Name="OutTriggerGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.OutTriggers}"/>
+                        <syncfusion:SfDataGrid x:Name="HangersGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Hangers}"/>
+
                     </StackPanel>
                 </Grid>
             </StackPanel>

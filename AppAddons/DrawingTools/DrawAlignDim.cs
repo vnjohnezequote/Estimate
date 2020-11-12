@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels.EventArg;
+using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;

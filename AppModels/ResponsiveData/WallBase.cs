@@ -98,7 +98,7 @@ namespace AppModels.ResponsiveData
             }
             set
             {
-                if (value == GlobalWallDetailInfo.GlobalWallInfo.WallThickness)
+                if (value == GlobalWallDetailInfo.GlobalWallInfo.WallThickness && this.WallType == GlobalWallDetailInfo.GlobalWallInfo.WallType)
                 {
                     value = 0;
                 }

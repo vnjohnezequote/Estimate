@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Dynamic;
 using System.Windows.Input;
 using ApplicationInterfaceCore.Enums;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
 using devDept.Geometry;

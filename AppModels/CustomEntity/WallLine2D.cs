@@ -48,7 +48,7 @@ namespace AppModels.CustomEntity
             return new WallLine2D(this);
         }
 
-        public IEntityVm CreateEntityVm()
+        public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {
             return new WallLine2DVm(this);
         }

@@ -20,6 +20,8 @@ using AppModels.PocoDataModel;
 using AppModels.PocoDataModel.Openings;
 using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData.EngineerMember;
+using AppModels.ResponsiveData.Framings;
+using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using AppModels.ResponsiveData.Support;
 using devDept.Geometry;
 using Prism.Mvvm;
@@ -66,7 +68,7 @@ namespace AppModels.ResponsiveData.Openings
 
 
         #region Property
-       public bool IsBeamExportToExcel
+        public bool IsBeamExportToExcel
        {
            get => _isBeamExportToExcel;
            set => SetProperty(ref _isBeamExportToExcel,value);
@@ -81,7 +83,10 @@ namespace AppModels.ResponsiveData.Openings
         public ObservableCollection<SupportPoint> LoadPointSupports { get;} 
             = new ObservableCollection<SupportPoint>();
 
-        public List<Hanger> Hangers { get; private set; } = new List<Hanger>();
+        public Hanger HangerA { get; set; }
+        public Hanger HangerB { get; set; }
+        public OutTrigger OutTriggerA { get; set; }
+        public OutTrigger OutTriggerB { get; set; }
         public SupportType? PointSupportType
         {
             get
@@ -541,7 +546,7 @@ namespace AppModels.ResponsiveData.Openings
             }
         }
         public string SheetName { get; set; }
-
+        public FramingSheet FloorSheet { get; set; }
         #endregion
 
         #region Constructor
@@ -552,7 +557,7 @@ namespace AppModels.ResponsiveData.Openings
             InitGlobalInfor(globalInfo);
             PropertyChanged += Beam_PropertyChanged;
             InitializedBeamSupportPoint();
-            InitializerHanger();
+            //InitializerHanger();
         }
 
         public void InitGlobalInfor(IGlobalWallInfo globalWallInfo)
@@ -609,14 +614,14 @@ namespace AppModels.ResponsiveData.Openings
             
 
         }
-        private void InitializerHanger()
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                var hanger = new Hanger();
-                Hangers.Add(hanger);
-            }
-        }
+        //private void InitializerHanger()
+        //{
+        //    for (int i = 0; i < 2; i++)
+        //    {
+        //        var hanger = new Hanger();
+        //        Hangers.Add(hanger);
+        //    }
+        //}
         public void NotifyPropertyChanged()
         {
             RaisePropertyChanged(nameof(TotalSupportWidth));
@@ -681,13 +686,11 @@ namespace AppModels.ResponsiveData.Openings
             LoadEngineerInfo(engineerSchedules, beam);
             TimberInfo = LoadTimberInfor(timberInfos, beam.TimberInfoId,beam.TimberGrade);
             BeamPitch = beam.BeamPitch;
-            Hangers = beam.Hangers;
             Location = beam.Location;
             PointSupportType = beam.PointSupportType;
             Type = beam.Type;
             Supplier = beam.Suplier;
             Id = beam.Id;
-            //Name = beam.Name;
             SpanLength = beam.SpanLength;
             ExtraLength = beam.ExtraLength;
             Quantity = beam.Quantity;

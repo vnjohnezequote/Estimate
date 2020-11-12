@@ -10,12 +10,12 @@ namespace AppModels.Factories
     [Serializable]
     public class EntitiyVmFactory
     {
-        public IEntityVm creatEntityVm(IEntity entity)
+        public IEntityVm creatEntityVm(IEntity entity,IEntitiesManager entitiesManager)
         {
             switch (entity)
             {
                 case IEntityVmCreateAble entityVmCreateAble:
-                    return entityVmCreateAble.CreateEntityVm();
+                    return entityVmCreateAble.CreateEntityVm(entitiesManager);
                 case Line line:
                     return line.CreateLineVm();
                 case LinearPath linePath:

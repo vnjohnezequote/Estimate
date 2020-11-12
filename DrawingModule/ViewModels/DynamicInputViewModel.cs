@@ -10,6 +10,7 @@ using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels.Enums;
 using AppModels.Interaface;
 using DrawingModule.CommandLine;
 using DrawingModule.Enums;

@@ -7,6 +7,7 @@ using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.EventArg;
+using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
@@ -115,11 +116,10 @@ namespace AppAddons.EditingTools
             }
             var axisX = new Vector3D(p0, p1);
             _mirrorPlane = new Plane(_clickPoints[0], axisX, Vector3D.AxisZ);
-
+            var mirror = new Mirror(_mirrorPlane);
             foreach (var selectedEntity in SelectedEntities)
             {
                 var mirrorEntity = (Entity)selectedEntity.Clone();
-                var mirror = new Mirror(_mirrorPlane);
                 mirrorEntity.TransformBy(mirror);
                 DrawInteractiveUntilities.DrawCurveOrBlockRef(mirrorEntity,canvas);
             }

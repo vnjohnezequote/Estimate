@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
+using AppModels.Enums;
 using devDept.Geometry;
 
 namespace DrawingModule.DrawToolBase

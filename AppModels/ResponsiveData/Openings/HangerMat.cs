@@ -26,5 +26,6 @@ namespace AppModels.ResponsiveData.Openings
             set => SetProperty(ref _supplier, value);
         }
         public double UnitPrice { get => _unitPrice; set => SetProperty(ref _unitPrice, value); }
+        public string Name => Supplier + " " + Size;
     }
 }

@@ -29,7 +29,6 @@ namespace AppModels.PocoDataModel.Openings
         public MaterialTypes? MaterialType { get; set; }
         public int TimberInfoId { get; set; }
         public double BeamPitch { get; set; }
-        public List<Hanger> Hangers { get; set; }
         public bool IsBeamExportToExcel { get; set; }
 
         public BeamPoco()
@@ -41,7 +40,6 @@ namespace AppModels.PocoDataModel.Openings
         {
             Location = beamInfo.Location;
             InitializerSupports(beamInfo);
-            Hangers = beamInfo.Hangers;
             BeamPitch = beamInfo.BeamPitch;
             PointSupportType = (SupportType)beamInfo.PointSupportType;
             Type = beamInfo.Type;

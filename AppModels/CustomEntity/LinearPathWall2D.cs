@@ -18,7 +18,7 @@ namespace AppModels.CustomEntity
         {
 
         }
-        public IEntityVm CreateEntityVm()
+        public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {
             return new LinearPathWall2DVm(this);
         }

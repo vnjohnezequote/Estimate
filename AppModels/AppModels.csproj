@@ -181,6 +181,8 @@
     <Compile Include="CustomEntity\CustomEntitySurrogate\Wall2DSurrogate.cs" />
     <Compile Include="CustomEntity\CustomVectorView.cs" />
     <Compile Include="CustomEntity\DoorCountEntity.cs" />
+    <Compile Include="CustomEntity\Hanger2D.cs" />
+    <Compile Include="CustomEntity\OutTrigger2D.cs" />
     <Compile Include="CustomEntity\PaperBolderReference.cs" />
     <Compile Include="CustomEntity\Joist2D.cs" />
     <Compile Include="CustomEntity\Wall2D.cs" />
@@ -191,12 +193,14 @@
     <Compile Include="Enums\CeilingBattensType.cs" />
     <Compile Include="Enums\ClientNames.cs" />
     <Compile Include="Enums\DoorType.cs" />
+    <Compile Include="Enums\FocusType.cs" />
     <Compile Include="Enums\LineTypes.cs" />
     <Compile Include="Enums\LoadPointLocation.cs" />
     <Compile Include="Enums\MaterialTypes.cs" />
     <Compile Include="Enums\NoggingMethod.cs" />
     <Compile Include="Enums\OpeningType.cs" />
     <Compile Include="Enums\RoofFrameType.cs" />
+    <Compile Include="Enums\SetDimensionType.cs" />
     <Compile Include="Enums\StickFrameCustomers.cs" />
     <Compile Include="Enums\Suppliers.cs" />
     <Compile Include="Enums\SupportType.cs" />
@@ -214,6 +218,11 @@
     <Compile Include="Factories\WallLayerFactory.cs" />
     <Compile Include="FileSerializer\EzequoteFileSerializer.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Interaface\ICadDrawAble.cs" />
+    <Compile Include="Interaface\IDynamicInputView.cs" />
+    <Compile Include="Interaface\IEntitiesManager.cs" />
+    <Compile Include="Interaface\ITimberVm.cs" />
+    <Compile Include="LogicalModel\VisualItems\VisualItem.cs" />
     <Compile Include="MyHiddenLinesView.cs" />
     <Compile Include="Interaface\IBasicWallInfo.cs" />
     <Compile Include="Interaface\IBeam.cs" />
@@ -266,6 +275,7 @@
     <Compile Include="PocoDataModel\TimberBasePoco.cs" />
     <Compile Include="PocoDataModel\WallLayerPoco.cs" />
     <Compile Include="PocoDataModel\WallMemberData\WallMemberBasePoco.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ResponsiveData\BasicWallInfor.cs" />
     <Compile Include="ResponsiveData\EngineerMember\MyObservableCollection.cs" />
     <Compile Include="ResponsiveData\EngineerMember\EngineerMemberInfo.cs" />
@@ -331,11 +341,13 @@
     <Compile Include="ViewModelEntity\DoorCountEntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVmBase.cs" />
+    <Compile Include="ViewModelEntity\Hanger2DVm.cs" />
     <Compile Include="ViewModelEntity\Joist2dVm.cs" />
     <Compile Include="ViewModelEntity\LeaderVM.cs" />
     <Compile Include="ViewModelEntity\LinearPathVm.cs" />
     <Compile Include="ViewModelEntity\LinearPathWall2DVm.cs" />
     <Compile Include="ViewModelEntity\LineVm.cs" />
+    <Compile Include="ViewModelEntity\OutTrigger2dVm.cs" />
     <Compile Include="ViewModelEntity\TextVm.cs" />
     <Compile Include="ViewModelEntity\VectorViewVm.cs" />
     <Compile Include="ViewModelEntity\Wall2DVm.cs" />

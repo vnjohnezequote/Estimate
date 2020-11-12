@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Input;
-using ApplicationInterfaceCore.Enums;
+using AppModels.Enums;
 using devDept.Eyeshot;
 using devDept.Geometry;
 using devDept.Graphics;
 
-namespace ApplicationInterfaceCore
+namespace AppModels.Interaface
 {
     public interface ICadDrawAble : INotifyPropertyChanged
     {

@@ -4,6 +4,6 @@ namespace AppModels.Interaface
 {
     public interface IEntityVmCreateAble
     {
-        IEntityVm CreateEntityVm();
+        IEntityVm CreateEntityVm(IEntitiesManager entitiesManager);
     }
 }

@@ -6,10 +6,9 @@ using System.Windows;
 using ApplicationInterfaceCore;
 using AppModels.AppData;
 using devDept.Eyeshot;
-using devDept.Serialization;
 using Prism.Mvvm;
 
-namespace AppModels
+namespace AppDataBase.DataBase
 {
     public class LayerManager : BindableBase, ILayerManager
     {

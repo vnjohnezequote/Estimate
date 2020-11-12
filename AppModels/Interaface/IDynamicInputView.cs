@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Input;
-using ApplicationInterfaceCore.Enums;
+using AppModels.Enums;
 
-namespace ApplicationInterfaceCore
+namespace AppModels.Interaface
 {
     public interface IDynamicInputView:INotifyPropertyChanged
     {

@@ -2,7 +2,9 @@
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels.Enums;
 using AppModels.EventArg;
+using AppModels.Interaface;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;

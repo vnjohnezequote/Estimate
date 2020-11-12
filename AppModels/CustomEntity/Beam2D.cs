@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using AppModels.Enums;
@@ -18,19 +19,21 @@ namespace AppModels.CustomEntity
     public class Beam2D: Text,IEntityVmCreateAble
     {
         #region private Field
-        private Point3D _startPoint1;
-        private Point3D _startPoint2;
-        private Point3D _endPoint1;
-        private Point3D _endPoint2;
+        private Point3D _outerStartPoint;
+        private Point3D _innerStartPoint;
+        private Point3D _outerEndPoint;
+        private Point3D _innerEndPoint;
         private Beam _beamReference;
         private int _thickness;
         private int _depth;
         private bool _isBeamUnder;
-
-
+        private bool _outTriggerAFlipped;
+        private bool _outTriggerBFlipped;
         #endregion
 
         #region Properties
+        public Guid Id { get; set; }
+        public string SheetName { get; set; }
         public Point3D StartPoint { get; set; }
         public Point3D EndPoint { get; set; }
         public int Thickness
@@ -39,7 +42,7 @@ namespace AppModels.CustomEntity
             set
             {
                 _thickness = value;
-                this.RegenGeometry(this.StartPoint1,this.EndPoint1);
+                this.RegenGeometry(this.OuterStartPoint,this.OuterEndPoint);
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
@@ -49,7 +52,7 @@ namespace AppModels.CustomEntity
             set
             {
                 _depth = value;
-                this.RegenGeometry(this.StartPoint1, this.EndPoint1);
+                this.RegenGeometry(this.OuterStartPoint, this.OuterEndPoint);
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
@@ -77,51 +80,96 @@ namespace AppModels.CustomEntity
         public Beam BeamReference { get; private set; }
         public List<Point3D> StartVerticesBox { get; set; }
         public List<Point3D> EndVerticesBox { get; set; }
-        public Point3D StartPoint1
+        public Point3D OuterStartPoint
         {
-            get => _startPoint1;
+            get => _outerStartPoint;
             set
             {
-                _startPoint1 = value;
+                _outerStartPoint = value;
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-        public Point3D StartPoint2
+        public Point3D InnerStartPoint
         {
-            get => _startPoint2;
+            get => _innerStartPoint;
             set
             {
-                _startPoint2 = value;
+                _innerStartPoint = value;
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-        public Point3D EndPoint1
+        public Point3D OuterEndPoint
         {
-            get => _endPoint1;
+            get => _outerEndPoint;
             set
             {
-                _endPoint1 = value;
+                _outerEndPoint = value;
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-        public Point3D EndPoint2
+        public Point3D InnerEndPoint
         {
-            get => _endPoint2;
+            get => _innerEndPoint;
             set
             {
-                _endPoint2 = value;
+                _innerEndPoint = value;
                 this.RegenMode = regenType.RegenAndCompile;
             }
 
         }
+        public string HangerAId { get; set; }
+        public string HangerBId { get; set; }
+        public Hanger2D HangerA { get; set; }
+        public Hanger2D HangerB { get; set; }
+        public bool IsHangerA { get; set; }
+        public bool IsHangerB { get; set; }
+        public string OutTriggerAId { get; set; }
+        public string OutTriggerBId { get; set; }
+        public OutTrigger2D OutTriggerA { get; set; }
+        public OutTrigger2D OutTriggerB { get; set; }
+        public bool IsOutTriggerA { get; set; }
+        public bool IsOutTriggerB { get; set; }
+        public bool OutTriggerAFlipped
+        {
+            get => _outTriggerAFlipped;
+            set
+            {
+                _outTriggerAFlipped = value;
+
+                if (this.OutTriggerA != null)
+                {
+                    OutTriggerA.Flipper(StartPoint, EndPoint);
+                }
+            }
+        }
+        public bool OutTriggerBFlipped
+        {
+            get => _outTriggerBFlipped;
+            set
+            {
+                if (this.OutTriggerB != null)
+                {
+                    _outTriggerBFlipped = value;
+
+                    if (this.OutTriggerB != null)
+                    {
+                        OutTriggerB.Flipper(StartPoint, EndPoint);
+                    }
+                }
+            }
+        }
+        public double FullLength { get; set; }
+
         public List<Segment2D> BoxLines { get; set; } = new List<Segment2D>();
         public List<Point3D> BeamVertices { get; set; } = new List<Point3D>();
         public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
+
         #endregion
         public Beam2D(Plane wallPlan, Point3D startPoint, Point3D endPoint,Beam beamRef,
             int thickness = 45, bool isBeamUnder = true, bool showDimension = false, double textHeight = 90) :
             base(wallPlan, startPoint, textHeight, Text.alignmentType.BaselineCenter)
         {
+            Id = new Guid();
             ColorMethod = colorMethodType.byEntity;
             if (isBeamUnder)
             {
@@ -163,12 +211,12 @@ namespace AppModels.CustomEntity
 
         private void RegenGeometry(Point3D startPoint, Point3D endPoint)
         {
-            StartPoint1 = startPoint;
-            EndPoint1 = endPoint;
-            Line1 = new Segment2D(StartPoint1,EndPoint1);
+            OuterStartPoint = startPoint;
+            OuterEndPoint = endPoint;
+            Line1 = new Segment2D(OuterStartPoint,OuterEndPoint);
             Line2 = Line1.Offset(Thickness);
-            StartPoint2 = Line2.P0.ConvertPoint2DtoPoint3D();
-            EndPoint2 = Line2.P1.ConvertPoint2DtoPoint3D();
+            InnerStartPoint = Line2.P0.ConvertPoint2DtoPoint3D();
+            InnerEndPoint = Line2.P1.ConvertPoint2DtoPoint3D();
 
             CenterLine = Line1.Offset((double)Thickness / 2);
             CenterLine.ExtendBy(-(double)Thickness/2,-(double)Thickness/2);
@@ -179,38 +227,39 @@ namespace AppModels.CustomEntity
             var offsetLine = Line1.Offset(-(double)Thickness / 2);
             DimensionLine = offsetLine;
 
-            var segment1 = new Segment2D((Point3D)StartPoint1.Clone(), (Point3D)EndPoint1.Clone());
+            var segment1 = new Segment2D((Point3D)OuterStartPoint.Clone(), (Point3D)OuterEndPoint.Clone());
             segment1.ExtendBy(-Thickness, -Thickness);
-            var segment2 = new Segment2D((Point3D)StartPoint2.Clone(), (Point3D)EndPoint2.Clone());
+            var segment2 = new Segment2D((Point3D)InnerStartPoint.Clone(), (Point3D)InnerEndPoint.Clone());
             segment2.ExtendBy(-Thickness, -Thickness);
             var p1 = segment1.P0;
             var p2 = segment2.P0;
             var p3 = segment1.P1;
             var p4 = segment2.P1;
 
-            StartVerticesBox = new List<Point3D>() { StartPoint1, p1.ConvertPoint2DtoPoint3D(), p2.ConvertPoint2DtoPoint3D(), StartPoint2 };
-            EndVerticesBox = new List<Point3D>() { EndPoint1, EndPoint2, p4.ConvertPoint2DtoPoint3D(), p3.ConvertPoint2DtoPoint3D() };
+            StartVerticesBox = new List<Point3D>() { OuterStartPoint, p1.ConvertPoint2DtoPoint3D(), p2.ConvertPoint2DtoPoint3D(), InnerStartPoint };
+            EndVerticesBox = new List<Point3D>() { OuterEndPoint, InnerEndPoint, p4.ConvertPoint2DtoPoint3D(), p3.ConvertPoint2DtoPoint3D() };
 
-            var tempLine = new Segment2D(StartPoint1, StartPoint2);
+            var tempLine = new Segment2D(OuterStartPoint, InnerStartPoint);
             StartVerticesBox.Add(tempLine.MidPoint.ConvertPoint2DtoPoint3D());
             tempLine = new Segment2D(p1, p2);
             StartVerticesBox.Add(tempLine.MidPoint.ConvertPoint2DtoPoint3D());
-            tempLine = new Segment2D(StartPoint1, p1);
+            tempLine = new Segment2D(OuterStartPoint, p1);
             StartVerticesBox.Add(tempLine.MidPoint.ConvertPoint2DtoPoint3D());
-            tempLine = new Segment2D(StartPoint2, p2);
+            tempLine = new Segment2D(InnerStartPoint, p2);
             StartVerticesBox.Add(tempLine.MidPoint.ConvertPoint2DtoPoint3D());
-            tempLine = new Segment2D(EndPoint1, EndPoint2);
+            tempLine = new Segment2D(OuterEndPoint, InnerEndPoint);
             EndVerticesBox.Add(tempLine.MidPoint.ConvertPoint2DtoPoint3D());
             tempLine = new Segment2D(p3, p4);
             EndVerticesBox.Add(tempLine.MidPoint.ConvertPoint2DtoPoint3D());
-            tempLine = new Segment2D(EndPoint1, p3);
+            tempLine = new Segment2D(OuterEndPoint, p3);
             EndVerticesBox.Add(tempLine.MidPoint.ConvertPoint2DtoPoint3D());
-            tempLine = new Segment2D(EndPoint2, p4);
+            tempLine = new Segment2D(InnerEndPoint, p4);
             EndVerticesBox.Add(tempLine.MidPoint.ConvertPoint2DtoPoint3D());
+            this.UpdateDistance();
         }
         protected override void Draw(DrawParams data)
         {
-            var points = new Point3D[] { StartPoint1, EndPoint1, EndPoint2, StartPoint2 };
+            var points = new Point3D[] { OuterStartPoint, OuterEndPoint, InnerEndPoint, InnerStartPoint };
             //data.RenderContext.SetState(depthStencilStateType.DepthTestOff);
             data.RenderContext.PushRasterizerState();
             data.RenderContext.SetRasterizerState(rasterizerPolygonDrawingType.Fill, rasterizerCullFaceType.None);
@@ -261,26 +310,26 @@ namespace AppModels.CustomEntity
         //    if (this.IsBeamUnder)
         //    {
         //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(StartPoint1, StartPoint2);
+        //        data.RenderContext.DrawBufferedLine(OuterStartPoint, InnerStartPoint);
         //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(EndPoint1, EndPoint2);
+        //        data.RenderContext.DrawBufferedLine(OuterEndPoint, InnerEndPoint);
         //        //data.RenderContext.SetColorWireframe(Color.Crimson, true);
-        //        this.DrawDashWallLine(data, StartPoint1, EndPoint1);
+        //        this.DrawDashWallLine(data, OuterStartPoint, OuterEndPoint);
         //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        this.DrawDashWallLine(data, StartPoint2, EndPoint2);
+        //        this.DrawDashWallLine(data, InnerStartPoint, InnerEndPoint);
         //        data.RenderContext.DrawBufferedLine(StartVerticesBox[1], StartVerticesBox[2]);
         //        data.RenderContext.DrawBufferedLine(EndVerticesBox[2], EndVerticesBox[3]);
         //    }
         //    else
         //    {
         //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(StartPoint1, StartPoint2);
+        //        data.RenderContext.DrawBufferedLine(OuterStartPoint, InnerStartPoint);
         //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(EndPoint1, EndPoint2);
+        //        data.RenderContext.DrawBufferedLine(OuterEndPoint, InnerEndPoint);
         //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(StartPoint1, EndPoint1);
+        //        data.RenderContext.DrawBufferedLine(OuterStartPoint, OuterEndPoint);
         //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(StartPoint2, EndPoint2);
+        //        data.RenderContext.DrawBufferedLine(InnerStartPoint, InnerEndPoint);
         //        data.RenderContext.DrawBufferedLine(StartVerticesBox[1], StartVerticesBox[2]);
         //        data.RenderContext.DrawBufferedLine(EndVerticesBox[2], EndVerticesBox[3]);
         //    }
@@ -302,28 +351,28 @@ namespace AppModels.CustomEntity
                 listPoint.Add(EndPoint);
             }
 
-            if (!listPoint.Contains(StartPoint1))
+            if (!listPoint.Contains(OuterStartPoint))
             {
-                listPoint.Add(StartPoint1);
+                listPoint.Add(OuterStartPoint);
             }
-            if (!listPoint.Contains(StartPoint2))
+            if (!listPoint.Contains(InnerStartPoint))
             {
-                listPoint.Add(StartPoint2);
+                listPoint.Add(InnerStartPoint);
             }
-            if (!listPoint.Contains(EndPoint1))
+            if (!listPoint.Contains(OuterEndPoint))
             {
-                listPoint.Add(EndPoint1);
+                listPoint.Add(OuterEndPoint);
             }
-            if (!listPoint.Contains(EndPoint2))
+            if (!listPoint.Contains(InnerEndPoint))
             {
-                listPoint.Add(EndPoint2);
+                listPoint.Add(InnerEndPoint);
             }
             Vertices = listPoint.ToArray();
             BeamVertices.Clear();
-            BeamVertices.Add(StartPoint1);
-            BeamVertices.Add(StartPoint2);
-            BeamVertices.Add(EndPoint2);
-            BeamVertices.Add(EndPoint1);
+            BeamVertices.Add(OuterStartPoint);
+            BeamVertices.Add(InnerStartPoint);
+            BeamVertices.Add(InnerEndPoint);
+            BeamVertices.Add(OuterEndPoint);
             base.UpdateBoundingBox(data);
             this.RegenMode = regenType.CompileOnly;
         }
@@ -367,9 +416,21 @@ namespace AppModels.CustomEntity
             }
             return WallIntersectionType.None;
         }
-        public IEntityVm CreateEntityVm()
+        public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {
-            return new Beam2DVm(this);
+            return new Beam2DVm(this,entitiesManager);
+        }
+
+        private void UpdateDistance()
+        {
+            if (this.OuterStartPoint != null && this.OuterEndPoint != null)
+            {
+                this.FullLength = OuterStartPoint.DistanceTo(OuterEndPoint);
+                if (this.BeamReference != null)
+                {
+                    //this.JoistReference.FullLength = (int)FullLength;
+                }
+            }
         }
     }
 }

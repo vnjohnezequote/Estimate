@@ -215,10 +215,7 @@ namespace DrawingModule.ViewModels
         }
         private void OnAutoSaveDrawing()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>
-            { 
-                OnAutoSaveDrawingExcute();
-            }));
+            System.Windows.Application.Current.Dispatcher.Invoke((Action)(OnAutoSaveDrawingExcute));
         }
 
         private void _autoSaveTimer_Elapsed(object sender, ElapsedEventArgs e)

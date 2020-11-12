@@ -9,6 +9,7 @@ using System.Windows.Navigation;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
+using AppModels.PocoDataModel.EngineerMember;
 using Prism.Mvvm;
 using ProtoBuf;
 

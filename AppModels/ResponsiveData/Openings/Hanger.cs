@@ -10,7 +10,19 @@ namespace AppModels.ResponsiveData.Openings
 {
     public class Hanger : BindableBase
     {
-        private HangerMat _hangerMat;
+       private HangerMat _hangerMat;
+       private int _qty;
+       public Guid Id { get; set; }
        public HangerMat HangerMaterial { get=>_hangerMat; set=>SetProperty(ref _hangerMat,value); }
+       public int Qty
+       {
+           get => _qty;
+           set => SetProperty(ref _qty, value);
+       }
+
+       public Hanger()
+       {
+            Id = Guid.NewGuid();
+       }
     }
 }

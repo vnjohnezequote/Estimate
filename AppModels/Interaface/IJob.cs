@@ -15,6 +15,8 @@ namespace AppModels.Interaface
         ObservableCollection<LevelWall> Levels { get; }
         //ObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
         MyObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
+        bool CurrentIsLoadBearingWall { get; set; }
+        bool CCMode { get; set; }
         ObservableCollection<OpeningInfo> DoorSchedules { get; }
         FramingSheet ActiveFloorSheet { get; set; }
         TimberBase SelectedJoitsMaterial { get; set; }

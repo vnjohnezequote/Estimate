@@ -76,7 +76,7 @@ namespace AppModels.PocoDataModel
         /// Gets or sets the beams.
         /// </summary>
         public Dictionary<string, List<TimberBase>> Beams { get; set; }
-        public List<Hanger> Hangers { get; set; }
+        public List<HangerMat> Hangers { get; set; }
 
         //public List<TimberBase> FloorRafterMaterialList { get; set; }
 

@@ -11,6 +11,7 @@ using System.Globalization;
 using AppModels.Enums;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Openings;
 
 namespace AppDataBase.DataBase
 {
@@ -473,6 +474,7 @@ namespace AppDataBase.DataBase
                 Builders = new List<string>() { },
                 Customers = new List<Customer>(),
                 TimberMaterialList =  this.CreateFloorAndRafterList(),
+                Hangers =  this.CreateHangerList(),
                 WallTypes = new List<WallTypePoco>
                 {
                 }
@@ -525,6 +527,12 @@ namespace AppDataBase.DataBase
                 this._clients.EnsureIndex(x => x.Name);
             }
 
+        }
+
+        private List<HangerMat> CreateHangerList()
+        {
+            var hangerList = "Hangers.csv";
+            return this.LoadTimberListOnCvsFile<HangerMat>(hangerList);
         }
 
         private List<TimberBase> CreateFloorAndRafterList()

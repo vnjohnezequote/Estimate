@@ -56,10 +56,9 @@ namespace AppAddons.DrawingTools
                 var joistMember = new Joist();
                 if (this.JobModel.ActiveFloorSheet != null)
                 {
-                    var index = this.JobModel.ActiveFloorSheet.Joists.Count;
-                    joistMember.Id = index;
-                    joistMember.SheetName = this.JobModel.ActiveFloorSheet.Name;
                     joistMember.FloorSheet = this.JobModel.ActiveFloorSheet;
+                    joistMember.SheetName = this.JobModel.ActiveFloorSheet.Name;
+                    
                     var joistThickness = 45;
                     {
                         if (JobModel.SelectedJoitsMaterial !=null)
