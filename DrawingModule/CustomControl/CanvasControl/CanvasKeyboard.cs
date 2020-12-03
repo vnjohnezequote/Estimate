@@ -6,7 +6,10 @@ using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.CustomEntity;
 using AppModels.Enums;
+using AppModels.Factories;
+using AppModels.Interaface;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Framings.Blocking;
 using AppModels.ViewModelEntity;
 using DrawingModule.Application;
 using DrawingModule.EditingTools;
@@ -78,40 +81,27 @@ namespace DrawingModule.CustomControl.CanvasControl
                 case Key.Delete:
                     if (this.EntitiesManager.SelectedEntities!=null && this.EntitiesManager.SelectedEntities.Count!=0)
                     {
-                        List<Hanger2D> hangersRemove = new List<Hanger2D>();
-                        List<OutTrigger2D> outTriggerRemoves = new List<OutTrigger2D>();
                         foreach (var entitiesManagerSelectedEntity in EntitiesManager.SelectedEntities)
                         {
                             if (entitiesManagerSelectedEntity is BeamEntity beam)
                             {
-                                if (JobModel!=null)
-                                {
-                                    LevelWall level = null;
-                                    foreach (var jobModelLevel in JobModel.Levels)
-                                    {
-                                        if (jobModelLevel.LevelName == beam.LevelName)
-                                        {
-                                            level = jobModelLevel;
-                                        }
-                                    }
+                                var curentlevel = beam.FramingReference.Level;
+                                
+                                   if (curentlevel!=null)
+                                   {
+                                       if (curentlevel.RoofBeams.Contains(beam.FramingReference))
+                                       {
+                                           var index = curentlevel.RoofBeams.IndexOf(beam.FramingReference);
+                                           curentlevel.RoofBeams.Remove(beam.FramingReference);
+                                           for (int i = index; i < curentlevel.RoofBeams.Count; i++)
+                                           {
+                                               curentlevel.RoofBeams[i].Index = i + 1;
+                                           }
 
-                                    if (level!=null)
-                                    {
-                                        if (level.RoofBeams.Contains(beam.BeamReference))
-                                        {
-                                            level.RoofBeams.Remove(beam.BeamReference);
-                                        }
-                                        var i = 1;
-                                        foreach (var levelRoofBeam in level.RoofBeams)
-                                        {
-                                            levelRoofBeam.Id = i;
-                                            i++;
-                                        }
                                     }
-                                    
-                                }
-
-                                this.Blocks.Remove(beam.BeamBlock);
+                                       
+                                   }
+                                   this.Blocks.Remove(beam.BeamBlock);
                             }
 
                             if (entitiesManagerSelectedEntity is DoorCountEntity doorCount)
@@ -152,43 +142,26 @@ namespace DrawingModule.CustomControl.CanvasControl
                             if (entitiesManagerSelectedEntity is Joist2D joist)
                             {
                                 // Cho nay can viet lai de tim dung floor sheet cua joist de xoa trong truong hop active floor sheet khong phai laf floor sheet cua joist chon xoa
-                                var activesheet = joist.JoistReference.FloorSheet;
-
-                                    if(activesheet.Joists.Contains(joist.JoistReference))
-                                        activesheet.Joists.Remove(joist.JoistReference);
-                                foreach (var entity in EntitiesManager.Entities)
-                                {
-                                    if (entity is Hanger2D hanger && (hanger.Id.ToString().Equals(joist.HangerAId)|| hanger.Id.ToString().Equals(joist.HangerBId)))
-                                    {
-                                        hangersRemove.Add(hanger);
-                                    }
-
-                                    if (entity is OutTrigger2D outTrigger && (outTrigger == joist.OutTriggerA|| outTrigger == joist.OutTriggerB))
-                                    {
-                                        outTriggerRemoves.Add(outTrigger);
-                                    }
-                                }
-
+                                var activesheet = joist.FramingReference.FramingSheet;
+                                var joistVm = (Joist2dVm)joist.CreateEntityVm(EntitiesManager);
+                                    joistVm.IsHangerA = false;
+                                    joistVm.IsHangerB = false;
+                                    joistVm.IsOutriggerA = false;
+                                    joistVm.IsOutriggerB = false;
+                                    if(activesheet.Joists.Contains(joist.FramingReference))
+                                        activesheet.Joists.Remove(joist.FramingReference);
                             }
 
                             if (entitiesManagerSelectedEntity is Beam2D beam2D)
                             {
-                                var activesheet = beam2D.BeamReference.FloorSheet;
-                                if (activesheet.Beams.Contains(beam2D.BeamReference))
-                                    activesheet.Beams.Remove(beam2D.BeamReference);
-                                foreach (var entity in EntitiesManager.Entities)
-                                {
-                                    if (entity is Hanger2D hanger && (hanger.Id.ToString().Equals(beam2D.HangerAId) || hanger.Id.ToString().Equals(beam2D.HangerBId)))
-                                    {
-                                        hangersRemove.Add(hanger);
-                                    }
-
-                                    if (entity is OutTrigger2D outTrigger && (outTrigger == beam2D.OutTriggerA || outTrigger == beam2D.OutTriggerB))
-                                    {
-                                        outTriggerRemoves.Add(outTrigger);
-                                    }
-                                }
-
+                                var activesheet = beam2D.FramingReference.FramingSheet;
+                                if (activesheet.Beams.Contains(beam2D.FramingReference))
+                                    activesheet.Beams.Remove(beam2D.FramingReference);
+                                var beamVm = (Beam2DVm) beam2D.CreateEntityVm(EntitiesManager);
+                                beamVm.IsHangerA = false;
+                                beamVm.IsHangerB = false;
+                                beamVm.IsOutriggerA = false;
+                                beamVm.IsOutriggerB = false;
                             }
 
                             if (entitiesManagerSelectedEntity is Hanger2D hangert)
@@ -197,17 +170,15 @@ namespace DrawingModule.CustomControl.CanvasControl
                                 Beam2D beamHangerBelongTo = null;
                                 foreach ( var entity in EntitiesManager.Entities)
                                 {
-                                    if (entity is Joist2D joistt && (joistt.HangerAId == hangert.Id.ToString()||joistt.HangerBId== hangert.Id.ToString()))
+                                    if (entity is Joist2D joistt && (joistt.HangerAId == hangert.Id||joistt.HangerBId== hangert.Id))
                                     {
                                         joistHangerBelongTo = joistt;
                                     }
-                                    if (entity is Beam2D beamtt && (beamtt.HangerAId == hangert.Id.ToString() || beamtt.HangerBId == hangert.Id.ToString()))
+                                    if (entity is Beam2D beamtt && (beamtt.HangerAId == hangert.Id || beamtt.HangerBId == hangert.Id))
                                     {
                                         beamHangerBelongTo = beamtt;
                                     }
-
                                 }
-
                                 if (joistHangerBelongTo!=null)
                                 {
                                     var joistVm = (Joist2dVm)joistHangerBelongTo.CreateEntityVm(EntitiesManager);
@@ -245,7 +216,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                                     {
                                         joistOutTriggerBelongTo = joistt;
                                     }
-                                    if (entity is Beam2D beamtt && (beamtt.OutTriggerA == outTrigger2D || beamtt.OutTriggerA == outTrigger2D))
+                                    if (entity is Beam2D beamtt && (beamtt.OutTriggerA == outTrigger2D || beamtt.OutTriggerB == outTrigger2D))
                                     {
                                         beamOutTriggerBelongTo = beamtt;
                                     }
@@ -278,20 +249,22 @@ namespace DrawingModule.CustomControl.CanvasControl
                                     }
                                 }
                             }
-                                
-                        }
 
-                        foreach (var hanger in hangersRemove)
-                        {
-                            EntitiesManager.RemoveEntity(hanger);
-                        }
+                            if (entitiesManagerSelectedEntity is Blocking2D)
+                            {
+                                foreach (var entity in EntitiesManager.SelectedEntities)
+                                {
+                                    if (entity is Blocking2D blocking)
+                                    {
+                                        blocking.FramingReference.FramingSheet.Blockings.Remove((Blocking)blocking
+                                            .FramingReference);
+                                    }
+                                }
 
-                        foreach (var outTriggerRemove in outTriggerRemoves)
-                        {
-                            EntitiesManager.RemoveEntity(outTriggerRemove);
+                            }
                         }
                         EntitiesManager.SelectedEntities.Clear();
-                        //EntitiesManager.SelectedEntity = null;
+                        EntitiesManager.SelectedEntity = null;
                     }
                     return true;
                 case Key.LeftShift:

@@ -1,30 +1,62 @@
 ﻿using devDept.Eyeshot.Entities;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using AppModels.CustomEntity.CustomEntitySurrogate;
+using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Openings;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Geometry;
-using Prism.Mvvm;
+using devDept.Serialization;
 
 namespace AppModels.CustomEntity
 {
-    public class Hanger2D: Text,IEntityVmCreateAble
+    public sealed class Hanger2D: Text,IEntityVmCreateAble,IFraming2D
     {
-        public Hanger HangerReference { get; set; }
+        private IFraming _framingReference;
+        public IFraming FramingReference
+        {
+            get => _framingReference;
+            set
+            {
+                _framingReference = value;
+                if (_framingReference!=null)
+                {
+                    _framingReference.PropertyChanged += HangerRefOnPropertyChanged;
+                }
+            }
+        }
+        public double FullLength { get; set; }
+        
         public Guid Id{ get; set; }
-        public Hanger2D(Point3D insPoint, string textString, double height,Hanger hangerRef) : base(insPoint, textString, height)
+        public Guid FramingReferenceId { get; set; }
+        
+        
+        public Hanger2D(Point3D insPoint, string textString, double height,Hanger reference) : base(insPoint, textString, height)
         {
             Id = Guid.NewGuid();
-            HangerReference = hangerRef;
+            FramingReference = reference;
+            this.TextString = reference.Name;
         }
+        public Hanger2D(Point3D insPoint, string textString, double height):base(insPoint,textString, height)
+        {
+            
+        }
+
+        public Hanger2D(Text another) : base(another)
+        {
+
+        }
+        
+        private void HangerRefOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(FramingReference.Name))
+            {
+                TextString = FramingReference.Name;
+            }
+        }
+
         protected override void Draw(DrawParams data)
         {
             base.Draw(data);
@@ -68,8 +100,11 @@ namespace AppModels.CustomEntity
             return new Hanger2DVm(this,entitiesManager);
         }
 
-        
+        public override EntitySurrogate ConvertToSurrogate()
+        {
+            return new Hanger2DSurrogate(this);
+        }
 
-        
+
     }
 }

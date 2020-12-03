@@ -1,0 +1,622 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DE7F939D-8684-4E5E-9158-DCABE43C68C2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DrawingModule</RootNamespace>
+    <AssemblyName>DrawingModule</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PROFESSIONAL, NURBS, FEM, SOLID, ULTIMATE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PROFESSIONAL, NURBS, FEM, SOLID, ULTIMATE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.5\lib\net47\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.4.3.0\lib\net462\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Eyeshot.Control.x86.Wpf.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=c8a727666e3c0a09, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2020\Bin\x86\devDept.Eyeshot.Control.x86.Wpf.v2020.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Geometry.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL" >
+	<HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
+	</Reference>
+    <Reference Include="devDept.Graphics.Shaders.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=54ce5f5f803e4b42, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Graphics.Wpf.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=f3cd437f0d8061b5, processorArchitecture=MSIL" />
+    <Reference Include="DynamicData, Version=6.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicData.6.14.18\lib\net461\DynamicData.dll</HintPath>
+    </Reference>
+    <Reference Include="Gu.Wpf.ValidationScope, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gu.Wpf.ValidationScope.0.1.0.0\lib\net45\Gu.Wpf.ValidationScope.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.2.0.0\lib\net47\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.BoxIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.BoxIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Entypo, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Entypo.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.EvaIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.EvaIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.FeatherIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.FeatherIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.FontAwesome, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.FontAwesome.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Ionicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Ionicons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.JamIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.JamIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Material, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Material.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.MaterialDesign, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.MaterialDesign.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.MaterialLight, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.MaterialLight.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Microns, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Microns.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Modern, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Modern.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Octicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Octicons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.PicolIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.PicolIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.RPGAwesome, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.RPGAwesome.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.SimpleIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.SimpleIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Typicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Typicons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Unicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Unicons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.WeatherIcons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.WeatherIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Zondicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.4.2.0\lib\net47\MahApps.Metro.IconPacks.Zondicons.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.2.6.1513, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.2.6\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.MahApps, Version=0.1.4.1513, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.MahApps.0.1.4\lib\net452\MaterialDesignThemes.MahApps.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=3.1.3.1513, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.3.1.3\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MathExtension, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathExtension.2.0.2\lib\net40\MathExtension.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Pharmacist.Common, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pharmacist.Common.1.5.15\lib\netstandard2.0\Pharmacist.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.7.2.0.1422\lib\net45\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Logging.Serilog, Version=7.2.0.1423, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Logging.Serilog.7.2.0.1423\lib\net45\Prism.Logging.Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Unity.Wpf, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Unity.7.2.0.1422\lib\net45\Prism.Unity.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.7.2.0.1422\lib\net45\Prism.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyTools, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyTools.3.0.0\lib\net45\PropertyTools.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyTools.Wpf, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyTools.Wpf.3.0.0\lib\net45\PropertyTools.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI, Version=11.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveUI.11.4.1\lib\net461\ReactiveUI.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Events.WPF, Version=11.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveUI.Events.WPF.11.4.1\lib\net461\ReactiveUI.Events.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.WPF, Version=11.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveUI.WPF.11.4.1\lib\net461\ReactiveUI.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.10.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.4.1.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.RawInput, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.RawInput.4.2.0\lib\net45\SharpDX.RawInput.dll</HintPath>
+    </Reference>
+    <Reference Include="SoftFluent.Windows, Version=1.0.0.0, Culture=neutral, PublicKeyToken=02a67131d2a99c25, processorArchitecture=MSIL">
+      <HintPath>..\packages\SoftFluent.Windows.1.0.1.6\lib\net40\SoftFluent.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Splat.9.4.5\lib\net461\Splat.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Data.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.PropertyGrid.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.SfGrid.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.SfSkinManager.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.Shared.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.Themes.Blend.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.Tools.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Collections.NonGeneric, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.NonGeneric.4.3.0\lib\net46\System.Collections.NonGeneric.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.TypeConverter, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.TypeConverter.4.3.0\lib\net462\System.ComponentModel.TypeConverter.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Reactive, Version=4.4.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.4.4.1\lib\net46\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.7.2.0.1422\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.5.11.1\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.11.1\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Application\Application.cs" />
+    <Compile Include="Application\ApplicationHolder.cs" />
+    <Compile Include="Application\Document.cs" />
+    <Compile Include="Application\DynamicInputService.cs" />
+    <Compile Include="Application\Editor.cs" />
+    <Compile Include="CommandClass\CommandClass.cs" />
+    <Compile Include="CommandClass\CommandClassAttribute.cs" />
+    <Compile Include="CommandClass\CommandMethodAttribute.cs" />
+    <Compile Include="CommandClass\CommandPropertiesAttribute.cs" />
+    <Compile Include="CommandClass\CommandThunk.cs" />
+    <Compile Include="CommandLine\AcHintItem.cs" />
+    <Compile Include="CommandLine\AutoCompleteList.cs" />
+    <Compile Include="CommandLine\AutoCompleteSearcher.cs" />
+    <Compile Include="CommandLine\AutoCorrectList.cs" />
+    <Compile Include="CommandLine\AutoCorrectType.cs" />
+    <Compile Include="CommandLine\BooleanAndConverter.cs" />
+    <Compile Include="CommandLine\BooleanConverter.cs" />
+    <Compile Include="CommandLine\CacCommandLineDatabase.cs" />
+    <Compile Include="CommandLine\CcmdThroat.cs" />
+    <Compile Include="CommandLine\ClassExtensions.cs" />
+    <Compile Include="CommandLine\CommandCompletionType.cs" />
+    <Compile Include="CommandLine\CommandEditor.cs" />
+    <Compile Include="CommandLine\CommandEditorManager.cs" />
+    <Compile Include="CommandLine\CommandHistory.cs" />
+    <Compile Include="CommandLine\CommandLineDragEventArgs.cs" />
+    <Compile Include="CommandLine\CommandLineHistory.cs" />
+    <Compile Include="CommandLine\CommandLineItem.cs" />
+    <Compile Include="CommandLine\CommandLineItemSearcher.cs" />
+    <Compile Include="CommandLine\CommandLineSearcher.cs" />
+    <Compile Include="CommandLine\CommandLineService.cs" />
+    <Compile Include="CommandLine\CommandLineSettings.cs" />
+    <Compile Include="CommandLine\CommandLineTextBox.cs" />
+    <Compile Include="CommandLine\CommandSysvarHintItem.cs" />
+    <Compile Include="CommandLine\CommandSysvarSearcher.cs" />
+    <Compile Include="CommandLine\ComponentManager.cs" />
+    <Compile Include="CommandLine\ComponentSettings.cs" />
+    <Compile Include="CommandLine\CompositeHintSearcher.cs" />
+    <Compile Include="CommandLine\ContainerMessageDispatcher.cs" />
+    <Compile Include="CommandLine\CustomFlowDocumentScrollViewer.cs" />
+    <Compile Include="CommandLine\DataBindings.cs" />
+    <Compile Include="CommandLine\DockPosition.cs" />
+    <Compile Include="CommandLine\DocumentActivationChangedEventArgs.cs" />
+    <Compile Include="CommandLine\DocumentCollection.cs" />
+    <Compile Include="CommandLine\DocumentCollectionEventArgs.cs" />
+    <Compile Include="CommandLine\DocumentDestroyedEventArgs.cs" />
+    <Compile Include="CommandLine\DocumentIterator.cs" />
+    <Compile Include="CommandLine\DocumentLockMode.cs" />
+    <Compile Include="CommandLine\DocumentLockModeChangedEventArgs.cs" />
+    <Compile Include="CommandLine\DocumentLockModeChangeVetoedEventArgs.cs" />
+    <Compile Include="CommandLine\DocumentLockModeWillChangeEventArgs.cs" />
+    <Compile Include="CommandLine\FallbackConverter.cs" />
+    <Compile Include="CommandLine\HintCategory.cs" />
+    <Compile Include="CommandLine\HintCategoryIsExpandedConverter.cs" />
+    <Compile Include="DrawingService.cs" />
+    <Compile Include="DrawToolBase\DimToolBase.cs" />
+    <Compile Include="DrawToolBase\EditingToolBase.cs" />
+    <Compile Include="DrawToolBase\DrawTextBase.cs" />
+    <Compile Include="EditingTools\ImportImageTool.cs" />
+    <Compile Include="EditingTools\RegenTool.cs" />
+    <Compile Include="Enums\CommandLoopType.cs" />
+    <Compile Include="Enums\HintCategoryType.cs" />
+    <Compile Include="CommandLine\HintItem.cs" />
+    <Compile Include="CommandLine\HintItemsPanel.cs" />
+    <Compile Include="Enums\HintItemType.cs" />
+    <Compile Include="CommandLine\HintListTimer.cs" />
+    <Compile Include="Enums\HintMatchType.cs" />
+    <Compile Include="CommandLine\HintNameComparer.cs" />
+    <Compile Include="CommandLine\HintSearchContext.cs" />
+    <Compile Include="CommandLine\HintSearcher.cs" />
+    <Compile Include="CommandLine\HintSearchResult.cs" />
+    <Compile Include="CommandLine\InputBuffer.cs" />
+    <Compile Include="CommandLine\InputBufferImp.cs" />
+    <Compile Include="Enums\InputSearchOptions.cs" />
+    <Compile Include="CommandLine\InternalCommandSearcher.cs" />
+    <Compile Include="CommandLine\IPromptKeyword.cs" />
+    <Compile Include="CommandLine\IResize.cs" />
+    <Compile Include="CommandLine\KeyTipManager.cs" />
+    <Compile Include="CommandLine\Keyword.cs" />
+    <Compile Include="CommandLine\KeywordCollection.cs" />
+    <Compile Include="CommandLine\LazyLoadHintItem.cs" />
+    <Compile Include="CommandLine\ListViewModelItem.cs" />
+    <Compile Include="CommandLine\MinusConverter.cs" />
+    <Compile Include="CommandLine\MoreFunction.cs" />
+    <Compile Include="CommandLine\MultiBooleanOrConverter.cs" />
+    <Compile Include="CommandLine\MultiReplaceConverter.cs" />
+    <Compile Include="CommandLine\NonTopmostPopup.cs" />
+    <Compile Include="CommandLine\ObjectConverter.cs" />
+    <Compile Include="CommandLine\PaletteSet.cs" />
+    <Compile Include="CommandLine\PromptAndInput.cs" />
+    <Compile Include="CommandLine\PromptParser.cs" />
+    <Compile Include="CommandLine\ReplaceConverter.cs" />
+    <Compile Include="CommandLine\ReverseBooleanConverter.cs" />
+    <Compile Include="CommandLine\RevertVisibilityMultiValueConverter.cs" />
+    <Compile Include="CommandLine\SelectionHelper.cs" />
+    <Compile Include="CommandLine\StringToLabelConverter.cs" />
+    <Compile Include="CommandLine\SystemVariable.cs" />
+    <Compile Include="CommandLine\SystemVariables.cs" />
+    <Compile Include="CommandLine\TextSelectionRange.cs" />
+    <Compile Include="CommandLine\WindowPositionChangedEventArgs.cs" />
+    <Compile Include="Control\BeginResizeEventArgs.cs" />
+    <Compile Include="Control\ClickableKeyword.cs" />
+    <Compile Include="Control\Direction.cs" />
+    <Compile Include="Control\Extensions.cs" />
+    <Compile Include="Control\LastFillWrapPanel.cs" />
+    <Compile Include="Control\ResizeThumb.cs" />
+    <Compile Include="Control\TreeNode.cs" />
+    <Compile Include="CustomControl\CanvasControl\CanvasDrawing.cs" />
+    <Compile Include="CustomControl\CanvasControl\CanvasKeyboard.cs" />
+    <Compile Include="CustomControl\CanvasControl\CanvasMouse.cs" />
+    <Compile Include="CustomControl\CanvasControl\CanvasSnapping.cs" />
+    <Compile Include="CustomControl\PaperSpaceControl\CustomSheet.cs" />
+    <Compile Include="CustomControl\PaperSpaceControl\PageSize.cs" />
+    <Compile Include="CustomControl\PaperSpaceControl\PaperSpaceDrawing.cs" />
+    <Compile Include="CustomControl\SnapPoint.cs" />
+    <Compile Include="DrawInteractiveUtilities\DrawInteractiveUntilities.cs" />
+    <Compile Include="DrawInteractiveUtilities\DrawSnappPointUtl.cs" />
+    <Compile Include="DrawToolBase\SelectAbleToolBase.cs" />
+    <Compile Include="DrawToolBase\ToolBase.cs" />
+    <Compile Include="DrawToolBase\ToolChangedArgs.cs" />
+    <Compile Include="EditingTools\SelectTool.cs" />
+    <Compile Include="Enums\CommandFlags.cs" />
+    <Compile Include="Enums\DrawEntitiesType.cs" />
+    <Compile Include="Enums\DrawingMode.cs" />
+    <Compile Include="Enums\EInputType.cs" />
+    <Compile Include="Enums\ETool.cs" />
+    <Compile Include="Enums\HintListMode.cs" />
+    <Compile Include="Enums\InfinityPointType.cs" />
+    <Compile Include="Enums\ObjectSnapType.cs" />
+    <Compile Include="Enums\PageLayout.cs" />
+    <Compile Include="Enums\PickState.cs" />
+    <Compile Include="Helper\AttachableForStyleBehavior.cs" />
+    <Compile Include="Helper\DrawingHelper.cs" />
+    <Compile Include="Helper\KeepSelectionBehavior.cs" />
+    <Compile Include="Helper\Utils.cs" />
+    <Compile Include="Interface\ICommandLine.cs" />
+    <Compile Include="Interface\ICommandLineCallable.cs" />
+    <Compile Include="Interface\IHandleWindowPositionChanged.cs" />
+    <Compile Include="Interface\IHintSearcher.cs" />
+    <Compile Include="Interface\ILookup.cs" />
+    <Compile Include="Rawinput\Input.cs" />
+    <Compile Include="Service\CommandLineService.cs" />
+    <Compile Include="UserInteractive\PromptCornerOptions.cs" />
+    <Compile Include="UserInteractive\PromptEditorOptions.cs" />
+    <Compile Include="UserInteractive\PromptEntityOptions.cs" />
+    <Compile Include="UserInteractive\PromptEntityResult.cs" />
+    <Compile Include="UserInteractive\PromptOptions.cs" />
+    <Compile Include="UserInteractive\PromptPointOptions.cs" />
+    <Compile Include="UserInteractive\PromptPointResult.cs" />
+    <Compile Include="UserInteractive\PromptResult.cs" />
+    <Compile Include="UserInteractive\PromptSelectionOptions.cs" />
+    <Compile Include="UserInteractive\PromptSelectionResult.cs" />
+    <Compile Include="UserInteractive\PromptStringOptions.cs" />
+    <Compile Include="ViewModels\DynamicInputViewModel.cs" />
+    <Compile Include="ViewModels\LayerManagerViewModel.cs" />
+    <Compile Include="ViewModels\SelectedEntityPropertiesViewModel.cs" />
+    <Compile Include="ViewModels\WallPropertiesManagerViewModel.cs" />
+    <Compile Include="Views\DynamicInputView.xaml.cs">
+      <DependentUpon>DynamicInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingModuleControler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ViewModels\CanvasDrawingViewModel.cs" />
+    <Compile Include="ViewModels\CommandLineViewModel.cs" />
+    <Compile Include="ViewModels\DrawingWindowViewModel.cs" />
+    <Compile Include="ViewModels\HintViewerViewModel.cs" />
+    <Compile Include="Views\CommandLineView.xaml.cs">
+      <DependentUpon>CommandLineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DrawingWindowView.xaml.cs">
+      <DependentUpon>DrawingWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HintViewer.xaml.cs">
+      <DependentUpon>HintViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoryViewer.xaml.cs">
+      <DependentUpon>HistoryViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CanvasDrawingView.xaml.cs">
+      <DependentUpon>CanvasDrawingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LayerManagerView.xaml.cs">
+      <DependentUpon>LayerManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectedEntityPropertiesView.xaml.cs">
+      <DependentUpon>SelectedEntityPropertiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WallPropertiesManagerView.xaml.cs">
+      <DependentUpon>WallPropertiesManagerView.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ApplicationConverter\ApplicationConverter.csproj">
+      <Project>{a270a3f2-3ebb-4c04-91c9-c4f3d87bae4e}</Project>
+      <Name>ApplicationConverter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj">
+      <Project>{43e7a97c-8b89-4bc4-a3e2-8db47108afde}</Project>
+      <Name>ApplicationCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationDatabase\AppDataBase.csproj">
+      <Project>{8aedcb68-4fbb-40ac-ae8c-2e191c7a5d2f}</Project>
+      <Name>AppDataBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationInterfaceCore\ApplicationInterfaceCore.csproj">
+      <Project>{ea2caab1-eb61-4436-b30a-7f8d993b3414}</Project>
+      <Name>ApplicationInterfaceCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationService\ApplicationService.csproj">
+      <Project>{cc18caa3-e47b-4197-b088-276b0f84fcf0}</Project>
+      <Name>ApplicationService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppModels\AppModels.csproj">
+      <Project>{abf31598-a0e5-49b6-8479-d27bdfec8e64}</Project>
+      <Name>AppModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppThemes\AppThemes.csproj">
+      <Project>{27ef3299-5801-4e13-8b0f-bff6f083fdc7}</Project>
+      <Name>AppThemes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
+      <Project>{795a3bf6-6b34-4478-aef5-9d4ab8f74158}</Project>
+      <Name>CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RawInputManager\RawInputManager.csproj">
+      <Project>{1675b8f6-75d3-4f05-b58e-44438e1b5aa9}</Project>
+      <Name>RawInputManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleWPFReporting\SimpleWPFReporting.csproj">
+      <Project>{9846b28b-d22b-4b99-bfc1-420535730ce4}</Project>
+      <Name>SimpleWPFReporting</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\DynamicInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CommandLineView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DrawingWindowView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HintViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HistoryViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CanvasDrawingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LayerManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectedEntityPropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WallPropertiesManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EventArgs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets'))" />
+  </Target>
+</Project>

@@ -18,11 +18,11 @@ namespace DrawingModule.UserInteractive
         }
         
 
-        protected internal override PromptResult DoIt(CanvasDrawing canvasDrawing, DynamicInputViewModel dynamicInput)
+        protected internal override PromptResult DoIt(CanvasDrawing canvasDrawing, DynamicInputViewModel dynamicInput,bool isResetBeforeGet = false)
         {
             base.InitGet(dynamicInput);
             var entities = new List<Entity>();
-            PromptStatus promptStatus = canvasDrawing.GetEntities(out string stringResult, out Point3D pickedPoint,entities);
+            PromptStatus promptStatus = canvasDrawing.GetEntities(out string stringResult, out Point3D pickedPoint,entities,isResetBeforeGet);
 
             return new PromptEntityResult(promptStatus, stringResult,pickedPoint, entities);
         }

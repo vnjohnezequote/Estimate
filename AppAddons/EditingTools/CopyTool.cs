@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels.CustomEntity;
 using AppModels.Enums;
+using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
@@ -40,6 +42,16 @@ namespace AppAddons.EditingTools
                 cloneEntity.Translate(movement);
                 selEntity.Selected = false;
                 EntitiesManager.AddAndRefresh(cloneEntity,cloneEntity.LayerName);
+                if (cloneEntity is Joist2D joist && joist.FramingReference!=null && joist.FramingReference.FramingSheet!=null)
+                {
+                    joist.FramingReference.FramingSheet.Joists.Add(joist.FramingReference);
+                }
+
+                if (cloneEntity is Beam2D beam && beam.FramingReference != null && beam.FramingReference.FramingSheet != null)
+                {
+                    beam.FramingReference.Index = beam.FramingReference.FramingSheet.Beams.Count+1;
+                    beam.FramingReference.FramingSheet.Beams.Add(beam.FramingReference);
+                }
             }
             EntitiesManager.Refresh();
             IsSnapEnable = false;

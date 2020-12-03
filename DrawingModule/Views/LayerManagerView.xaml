@@ -65,7 +65,7 @@
                                    SelectionMode="Extended"
                                    SelectedItem="{Binding LayerManager.SelectedLayer}"
                                    SelectedItems="{Binding LayerManager.SelectedLayers}"
-                                   Background="{StaticResource MaterialDesignLightBackground}"
+                                   Background="DimGray"
             >
                 <syncfusion:SfDataGrid.Resources>
                     <Style TargetType="TextBox" />

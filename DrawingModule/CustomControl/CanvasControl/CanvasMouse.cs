@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationService;
-using AppModels;
 using AppModels.CustomEntity;
 using AppModels.EventArg;
 using AppModels.Interaface;
@@ -14,8 +12,6 @@ using devDept.Graphics;
 using DrawingModule.Application;
 using DrawingModule.DrawToolBase;
 using DrawingModule.Helper;
-using DrawingModule.Interface;
-using DrawingModule.Views;
 using MouseButton = System.Windows.Input.MouseButton;
 
 namespace DrawingModule.CustomControl.CanvasControl

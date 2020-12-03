@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using ApplicationService;
 using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.NewReposiveData;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
@@ -53,12 +54,10 @@ namespace AppAddons.DrawingTools
                 var index2 = Points.Count - 1;
                 var startPoint = (Point3D)Points[index2 - 1].Clone();
                 var endPoint = (Point3D)Points[index2].Clone();
-                var joistMember = new Joist();
+                
                 if (this.JobModel.ActiveFloorSheet != null)
                 {
-                    joistMember.FloorSheet = this.JobModel.ActiveFloorSheet;
-                    joistMember.SheetName = this.JobModel.ActiveFloorSheet.Name;
-                    
+                    var joistMember = new Joist(JobModel.ActiveFloorSheet);
                     var joistThickness = 45;
                     {
                         if (JobModel.SelectedJoitsMaterial !=null)
@@ -68,8 +67,11 @@ namespace AppAddons.DrawingTools
                         }
                     }
                     joistMember.FramingSpan= (int)(startPoint.DistanceTo(endPoint)) - 90;
+                    joistMember.FramingType = FramingTypes.FloorJoist;
                     this.JobModel.ActiveFloorSheet.Joists.Add(joistMember);
-                    var joists = new Joist2D(Plane.XY, startPoint, endPoint, joistMember,joistThickness);
+                    var joists = new Joist2D(startPoint, endPoint, joistMember,joistThickness);
+                    joists.LevelId = JobModel.ActiveFloorSheet.LevelId;
+                    joists.FramingSheetId = JobModel.ActiveFloorSheet.Id;
                     //var beam = new Beam2D(Plane.XY, startPoint, endPoint, 45, false, true);
                     joists.Color = this.LayerManager.SelectedLayer.Color;
                     joists.ColorMethod = colorMethodType.byEntity;

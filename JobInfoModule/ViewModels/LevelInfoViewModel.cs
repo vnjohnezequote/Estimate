@@ -254,7 +254,7 @@ namespace JobInfoModule.ViewModels
             if (needRefresh == true)
             {
                 this.LoadFloorNumber();
-                if (this.Levels.Count!=0)
+                if (this.Levels.Count != 0)
                 {
                     this.SelectedIndex = this.Levels.Count - 1;
                 }
@@ -340,15 +340,6 @@ namespace JobInfoModule.ViewModels
                 {
                     var level = new LevelWall(this.JobModel.GlobalWallInfo);
                     level.LevelName = this._floorNames[levelNameIndex];
-
-                    /* this is for testing */
-                    //level.LevelInfo.WallHeight = 2740;
-                    //level.LevelInfo.InternalWallHeight = 2600;
-                    //level.LevelInfo.ExternalWallThickness = 90;
-                    //level.LevelInfo.InternalWallThickness = 70;
-                    
-                    
-
                     this.Levels.Add(level);
                     levelNameIndex++;
                 }

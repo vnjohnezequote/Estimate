@@ -26,7 +26,7 @@ namespace DrawingModule.UserInteractive
 
         #region public method
 
-        protected internal override PromptResult DoIt(CanvasDrawing canvas,DynamicInputViewModel dynamicInputViewModel)
+        protected internal override PromptResult DoIt(CanvasDrawing canvas,DynamicInputViewModel dynamicInputViewModel,bool isResetBeforeGet = false)
         {
             return null;
         }

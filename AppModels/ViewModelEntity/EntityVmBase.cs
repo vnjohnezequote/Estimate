@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using Prism.Mvvm;
-using Syncfusion.Windows.PropertyGrid;
 using Color = System.Drawing.Color;
 
 namespace AppModels.ViewModelEntity

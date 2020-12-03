@@ -139,7 +139,7 @@ namespace AppModels.ResponsiveData.Openings
                 SetProperty(ref _openingType, value);
             }
         }
-
+        public LevelWall Level { get; set; }
         public string Location { get=>_location; set=>SetProperty(ref _location,value); }
         //public string FullName { get; set; }
         //public string ShortName { get; set; }

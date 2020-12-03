@@ -153,7 +153,7 @@ namespace WallFrameInputModule.ViewModels
         //    if (door.IsDoorUnderLbw && !Lintels.Contains(door.Lintel))
         //    {
         //        Lintels.Add(door.Lintel);
-        //        door.Lintel.Id = Lintels.IndexOf(door.Lintel) + 1;
+        //        door.Lintel.Index = Lintels.IndexOf(door.Lintel) + 1;
         //    }
         //    else if (!door.IsDoorUnderLbw && Lintels.Contains(door.Lintel))
         //    {
@@ -161,7 +161,7 @@ namespace WallFrameInputModule.ViewModels
         //        var i = 1;
         //        foreach (var lintelBeam in Lintels)
         //        {
-        //            door.Lintel.Id = i;
+        //            door.Lintel.Index = i;
         //            i++;
         //        }
 
@@ -182,7 +182,7 @@ namespace WallFrameInputModule.ViewModels
         //    if (door.IsDoorUnderLbw && !Lintels.Contains(door.Lintel))
         //    {
         //        Lintels.Add(door.Lintel);
-        //        door.Lintel.Id = Lintels.IndexOf(door.Lintel)+1;
+        //        door.Lintel.Index = Lintels.IndexOf(door.Lintel)+1;
         //    }
         //    else if(!door.IsDoorUnderLbw && Lintels.Contains(door.Lintel))
         //    {
@@ -190,7 +190,7 @@ namespace WallFrameInputModule.ViewModels
         //        var i = 1;
         //        foreach (var lintelBeam in Lintels)
         //        {
-        //            door.Lintel.Id = i;
+        //            door.Lintel.Index = i;
         //            i++;
         //        }
                         
@@ -224,15 +224,15 @@ namespace WallFrameInputModule.ViewModels
             
             foreach (var beam in LevelInfo.RoofBeams)
             {
-                beam.NotifyPropertyChanged();
+                ((Beam)beam).NotifyPropertyChanged();
             }
         }
 
         private void OnCreateBeamCommand()
         {
             this._startBeamId = LevelInfo.RoofBeams.Count + 1;
-            var beam = new Beam(BeamType.TrussBeam,this.LevelInfo.LevelInfo){Id = _startBeamId};
-            LevelInfo.RoofBeams.Add(beam);
+            //var beam = new Beam(FramingTypes.TrussBeam,this.LevelInfo.LevelInfo){Index = _startBeamId};
+            //LevelInfo.RoofBeams.Add(beam);
         }
 
         private void OnAddSupportToBeam()
@@ -246,14 +246,14 @@ namespace WallFrameInputModule.ViewModels
             {
                 foreach (var engineerBeam in EngineerList)
                 {
-                    if (beam.SpanLength<=0)
+                    if (beam.FramingSpan<=0)
                     {
                         continue;
                     }
 
-                    if (beam.SpanLength>engineerBeam.MinSpan && beam.SpanLength<=engineerBeam.MaxSpan)
+                    if (beam.FramingSpan>engineerBeam.MinSpan && beam.FramingSpan<=engineerBeam.MaxSpan)
                     {
-                        beam.EngineerMemberInfo = engineerBeam;
+                        beam.EngineerMember = engineerBeam;
                     }
                 }
             }

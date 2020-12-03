@@ -89,8 +89,8 @@
                     <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
                 </Syncfusion:SfDataGrid.Resources>
                 <Syncfusion:SfDataGrid.Columns>
-                    <Syncfusion:GridTextColumn HeaderText="Door Id"
-                                               MappingName="Id"/>
+                    <Syncfusion:GridTextColumn HeaderText="Door Index"
+                                               MappingName="Index"/>
                     <Syncfusion:GridTextColumn HeaderText="Door Name"
                                                MappingName="Name"/>
                     <Syncfusion:GridTextColumn HeaderText="Height"
@@ -150,7 +150,7 @@
                 </Syncfusion:SfDataGrid.Resources>
                 <Syncfusion:SfDataGrid.Columns>
                     <Syncfusion:GridTextColumn HeaderText="ID"
-                                               MappingName="Id"
+                                               MappingName="Index"
                                                UseBindingValue="True"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Door/Window Name"
                                                    UseBindingValue="True"
@@ -254,8 +254,8 @@
                     <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
                 </Syncfusion:SfDataGrid.Resources>
                 <Syncfusion:SfDataGrid.Columns>
-                    <Syncfusion:GridTextColumn HeaderText="Door Id"
-                                               MappingName="OpeningInfo.Id"/>
+                    <Syncfusion:GridTextColumn HeaderText="Door Index"
+                                               MappingName="OpeningInfo.Index"/>
                     <Syncfusion:GridTextColumn HeaderText="Lintel Name"
                                                MappingName="Name"/>
                     <Syncfusion:GridTextColumn HeaderText="Door Location"
@@ -393,7 +393,7 @@
                 </Syncfusion:SfDataGrid.Resources>
                 <Syncfusion:SfDataGrid.Columns>
                     <Syncfusion:GridTextColumn HeaderText="ID"
-                                               MappingName="Id"/>
+                                               MappingName="Index"/>
                     <Syncfusion:GridTextColumn HeaderText="Name"
                                                MappingName="Name"/>
                     <Syncfusion:GridTextColumn HeaderText="Beam Location"
@@ -428,7 +428,7 @@
                                                    ItemsSource="{Binding TimberGradeList}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"
                                                    UseBindingValue="True"
-                                                   MappingName="TimberInfo"
+                                                   MappingName="FramingInfo"
                                                    DisplayMemberPath="SizeTreatment"
                                                    ItemsSourceSelector="{StaticResource BeamSelectConverter}"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Wall2D Reference"
@@ -445,7 +445,7 @@
                         </syncfusion:GridComboBoxColumn.ItemTemplate>
                     </Syncfusion:GridComboBoxColumn>
                     <Syncfusion:GridTextColumn HeaderText="Span Length"
-                                               MappingName="SpanLength"/>
+                                               MappingName="FramingSpan"/>
                     <Syncfusion:GridComboBoxColumn HeaderText="Support Reference"
                                                    UseBindingValue="True"
                                                    MappingName="SupportReference"

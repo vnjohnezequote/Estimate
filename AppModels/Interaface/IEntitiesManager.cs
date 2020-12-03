@@ -14,7 +14,7 @@ namespace AppModels.Interaface
         event EventHandler EntitiesCollectionChanged;
         EntityList Entities { get; set; }
         BlockKeyedCollection Blocks { get; set; }
-        IEntityVm SelectedEntity { get; }
+        IEntityVm SelectedEntity { get; set; }
         ObservableCollection<Entity> SelectedEntities { get; }
         List<Wall2D> Walls { get; } 
         ICadDrawAble CanvasDrawing { get; }

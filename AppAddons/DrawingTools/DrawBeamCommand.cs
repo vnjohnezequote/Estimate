@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Net.Configuration;
-using System.Text;
-using System.Threading.Tasks;
-using ApplicationService;
+﻿using ApplicationService;
 using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Openings;
-using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
-using DrawingModule.CustomControl.CanvasControl;
-using GeometryGym.Ifc;
 
 namespace AppAddons.DrawingTools
 {
@@ -68,18 +58,14 @@ namespace AppAddons.DrawingTools
                 if (level !=null)
                 {
                     var beamId = level.RoofBeams.Count + 1;
-                    newBeam = new Beam(BeamType.TrussBeam, level.LevelInfo) { Id = beamId };
+                    newBeam = new Beam(FramingTypes.TrussBeam, level) { Index = beamId };
                     newBeam.Quantity = 1;
-                    newBeam.SpanLength = (int) (startPoint.DistanceTo(endPoint));
+                    newBeam.FullLength = (int) (startPoint.DistanceTo(endPoint));
                     level.RoofBeams.Add(newBeam);
-                    var beamBlockName = newBeam.Name + ActiveLevel;
-                    while (EntitiesManager.Blocks.Contains(beamBlockName))
-                    {
-                        beamBlockName = beamBlockName + "s";
-                    }
+                    var beamBlockName = newBeam.Id.ToString();
                     var beamEntity = new BeamEntity(new Point3D(0, 0, 0), beamBlockName, (Point3D)startPoint.Clone(), (Point3D)endPoint.Clone(), "Prenail", "GroundFloor", 0);
                     EntitiesManager.Blocks.Add(beamEntity.BeamBlock);
-                    beamEntity.BeamReference = newBeam;
+                    beamEntity.FramingReference = newBeam;
                     beamEntity.LevelName = ActiveLevel;
                     if (string.IsNullOrEmpty(newBeam.SizeGrade))
                     {

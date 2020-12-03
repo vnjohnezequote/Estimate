@@ -64,7 +64,7 @@ namespace AppModels.ResponsiveData
         ///// Initializes a new instance of the <see cref="PrenailWallLayer"/> class.
         ///// </summary>
         ///// <param name="wallId">
-        ///// The wall Id.
+        ///// The wall Index.
         ///// </param>
         ///// <param name="wallTypePoco">
         ///// The wall type.

@@ -84,7 +84,7 @@ namespace AppAddons.DrawingTools
             DrawInteractiveText((ICadDrawAble) sender, e);
         }
 
-        public void DrawInteractiveText(ICadDrawAble canvas, DrawInteractiveArgs e)
+        protected virtual void DrawInteractiveText(ICadDrawAble canvas, DrawInteractiveArgs e)
         {
             if (string.IsNullOrEmpty(canvas.CurrentText) || e.CurrentPoint == null)
             {

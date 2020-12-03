@@ -8,6 +8,7 @@ using ApplicationService;
 using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Framings.FloorAndRafters.Beam;
 using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -49,40 +50,32 @@ namespace AppAddons.DrawingTools
                 var index2 = Points.Count - 1;
                 var startPoint = (Point3D)Points[index2 - 1].Clone();
                 var endPoint = (Point3D)Points[index2].Clone();
-                LevelWall level = null;
-                Beam newBeam = null;
-                if (this.JobModel != null)
-                {
-                    foreach (var jobModelLevel in JobModel.Levels)
-                    {
-                        if (jobModelLevel.LevelName == ActiveLevel)
-                        {
-                            level = jobModelLevel;
-                        }
-                    }
-                }
+                LevelWall level = JobModel.ActiveFloorSheet.Level;
+                FBeam newBeam = null;
 
                 if (level != null && this.JobModel.ActiveFloorSheet!=null)
                 {
                     var beamId = level.RoofBeams.Count + 1;
-                    newBeam = new Beam(BeamType.FloorBeam, level.LevelInfo) { Id = beamId };
-                    newBeam.Quantity = 1;
-                    newBeam.SpanLength = (int)(startPoint.DistanceTo(endPoint))-90;
-                    newBeam.SheetName = JobModel.ActiveFloorSheet.Name;
-                    newBeam.FloorSheet = this.JobModel.ActiveFloorSheet;
+                    var beamType = FramingTypes.FloorBeam;
+                    if (JobModel.ActiveFloorSheet.FramingSheetType == FramingSheetTypes.RafterFraming)
+                    {
+                        beamType = FramingTypes.RafterBeam;
+                    }
+                    newBeam = new FBeam(JobModel.ActiveFloorSheet) { Index = beamId };
+                    newBeam.FramingType = beamType;
+                    newBeam.FullLength = (int)(startPoint.DistanceTo(endPoint));
                     var beamThickness = 45;
                     if (JobModel.SelectedJoitsMaterial != null)
                     {
-                        newBeam.TimberInfo = JobModel.SelectedJoitsMaterial;
-                        beamThickness = newBeam.TimberInfo.NoItem * newBeam.TimberInfo.Depth;
+                        newBeam.FramingInfo = JobModel.SelectedJoitsMaterial;
+                        beamThickness = newBeam.FramingInfo.NoItem * newBeam.FramingInfo.Depth;
                     }
                     this.JobModel.ActiveFloorSheet.Beams.Add(newBeam);
-                    //var beamBlockName = newBeam.Name + ActiveLevel;
                     var beam = new Beam2D(Plane.XY, startPoint, endPoint, newBeam,beamThickness, false, true);
                     beam.LineTypeName = "Dash Space";
                     beam.LineTypeMethod = colorMethodType.byEntity;
                     this.EntitiesManager.AddAndRefresh(beam, LayerManager.SelectedLayer.Name);
-                    //this.EntitiesManager.AddAndRefresh(beamEntity, "Beam");
+                    
                 }
                 
             }

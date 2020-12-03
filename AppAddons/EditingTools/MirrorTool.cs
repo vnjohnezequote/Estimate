@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
 using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
@@ -45,6 +46,14 @@ namespace AppAddons.EditingTools
                 var mirror = new Mirror(_mirrorPlane);
                 mirrorEntity.TransformBy(mirror);
                 EntitiesManager.AddAndRefresh(mirrorEntity, mirrorEntity.LayerName);
+                if (mirrorEntity is Joist2D joist)
+                {
+                    if (joist.FramingReference!=null && joist.FramingReference.FramingSheet!=null)
+                    {
+                        joist.FramingReference.FramingSheet.Joists.Add(joist.FramingReference);
+                        
+                    }
+                }
             }
 
         }

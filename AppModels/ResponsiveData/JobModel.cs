@@ -9,7 +9,6 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Documents;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.PocoDataModel.EngineerMember;
@@ -17,9 +16,7 @@ using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;
-using devDept.Geometry;
 using Prism.Mvvm;
-using ProtoBuf;
 
 namespace AppModels.ResponsiveData
 {
@@ -60,27 +57,28 @@ namespace AppModels.ResponsiveData
         #endregion
         public bool CCMode { get=>_cCMode; set=>SetProperty(ref _cCMode,value); }
         #region Property
-        /// <summary>
-        /// Gets or sets the info.
-        /// </summary>
+
+        #region Save Properties
         public JobInfo Info
         {
             get => this._inFor;
             set => this.SetProperty(ref this._inFor, value);
         }
+        public GlobalWallInfo GlobalWallInfo { get; set; }
+        public ObservableCollection<LevelWall> Levels { get => this._levels; set => this.SetProperty(ref this._levels, value); }
+        public MyObservableCollection<EngineerMemberInfo> EngineerMemberList { get; } = new MyObservableCollection<EngineerMemberInfo>();
+        public ObservableCollection<OpeningInfo> DoorSchedules { get; } = new MyObservableCollection<OpeningInfo>();
+        #endregion
+        /// <summary>
+        /// Gets or sets the info.
+        /// </summary>
+
         public TimberBase SelectedJoitsMaterial
         {
             get => this._selectedJoistMaterial;
             set => SetProperty(ref _selectedJoistMaterial, value);
         }
-        public GlobalWallInfo GlobalWallInfo { get; set; }
-        /// <summary>
-        /// Gets or sets the levels.
-        /// </summary>
-        public ObservableCollection<LevelWall> Levels { get => this._levels; set => this.SetProperty(ref this._levels, value); }
-        //public ObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
-        public MyObservableCollection<EngineerMemberInfo> EngineerMemberList { get; } = new MyObservableCollection<EngineerMemberInfo>();
-        public ObservableCollection<OpeningInfo> DoorSchedules { get; } = new MyObservableCollection<OpeningInfo>();
+        
         #endregion
         /// <summary>
         /// Initializes a new instance of the <see cref="JobModel"/> class.
@@ -100,16 +98,16 @@ namespace AppModels.ResponsiveData
             LoadDoorSchedules(jobLoaded.DoorSchedules);
             if (Info.Client !=null)
             {
-                LoadLevel(jobLoaded.Levels,Info.Client.Beams);    
+                LoadLevel(jobLoaded.Levels,Info.Client);    
             }
             
         }
-        private void LoadLevel(List<LevelWallPoco> levels,Dictionary<string,List<TimberBase>> timberInforDict )
+        private void LoadLevel(List<LevelWallPoco> levels,ClientPoco client )
         {
             foreach (var levelWallPoco in levels)
             {
                 var level = new LevelWall(GlobalWallInfo);
-                level.LoadLevelInfo(levelWallPoco,timberInforDict);
+                level.LoadLevelInfo(levelWallPoco,client);
                 Levels.Add(level);
             }
         }

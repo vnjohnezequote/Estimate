@@ -427,7 +427,7 @@ namespace AppModels.ResponsiveData
         /// </summary>
         public JobInfo(JobModel job)
         {
-            //this.GlobalWallInfo = new GlobalWallInfo();
+            //this.GlobalInfo = new GlobalInfo();
             this.JobModel = job;
             PropertyChanged += JobInfo_PropertyChanged;
         }
@@ -593,6 +593,26 @@ namespace AppModels.ResponsiveData
             BeamDesignInfor = info.BeamDesignInfor;
             BracingDesignInfor = info.BracingDesignInfor;
             StepDown = info.StepDown;
+            /*** Floor ***/
+            RaisedTrussHeel = info.RaisedTrussHeel;
+            FloorDesignInfor = info.FloorDesignInfo;
+            RafterDesignInfo= info.RafterDesignInfor;
+            QuoteWallFrame = info.QuoteWallFrame;
+            QuoteFloorFrame = info.QuoteFloorFrame;
+            QuoteRafterFrame = info.QuoteRafterFrame;
+            QuoteEavesSoffit = info.QuoteEavesSoffit;
+            QuoteCladding = info.QuoteCladding;
+            QuoteFlooring = info.QuoteFlooring;
+            QuoteFrameHardware = info.QuoteFrameHardware;
+            QuoteInsulation = info.QuoteInsulation;
+            QuoteLookUp = info.QuoteLookUp;
+            QuoteFixout = info.QuoteFixout;
+            QuoteFinalFix = info.QuoteFinalFix;
+            QuotePost = info.QuotePost;
+            QuoteShelving = info.QuoteShelving;
+            QuoteRoofBattentInHardware = info.QuoteRoofBattentInHardware;
+            QuoteScreen = info.QuoteScreen;
+
         }
 
         private ClientPoco GetClient(string clientName,List<ClientPoco> clients)

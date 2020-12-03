@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
+using AppModels;
 using AppModels.EventArg;
 using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
@@ -27,7 +28,9 @@ namespace AppAddons.EditingTools
         private Entity _secondSelectedEntity;
         private int _selectedEntityIndex;
         private double _extensionLength = 10000;
-
+        private Point3D _firstMousePoint;
+        private Point3D _secondMousePoint;
+        private System.Drawing.Point _clickPoint;
         public FilletTool()
         {
             _processingTool = true;
@@ -56,8 +59,8 @@ namespace AppAddons.EditingTools
         public override void NotifyMouseDown(object sender, MouseButtonEventArgs e)
         {
             var canvas = (ICadDrawAble)sender;
-            var mousePosition = RenderContextUtility.ConvertPoint(canvas.GetMousePosition(e));
-            var index = canvas.GetEntityUnderMouseCursor(mousePosition);
+            _clickPoint = RenderContextUtility.ConvertPoint(canvas.GetMousePosition(e));
+            var index = canvas.GetEntityUnderMouseCursor(_clickPoint);
             if (_firstSelectedEntity != null && _secondSelectedEntity != null) return;
             if (index > -1)
             {
@@ -65,7 +68,7 @@ namespace AppAddons.EditingTools
             }
 
             if (_secondSelectedEntity != null) return;
-            canvas.ScreenToPlane(mousePosition, canvas.DrawingPlane, out var clickPoint);
+            //canvas.ScreenToPlane(_clickPoint, canvas.DrawingPlane, out clickPoint);
         }
         public override void NotifyPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -84,6 +87,8 @@ namespace AppAddons.EditingTools
                 if (_selectedEntityIndex != -1)
                 {
                     _firstSelectedEntity = EntitiesManager.GetEntity(_selectedEntityIndex);
+                    //var firstMousePosition = RenderContextUtility.ConvertPoint(canvas.GetMousePosition(e.MousePosition));
+                    canvas.ScreenToPlane(_clickPoint, Plane.XY, out _firstMousePoint);
                     _selectedEntityIndex = -1;
                     return;
                 }
@@ -100,6 +105,7 @@ namespace AppAddons.EditingTools
                 if (_selectedEntityIndex != -1)
                 {
                     _secondSelectedEntity = EntitiesManager.GetEntity(_selectedEntityIndex);
+                    canvas.ScreenToPlane(_clickPoint, Plane.XY, out _secondMousePoint);
                     _selectedEntityIndex = -1;
                 }
             }
@@ -108,35 +114,90 @@ namespace AppAddons.EditingTools
             {
                 if (_firstSelectedEntity is ICurve && _secondSelectedEntity is ICurve)
                 {
-                    bool success = false;
-                    bool success2 = false;
-                    success = FilletProcess(_firstSelectedEntity,_secondSelectedEntity);
-                    success2 = FilletProcess(_secondSelectedEntity, _firstSelectedEntity);
-                    if (success)
+                    if (_firstSelectedEntity is Line firstLine && _secondSelectedEntity is Line secondLine)
                     {
-                        EntitiesManager.RemoveEntity(_secondSelectedEntity);
-                    }
+                        var firstSegment = new Segment2D(firstLine.StartPoint, firstLine.EndPoint);
+                        var secondSegment = new Segment2D(secondLine.StartPoint, secondLine.EndPoint);
 
-                    if (success2)
-                    {
-                        EntitiesManager.RemoveEntity(_firstSelectedEntity);
+                        //Segment2D.Intersection(firstSegment, secondSegment, out var interSectPTest);
+                        //Segment2D.IntersectionAndT(firstSegment, secondSegment, out var interSectPTest2);
+                        if (Segment2D.IntersectionAndT(firstSegment, secondSegment, out var interSectP))
+                        {
+                            SetNewPoint(firstLine,_firstMousePoint,interSectP.ConvertPoint2DtoPoint3D());
+                            SetNewPoint(secondLine, _secondMousePoint, interSectP.ConvertPoint2DtoPoint3D());
+                        }
+                        else
+                        {
+                            Segment2D.IntersectionLine(firstSegment, secondSegment, out var intersecPoint);
+                            if (intersecPoint!=null)
+                            {
+                                ApendLine(firstLine, intersecPoint.ConvertPoint2DtoPoint3D());
+                                ApendLine(secondLine, intersecPoint.ConvertPoint2DtoPoint3D());
+                            }
+                            
+                        }
                     }
+                    //bool success = false;
+                    //bool success2 = false;
+                    //success = FilletProcess(_firstSelectedEntity, _secondSelectedEntity);
+                    //success2 = FilletProcess(_secondSelectedEntity, _firstSelectedEntity);
+                    //if (success)
+                    //{
+                    //    EntitiesManager.RemoveEntity(_secondSelectedEntity);
+                    //}
 
+                    //if (success2)
+                    //{
+                    //    EntitiesManager.RemoveEntity(_firstSelectedEntity);
+                    //}
+                    EntitiesManager.Refresh();
                 }
                 _firstSelectedEntity = null;
                 _secondSelectedEntity = null;
                 _selectedEntityIndex = -1;
 
-
             }
 
         }
 
+        private void ApendLine(Line line, Point3D apendPoint)
+        {
+            var distance = line.StartPoint.DistanceTo(apendPoint);
+            var distance2 = line.EndPoint.DistanceTo(apendPoint);
+            Point3D movePoint = null;
+            if (distance>distance2)
+            {
+                line.EndPoint = apendPoint;
+            }
+            else
+            {
+                line.StartPoint = apendPoint;
+            }
+        }
+
+        private void SetNewPoint(Line line, Point3D mousePoint,Point3D intersecPoint)
+        {
+            var points = new List<Point3D>() {line.StartPoint, intersecPoint, line.EndPoint};
+            var linearPath = new LinearPath(points);
+            var keepLine = Utils.GetClosestSegment(linearPath, mousePoint);
+            if (line.StartPoint == keepLine.StartPoint)
+            {
+                line.EndPoint = intersecPoint;
+            }
+            else
+            {
+                line.StartPoint = intersecPoint;
+            }
+
+
+        }
         private bool FilletProcess(Entity firstEntity,Entity secondEntity)
         {
+            //TH1
+
             ICurve boundary = firstEntity as ICurve;
             ICurve curve = secondEntity as ICurve;
-
+            
             // Check which end of curve is near to boundary
             double t1, t2;
             boundary.ClosestPointTo(curve.StartPoint, out t1);
@@ -332,3 +393,4 @@ namespace AppAddons.EditingTools
 
     }
 }
+

@@ -2,22 +2,19 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using AppModels.CustomEntity;
+using AppModels.Interaface;
+using AppModels.PocoDataModel;
+using AppModels.PocoDataModel.Framings.FloorAndRafter;
+using AppModels.PocoDataModel.Openings;
+using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Openings;
 using devDept.Geometry;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
 {
-    public class Joist: FramingBase
+    public class Joist: FramingBase,IContaintHanger,IContaintOutTrigger
     {
-        private double _quoteLength;
-        private int _joistSpan;
-        //private double _pitch;
-
-        //private Hanger _hangerA;
-
-        //private Hanger _hangerB;
-        //public int JoistSpan { get=>_joistSpan; set=>SetProperty(ref _joistSpan,value); }
         public override double QuoteLength
         {
             get
@@ -28,21 +25,64 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
                 return quoteLength;
             }
        
-        } 
-        //public double JoistPitch { 
-        //    get=>_joistPitch;
-        //    set
-        //    {
-        //        SetProperty(ref _joistPitch, value);
-        //        RaisePropertyChanged(nameof(QuoteLength));
-        //    }
-        //}
+        }
+
+        public override object Clone()
+        {
+            return new Joist(this);
+        }
         public Hanger HangerA { get; set; }
         public Hanger HangerB { get; set; }
         public OutTrigger OutTriggerA { get; set; }
         public OutTrigger OutTriggerB { get; set; }
+        public Joist()
+        { }
 
+        public Joist(FramingSheet framingSheet) : base(framingSheet)
+        {
 
+        }
+        public Joist(JoistPoco joistPoco,LevelWall level, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(joistPoco, level,timberList,engineerMemberInfos)
+        {
+
+        }
+
+        public Joist(Joist another):base(another)
+        {
+
+        }
+
+        public void LoadHangers(List<Hanger> hangers,FramingBasePoco joistPoco )
+        {
+            foreach (var hanger in hangers)
+            {
+                if (hanger.Id == ((JoistPoco)joistPoco).HangerAId)
+                {
+                    HangerA = hanger;
+                }
+
+                if (hanger.Id == ((JoistPoco)joistPoco).HangerBId)
+                {
+                    HangerB = hanger;
+                }
+            }
+        }
+
+        public void LoadOutTriggers(List<IFraming> outTriggers, FramingBasePoco joistPoco)
+        {
+            foreach (var outTrigger in outTriggers)
+            {
+                if (outTrigger.Id == ((JoistPoco)joistPoco).OutTriggerAId)
+                {
+                    OutTriggerA = (OutTrigger)outTrigger;
+                }
+
+                if (outTrigger.Id == ((JoistPoco)joistPoco).OutTriggerBId)
+                {
+                    OutTriggerB = (OutTrigger)outTrigger;
+                }
+            }
+        }
 
 
     }

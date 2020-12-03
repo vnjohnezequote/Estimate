@@ -21,7 +21,7 @@ namespace DrawingModule.UserInteractive
         {
         }
 
-        protected internal override PromptResult DoIt(CanvasDrawing canvasDrawing, DynamicInputViewModel dynamicInput)
+        protected internal override PromptResult DoIt(CanvasDrawing canvasDrawing, DynamicInputViewModel dynamicInput,bool isResetBeforeGet)
         {
             base.InitGet(dynamicInput);
             

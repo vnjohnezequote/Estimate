@@ -7,7 +7,7 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters
 {
     public class Layout
     {
-        public ObservableCollection<Beam> RafterBeams { get; set; }
+        //public ObservableCollection<Beam> RafterBeams { get; set; }
         public ObservableCollection<Joist> Rafters { get; set; } = new ObservableCollection<Joist>();
         public ObservableCollection<BlockingList> BlockingList { get; set; } = new ObservableCollection<BlockingList>();
         public ObservableCollection<TimberBase> PolePlates { get; set; } = new ObservableCollection<TimberBase>();

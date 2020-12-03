@@ -37,7 +37,7 @@ namespace DrawingModule.UserInteractive
         {
             this.Message = message;
         }
-        protected internal virtual PromptResult DoIt(CanvasDrawing canvas,DynamicInputViewModel dynamicInputViewModel)
+        protected internal virtual PromptResult DoIt(CanvasDrawing canvas,DynamicInputViewModel dynamicInputViewModel,bool isResetBeforeGet = false)
         {
             return null;
         }

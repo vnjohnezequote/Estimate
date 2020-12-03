@@ -37,7 +37,7 @@ namespace DrawingModule.DrawToolBase
                 ToolMessageChanged?.Invoke(this,System.EventArgs.Empty);
             } 
         }
-        public virtual bool IsSnapEnable { get; protected set; }
+        public  bool IsSnapEnable { get; protected set; }
         public abstract Point3D BasePoint { get; protected set; }
         public Point3D ReferencePoint { get; protected set; }
         public bool IsUsingOrthorMode { get; protected set; }

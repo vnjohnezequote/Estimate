@@ -157,10 +157,6 @@ namespace Estimate.ViewModels
         private ClientPoco _selectedClient;
 
         private bool _isSaving;
-        /// <summary>
-        /// The selected clientPoco index.
-        /// </summary>
-        private int? _selectedClientIndex;
 
         /// <summary>
         /// The max panel changed.
@@ -356,12 +352,31 @@ namespace Estimate.ViewModels
         /// <summary>
         /// Gets or sets the selected clientPoco.
         /// </summary>
-        public ClientPoco SelectedClient { get => this._selectedClient; set => this.SetProperty(ref this._selectedClient, value); }
+        public ClientPoco SelectedClient
+        {
+            get => this._selectedClient; 
+            set
+            {
+                this.SetProperty(ref this._selectedClient, value);
+                RaisePropertyChanged(nameof(SelectedClientIndex));
+            } 
+        }
 
         /// <summary>
         /// Gets or sets the selected clientPoco index.
         /// </summary>
-        public int? SelectedClientIndex { get => this._selectedClientIndex; set => this.SetProperty(ref this._selectedClientIndex, value); }
+        public int SelectedClientIndex {
+            get
+            {
+                if (SelectedClient!=null)
+                {
+                    return SelectedClient.Id - 1;
+                }
+
+                return -1;
+            }
+           
+        }
 
         /// <summary>
         /// Gets or sets the JobDefaultInfo
@@ -369,13 +384,6 @@ namespace Estimate.ViewModels
 
         #endregion
 
-        private string chuoiluu;
-
-        public string Chuoiluu
-        {
-            get => chuoiluu;
-            set => SetProperty(ref chuoiluu, value);
-        }
 
         public void SaveJob()
         {
@@ -582,7 +590,7 @@ namespace Estimate.ViewModels
             }
 
             this.SelectedClient = customer;
-            this.SelectedClientIndex = this.SelectedClient.Id - 1;
+            //this.SelectedClientIndex = this.SelectedClient.Id - 1;
         }
 
         /// <summary>

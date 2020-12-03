@@ -10,7 +10,7 @@ using GeometryGym.Ifc;
 
 namespace AppModels.Factories
 {
-    public static class EyeshotEntityVMFactory
+    public static class EyeshotEntityVmFactory
     {
         public static EntityVm CreateEntityVm(this Entity entity)
         {

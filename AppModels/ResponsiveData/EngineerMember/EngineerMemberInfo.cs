@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
-using System.Windows.Navigation;
 using AppModels.Enums;
 using AppModels.Interaface;
-using AppModels.PocoDataModel;
 using AppModels.PocoDataModel.EngineerMember;
 using Prism.Mvvm;
-using ProtoBuf;
 
 namespace AppModels.ResponsiveData.EngineerMember
 {
@@ -29,13 +22,13 @@ namespace AppModels.ResponsiveData.EngineerMember
         private int _depth;
         private int _thickness;
         private string _timberGrade;
-        private int _id;
+        private Guid _id;
         private TimberBase _timberInfo;
 
         #endregion
 
         #region Properties
-        public int Id
+        public Guid Id
         {
             get => _id;
             set => SetProperty(ref _id, value);
@@ -82,14 +75,7 @@ namespace AppModels.ResponsiveData.EngineerMember
             get => MaterialType == MaterialTypes.Steel ? "Steel" : _timberGrade;
             set
             {
-                if (value == "Steel")
-                {
-                    MaterialType = MaterialTypes.Steel;
-                }
-                else
-                {
-                    MaterialType = MaterialTypes.Timber;
-                }
+                MaterialType = value == "Steel" ? MaterialTypes.Steel : MaterialTypes.Timber;
                 SetProperty(ref _timberGrade,value);
             }
         }
@@ -237,6 +223,7 @@ namespace AppModels.ResponsiveData.EngineerMember
         #region Constructor
         public EngineerMemberInfo(JobInfo globalInfo)
         {
+            Id = Guid.NewGuid();
             GlobalInfor = globalInfo;
             GlobalInfor.PropertyChanged += GlobalInfor_PropertyChanged;
             PropertyChanged += EngineerMemberInfo_PropertyChanged;
@@ -298,6 +285,10 @@ namespace AppModels.ResponsiveData.EngineerMember
                     RaiseSizeGradeChanged();
                     break;
                 case nameof(MaterialType):
+                    if (MaterialType == MaterialTypes.Steel)
+                    {
+                        TimberInfo = null;
+                    }
                     RaisePropertyChanged(nameof(TimberGrade));
                     RaiseSizeGradeChanged();
                     break;

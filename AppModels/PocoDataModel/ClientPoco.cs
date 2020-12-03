@@ -9,6 +9,7 @@
 
 
 using System.Collections.Generic;
+using AppModels.Database;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Openings;
 using LiteDB;
@@ -77,6 +78,7 @@ namespace AppModels.PocoDataModel
         /// </summary>
         public Dictionary<string, List<TimberBase>> Beams { get; set; }
         public List<HangerMat> Hangers { get; set; }
+        public List<TieDownMat> TiewDownList { get; set; }
 
         //public List<TimberBase> FloorRafterMaterialList { get; set; }
 

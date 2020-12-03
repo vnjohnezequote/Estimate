@@ -8,7 +8,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Prism.Mvvm;
-using ProtoBuf;
 
 namespace AppModels.ResponsiveData
 {

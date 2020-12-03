@@ -12,32 +12,41 @@ namespace AppModels.Factories
     {
         public IEntityVm creatEntityVm(IEntity entity,IEntitiesManager entitiesManager)
         {
-            switch (entity)
+            if (entity is IEntityVmCreateAble ebEntityVmCreateAble)
             {
-                case IEntityVmCreateAble entityVmCreateAble:
-                    return entityVmCreateAble.CreateEntityVm(entitiesManager);
-                case Line line:
-                    return line.CreateLineVm();
-                case LinearPath linePath:
-                    return linePath.CreateLinearPathVm();
-                case VectorView view:
-                    return view.CreateVectorViewVm();
-                case Text text:
-                    return text.CreateTextVm();
-                case Leader leader:
-                    return leader.CreateLeaderVm();
-                case BeamEntity beam:
-                    return beam.CreateEntityVm();
-                //case WallName wall:
-                //    return wall.CreateEntityVm();
-                case BlockReference block:
-                    return block.CreateBlockReferenceVm();
-                case Entity entiti:
-                    entiti.CreateEntityVm();
-                    break;
-                default: return new EntityVm((Entity)entity);
+                return ebEntityVmCreateAble.CreateEntityVm(entitiesManager);
             }
-            return new EntityVm((Entity)entity);
+            else if(entity is Line line)
+            {
+                return line.CreateLineVm();
+            }
+            else if(entity is LinearPath linearPath)
+            {
+                return linearPath.CreateLinearPathVm();
+            }
+            else if (entity is VectorView view)
+            {
+                return view.CreateBlockReferenceVm();
+            }
+            else if (entity is Text text)
+            {
+                return text.CreateTextVm();
+            }
+            else if (entity is Leader leader)
+            {
+                return leader.CreateLeaderVm();
+            }
+
+            else if (entity is BlockReference block)
+            {
+                return block.CreateBlockReferenceVm();
+            }
+            else if (entity is Entity entiy)
+            {
+                return entiy.CreateEntityVm();
+            }
+
+            return null;
         }
        
     }

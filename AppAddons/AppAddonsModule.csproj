@@ -55,12 +55,12 @@
     <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.4\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Eyeshot.Control.Wpf.v2020" />
-    <Reference Include="devDept.Geometry.v2020">
-      <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v2021" />
+    <Reference Include="devDept.Geometry.v2021">
+      <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2021\Bin\devDept.Geometry.v2021.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Graphics.Shaders.v2020" />
-    <Reference Include="devDept.Graphics.Wpf.v2020" />
+    <Reference Include="devDept.Graphics.Shaders.v2021" />
+    <Reference Include="devDept.Graphics.Wpf.v2021" />
     <Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.2.0.1422\lib\net45\Prism.dll</HintPath>
     </Reference>
@@ -110,6 +110,7 @@
     <Compile Include="DrawingTools\CountDoor.cs" />
     <Compile Include="DrawingTools\Draw2DBeam.cs" />
     <Compile Include="DrawingTools\DrawBeamCommand.cs" />
+    <Compile Include="DrawingTools\DrawBlocking.cs" />
     <Compile Include="DrawingTools\DrawingAngularDim.cs" />
     <Compile Include="DrawingTools\DrawAlignDim.cs" />
     <Compile Include="DrawingTools\DrawingLine.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="EditingTools\OffsetTool.cs" />
     <Compile Include="EditingTools\RotateTool.cs" />
     <Compile Include="EditingTools\ScaleTool.cs" />
+    <Compile Include="EditingTools\TrimTest.cs" />
     <Compile Include="EditingTools\TrimTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -179,6 +181,5 @@
       <Name>DrawingModule</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

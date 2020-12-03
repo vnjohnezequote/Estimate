@@ -1,28 +1,19 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using ApplicationInterfaceCore;
 using AppModels;
 using AppModels.AppData;
 using AppModels.CustomEntity;
-using AppModels.DynamicObject;
 using AppModels.Enums;
-using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using Prism.Mvvm;
 using AppModels.Factories;
 using AppModels.Interaface;
 using devDept.Geometry;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace AppDataBase.DataBase
 {
@@ -34,6 +25,7 @@ namespace AppDataBase.DataBase
         public EntityList Entities { get; set; }
         public BlockKeyedCollection Blocks { get; set; }
         public List<Wall2D> Walls { get; set; } = new List<Wall2D>();
+        
 
         public IEntityVm SelectedEntity
         {
@@ -168,6 +160,7 @@ namespace AppDataBase.DataBase
         {
             Application.Current.Dispatcher.Invoke((Action)(() =>
             {
+                entity.LineTypeScale = 10;
                 if (entity is Picture)
                 {
                     Entities.Add(entity, layerName);

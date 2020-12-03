@@ -46,6 +46,10 @@ namespace AppModels.PocoDataModel
         public DesignInfor FrameDesignInfor { get; set; }
         public DesignInfor BeamDesignInfor { get; set; }
         public DesignInfor BracingDesignInfor { get; set; }
+        public int StepDown { get; set; }
+
+        //Thuoc tinh bo sung them
+        public int RaisedTrussHeel { get; set; }
         public DesignInfor FloorDesignInfo { get; set; }
         public DesignInfor RafterDesignInfor { get; set; }
         public bool QuoteWallFrame { get; set; }
@@ -63,10 +67,9 @@ namespace AppModels.PocoDataModel
         public bool QuoteShelving { get; set; }
         public bool QuoteRoofBattentInHardware { get; set; }
         public bool QuoteScreen { get; set; }
-        public int RaisedTrussHeel { get; set; }
+        
 
-
-        public int StepDown { get; set; }
+        
         #endregion
 
         #region Constructor
@@ -122,9 +125,9 @@ namespace AppModels.PocoDataModel
             FrameDesignInfor = info.FrameDesignInfor;
             BeamDesignInfor = info.BeamDesignInfor;
             BracingDesignInfor = info.BracingDesignInfor;
-             /*** Floor ***/
+            StepDown = info.StepDown;
+            /*** Floor ***/
             RaisedTrussHeel = info.RaisedTrussHeel;
-
             FloorDesignInfo = info.FloorDesignInfor;
             RafterDesignInfor = info.RafterDesignInfo;
             QuoteWallFrame = info.QuoteWallFrame;
@@ -143,7 +146,6 @@ namespace AppModels.PocoDataModel
             QuoteRoofBattentInHardware = info.QuoteRoofBattentInHardware;
             QuoteScreen = info.QuoteScreen;
 
-            StepDown = info.StepDown;
         }
         #endregion
     }

@@ -149,7 +149,7 @@
                           Style="{StaticResource MaterialDesignComboBox}"
                           materialDesign:ComboBoxAssist.ClassicMode="true"
                           Foreground="{Binding LayerManager.SelectedLayer.Color,FallbackValue=White,Converter={StaticResource ColorToBrushConverter}}"
-                          Background="{StaticResource MaterialDesignLightBackground}"
+                          Background="DimGray"
                           Padding="10 5 10 5">
                     <!--Style="{StaticResource Custom.MahApps.Style.ComboboxStyle}"-->
                     <ComboBox.ItemContainerStyle>

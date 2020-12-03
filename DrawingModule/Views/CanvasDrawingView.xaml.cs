@@ -51,8 +51,8 @@ namespace DrawingModule.Views
             InitializeComponent();
             try
             {
-                this.CanvasDrawing.Unlock("PF20-21MV5-0NHNJ-WYUX-F6CQ");
-                this.PaperSpace.Unlock("PF20-21MV5-0NHNJ-WYUX-F6CQ");
+                this.CanvasDrawing.Unlock("PF21-12NG0-L7K3F-M0CS-FE82");
+                this.PaperSpace.Unlock("PF21-12NG0-L7K3F-M0CS-FE82");
             }
             catch (Exception e)
             {

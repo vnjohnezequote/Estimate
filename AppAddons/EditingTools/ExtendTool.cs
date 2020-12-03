@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
+using ApplicationService;
 using AppModels.EventArg;
 using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
+using DrawingModule.Application;
 using DrawingModule.CommandClass;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.DrawToolBase;
 using DrawingModule.Helper;
+using DrawingModule.UserInteractive;
 
 namespace AppAddons.EditingTools
 {
@@ -27,143 +31,158 @@ namespace AppAddons.EditingTools
         private Entity _secondSelectedEntity;
         private int _selectedEntityIndex;
         private double _extensionLength = 10000;
+        private List<Entity> _selectedEntities = new List<Entity>();
+        private bool _waitingForSelectBoundary;
+        private bool _waltingForSelectExtendEntities;
 
         public ExtendTool()
         {
             _processingTool = true;
+            _waitingForSelectBoundary = true;
+            _waltingForSelectExtendEntities = true;
             IsSnapEnable = false;
             IsUsingOrthorMode = false;
-            _selectedEntityIndex = -1;
+            //_selectedEntityIndex = -1;
+
+            var aDoc = Application.DocumentManager.MdiActiveDocument;
+            var _firSelectionEntity = aDoc.Editor.CanvasDrawing.GetSelectionEntity();
+            if (_firSelectionEntity ==null)
+            {
+                _waitingForSelectBoundary = true;
+                ToolMessage = "Please select Boundary Entity for extend";
+            }
+            else
+            {
+                _waitingForSelectBoundary = false;
+                ToolMessage = "Please Select Entity to Extend";
+            }
+            
+            
         }
 
         [CommandMethod("Extend")]
         public void Extend()
         {
-
             OnProcessCommand();
         }
 
         protected virtual void OnProcessCommand()
         {
+            var aDoc = Application.DocumentManager.MdiActiveDocument;
             while (_processingTool)
             {
-
-            }
-
-        }
-        public override void OnJigging(object sender, DrawInteractiveArgs e)
-        {
-            DrawInteractiveExtend((ICadDrawAble)sender, e);
-
-        }
-
-        public override void NotifyMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var canvas = (ICadDrawAble)sender;
-            var mousePosition = RenderContextUtility.ConvertPoint(canvas.GetMousePosition(e));
-            var index = canvas.GetEntityUnderMouseCursor(mousePosition);
-            if (_firstSelectedEntity != null && _secondSelectedEntity != null) return;
-            if (index > -1)
-            {
-                _selectedEntityIndex = index;
-            }
-
-            if (_secondSelectedEntity != null) return;
-            canvas.ScreenToPlane(mousePosition, canvas.DrawingPlane, out var clickPoint);
-        }
-
-        public override void NotifyPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                this._processingTool = false;
-                e.Handled = true;
-            }
-        }
-
-        private void DrawInteractiveExtend(ICadDrawAble canvas, DrawInteractiveArgs e)
-        {
-            if (_firstSelectedEntity == null)
-            {
-                DrawInteractiveUntilities.DrawSelectionMark(canvas, e.MousePosition);
-                ToolMessage = "Select boundary entity";
-                if (_selectedEntityIndex != -1)
+                while (_waitingForSelectBoundary)
                 {
-                    _firstSelectedEntity = EntitiesManager.GetEntity(_selectedEntityIndex);
-                    _selectedEntityIndex = -1;
-                    return;
-                }
-            }
-            else if (_secondSelectedEntity == null)
-            {
-                DrawInteractiveUntilities.DrawSelectionMark(canvas, e.MousePosition);
-                canvas.renderContext.EnableXOR(false);
-                ToolMessage = "Select entity to extend";
-            }
-
-            if (_secondSelectedEntity == null)
-            {
-                if (_selectedEntityIndex != -1)
-                {
-                    _secondSelectedEntity = EntitiesManager.GetEntity(_selectedEntityIndex);
-                    _selectedEntityIndex = -1;
-                }
-            }
-
-            if (_firstSelectedEntity != null && _secondSelectedEntity != null)
-            {
-                if (_firstSelectedEntity is ICurve && _secondSelectedEntity is ICurve)
-                {
-                    ICurve boundary = _firstSelectedEntity as ICurve;
-                    ICurve curve = _secondSelectedEntity as ICurve;
-
-                    // Check which end of curve is near to boundary
-                    double t1, t2;
-                    boundary.ClosestPointTo(curve.StartPoint, out t1);
-                    boundary.ClosestPointTo(curve.EndPoint, out t2);
-
-                    Point3D projStartPt = boundary.PointAt(t1);
-                    Point3D projEndPt = boundary.PointAt(t2);
-
-                    double curveStartDistance = curve.StartPoint.DistanceTo(projStartPt);
-                    double curveEndDistance = curve.EndPoint.DistanceTo(projEndPt);
-
-                    bool success = false;
-                    if (curveStartDistance < curveEndDistance)
+                    ToolMessage = "Please select Boundary Entity for extend";
+                    var promptLineOption = new PromptSelectionOptions();
+                    var promptResults = aDoc.Editor.GetSelection(promptLineOption);
+                    if (promptResults.Status == PromptStatus.OK)
                     {
-                        if (curve is Line)
-                        {
-                            success = ExtendLine(curve, boundary, true);
-                        }
-                        else if (curve is LinearPath)
-                        {
-                            success = ExtendPolyLine(curve, boundary, true);
-                        }
-                        else if (curve is Arc)
-                        {
-                            success = ExtendCircularArc(curve, boundary, true);
-                        }
-                        else if (curve is EllipticalArc)
-                        {
-                            success = ExtendEllipticalArc(curve, boundary, true);
-                        }
+                        _firstSelectedEntity = promptResults.Value;
+                        _waitingForSelectBoundary = false;
+                    }
+                    else return;
+
+                }
+
+                while (_waltingForSelectExtendEntities)
+                {
+                    ToolMessage = "Please select Entity to extend";
+                    var promp = new PromptEntityOptions("Please select Bondary Entity for extend");
+                    var promptResults = aDoc.Editor.GetEntities(promp,true);
+                    if (promptResults.Status == PromptStatus.OK && promptResults.Entities!=null && promptResults.Entities.Count!=null)
+                    {
+                        _selectedEntities = promptResults.Entities;
+                        ProcessCommand();
+                    }
+                    else if (promptResults.Status == PromptStatus.OK &&
+                             (promptResults.Entities != null || promptResults.Entities.Count != null))
+                    {
+                        continue;
+                    }
+                    else return;
+                }
+
+            }
+        }
+
+        private void ProcessCommand()
+        {
+            var i = 0;
+
+            while (i<_selectedEntities.Count)
+            {
+                ExtendProcess(_firstSelectedEntity, _selectedEntities[i]);
+                i++;
+            }
+            EntitiesManager.Refresh();
+            ResetTool();
+        }
+
+        private void ResetTool()
+        {
+            foreach (var selectedEntity in _selectedEntities)
+            {
+                selectedEntity.Selected = false;
+            }
+            _selectedEntities.Clear();
+
+        }
+
+        private void ExtendProcess(Entity boundaryEntity, Entity extendEntity)
+        {
+            if (boundaryEntity is ICurve && extendEntity is ICurve)
+            {
+                ICurve boundary = boundaryEntity as ICurve;
+                ICurve curve = extendEntity as ICurve;
+
+                // Check which end of curve is near to boundary
+                double t1, t2;
+                boundary.ClosestPointTo(curve.StartPoint, out t1);
+                boundary.ClosestPointTo(curve.EndPoint, out t2);
+
+                Point3D projStartPt = boundary.PointAt(t1);
+                Point3D projEndPt = boundary.PointAt(t2);
+
+                double curveStartDistance = curve.StartPoint.DistanceTo(projStartPt);
+                double curveEndDistance = curve.EndPoint.DistanceTo(projEndPt);
+
+                bool success = false;
+                if (curveStartDistance < curveEndDistance)
+                {
+                    if (curve is Line)
+                    {
+                        success = ExtendLine(curve, boundary, true);
+                    }
+                    else if (curve is LinearPath)
+                    {
+                        success = ExtendPolyLine(curve, boundary, true);
+                    }
+                    else if (curve is Arc)
+                    {
+                        success = ExtendCircularArc(curve, boundary, true);
+                    }
+                    else if (curve is EllipticalArc)
+                    {
+                        success = ExtendEllipticalArc(curve, boundary, true);
+                    }
 #if NURBS
                         else if (curve is Curve)
                         {
                             success = ExtendSpline(curve, boundary, true);
                         }
 #endif
-                    }
-                    else
+                }
+                else
+                {
+                    if (curve is Line)
                     {
-                        if (curve is Line)
-                        {
-                            success = ExtendLine(curve, boundary, false);
-                        }
-                        else if (curve is LinearPath)
-                        {
-                            success = ExtendPolyLine(curve, boundary, false);
-                        }
+                        success = ExtendLine(curve, boundary, false);
+                    }
+                    else if (curve is LinearPath)
+                    {
+                        success = ExtendPolyLine(curve, boundary, false);
+                    }
 #if NURBS
                         else if (curve is Arc)
                         {
@@ -179,20 +198,46 @@ namespace AppAddons.EditingTools
                             success = ExtendSpline(curve, boundary, false);
                         }
 #endif
-                    }
-
-                    if (success)
-                    {
-                        EntitiesManager.RemoveEntity(_secondSelectedEntity);
-                    }
                 }
 
-                _firstSelectedEntity = null;
-                _secondSelectedEntity = null;
-                _selectedEntityIndex = -1;
-
-
+                if (success)
+                {
+                    EntitiesManager.RemoveEntity(extendEntity);
+                }
             }
+        }
+        public override void OnJigging(object sender, DrawInteractiveArgs e)
+        {
+            DrawInteractiveExtend((ICadDrawAble)sender, e);
+
+        }
+
+        public override void NotifyMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //var canvas = (ICadDrawAble)sender;
+            //var mousePosition = RenderContextUtility.ConvertPoint(canvas.GetMousePosition(e));
+            //var index = canvas.GetEntityUnderMouseCursor(mousePosition);
+            //if (_firstSelectedEntity != null && _secondSelectedEntity != null) return;
+            //if (index > -1)
+            //{
+            //    _selectedEntityIndex = index;
+            //}
+
+            //if (_secondSelectedEntity != null) return;
+            //canvas.ScreenToPlane(mousePosition, canvas.DrawingPlane, out var clickPoint);
+        }
+
+        public override void NotifyPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            //if (e.Key == Key.Escape)
+            //{
+            //    this._processingTool = false;
+            //    e.Handled = true;
+            //}
+        }
+
+        private void DrawInteractiveExtend(ICadDrawAble canvas, DrawInteractiveArgs e)
+        {
 
         }
 

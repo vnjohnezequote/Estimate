@@ -44,7 +44,7 @@ namespace AppAddons.EditingTools
         }
 
         [CommandMethod("Match")]
-        public void DrawAngularDim()
+        public void MatchEntities()
         {
             var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
             if (_entityToMatch==null)

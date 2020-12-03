@@ -1,7 +1,5 @@
-﻿using System.Drawing;
-using devDept.Eyeshot;
+﻿using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
-using devDept.Geometry;
 
 namespace AppModels.CustomEntity
 {

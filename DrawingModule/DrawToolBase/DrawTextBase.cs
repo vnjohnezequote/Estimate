@@ -17,13 +17,13 @@ namespace DrawingModule.DrawToolBase
         private string _textInput;
         private double _textHeight=500;
         private double _textAngle=0;
-        public string TextInput {
+        public virtual string TextInput {
             get => string.IsNullOrEmpty(_textInput) ? "Please enter string to insert" : _textInput;
             set => SetProperty(ref _textInput, value);
 
         }
 
-        public double TextHeight
+        public virtual double TextHeight
         {
             get
             {

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.CustomEntity;
+﻿using AppModels.CustomEntity;
 using AppModels.Enums;
+using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
-using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot.Entities;
 
 namespace AppModels.ViewModelEntity
 {
-    public class BeamEntityVm: EntityVm
+    public class BeamEntityVm : FramingVm
     {
         public string ClientName
         {
@@ -33,14 +28,14 @@ namespace AppModels.ViewModelEntity
             }
         }
 
-        public TimberBase TimberInfo
+        public override TimberBase FramingInfo
         {
             get
             {
-                if (Entity is BeamEntity beam && beam.BeamReference!=null)
+                if (Entity is BeamEntity beam && beam.FramingReference != null)
                 {
-                    beam.BeamReference.PropertyChanged += BeamReference_PropertyChanged;
-                    return beam.BeamReference.TimberInfo;
+                    beam.FramingReference.PropertyChanged += BeamReference_PropertyChanged;
+                    return beam.FramingReference.FramingInfo;
 
                 }
 
@@ -50,79 +45,21 @@ namespace AppModels.ViewModelEntity
             set
             {
                 if (!(Entity is BeamEntity beam)) return;
-                beam.BeamReference.TimberInfo = value;
-                RaisePropertyChanged(nameof(TimberInfo));
+                beam.FramingReference.FramingInfo = value;
+                RaisePropertyChanged(nameof(FramingInfo));
             }
         }
-
-        public EngineerMemberInfo EngineerMember
+        public IFraming FramingReference
         {
             get
             {
                 if (Entity is BeamEntity beam)
                 {
-                    if (beam.BeamReference != null)
-                    {
-                        return beam.BeamReference.EngineerMemberInfo;
-                    }
-                }
-
-                return null;
-            }
-            set
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    if (beam.BeamReference != null)
-                    {
-                        beam.BeamReference.EngineerMemberInfo = value;
-                        RaisePropertyChanged(nameof(EngineerMember));
-                        RaisePropertyChanged(nameof(TimberInfo));
-                        RaisePropertyChanged(nameof(BeamGrade));
-                    }
-                }
-            }
-        }
-
-        public Beam BeamReference
-        {
-            get
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    return beam.BeamReference;
+                    return beam.FramingReference;
                 }
                 return null;
             }
         }
-
-        public string BeamGrade
-        {
-            get
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    if (beam.BeamReference!=null)
-                    {
-                        return beam.BeamReference.TimberGrade;
-                    }
-                }
-
-                return string.Empty;
-            }
-            set
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    if (beam.BeamReference != null)
-                    {
-                        beam.BeamReference.TimberGrade=value;
-                        RaisePropertyChanged(nameof(BeamGrade));
-                    }
-                }
-            }
-        }
-
         public Text.alignmentType BeamMarkedAlignmentType
         {
             get
@@ -130,7 +67,7 @@ namespace AppModels.ViewModelEntity
                 if (Entity is BeamEntity beam)
                 {
                     return beam.Attributes["Name"].Alignment;
-                    //return beam.BeamName.Alignment;
+                    //return beam.Name.Alignment;
                 }
 
                 return Text.alignmentType.MiddleCenter;
@@ -141,18 +78,16 @@ namespace AppModels.ViewModelEntity
                 {
                     beam.Attributes["Name"].Alignment = value;
                     beam.BeamNameAttribute.Alignment = value;
-
                     beam.Attributes["Continues"].Alignment = value;
                     beam.Attributes["Support"].Alignment = value;
                     beam.Attributes["Treatment"].Alignment = value;
                     beam.Attributes["Custom"].Alignment = value;
                     beam.Attributes["Lintel"].Alignment = value;
-                    //beam.BeamName.Alignment = value;
+                    //beam.Name.Alignment = value;
                     RaisePropertyChanged(nameof(BeamMarkedAlignmentType));
                 }
             }
         }
-
         public string WallLevelName
         {
             get
@@ -171,19 +106,6 @@ namespace AppModels.ViewModelEntity
                     beam.LevelName = value;
                     RaisePropertyChanged(nameof(WallLevelName));
                 }
-            }
-        }
-
-        public string OldLevelName
-        {
-            get
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    return beam.OldLevelName;
-                }
-
-                return string.Empty;
             }
         }
         public BeamMarkedLocation BeamMarkLocation
@@ -208,12 +130,11 @@ namespace AppModels.ViewModelEntity
                 }
             }
         }
-
         public string BeamLocation
         {
             get
             {
-                if (Entity is BeamEntity beam )
+                if (Entity is BeamEntity beam)
                 {
                     return beam.BeamLocation;
                 }
@@ -222,38 +143,13 @@ namespace AppModels.ViewModelEntity
             }
             set
             {
-                if(Entity is BeamEntity beam )
+                if (Entity is BeamEntity beam)
                 {
                     beam.BeamLocation = value;
                     RaisePropertyChanged(nameof(BeamLocation));
                 }
             }
 
-        }
-
-        public string BeamName
-        {
-            get
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    return beam.BeamNameString;
-                }
-
-                return string.Empty;
-            }
-            set
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    if (value == beam.BeamNameString)
-                    {
-                        return;
-                    }
-                    beam.BeamNameString = value;
-                    RaisePropertyChanged(nameof(BeamName));
-                }
-            }
         }
         public bool ShowBeamNameOnly
         {
@@ -271,32 +167,10 @@ namespace AppModels.ViewModelEntity
                 if (Entity is BeamEntity beam)
                 {
                     beam.ShowBeamNameOnly = value;
-                    RaisePropertyChanged(nameof(BeamName));
+                    RaisePropertyChanged(nameof(Name));
                 }
             }
         }
-
-        public BeamType BeamType {
-
-            get
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    return beam.BeamType;
-                }
-
-                return BeamType.TrussBeam;
-            }
-            set
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    beam.BeamType = value;
-                    RaisePropertyChanged(nameof(BeamType));
-                }
-            }
-        }
-
         public bool ContinuesBeam
         {
             get
@@ -316,7 +190,6 @@ namespace AppModels.ViewModelEntity
                 }
             }
         }
-
         public bool SupportWallOver
         {
             get
@@ -336,7 +209,6 @@ namespace AppModels.ViewModelEntity
                 }
             }
         }
-
         public string CustomNotesBeam
         {
             get
@@ -357,30 +229,9 @@ namespace AppModels.ViewModelEntity
                 }
             }
         }
-
-        public string BlockName
+        public BeamEntityVm(Entity entity,IEntitiesManager entitiesManager) : base(entity,entitiesManager)
         {
-            get
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    return beam.BlockName;
-                }
-
-                return string.Empty;
-            }
-            set
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    beam.BeamBlock.Name = value;
-                    beam.BlockName = value;
-                    //RaisePropertyChanged(nameof(CustomNotesBeam));
-                }
-            }
-        }
-        public BeamEntityVm(Entity entity) : base(entity)
-        {
+            
         }
         public override void NotifyPropertiesChanged()
         {
@@ -390,12 +241,12 @@ namespace AppModels.ViewModelEntity
             RaisePropertyChanged(nameof(BeamMarkLocation));
             RaisePropertyChanged(nameof(BeamGrade));
             RaisePropertyChanged(nameof(WallLevelName));
-            RaisePropertyChanged(nameof(TimberInfo));
+            RaisePropertyChanged(nameof(FramingInfo));
             RaisePropertyChanged(nameof(BeamLocation));
             RaisePropertyChanged(nameof(EngineerMember));
             RaisePropertyChanged(nameof(ShowBeamNameOnly));
-            RaisePropertyChanged(nameof(BeamName));
-            RaisePropertyChanged(nameof(BeamType));
+            RaisePropertyChanged(nameof(Name));
+            RaisePropertyChanged(nameof(FramingType));
         }
         private void BeamReference_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -404,9 +255,9 @@ namespace AppModels.ViewModelEntity
                 RaisePropertyChanged(nameof(BeamGrade));
             }
 
-            if (e.PropertyName == "TimberInfo")
+            if (e.PropertyName == "FramingInfo")
             {
-                RaisePropertyChanged(nameof(TimberInfo));
+                RaisePropertyChanged(nameof(FramingInfo));
             }
 
             if (e.PropertyName == "Location")
@@ -416,14 +267,16 @@ namespace AppModels.ViewModelEntity
 
             if (e.PropertyName == "Name")
             {
-                RaisePropertyChanged(nameof(BeamName));
+                RaisePropertyChanged(nameof(Name));
             }
 
-            if (e.PropertyName == "Type")
+            if (e.PropertyName == "FramingType")
             {
-                RaisePropertyChanged(nameof(BeamType));
-                RaisePropertyChanged(nameof(BeamName));
+                RaisePropertyChanged(nameof(FramingType));
+                RaisePropertyChanged(nameof(Name));
             }
         }
+
+        
     }
 }

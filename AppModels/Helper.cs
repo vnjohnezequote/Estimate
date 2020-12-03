@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using devDept.Geometry;
+using devDept.Graphics;
 
 namespace AppModels
 {
@@ -49,60 +51,84 @@ namespace AppModels
         {
             return new Point3D(point.X, point.Y, 0);
         }
-
-        public static Point2D ConvertToPoint2D(this Point3D point)
-        {
-            return new Point2D(point.X,point.Y);
-        }
-
-        //public static Point3D GetPointFromDirectAndDistance(this Point3D originPoint, Point3D travelPoint,
-        //    double distance)
-        //{
-        //    double originX = originPoint.X;
-        //    double originY = originPoint.Y;
-        //    double toX = travelPoint.X;
-        //    double toY = travelPoint.Y;
-        //    double vx = toX - originX;
-        //    double vy = toY - originY;
-        //    double mag = Math.Sqrt(vx * vx + vy * vy);
-        //    vx /= mag;
-        //    vy /= mag;
-        //    var px = originX + vx * distance;
-        //    var py = originY + vy *  + distance;
-        //    return new Point3D(px, py);
-        //    //double fi = Math.Atan2(toY - originY, toX - originX);
-        //    //double finalX = originX + distance * Math.Cos(fi);
-        //    //double finalY = originY + distance * Math.Sin(fi);
-        //    //return new Point3D(finalX, finalY);
-        //}
         public static List<Point3D> SortPointInLine(List<Point3D> points)
         {
-            var listocheck = new List<Point3D>(points);
-                listocheck.Remove(points[0]);
-                listocheck.Remove(points[points.Count - 1]);
+            var point1 = points[0];
+            var point2 = points[points.Count - 1];
+            var resultPoints = new List<Point3D>();
+            point2 = FindFarPoint(points, point1);
+            point1 = FindFarPoint(points, point2);
+            points.Remove(point1);
+            points.Remove(point2);
+            resultPoints.Add(point1);
+            var i = 0;
+            while (points.Count>0)
+            {
+                var addPoint = FindClosedPoint(points, resultPoints[i]);
+                points.Remove(addPoint);
+                resultPoints.Add(addPoint);
+                i++;
+            }
+            resultPoints.Add(point2);
+            return resultPoints;
 
-                List<Point3D> sortedPoints = new List<Point3D>();
-                sortedPoints.Add(points[0]);
-                var i = 0;
-                while (listocheck.Count > 0)
+        }
+
+        public static double RoundToNearestFive(this double value)
+        {
+            int valueTest = (int) value;
+            var phandu = value - valueTest;
+            if (phandu < 0.3)
+            {
+                return (Math.Round(value * 2, MidpointRounding.AwayFromZero) / 2);
+            }
+            else if (phandu >= 0.3 && phandu < 0.5)
+            {
+                return  (Math.Ceiling(value * 2) / 2);
+            }
+            else if (phandu >= 0.5 && phandu < 0.7)
+            {
+                return (Math.Round(value * 2, MidpointRounding.AwayFromZero) / 2);
+            }
+            else
+            {
+                return (Math.Ceiling(value * 2) / 2);
+            }
+        }
+        public static Point3D FindFarPoint(List<Point3D> points, Point3D pointToCheck)
+        {
+            var maxDistance = 0.0;
+            Point3D resultPoint = null;
+            foreach (var point3D in points)
+            {
+                var distance = point3D.DistanceTo(pointToCheck);
+                if (distance > maxDistance)
                 {
-                    var distance = double.MaxValue;
-                    Point3D pointadd = null;
-                    foreach (var point3D in listocheck)
-                    {
-                        var d = sortedPoints[i].DistanceTo(point3D);
-                        if (d < distance)
-                        {
-                            pointadd = point3D;
-                            distance = d;
-                        }
-                    }
-                    sortedPoints.Add(pointadd);
-                    listocheck.Remove(pointadd);
-                    i++;
+                    maxDistance = distance;
+                    resultPoint = point3D;
                 }
-                sortedPoints.Add(points[points.Count - 1]);
-                return sortedPoints;
+            }
+
+            return resultPoint;
+        }
+
+        public static Point3D FindClosedPoint(List<Point3D> points, Point3D checkPoint)
+        {
+            var minDist = Double.MaxValue;
+            Point3D resultPoint = null;
+            foreach (var point3D in points)
+            {
+               
+                    var disc = point3D.DistanceTo(checkPoint);
+                    if (disc<minDist)
+                    {
+                        minDist = disc;
+                        resultPoint = point3D;
+                    }
+                
+            }
+
+            return resultPoint;
         }
     }
 }

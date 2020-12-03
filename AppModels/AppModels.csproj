@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AppModels</RootNamespace>
     <AssemblyName>AppModels</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -79,12 +79,10 @@
     <Reference Include="CsvHelper, Version=15.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.15.0.5\lib\net47\CsvHelper.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Eyeshot.Control.Wpf.v2020" />
-    <Reference Include="devDept.Geometry.v2020">
-      <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
-    </Reference>
-    <Reference Include="devDept.Graphics.Shaders.v2020" />
-    <Reference Include="devDept.Graphics.Wpf.v2020" />
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v2021, Version=2021.0.58.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Geometry.v2021, Version=2021.0.58.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Graphics.Shaders.v2021, Version=2021.0.58.0, Culture=neutral, PublicKeyToken=54ce5f5f803e4b42, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Graphics.Wpf.v2021, Version=2021.0.58.0, Culture=neutral, PublicKeyToken=f3cd437f0d8061b5, processorArchitecture=MSIL" />
     <Reference Include="LiteDB, Version=5.0.8.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.5.0.8\lib\net45\LiteDB.dll</HintPath>
     </Reference>
@@ -176,11 +174,21 @@
     <Compile Include="AppData\LayerItem.cs" />
     <Compile Include="CustomEntity\Beam2D.cs" />
     <Compile Include="CustomEntity\BeamEntity.cs" />
+    <Compile Include="CustomEntity\Blocking2D.cs" />
+    <Compile Include="CustomEntity\CustomEntitySurrogate\Beam2DSurrogate.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\BeamEntitySurrogate.cs" />
+    <Compile Include="CustomEntity\CustomEntitySurrogate\Blocking2DSurrogate.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\DoorCountEntitySurrogate.cs" />
+    <Compile Include="CustomEntity\CustomEntitySurrogate\Framing2DSurrogate.cs" />
+    <Compile Include="CustomEntity\CustomEntitySurrogate\FramingBase2DSurrogate.cs" />
+    <Compile Include="CustomEntity\CustomEntitySurrogate\FramingRectangle2DSurrogate.cs" />
+    <Compile Include="CustomEntity\CustomEntitySurrogate\Hanger2DSurrogate.cs" />
+    <Compile Include="CustomEntity\CustomEntitySurrogate\Joist2DSurrogate.cs" />
+    <Compile Include="CustomEntity\CustomEntitySurrogate\OutTrigger2DSurrogate.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\Wall2DSurrogate.cs" />
     <Compile Include="CustomEntity\CustomVectorView.cs" />
     <Compile Include="CustomEntity\DoorCountEntity.cs" />
+    <Compile Include="CustomEntity\FramingRectangle2D.cs" />
     <Compile Include="CustomEntity\Hanger2D.cs" />
     <Compile Include="CustomEntity\OutTrigger2D.cs" />
     <Compile Include="CustomEntity\PaperBolderReference.cs" />
@@ -189,11 +197,13 @@
     <Compile Include="CustomMesh.cs" />
     <Compile Include="Database\FramingMaterialBase.cs" />
     <Compile Include="Enums\BeamMarkedLocation.cs" />
-    <Compile Include="Enums\BeamType.cs" />
+    <Compile Include="Enums\BlockingTypes.cs" />
     <Compile Include="Enums\CeilingBattensType.cs" />
     <Compile Include="Enums\ClientNames.cs" />
     <Compile Include="Enums\DoorType.cs" />
     <Compile Include="Enums\FocusType.cs" />
+    <Compile Include="Enums\FramingSheetTypes.cs" />
+    <Compile Include="Enums\FramingTypes.cs" />
     <Compile Include="Enums\LineTypes.cs" />
     <Compile Include="Enums\LoadPointLocation.cs" />
     <Compile Include="Enums\MaterialTypes.cs" />
@@ -219,8 +229,20 @@
     <Compile Include="FileSerializer\EzequoteFileSerializer.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Interaface\ICadDrawAble.cs" />
+    <Compile Include="Interaface\I2DContaintHanger.cs" />
+    <Compile Include="Interaface\I2DContaintOutTrigger.cs" />
+    <Compile Include="Interaface\IContaintHanger.cs" />
+    <Compile Include="Interaface\IContaintOutTrigger.cs" />
     <Compile Include="Interaface\IDynamicInputView.cs" />
     <Compile Include="Interaface\IEntitiesManager.cs" />
+    <Compile Include="Interaface\IFraming.cs" />
+    <Compile Include="Interaface\IFraming2D.cs" />
+    <Compile Include="Interaface\IFraming2DContainHangerAndOutTriggerVm.cs" />
+    <Compile Include="Interaface\IFraming2DContaintHangerAndOutTrigger.cs" />
+    <Compile Include="Interaface\IFramingContaintHangerAndOutTrigger.cs" />
+    <Compile Include="Interaface\IFramingVm.cs" />
+    <Compile Include="Interaface\IFramingVmBase.cs" />
+    <Compile Include="Interaface\IRectangleSolid.cs" />
     <Compile Include="Interaface\ITimberVm.cs" />
     <Compile Include="LogicalModel\VisualItems\VisualItem.cs" />
     <Compile Include="MyHiddenLinesView.cs" />
@@ -256,6 +278,15 @@
     <Compile Include="NewReposiveData\Wall\Wallderived\WarnervaleJob.cs" />
     <Compile Include="PocoDataModel\Customer.cs" />
     <Compile Include="PocoDataModel\EngineerMember\EngineerMemberInfoPoco.cs" />
+    <Compile Include="PocoDataModel\Framings\Beams\BeamBasePoco.cs" />
+    <Compile Include="PocoDataModel\Framings\Beams\FBeamPoco.cs" />
+    <Compile Include="PocoDataModel\Framings\Blocking\BlockingPoco.cs" />
+    <Compile Include="PocoDataModel\Framings\Blocking\TieDownPoco.cs" />
+    <Compile Include="PocoDataModel\Framings\FloorAndRafter\FramingBasePoco.cs" />
+    <Compile Include="PocoDataModel\Framings\FloorAndRafter\JoistPoco.cs" />
+    <Compile Include="PocoDataModel\Framings\FloorAndRafter\OutTriggerPoco.cs" />
+    <Compile Include="PocoDataModel\Framings\FramingSheetPoco.cs" />
+    <Compile Include="PocoDataModel\Openings\HangerPoco.cs" />
     <Compile Include="PocoDataModel\Openings\LintelBeamPoco.cs" />
     <Compile Include="PocoDataModel\Openings\OpeningInfoPoco.cs" />
     <Compile Include="PocoDataModel\SupportPointPoco.cs" />
@@ -279,14 +310,17 @@
     <Compile Include="ResponsiveData\BasicWallInfor.cs" />
     <Compile Include="ResponsiveData\EngineerMember\MyObservableCollection.cs" />
     <Compile Include="ResponsiveData\EngineerMember\EngineerMemberInfo.cs" />
+    <Compile Include="ResponsiveData\Framings\Beams\BeamBase.cs" />
     <Compile Include="ResponsiveData\Framings\Blocking\BlockingList.cs" />
+    <Compile Include="ResponsiveData\Framings\Blocking\TieDown.cs" />
+    <Compile Include="ResponsiveData\Framings\FloorAndRafters\Beam\FBeam.cs" />
     <Compile Include="ResponsiveData\Framings\FloorAndRafters\Floor\Joist.cs" />
     <Compile Include="ResponsiveData\Framings\FloorAndRafters\Floor\Joists.cs" />
     <Compile Include="ResponsiveData\Framings\FloorAndRafters\Floor\OutTrigger.cs" />
     <Compile Include="ResponsiveData\Framings\FloorAndRafters\Layouts.cs" />
     <Compile Include="ResponsiveData\Framings\Blocking\Blocking.cs" />
     <Compile Include="ResponsiveData\Framings\FramingBase.cs" />
-    <Compile Include="Database\TieDown.cs" />
+    <Compile Include="Database\TieDownMat.cs" />
     <Compile Include="ResponsiveData\Framings\FramingSheet.cs" />
     <Compile Include="ResponsiveData\GlobalWallDetailInfo.cs" />
     <Compile Include="ResponsiveData\GlobalWallMemberInfo.cs" />
@@ -337,10 +371,14 @@
     <Compile Include="ResponsiveData\WarnervaleWallLayer.cs" />
     <Compile Include="ViewModelEntity\Beam2DVm.cs" />
     <Compile Include="ViewModelEntity\BeamEntityVm.cs" />
+    <Compile Include="ViewModelEntity\BlockingVm.cs" />
     <Compile Include="ViewModelEntity\BlockReferenceVm.cs" />
     <Compile Include="ViewModelEntity\DoorCountEntityVm.cs" />
+    <Compile Include="ViewModelEntity\EntityContainhangerAndOutTriggerVm.cs" />
     <Compile Include="ViewModelEntity\EntityVm.cs" />
     <Compile Include="ViewModelEntity\EntityVmBase.cs" />
+    <Compile Include="ViewModelEntity\FramingVm.cs" />
+    <Compile Include="ViewModelEntity\FramingVmBase.cs" />
     <Compile Include="ViewModelEntity\Hanger2DVm.cs" />
     <Compile Include="ViewModelEntity\Joist2dVm.cs" />
     <Compile Include="ViewModelEntity\LeaderVM.cs" />
@@ -369,10 +407,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ResponsiveData\Framings\Beams\" />
     <Folder Include="ResponsiveData\Framings\FloorAndRafters\Rafter\" />
   </ItemGroup>
   <ItemGroup>

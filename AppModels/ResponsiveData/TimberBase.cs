@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using devDept.Serialization;
+using AppModels.Enums;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -206,6 +206,7 @@ namespace AppModels.ResponsiveData
         public double MaximumLength { get; set; }
         public string Code { get; set; }
 
+        public MaterialTypes MaterialType { get; set; }
 
         /// <summary>
         /// The call back property changed.

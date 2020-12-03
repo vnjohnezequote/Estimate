@@ -30,6 +30,7 @@ namespace AppModels.ResponsiveData
         private int _internalWallSpacing;
         private int _extternalWallThickness;
         private int _internalWallThickness;
+        private int _joistSpacing;
         
         #endregion
         #region public Property
@@ -127,6 +128,9 @@ namespace AppModels.ResponsiveData
         public int InternalWallTimberDepth => GlobalWallInformation.InternalWallTimberDepth;
         public string ExternalWallTimberGrade => GlobalWallInformation.ExternalWallTimberGrade;
         public string InternalWallTimberGrade => GlobalWallInformation.InternalWallTimberGrade;
+        public int JoistSpacing
+        {
+            get => _joistSpacing;set=>SetProperty(ref _joistSpacing,value); }
         public IBasicWallInfo GlobalExternalWallInfo { get;private set; }
         public IBasicWallInfo GlobalInternalWallInfo { get;private set; }
         public IGlobalWallDetail GlobalExtWallDetailInfo { get;private set; }

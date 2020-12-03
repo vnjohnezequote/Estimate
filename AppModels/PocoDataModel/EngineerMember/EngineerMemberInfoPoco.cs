@@ -1,11 +1,12 @@
-﻿using AppModels.Enums;
+﻿using System;
+using AppModels.Enums;
 using AppModels.ResponsiveData.EngineerMember;
 
 namespace AppModels.PocoDataModel.EngineerMember
 {
     public class EngineerMemberInfoPoco
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Suppliers Supplier { get; set; }
         public string LevelType { get; set; }
         public string EngineerName { get; set; }

@@ -23,6 +23,7 @@ namespace AppModels.Interaface
         int InternalWallTimberDepth { get; }
         string ExternalWallTimberGrade { get; }
         string InternalWallTimberGrade { get; }
+        int JoistSpacing { get; }
         IBasicWallInfo GlobalExternalWallInfo { get; }
         IBasicWallInfo GlobalInternalWallInfo { get; }
         IGlobalWallDetail GlobalExtWallDetailInfo { get;  }

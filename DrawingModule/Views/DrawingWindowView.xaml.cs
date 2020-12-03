@@ -7,6 +7,8 @@ using System.Windows.Input;
 using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Framings;
+using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
@@ -40,8 +42,8 @@ namespace DrawingModule.Views
             this.InitializeComponent();
             try
             {
-                this.CanvasDrawing.CanvasDrawing.Unlock("PF20-21MV5-0NHNJ-WYUX-F6CQ");
-                this.CanvasDrawing.PaperSpace.Unlock("PF20-21MV5-0NHNJ-WYUX-F6CQ");
+                this.CanvasDrawing.CanvasDrawing.Unlock("PF21-12NG0-L7K3F-M0CS-FE82");
+                this.CanvasDrawing.PaperSpace.Unlock("PF21-12NG0-L7K3F-M0CS-FE82");
             }
             catch (Exception e)
             {
@@ -184,6 +186,9 @@ namespace DrawingModule.Views
                     }
                     ReloadBeamReferenceForBeamLayout();
                     ReloadOpeningReferenceForLayout();
+                    ReloadHangerReferenceForLayout();
+                    ReloadOutTriggerReferenceForLayout();
+                    ReloadJoistReferenceForLayout();
                 }
             }
             catch (Exception exception)
@@ -224,7 +229,7 @@ namespace DrawingModule.Views
                             {
                                 if (roofBeam.Id == beam.BeamReferenceId)
                                 {
-                                    beam.BeamReference = roofBeam;
+                                    beam.FramingReference = roofBeam;
                                 }
                             }
                         }
@@ -235,6 +240,200 @@ namespace DrawingModule.Views
 
         }
 
+        private void ReloadHangerReferenceForLayout()
+        {
+            var entitiesManager = _drawingWindowViewModel.EntitiesManager;
+            var jobModel = _drawingWindowViewModel.JobModel;
+            if (entitiesManager != null && entitiesManager.Entities != null &&
+                entitiesManager.Entities.Count != 0 && jobModel != null && jobModel.Levels != null &&
+                jobModel.Levels.Count != 0)
+            {
+                foreach (var entity in entitiesManager.Entities)
+                {
+                    if (entity is Hanger2D hanger2D)
+                    {
+                        LevelWall currentLevel = null;
+                        foreach (var level in jobModel.Levels)
+                        {
+                            if (level.Id == hanger2D.LevelId)
+                            {
+                                currentLevel = level;
+                            }
+                        }
+
+                        if (currentLevel!=null)
+                        {
+                            FramingSheet currentSheet = null;
+                            foreach (var framingSheet in currentLevel.FramingSheets)
+                            {
+                                if (framingSheet.Id== hanger2D.FramingSheetId)
+                                {
+                                    currentSheet = framingSheet;
+                                }   
+                            }
+
+                            if (currentSheet!=null)
+                            {
+                                foreach (var hanger in currentSheet.Hangers)
+                                {
+                                    if (hanger.Id ==hanger2D.ReferenceId )
+                                    {
+                                        hanger2D.FramingReference = hanger;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void ReloadOutTriggerReferenceForLayout()
+        {
+            var entitiesManager = _drawingWindowViewModel.EntitiesManager;
+            var jobModel = _drawingWindowViewModel.JobModel;
+            if (entitiesManager != null && entitiesManager.Entities != null &&
+                entitiesManager.Entities.Count != 0 && jobModel != null && jobModel.Levels != null &&
+                jobModel.Levels.Count != 0)
+            {
+                foreach (var entity in entitiesManager.Entities)
+                {
+                    if (entity is OutTrigger2D outTrigger2D)
+                    {
+                        LevelWall currentLevel = null;
+                        foreach (var level in jobModel.Levels)
+                        {
+                            if (level.Id == outTrigger2D.LevelId)
+                            {
+                                currentLevel = level;
+                            }
+                        }
+
+                        if (currentLevel != null)
+                        {
+                            FramingSheet currentSheet = null;
+                            foreach (var framingSheet in currentLevel.FramingSheets)
+                            {
+                                if (framingSheet.Id == outTrigger2D.FramingSheetId)
+                                {
+                                    currentSheet = framingSheet;
+                                }
+                            }
+
+                            if (currentSheet != null)
+                            {
+                                foreach (var outTriggerr in currentSheet.OutTriggers)
+                                {
+                                    if (outTriggerr.Id == outTrigger2D.FramingReferenceId)
+                                    {
+                                        outTrigger2D.FramingReference = (OutTrigger)outTriggerr;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        private void ReloadJoistReferenceForLayout()
+        {
+            var entitiesManager = _drawingWindowViewModel.EntitiesManager;
+            var jobModel = _drawingWindowViewModel.JobModel;
+            if (entitiesManager != null && entitiesManager.Entities != null &&
+                entitiesManager.Entities.Count != 0 && jobModel != null && jobModel.Levels != null &&
+                jobModel.Levels.Count != 0)
+            {
+                foreach (var entity in entitiesManager.Entities)
+                {
+                    LevelWall curentLevel = null;
+                    if (entity is Joist2D joist)
+                    {
+                        foreach (var level in jobModel.Levels)
+                        {
+                            if (joist.LevelId == level.Id)
+                            {
+                                curentLevel = level;
+                            }
+                        }
+
+                        FramingSheet curentSheet = null;
+                        foreach (var framingSheet in curentLevel.FramingSheets)
+                        {
+                            if (framingSheet.Id == joist.FramingSheetId)
+                            {
+                                curentSheet = framingSheet;
+                            }
+                        }
+                        if (curentLevel != null)
+                        {
+                            foreach (var joistRef in curentSheet.Joists)
+                            {
+                                if (joistRef.Id == joist.FramingReferenceId)
+                                    joist.FramingReference = joistRef;
+                            }
+
+                            if (joist.IsHangerA)
+                            {
+                                foreach (var ent in entitiesManager.Entities)
+                                {
+                                    if (ent is Hanger2D hanger)
+                                    {
+                                        if (hanger.Id == joist.HangerAId)
+                                        {
+                                            joist.HangerA = hanger;
+                                        }   
+                                    }
+                                }
+                            }
+
+                            if (joist.IsHangerB)
+                            {
+                                foreach (var ent in entitiesManager.Entities)
+                                {
+                                    if (ent is Hanger2D hanger)
+                                    {
+                                        if (hanger.Id == joist.HangerBId)
+                                        {
+                                            joist.HangerB = hanger;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (joist.IsOutTriggerA)
+                            {
+                                foreach (var ent in entitiesManager.Entities)
+                                {
+                                    if (ent is OutTrigger2D outTrigger)
+                                    {
+                                        if (outTrigger.Id == joist.OutTriggerAId)
+                                        {
+                                            joist.OutTriggerA = outTrigger;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (joist.IsOutTriggerB)
+                            {
+                                foreach(var ent in entitiesManager.Entities)
+                                {
+                                    if (ent is OutTrigger2D outTrigger)
+                                    {
+                                        if (outTrigger.Id == joist.OutTriggerBId)
+                                        {
+                                            joist.OutTriggerB = outTrigger;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        }
         private void ReloadOpeningReferenceForLayout()
         {
             var entitiesManager = _drawingWindowViewModel.EntitiesManager;

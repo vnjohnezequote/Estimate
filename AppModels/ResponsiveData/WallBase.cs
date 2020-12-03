@@ -8,19 +8,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Diagnostics;
-using System.Dynamic;
-using System.Windows.Media.Effects;
 using AppModels.AppData;
 using AppModels.Enums;
-using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
-using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData.WallMemberData;
 using devDept.Geometry;
-using Newtonsoft.Json;
-using OpenGL.Delegates;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -316,7 +309,7 @@ namespace AppModels.ResponsiveData
             get => _extraLength; 
             set => SetProperty(ref _extraLength, value);
         }
-        public double WallLength => Math.Ceiling(TempLength + ExtraLength);
+        public double WallLength => TempLength.RoundToNearestFive() + ExtraLength;
         public string LevelName { get=>_levelName; set=>SetProperty(ref _levelName,value); }
         public int BeamPockets { get=>_beamPockets; set=>SetProperty(ref _beamPockets,value); }
         public int Corners { get=>_corners; set=>SetProperty(ref _corners,value); }
@@ -481,7 +474,7 @@ namespace AppModels.ResponsiveData
 
         public void LoadWallInfo(WallLayerPoco wall)
         {
-            //Id = wall.Id;
+            //Index = wall.Index;
             TypeId = wall.TypeId;
             LevelName = wall.LevelName;
             //WallType = wall.WallType;

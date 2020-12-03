@@ -99,7 +99,6 @@ namespace JobInfoModule.ViewModels
                 MaterialType = MaterialTypes.Timber
                 
             };
-            member.Id = JobModel.EngineerMemberList.Count;
             JobModel.EngineerMemberList.Add(member);
         }
         protected override void SelectedClientReceive(ClientPoco selectClient)

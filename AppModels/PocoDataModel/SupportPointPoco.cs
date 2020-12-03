@@ -7,7 +7,7 @@ namespace AppModels.PocoDataModel
     public class SupportPointPoco
     {
         public LoadPointLocation PointLocation { get; set; }
-        public int EngineerReferenceId { get; set; }
+        public Guid EngineerReferenceId { get; set; }
         public SupportType? PointSupportType { get; set; }
 
         public SupportPointPoco()

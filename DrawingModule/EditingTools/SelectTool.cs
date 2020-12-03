@@ -113,6 +113,7 @@ namespace DrawingModule.EditingTools
                 {
                     ManageSelection(ent, myEnts, added, removed);
                 }
+                this.ResetSelectionTool();
                 return;
             }
 

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppModels.Enums;
-using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -28,7 +23,7 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
         public Leader BeamLeader { get; set; }
         public Block BeamBlock { get; set; }
         public string ClientName { get; set; }
-        public int BeamReferenceId { get; set; }
+        public Guid FramingReferenceId { get; set; }
         public string LevelName { get; set; }
         public BeamMarkedLocation BeamMarkedLocation { get; set; }
         public bool ShowBeamNameOnly { get; set; }
@@ -69,7 +64,7 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
                 beam.BeamLeader= BeamLeader;
                 beam.BeamBlock= BeamBlock;
                 beam.ClientName= ClientName ;
-                beam.BeamReferenceId = BeamReferenceId;
+                beam.FramingReferenceId = FramingReferenceId;
                 beam.LevelName=LevelName ;
                 beam.BeamMarkedLocation= BeamMarkedLocation;
                 beam.ShowBeamNameOnly=ShowBeamNameOnly;
@@ -95,7 +90,7 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
                 BeamLeader = beam.BeamLeader;
                 BeamBlock = beam.BeamBlock;
                 ClientName = beam.ClientName;
-                BeamReferenceId = beam.BeamReference.Id;
+                FramingReferenceId = beam.FramingReference.Id;
                 LevelName = beam.LevelName;
                 BeamMarkedLocation = beam.BeamMarkedLocation;
                 ShowBeamNameOnly = beam.ShowBeamNameOnly;

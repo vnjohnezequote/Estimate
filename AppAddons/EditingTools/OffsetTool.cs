@@ -91,9 +91,9 @@ namespace AppAddons.EditingTools
                 {
                     if (offetEntity is Joist2D joist)
                     {
-                        if (joist.JoistReference!=null && joist.JoistReference.FloorSheet!=null)
+                        if (joist.FramingReference!=null && joist.FramingReference.FramingSheet!=null)
                         {
-                            joist.JoistReference.FloorSheet.Joists.Add(joist.JoistReference);
+                            joist.FramingReference.FramingSheet.Joists.Add(joist.FramingReference);
                             EntitiesManager.AddAndRefresh(offetEntity, LayerManager.SelectedLayer.Name);
                         }
 
@@ -135,7 +135,10 @@ namespace AppAddons.EditingTools
                 return;
             }
 
+            
             var offetEntity = CalculatorOffsetEntity(this._selectedEntity, e.CurrentPoint);
+            
+            
             if (offetEntity is ICurve)
             {
                 DrawInteractiveUntilities.DrawCurveOrBlockRef(offetEntity, canvas);
@@ -157,14 +160,14 @@ namespace AppAddons.EditingTools
                 Point3D projectedPt = selCurve.PointAt(t);
                 BasePoint = projectedPt;
                 double offsetDist = 0;
-                if (this.OffsetDistance == 0)
+                if (this.OffsetDistance != 0)
                 {
-                    offsetDist = projectedPt.DistanceTo(offsetPoint);
+                    var trackingLine = new Line(projectedPt, offsetPoint);
+                    offsetPoint = trackingLine.PointAt(OffsetDistance);
                 }
-                else
-                {
-                    offsetDist = this.OffsetDistance;
-                }
+               
+
+                offsetDist = projectedPt.DistanceTo(offsetPoint);
 
                 //if (selEntity is Line line)
                 //{
@@ -181,7 +184,8 @@ namespace AppAddons.EditingTools
                 ICurve offsetCurve = selCurve.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
                 success = offsetCurve.Project(offsetPoint, out t);
                 projectedPt = offsetCurve.PointAt(t);
-                if (projectedPt.DistanceTo(offsetPoint) > 1e-3)
+                var disc = projectedPt.DistanceTo(offsetPoint);
+                if (disc > 1e-3)
                     offsetCurve = selCurve.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
                 return offsetCurve as Entity;
             }
@@ -192,14 +196,13 @@ namespace AppAddons.EditingTools
                 Point3D projectedPt = joist.PointAt(t);
                 BasePoint = projectedPt;
                 double offsetDist = 0;
-                if (this.OffsetDistance == 0)
+                if (this.OffsetDistance != 0)
                 {
-                    offsetDist = projectedPt.DistanceTo(offsetPoint);
+                    var trackingLine = new Line(projectedPt, offsetPoint);
+                    offsetPoint = trackingLine.PointAt(OffsetDistance);
                 }
-                else
-                {
-                    offsetDist = this.OffsetDistance;
-                }
+                offsetDist = projectedPt.DistanceTo(offsetPoint);
+                
                 var offsetJoist = joist.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
                 success = offsetJoist.Project(offsetPoint, out t);
                 projectedPt = offsetJoist.PointAt(t);
@@ -207,7 +210,6 @@ namespace AppAddons.EditingTools
                 {
                     offsetJoist = joist.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
                 }
-
                 return offsetJoist as Entity;
             }
             

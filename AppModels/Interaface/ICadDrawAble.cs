@@ -13,6 +13,7 @@ namespace AppModels.Interaface
         string ActiveLevel { get; }
         int DimTextHeight { get; }
         ViewportList Viewports { get; }
+        Viewport ActiveViewport { get; }
         int ActiveViewportIndex { get; }
         Size Size{ get; }
         Point3D LastClickPoint { get; }

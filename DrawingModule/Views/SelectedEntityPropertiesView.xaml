@@ -13,7 +13,7 @@
              xmlns:applicationConverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
-             xmlns:entities="clr-namespace:devDept.Eyeshot.Entities;assembly=devDept.Eyeshot.Control.Wpf.v2020"
+             xmlns:entities="clr-namespace:devDept.Eyeshot.Entities;assembly=devDept.Eyeshot.Control.Wpf.v2021"
              x:Class="DrawingModule.Views.SelectedEntityPropertiesView"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance {x:Type viewModels:SelectedEntityPropertiesViewModel}, IsDesignTimeCreatable=True}"
@@ -43,16 +43,22 @@
                             <x:Type TypeName="appModelEnum:BeamMarkedLocation"/>
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
-                    <ObjectDataProvider x:Key="BeamTypes"
-                                        MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
-                        <ObjectDataProvider.MethodParameters>
-                            <x:Type TypeName="appModelEnum:BeamType"/>
-                        </ObjectDataProvider.MethodParameters>
-                    </ObjectDataProvider>
                     <ObjectDataProvider x:Key="OpeningTypes"
                                         MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
                         <ObjectDataProvider.MethodParameters>
                             <x:Type TypeName="appModelEnum:OpeningType"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <ObjectDataProvider x:Key="FramingTypes"
+                                        MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="appModelEnum:FramingTypes"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <ObjectDataProvider x:Key="BlockingTypes"
+                                        MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="appModelEnum:BlockingTypes"/>
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
                     <applicationConverter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
@@ -64,431 +70,302 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="170" MinWidth="100"/>
-            <ColumnDefinition Width="1"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+        <StackPanel>
+            <StackPanel.Resources>
+                <ResourceDictionary>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Width" Value="170"/>
+                        <Setter Property="MinWidth" Value="100"/>
+                        <Setter Property="Margin" Value="0 0 5 0"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="DockPanel">
+                        <Setter Property="Margin" Value="15 5 0 5"/>
+                    </Style>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
+                </ResourceDictionary>
+            </StackPanel.Resources>
+            <DockPanel  Visibility="{Binding LayerVisibility}">
+                <TextBlock Text="Layer" />
+                <ComboBox ItemsSource="{Binding LayerManager.Layers}"
+                          SelectedValuePath="Name"
+                          SelectedValue="{Binding Path=SelectedEntity.LayerName}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Rectangle Fill="{Binding Color,Converter={StaticResource ColorToBrushConverter}}" Width="16" Height="16" Margin="0 2 5 2"/>
+                                <TextBlock Text="{Binding Name}" Foreground="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </DockPanel>
+            <DockPanel Visibility="{Binding ColorVisibility}">
+                <TextBlock Text="Color" />
+                <syncfusion:ColorPicker Background="Transparent"
+                                        Color="{Binding SelectedEntity.Color, Mode=TwoWay, Converter={StaticResource ColorToColorConverter}}"
+                                        Foreground="{Binding SelectedEntity.Color,Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding LevelVisibility}">
+                <TextBlock Text="Level" />
+                <ComboBox ItemsSource="{Binding Levels}"
+                          DisplayMemberPath="LevelName"
+                          SelectedValuePath="LevelName"
+                          SelectedValue="{Binding Path= SelectedEntity.WallLevelName}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding ColorMethodVisibility}">
+                <TextBlock Text="Color By" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource ColorMethods}}"
+                          SelectedItem="{Binding Path=SelectedEntity.ColorMethod}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding LayerVisibility}">
+                <TextBlock Text="Line Weight" VerticalAlignment="Bottom" />
+                <TextBox Text="{Binding SelectedEntity.LineWeight}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding TextContentVisibility}">
+                <TextBlock Text="Text Content" />
+                <TextBox Text="{Binding SelectedEntity.TextString}"
+                         AcceptsReturn="True"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding TextContentVisibility}">
+                <TextBlock Text="Text Height" />
+                <TextBox Text="{Binding SelectedEntity.TextHeight}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding LeaderVisibility}">
+                <TextBlock Text="Arrow Size" />
+                <TextBox Text="{Binding SelectedEntity.ArrowSize}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding BeamVisibility}">
+                <TextBlock Text="Client Name" />
+                <TextBox Text="{Binding SelectedEntity.ClientName}"/>
+            </DockPanel>
+            
+            <DockPanel Visibility="{Binding FramingVisibility}">
+                <TextBlock Text="Engineer Reference" />
+                <ComboBox ItemsSource="{Binding EngineerList}"
+                          SelectedItem="{Binding SelectedEntity.EngineerMember}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock  Text="{Binding EngineerName}"/>
+                                <TextBlock  Text="{Binding TimberGrade}" Margin="10 0 0 0"/>
+                                <TextBlock Text="{Binding SizeGrade}" Margin="10 0 0 0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
 
-        </Grid.RowDefinitions>
-        <TextBlock Text="Layer" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"/>
-        <TextBlock Text="Color" Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"/>
-        <TextBlock Text="Level" Grid.Row="2" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5" Visibility="{Binding LevelVisibility}"/>
-        <TextBlock Text="Color By" Grid.Row="3" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5" />
-        <TextBlock Text="Line Weight" Grid.Row="4" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5" />
-        <TextBlock Text="Content" Grid.Row="5" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding TextContentVisibility}"/>
-        <TextBlock Text="Text Height" Grid.Row="6" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding TextContentVisibility}"/>
-        <TextBlock Text="Arrow Size" Grid.Row="7" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding LeaderVisibility}"/>
-        <TextBlock Text="Client Name" Grid.Row="8" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Engineer Reference" Grid.Row="9" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Beam Grade" Grid.Row="10" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Beam Material" Grid.Row="11" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Beam Text Alignment" Grid.Row="12" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Beam Alignment" Grid.Row="13" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Beam Location" Grid.Row="14" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Show Beam Name Only" Grid.Row="15" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Beam Name" Grid.Row="16" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Beam Type" Grid.Row="17" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Is Continues Beam" Grid.Row="18" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Beam Support Wall2D Over" Grid.Row="19" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Custom Notes" Grid.Row="20" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Scale" Grid.Row="21" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding VectorViewVisibility}"/>
-        <TextBlock Text="Floor Name" Grid.Row="22" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding FloorNameVisibility}"/>
-        <TextBlock Text="Wall2D Name Scale" Grid.Row="23" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding FloorNameVisibility}"/>
-        <TextBlock Text="Wall Belong to" Grid.Row="24" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding DoorVisibility}"/>
-        <TextBlock Text="Door Types" Grid.Row="25" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding DoorVisibility}"/>
-        <TextBlock Text="Door Width" Grid.Row="26" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding DoorVisibility}"/>
-        <TextBlock Text="Door Height" Grid.Row="27" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding DoorVisibility}"/>
-        <TextBlock Text="Door Support Span" Grid.Row="28" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding DoorVisibility}"/>
-        <TextBlock Text="Beam Under" Grid.Row="29" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Wall Thickness" Grid.Row="30" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding WallVisibility}"/>
-        <TextBlock Text="Load Bearing Wall" Grid.Row="31" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding WallVisibility}"/>
-        <TextBlock Text="Show Dimension" Grid.Row="32" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding WallVisibility}"/>
-        <TextBlock Text="Joist Pitch" Grid.Row="33" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Extra Length" Grid.Row="34" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="HangerA" Grid.Row="35" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Hanger A Mat" Grid.Row="36" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="HangerB" Grid.Row="37" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Hanger B Mat" Grid.Row="38" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Outrigger A" Grid.Row="39" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Outrigger A Grade" Grid.Row="40" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Outrigger A Mat" Grid.Row="41" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Outrigger A Flipped" Grid.Row="42" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="OutTrigger B" Grid.Row="43" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="OutTrigger B Grade" Grid.Row="44" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Outrigger B Mat" Grid.Row="45" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Outrigger A Flipped" Grid.Row="46" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="Hanger Material" Grid.Row="47" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding HangerVisibility}"/>
-        <TextBlock Text="OutTrigger OutSize" Grid.Row="48" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <TextBlock Text="OutTrigger InSize" Grid.Row="49" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15 5 0 5"  Visibility="{Binding BeamVisibility}"/>
-        <GridSplitter Grid.Column="1"
-                      Grid.Row="0"
-                      Grid.RowSpan="3"
-                      ResizeDirection="Columns" 
-                      ResizeBehavior="PreviousAndNext"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Stretch"
-                      Margin="-3 -3 -3 -3"
-                      BorderThickness="3"
-                      BorderBrush="Transparent"/>
-        <ComboBox Grid.Row="0"
-                  Grid.Column="2"
-                  Style="{StaticResource MahApps.Styles.ComboBox}"
-                  Margin="0 5 0 5"
-                  Visibility="{Binding LayerVisibility}"
-                  ItemsSource="{Binding LayerManager.Layers}"
-                  SelectedValuePath="Name"
-                  SelectedValue="{Binding Path=SelectedEntity.LayerName}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Rectangle Fill="{Binding Color,Converter={StaticResource ColorToBrushConverter}}" Width="16" Height="16" Margin="0 2 5 2"/>
-                        <TextBlock Text="{Binding Name}" Foreground="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <syncfusion:ColorPicker Grid.Row="1"
-                                Grid.Column="2"
-                                Background="Transparent"
-                                Margin="0 5 0 5"
-                                Visibility="{Binding ColorVisibility}"
-                                Color="{Binding SelectedEntity.Color, Mode=TwoWay, Converter={StaticResource ColorToColorConverter}}"
-                                Foreground="{Binding SelectedEntity.Color,Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"/>
-        <ComboBox Grid.Row="2" 
-                  Grid.Column="2"
-                  Style="{StaticResource MahApps.Styles.ComboBox}"
-                  Margin="0 5 0 5"
-                  Visibility="{Binding LevelVisibility}"
-                  ItemsSource="{Binding Levels}"
-                  DisplayMemberPath="LevelName"
-                  SelectedValuePath="LevelName"
-                  SelectedValue="{Binding Path= SelectedEntity.WallLevelName}"/>
-        <ComboBox Grid.Row="3"
-                  Grid.Column="2"
-                  Style="{StaticResource MahApps.Styles.ComboBox}"
-                  Visibility="{Binding ColorMethodVisibility}"
-                  Margin="0 5 0 5"
-                  ItemsSource="{Binding Source={StaticResource ColorMethods}}"
-                  SelectedItem="{Binding Path=SelectedEntity.ColorMethod}"/>
-        <TextBox Grid.Row="4"
-                 Grid.Column="2"
-                 Margin="0 5 0 5"
-                 Text="{Binding SelectedEntity.LineWeight}"/>
-        <TextBox Grid.Row="5"
-                 Grid.Column="2"
-                 Margin="0 5 0 5"
-                 Text="{Binding SelectedEntity.TextString}"
-                 Visibility="{Binding TextContentVisibility}"
-                 AcceptsReturn="True"/>
-        <TextBox Grid.Row="6"
-                 Margin="0 5 0 5"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.TextHeight}"
-                 Visibility="{Binding TextContentVisibility}"/>
-        <TextBox Grid.Row="7"
-                 Margin="0 5 0 5"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.ArrowSize}"
-                 Visibility="{Binding LeaderVisibility}"/>
-        <TextBox Grid.Row="8"
-                 Margin="0 5 0 5"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.ClientName}"
-                 Visibility="{Binding BeamVisibility}"/>
-        <ComboBox Grid.Row="9"
-                  Grid.Column="2"
-                  ItemsSource="{Binding EngineerList}"
-                  SelectedItem="{Binding SelectedEntity.EngineerMember}"
-                  Visibility="{Binding BeamVisibility}"
-                  Style="{StaticResource MahApps.Styles.ComboBox}"
-                  Margin="0 5 0 5">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Text="{Binding EngineerName}"/>
-                        <TextBlock  Text="{Binding TimberGrade}" Margin="10 0 0 0"/>
-                        <TextBlock Text="{Binding SizeGrade}" Margin="10 0 0 0"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-
-        </ComboBox>
-        <ComboBox Grid.Row="10"
-                  Grid.Column="2"
-                  ItemsSource="{Binding BeamGradeList}"
-                  SelectedItem="{Binding SelectedEntity.BeamGrade, Mode=TwoWay}"
-                  Text="{Binding SelectedEntity.BeamGrade}"
-                  Visibility="{Binding BeamVisibility}"
-                  Style="{StaticResource MahApps.Styles.ComboBox}"
-                  Margin="0 5 0 5"/>
-        <ComboBox Grid.Row="11"
-                 Grid.Column="2"
-                 SelectedItem="{Binding SelectedEntity.TimberInfo, Mode=TwoWay}"
-                 ItemsSource="{Binding TimberList}"
-                 DisplayMemberPath="SizeTreatment"
-                 Visibility="{Binding BeamVisibility}"
-                 Style="{StaticResource MahApps.Styles.ComboBox}"
-                 Margin="0 5 0 5"/>
-        <ComboBox Grid.Row="12"
-                  Grid.Column="2"
-                  Text="{Binding SelectedEntity.BeamMarkedAlignmentType}"
-                  ItemsSource="{Binding Source={StaticResource AlignmentTypes}}"
-                  Visibility="{Binding BeamVisibility}"
-                  Style="{StaticResource MahApps.Styles.ComboBox}"/>
-        <ComboBox Grid.Row="13"
-                  Grid.Column="2"
-                  ItemsSource="{Binding Source={StaticResource BeamMarkedLocation}}"
-                  SelectedItem="{Binding SelectedEntity.BeamMarkLocation}"
-                  Visibility="{Binding BeamVisibility}"
-                  Style="{StaticResource MahApps.Styles.ComboBox}"
-                  Margin="0 5 0 5"/>
-        <TextBox Grid.Row="14"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.BeamLocation}"
-                 Visibility="{Binding BeamVisibility}"
-                 Margin="0 5 0 5"/>
-        <CheckBox IsChecked="{Binding SelectedEntity.ShowBeamNameOnly, Mode=TwoWay}"
-                  Grid.Row="15"
-                  Grid.Column="2"
-                  Visibility="{Binding BeamVisibility}"
-                  Margin="0 5 0 5"/>
-        <TextBox Grid.Row="16"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.BeamName}"
-                 Visibility="{Binding BeamVisibility}"
-                 Margin="0 5 0 5"/>
-        <ComboBox Grid.Row="17"
-                  Grid.Column="2"
-                  ItemsSource="{Binding Source={StaticResource BeamTypes}}"
-                  SelectedItem="{Binding SelectedEntity.BeamType}"
-                  Visibility="{Binding BeamVisibility}"
-                  Style="{StaticResource MahApps.Styles.ComboBox}"
-                  Margin="0 5 0 5"/>
-        <CheckBox IsChecked="{Binding SelectedEntity.ContinuesBeam, Mode=TwoWay}"
-                  Grid.Row="18"
-                  Grid.Column="2"
-                  Visibility="{Binding BeamVisibility}"
-                  Margin="0 5 0 5"/>
-        <CheckBox IsChecked="{Binding SelectedEntity.SupportWallOver, Mode=TwoWay}"
-                  Grid.Row="19"
-                  Grid.Column="2"
-                  Visibility="{Binding BeamVisibility}"
-                  Margin="0 5 0 5"/>
-        <TextBox Grid.Row="20"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.CustomNotesBeam}"
-                 Visibility="{Binding BeamVisibility}"
-                 Margin="0 5 0 5"/>
-        <ComboBox Grid.Row="21"
-                 Grid.Column="2"
-                 SelectedItem="{Binding SelectedEntity.Scale}"
-                 ItemsSource="{Binding ScaleList}"
-                 Visibility="{Binding VectorViewVisibility}"/>
-        <TextBox Grid.Row="22"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.FloorName}"
-                 Visibility="{Binding FloorNameVisibility}"
-                 Margin="0 5 0 5"/>
-        <TextBox Grid.Row="23"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.ScaleWallName}"
-                 Visibility="{Binding FloorNameVisibility}"
-                 Margin="0 5 0 5"/>
-        <ComboBox Grid.Row="24"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.WallBelongTo}"
-                  ItemsSource="{Binding WallList}"
-                  Visibility="{Binding DoorVisibility}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Text="{Binding WallName}" Foreground="{Binding WallColorLayer.Color, Mode=TwoWay,Converter={StaticResource ColorToBrushConverter}}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <ComboBox Grid.Row="25"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.OpeningType}"
-                  ItemsSource="{Binding Source={StaticResource OpeningTypes}}"
-                  Visibility="{Binding DoorVisibility}"/>
-        <ComboBox Grid.Row="26"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.DoorWidth}"
-                  ItemsSource="{Binding DoorWidthList}"
-                  Visibility="{Binding DoorVisibility}">
-        </ComboBox>
-        <ComboBox Grid.Row="27"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.DoorHeight}"
-                  ItemsSource="{Binding ExtDoorListHeights}"
-                  Visibility="{Binding DoorVisibility}"/>
-        <ComboBox Grid.Row="28"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.DoorSupportSpan}"
-                  ItemsSource="{Binding DoorSupportSpanList}"
-                  Visibility="{Binding DoorVisibility}"/>
-        <CheckBox Grid.Row="29"
-                  Grid.Column="2"
-                  IsChecked="{Binding SelectedEntity.BeamUnder}"
-                  Visibility="{Binding BeamVisibility}"/>
-        <ComboBox Grid.Row="30"
-                  Grid.Column="2"
-                  ItemsSource="{Binding WallThicknessList}"
-                  SelectedItem="{Binding SelectedEntity.WallThickness}"
-                  Visibility="{Binding WallVisibility}"/>
-        <CheckBox Grid.Row="31"
-                  Grid.Column="2"
-                  IsChecked="{Binding SelectedEntity.IsLoadBearingWall}"
-                  Visibility="{Binding WallVisibility}"/>
-        <CheckBox Grid.Row="32"
-                  Grid.Column="2"
-                  IsChecked="{Binding SelectedEntity.IsShowDimension}"
-                  Visibility="{Binding WallVisibility}"/>
-        <TextBox Grid.Row="33"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.Pitch}"
-                 Visibility="{Binding BeamVisibility}"
-                 Margin="0 5 0 5"/>
-        <TextBox Grid.Row="34"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.ExtraLength}"
-                 Visibility="{Binding BeamVisibility}"
-                 Margin="0 5 0 5"/>
-        <CheckBox Grid.Row="35"
-                  Grid.Column="2"
-                  IsChecked="{Binding SelectedEntity.IsHangerA}"
-                  Visibility="{Binding BeamVisibility}"/>
-        <ComboBox Grid.Row="36"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.HangerAMat}"
-                  ItemsSource="{Binding HangerList}"
-                  Visibility="{Binding BeamVisibility}"
-                  DisplayMemberPath="Name"
-                  IsEnabled="{Binding SelectedEntity.IsHangerA}"/>
-        <CheckBox Grid.Row="37"
-                  Grid.Column="2"
-                  IsChecked="{Binding SelectedEntity.IsHangerB}"
-                  Visibility="{Binding BeamVisibility}"/>
-        <ComboBox Grid.Row="38"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.HangerBMat}"
-                  ItemsSource="{Binding HangerList}"
-                  Visibility="{Binding BeamVisibility}"
-                  DisplayMemberPath="Name"
-                  IsEnabled="{Binding SelectedEntity.IsHangerB}"/>
-        <CheckBox Grid.Row="39"
-                  Grid.Column="2"
-                  IsChecked="{Binding SelectedEntity.IsOutriggerA}"
-                  Visibility="{Binding BeamVisibility}"/>
-        <ComboBox Grid.Row="40"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.OutTriggerAGrade}"
-                  ItemsSource="{Binding BeamGradeList}"
-                  Visibility="{Binding BeamVisibility}"
-                  IsEnabled="{Binding SelectedEntity.IsOutriggerA}"/>
-        <ComboBox Grid.Row="41"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.OutTriggerAMat}"
-                  ItemsSource="{Binding OutTriggerATimberList}"
-                  Visibility="{Binding BeamVisibility}"
-                  DisplayMemberPath="SizeTreatment"
-                  IsEnabled="{Binding SelectedEntity.IsOutriggerA}"/>
-        <CheckBox Grid.Row="42"
-                  Grid.Column="2"
-                  IsChecked="{Binding SelectedEntity.OutTriggerAFlipped}"
-                  Visibility="{Binding BeamVisibility}"/>
-        <CheckBox Grid.Row="43"
-                  Grid.Column="2"
-                  IsChecked="{Binding SelectedEntity.IsOutriggerB}"
-                  Visibility="{Binding TimberList}"/>
-        <ComboBox Grid.Row="44"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.OutTriggerBGrade}"
-                  ItemsSource="{Binding BeamGradeList}"
-                  Visibility="{Binding BeamVisibility}"
-                  IsEnabled="{Binding SelectedEntity.IsOutriggerB}"/>
-        <ComboBox Grid.Row="45"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.OutTriggerBMat}"
-                  ItemsSource="{Binding OutTriggerBTimberList}"
-                  Visibility="{Binding BeamVisibility}"
-                  DisplayMemberPath="SizeTreatment"
-                  IsEnabled="{Binding SelectedEntity.IsOutriggerB}"/>
-        <CheckBox Grid.Row="46"
-                  Grid.Column="2"
-                  IsChecked="{Binding SelectedEntity.OutTriggerBFlipped}"
-                  Visibility="{Binding BeamVisibility}"/>
-        <ComboBox Grid.Row="47"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedEntity.Material}"
-                  ItemsSource="{Binding HangerList}"
-                  Visibility="{Binding HangerVisibility}"
-                  DisplayMemberPath="Name"/>
-        <TextBox Grid.Row="48"
-                 Grid.Column="2"
-                 Text="{Binding SelectedEntity.OutTriggerOutSize}"
-                 Visibility="{Binding BeamVisibility}"/>
-        <TextBox Grid.Row="49"
-                 Grid.Column="2" 
-                 Text="{Binding SelectedEntity.OutTriggerInSize}"
-                 Visibility="{Binding BeamVisibility}"/>
-
+                </ComboBox>
+            </DockPanel>
+            <DockPanel Visibility="{Binding FramingVisibility}">
+                <TextBlock Text="Beam Grade" />
+                <ComboBox ItemsSource="{Binding BeamGradeList}"
+                          SelectedItem="{Binding SelectedEntity.BeamGrade, Mode=TwoWay}"
+                          Text="{Binding SelectedEntity.BeamGrade}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding FramingVisibility}">
+                <TextBlock Text="Beam Material" />
+                <ComboBox SelectedItem="{Binding SelectedEntity.FramingInfo, Mode=TwoWay}"
+                          ItemsSource="{Binding TimberList}"
+                          DisplayMemberPath="SizeTreatment"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding BeamVisibility}">
+                <TextBlock Text="Beam Text Alignment" />
+                <ComboBox Text="{Binding SelectedEntity.BeamMarkedAlignmentType}"
+                          ItemsSource="{Binding Source={StaticResource AlignmentTypes}}"
+                          Style="{StaticResource MahApps.Styles.ComboBox}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding BeamVisibility}">
+                <TextBlock Text="Beam Alignment" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource BeamMarkedLocation}}"
+                          SelectedItem="{Binding SelectedEntity.BeamMarkLocation}"
+                          Style="{StaticResource MahApps.Styles.ComboBox}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding BeamVisibility}">
+                <TextBlock Text="Beam Location"/>
+                <TextBox Text="{Binding SelectedEntity.BeamLocation}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding BeamVisibility}">
+                <TextBlock Text="Show Beam Name Only"  />
+                <CheckBox IsChecked="{Binding SelectedEntity.ShowBeamNameOnly, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding FramingBaseVisibility}" HorizontalAlignment="Stretch">
+                <TextBlock Text="Name" VerticalAlignment="Bottom" />
+                <TextBox Text="{Binding SelectedEntity.Name}" Width="300" />
+                <TextBox Text="{Binding SelectedEntity.Index}" materialDesign:HintAssist.Hint="Index" Width="70" Margin="15 0 0 0"/>
+                <TextBox Text="{Binding SelectedEntity.SubFixIndex}" materialDesign:HintAssist.Hint="SubFix Index" Margin="15 0 0 0"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding FramingBaseVisibility}">
+                <TextBlock Text="Is Existing"/>
+                <CheckBox IsChecked="{Binding SelectedEntity.IsExisting}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding FramingVisibility}">
+                <TextBlock Text="Framing Type" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource FramingTypes}}"
+                          SelectedItem="{Binding SelectedEntity.FramingType}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding BeamVisibility}">
+                <TextBlock Text="Is Continues Beam" />
+                <CheckBox IsChecked="{Binding SelectedEntity.ContinuesBeam, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding BeamVisibility}">
+                <TextBlock Text="Wall Over" />
+                <CheckBox IsChecked="{Binding SelectedEntity.SupportWallOver, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding BeamVisibility}">
+                <TextBlock Text="Custom Notes" />
+                <TextBox Text="{Binding SelectedEntity.CustomNotesBeam}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding VectorViewVisibility}">
+                <TextBlock Text="Scale" />
+                <ComboBox SelectedItem="{Binding SelectedEntity.Scale}"
+                          ItemsSource="{Binding ScaleList}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding FloorNameVisibility}">
+                <TextBlock Text="Floor Name" />
+                <TextBox Text="{Binding SelectedEntity.FloorName}"/>
+            </DockPanel>
+            <DockPanel  Visibility="{Binding FloorNameVisibility}">
+                <TextBlock Text="Wall2D Name Scale"/>
+                <TextBox Text="{Binding SelectedEntity.ScaleWallName}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding DoorVisibility}">
+                <TextBlock Text="Wall Belong to" />
+                <ComboBox SelectedItem="{Binding SelectedEntity.WallBelongTo}"
+                          ItemsSource="{Binding WallList}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock  Text="{Binding WallName}" Foreground="{Binding WallColorLayer.Color, Mode=TwoWay,Converter={StaticResource ColorToBrushConverter}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </DockPanel>
+            <DockPanel Visibility="{Binding DoorVisibility}">
+                <TextBlock Text="Door Types" />
+                <ComboBox SelectedItem="{Binding SelectedEntity.OpeningType}"
+                          ItemsSource="{Binding Source={StaticResource OpeningTypes}}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding DoorVisibility}">
+                <TextBlock Text="Door Width" />
+                <ComboBox SelectedItem="{Binding SelectedEntity.DoorWidth}"
+                          ItemsSource="{Binding DoorWidthList}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding DoorVisibility}">
+                <TextBlock Text="Door Height" />
+                <ComboBox SelectedItem="{Binding SelectedEntity.DoorHeight}"
+                          ItemsSource="{Binding ExtDoorListHeights}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding DoorVisibility}">
+                <TextBlock Text="Door Support Span" />
+                <ComboBox SelectedItem="{Binding SelectedEntity.DoorSupportSpan}"
+                          ItemsSource="{Binding DoorSupportSpanList}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding FBeamVisibility}">
+                <TextBlock Text="Beam Under" />
+                <CheckBox IsChecked="{Binding SelectedEntity.BeamUnder}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding WallVisibility}">
+                <TextBlock Text="Wall Thickness"/>
+                <ComboBox ItemsSource="{Binding WallThicknessList}"
+                          SelectedItem="{Binding SelectedEntity.WallThickness}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding WallVisibility}">
+                <TextBlock Text="Load Bearing Wall" />
+                <CheckBox IsChecked="{Binding SelectedEntity.IsLoadBearingWall}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding WallVisibility}">
+                <TextBlock Text="Show Dimension" />
+                <CheckBox IsChecked="{Binding SelectedEntity.IsShowDimension}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding FramingVisibility}">
+                <TextBlock Text="Pitch" />
+                <TextBox Text="{Binding SelectedEntity.Pitch}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding FramingVisibility}">
+                <TextBlock Text="Extra Length" />
+                <TextBox Text="{Binding SelectedEntity.ExtraLength}" Width="150"/>
+                <TextBox Text="{Binding SelectedEntity.FullLength}" IsEnabled="{Binding IsBlockingVm}" Margin="15 0 0 0"
+                         materialDesign:HintAssist.Hint="FullLength" Width="150"/>
+                <TextBox Text="{Binding SelectedEntity.QuoteLength,Mode=OneWay}"
+                         Margin="15 0 0 0" 
+                         materialDesign:HintAssist.Hint="Quote Length" 
+                         IsEnabled="False" 
+                         Foreground="GreenYellow" />
+            </DockPanel>
+            <DockPanel Visibility="{Binding HangerOutTriggerVisibility}">
+                <TextBlock Text="HangerA" />
+                <CheckBox IsChecked="{Binding SelectedEntity.IsHangerA}"/>
+                <ComboBox SelectedItem="{Binding SelectedEntity.HangerAMat}"
+                          ItemsSource="{Binding HangerList}"
+                          DisplayMemberPath="Name"
+                          IsEnabled="{Binding SelectedEntity.IsHangerA}"
+                          Margin="15 0 0 0"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding HangerOutTriggerVisibility}">
+                <TextBlock Text="HangerB" />
+                <CheckBox IsChecked="{Binding SelectedEntity.IsHangerB}"/>
+                <ComboBox SelectedItem="{Binding SelectedEntity.HangerBMat}"
+                          ItemsSource="{Binding HangerList}"
+                          DisplayMemberPath="Name"
+                          IsEnabled="{Binding SelectedEntity.IsHangerB}"
+                          Margin="15 0 0 0"/>
+            </DockPanel>
+            <DockPanel  Visibility="{Binding HangerOutTriggerVisibility}">
+                <TextBlock Text="Outrigger A" />
+                <CheckBox IsChecked="{Binding SelectedEntity.IsOutriggerA}"/>
+                <ComboBox SelectedItem="{Binding SelectedEntity.OutTriggerAGrade}"
+                          ItemsSource="{Binding BeamGradeList}"
+                          IsEnabled="{Binding SelectedEntity.IsOutriggerA}"
+                          Margin="15 0 0 0" Width="100"/>
+                <ComboBox SelectedItem="{Binding SelectedEntity.OutTriggerAMat}"
+                          ItemsSource="{Binding OutTriggerATimberList}"
+                          DisplayMemberPath="SizeTreatment"
+                          IsEnabled="{Binding SelectedEntity.IsOutriggerA}"
+                          Width="150"
+                          Margin="15 0 0 0"/>
+                <CheckBox Content="Flipped"
+                          Margin="15 0 0 0"
+                          IsChecked="{Binding SelectedEntity.OutTriggerAFlipped}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding HangerOutTriggerVisibility}">
+                <TextBlock Text="OutTrigger B" />
+                <CheckBox IsChecked="{Binding SelectedEntity.IsOutriggerB}"/>
+                <ComboBox SelectedItem="{Binding SelectedEntity.OutTriggerBGrade}"
+                          ItemsSource="{Binding BeamGradeList}"
+                          IsEnabled="{Binding SelectedEntity.IsOutriggerB}"
+                          Margin="15 0 0 0"
+                          Width="100"/>
+                <ComboBox SelectedItem="{Binding SelectedEntity.OutTriggerBMat}"
+                          ItemsSource="{Binding OutTriggerBTimberList}"
+                          DisplayMemberPath="SizeTreatment"
+                          IsEnabled="{Binding SelectedEntity.IsOutriggerB}"
+                          Margin="15 0 0 0"
+                          Width="150"/>
+                <CheckBox IsChecked="{Binding SelectedEntity.OutTriggerBFlipped}" 
+                          Margin="15 0 0 0"
+                          Content="Flipped"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding HangerVisibility}">
+                <TextBlock Text="Hanger Material" />
+                <ComboBox SelectedItem="{Binding SelectedEntity.Material}"
+                          ItemsSource="{Binding HangerList}"
+                          DisplayMemberPath="Name"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding OutTriggerVisibility}">
+                <TextBlock Text="OutTrigger OutSize" />
+                <TextBox Text="{Binding SelectedEntity.OutTriggerOutSize}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding OutTriggerVisibility}">
+                <TextBlock Text="OutTrigger InSize"/>
+                <TextBox Text="{Binding SelectedEntity.OutTriggerInSize}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding BlockingVisibility}">
+                <TextBlock Text="Blocking Types" />
+                <ComboBox SelectedItem="{Binding SelectedEntity.BlockingType}"
+                          ItemsSource="{Binding Source={StaticResource BlockingTypes}}"/>
+            </DockPanel>
+        </StackPanel>
     </Grid>
 
 </UserControl>

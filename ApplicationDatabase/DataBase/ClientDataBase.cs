@@ -276,7 +276,7 @@ namespace AppDataBase.DataBase
                                     new WallTypePoco() { Id = 6, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_IntRaking", WallLocationType = WallLocationTypes.Internal },
                                     new WallTypePoco() { Id = 7, IsLoadBearingWall = false, IsRaked = false, AliasName = "NLB_PartiWall", WallLocationType = WallLocationTypes.Internal },
                                     new WallTypePoco() { Id = 8, IsLoadBearingWall = false, IsRaked = true, AliasName = "NLB_Raked_PartiWall", WallLocationType = WallLocationTypes.Internal }
-                                    //new WallTypePoco() { Id = 8, IsBeamUnder = false, IsRaked = true, AliasName = "NLB_Raked_PartiWall", WallLocationType = WallLocationTypes.Internal }
+                                    //new WallTypePoco() { Index = 8, IsBeamUnder = false, IsRaked = true, AliasName = "NLB_Raked_PartiWall", WallLocationType = WallLocationTypes.Internal }
             }
             };
 

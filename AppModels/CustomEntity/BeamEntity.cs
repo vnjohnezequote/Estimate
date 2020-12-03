@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
@@ -15,16 +15,16 @@ using Attribute = devDept.Eyeshot.Entities.Attribute;
 namespace AppModels.CustomEntity
 {
     [Serializable]
-    public class BeamEntity: BlockReference
+    public class BeamEntity : BlockReference, IFraming2D,IEntityVmCreateAble
     {
-        private Beam _beamReference;
+
+        private IFraming _framingReference;
         private bool _showBeamNameOnly;
         private bool _continuesBeam;
         private Color _beamMarkedColor;
         private Color _beamLineColor;
         private string _beamLineType;
         private string _clientName;
-        private string _levelName;
         private bool _supportWallOver;
         private string _customAtrributeString;
         private string _beamName;
@@ -37,8 +37,8 @@ namespace AppModels.CustomEntity
         public Attribute TreatmentAttribute { get; set; }
         public Attribute SupportWallAttribute { get; set; }
         public Attribute CustomAttribute { get; set; }
-        public int BeamReferenceId { get; set; }
-        //public MultilineText BeamName { get; set; }
+        //public Guid BeamReferenceId { get; set; }
+        //public MultilineText Name { get; set; }
         public Point3D BaseAttributePoint { get; set; }
         public Leader BeamLeader { get; set; }
         public Block BeamBlock
@@ -59,18 +59,26 @@ namespace AppModels.CustomEntity
         {
             get
             {
-                if (BeamReference!= null)
+                if (FramingReference != null)
                 {
-                    return BeamReference.Location;
+                    if (FramingReference is Beam beamRef)
+                    {
+                        return beamRef.Location;
+                    }
+
                 }
 
                 return string.Empty;
             }
             set
             {
-                if (BeamReference!=null)
+                if (FramingReference != null)
                 {
-                    BeamReference.Location = value;
+                    if (FramingReference is Beam beamRef)
+                    {
+                        beamRef.Location = value;
+                    }
+
                 }
             }
         }
@@ -82,72 +90,70 @@ namespace AppModels.CustomEntity
                 {
                     return _beamName;
                 }
-                if (BeamReference==null)
+                if (FramingReference == null)
                 {
                     return BeamNameAttribute.Value;
                 }
                 else
                 {
-                    return BeamReference.Name;
+                    return FramingReference.Name;
                 }
-                
-            } 
+
+            }
             set
             {
-                
-                if (BeamReference !=null)
+
+                if (FramingReference != null)
                 {
-                    if (BeamReference.Name != value)
+                    if (FramingReference.Name != value)
                     {
-                        BeamReference.Name = value;
+                        FramingReference.Name = value;
                         _beamName = value;
                     }
-                    
+
                 }
 
                 if (ShowBeamNameOnly)
                 {
                     if (string.IsNullOrEmpty(value))
                     {
-                        this.Attributes["Name"].Value = BeamReference.Name;
+                        this.Attributes["Name"].Value = FramingReference.Name;
                     }
                     else
                     {
                         this.Attributes["Name"].Value = value;
                     }
-                    
+
                 }
             }
 
         }
-        public Beam BeamReference
+        public IFraming FramingReference
         {
-            get => _beamReference;
+            get => _framingReference;
             set
             {
-                _beamReference = value;
-                if (_beamReference!=null)
+                _framingReference = value;
+                if (_framingReference != null)
                 {
-                    BeamNameString = _beamReference.Name;
-                    _beamReference.PropertyChanged += _beamReference_PropertyChanged;
+                    BeamNameString = _framingReference.Name;
+                    _framingReference.PropertyChanged += FramingReferencePropertyChanged;
                 }
-                
+
             }
         }
+
+        public Guid FramingReferenceId { get; set; }
+
         public string LevelName
         {
-            get => _levelName;
-            set
-            {
-                OldLevelName = LevelName;
-                _levelName = value;
-            }
+            get;
+            set;
         }
-        public string OldLevelName { get; private set; }
         private BeamMarkedLocation _beamMarkedLocation;
-        public BeamMarkedLocation  BeamMarkedLocation
+        public BeamMarkedLocation BeamMarkedLocation
         {
-            get=>_beamMarkedLocation;
+            get => _beamMarkedLocation;
             set
             {
                 _beamMarkedLocation = value;
@@ -156,7 +162,7 @@ namespace AppModels.CustomEntity
         }
         public bool ShowBeamNameOnly
         {
-            get=>_showBeamNameOnly;
+            get => _showBeamNameOnly;
             set
             {
                 _showBeamNameOnly = value;
@@ -167,18 +173,19 @@ namespace AppModels.CustomEntity
                     {
                         this.Attributes["Name"].Value = BeamNameString;
                     }
-                    
-                    //BeamName.TextString = BeamNameString;
+
+                    //Name.TextString = BeamNameString;
                 }
                 else
                 {
-                    if (BeamReference == null) return;
-                    if (BeamReference.TimberInfo != null)
+                    if (FramingReference == null) return;
+                    if (FramingReference.FramingInfo != null)
                     {
                         this.PreCalculatorAttributePoint();
                         if (this.Attributes.ContainsKey("Name"))
                         {
-                            this.Attributes["Name"].Value = BeamReference.TimberInfo.SizeGrade + " @ " + BeamReference.Quantity + "/" + BeamReference.QuoteLength;
+                            //Need to check to fix
+                            this.Attributes["Name"].Value = FramingReference.FramingInfo.SizeGrade + " @ " + FramingReference.Quantity + "/" + FramingReference.QuoteLength;
                         }
                     }
                 }
@@ -187,7 +194,7 @@ namespace AppModels.CustomEntity
 
         public bool ContinuesBeam
         {
-            get=>_continuesBeam;
+            get => _continuesBeam;
             set
             {
                 _continuesBeam = value;
@@ -197,7 +204,7 @@ namespace AppModels.CustomEntity
 
         public bool SupportWallOver
         {
-            get=>_supportWallOver;
+            get => _supportWallOver;
             set
             {
                 _supportWallOver = value;
@@ -207,7 +214,7 @@ namespace AppModels.CustomEntity
 
         public string CustomAtrributeString
         {
-            get=>_customAtrributeString;
+            get => _customAtrributeString;
             set
             {
                 _customAtrributeString = value;
@@ -215,38 +222,45 @@ namespace AppModels.CustomEntity
             }
         }
 
-        public BeamType BeamType
-        {
-            get
-            {
-                if (BeamReference!=null)
-                {
-                    return BeamReference.Type;
-                }
+        //public FramingTypes FramingType
+        //{
+        //    get
+        //    {
+        //        if (FramingReference != null)
+        //        {
+        //            return FramingReference.FramingType;
+        //        }
 
-                return BeamType.TrussBeam;
-            }
-            set
-            {
-                if (BeamReference!=null)
-                {
-                    BeamReference.Type = value;
-                    PreCalculatorAttributePoint();
-                }
-            }
-        }
+        //        return FramingTypes.TrussBeam;
+        //    }
+        //    set
+        //    {
+        //        if (FramingReference != null)
+        //        {
+        //            FramingReference.FramingType = value;
+        //            PreCalculatorAttributePoint();
+        //        }
+        //    }
+        //}
+        public Guid Id { get; set; }
+        //public Guid LevelId { get; set; }
+        //public Guid FramingSheetId { get; set; }
+        //public Guid FramingReferenceId { get; }
+        public double FullLength { get; set; }
+       
 
         public BeamEntity(BeamEntity another) : base(another)
         {
 
         }
 
-        public BeamEntity(BlockReference another): base(another)
+        public BeamEntity(BlockReference another) : base(another)
         {
 
         }
         public BeamEntity(Point3D insPoint, string blockName, Point3D beamStartPoint, Point3D beamEndPoint, string clientName, string levelName = "", double rotationAngleInRadians = 0, BeamMarkedLocation? beamMarkedLocation = null) : base(insPoint, blockName, rotationAngleInRadians)
         {
+            Id = Guid.NewGuid();
             ClientName = clientName;
             var beamMarkAlignmentType = Text.alignmentType.MiddleCenter;
             if (string.IsNullOrEmpty(levelName))
@@ -311,13 +325,13 @@ namespace AppModels.CustomEntity
             BeamBlock.Entities.Add(BeamLeader);
 
             //Line offsetLine2 = offsetLine.Offset(350*_beamMarkPositionFactor, Vector3D.AxisZ) as Line;
-            //BeamName = new MultilineText(Plane.XY, beamNamePoint,blockName,5500,500,100,beamMarkAlignmentType);
+            //Name = new MultilineText(Plane.XY, beamNamePoint,blockName,5500,500,100,beamMarkAlignmentType);
             BeamNameAttribute = new Attribute(beamNamePoint, "Name", blockName, 500);
             BeamNameAttribute.Alignment = beamMarkAlignmentType;
             BeamNameAttribute.ColorMethod = colorMethodType.byEntity;
             BeamNameAttribute.Color = _beamMarkedColor;
 
-            ContinuesAttribute = new Attribute(beamNamePoint,"Continues","Continues",500);
+            ContinuesAttribute = new Attribute(beamNamePoint, "Continues", "Continues", 500);
             ContinuesAttribute.Alignment = beamMarkAlignmentType;
             ContinuesAttribute.ColorMethod = colorMethodType.byEntity;
             ContinuesAttribute.Color = _beamMarkedColor;
@@ -351,10 +365,10 @@ namespace AppModels.CustomEntity
             BeamBlock.Entities.Add(CustomAttribute);
             BeamBlock.Entities.Add(LintelAttribute);
 
-            //BeamBlock.Entities.Add(BeamName);
+            //BeamBlock.Entities.Add(Name);
             //BeamNameAttribute.Alignment = Text.alignmentType.MiddleCenter;
         }
-        private Text.alignmentType CalculatorMarkedBeamPoint(out Point3D startPoint,out Point3D endPoint, out Point3D beamNamePoint)
+        private Text.alignmentType CalculatorMarkedBeamPoint(out Point3D startPoint, out Point3D endPoint, out Point3D beamNamePoint)
         {
             startPoint = null;
             endPoint = null;
@@ -374,26 +388,26 @@ namespace AppModels.CustomEntity
                     BaseAttributePoint = beamNamePoint;
                     return Text.alignmentType.MiddleCenter;
                 case BeamMarkedLocation.right:
-                    startPoint = new Point3D(BeamLine.MidPoint.X+50, BeamLine.MidPoint.Y );
-                    endPoint = new Point3D(BeamLine.MidPoint.X+1940, BeamLine.MidPoint.Y );
-                    beamNamePoint = new Point3D(BeamLine.MidPoint.X+2290, BeamLine.MidPoint.Y );
+                    startPoint = new Point3D(BeamLine.MidPoint.X + 50, BeamLine.MidPoint.Y);
+                    endPoint = new Point3D(BeamLine.MidPoint.X + 1940, BeamLine.MidPoint.Y);
+                    beamNamePoint = new Point3D(BeamLine.MidPoint.X + 2290, BeamLine.MidPoint.Y);
                     BaseAttributePoint = beamNamePoint;
                     return Text.alignmentType.MiddleLeft;
                 case BeamMarkedLocation.left:
                     startPoint = new Point3D(BeamLine.MidPoint.X - 50, BeamLine.MidPoint.Y);
                     endPoint = new Point3D(BeamLine.MidPoint.X - 1940, BeamLine.MidPoint.Y);
-                    beamNamePoint = new Point3D(BeamLine.MidPoint.X-2290, BeamLine.MidPoint.Y);
+                    beamNamePoint = new Point3D(BeamLine.MidPoint.X - 2290, BeamLine.MidPoint.Y);
                     BaseAttributePoint = beamNamePoint;
                     return Text.alignmentType.MiddleRight;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
         }
         private void PreCalculatorAttributePoint()
         {
             var continuesMovement = 0;
-            var supportWallMovement =0;
+            var supportWallMovement = 0;
             var treatmentMovement = 0;
             var customMovement = 0;
             var lintelMovement = 0;
@@ -410,7 +424,7 @@ namespace AppModels.CustomEntity
                 {
                     this.Attributes["Continues"].Value = "Continues";
                 }
-                
+
             }
             else
             {
@@ -418,7 +432,7 @@ namespace AppModels.CustomEntity
                 {
                     this.Attributes["Continues"].Value = string.Empty;
                 }
-                
+
             }
 
             if (SupportWallOver)
@@ -428,7 +442,7 @@ namespace AppModels.CustomEntity
                 {
                     this.Attributes["Support"].Value = "Support Wall2D Over";
                 }
-                
+
             }
             else
             {
@@ -437,18 +451,18 @@ namespace AppModels.CustomEntity
                     this.Attributes["Support"].Value = string.Empty;
                 }
 
-                
+
             }
 
-            if (BeamReference != null && BeamReference.TimberInfo != null &&
-                BeamReference.TimberInfo.Treatment.Contains("H3"))
+            if (FramingReference != null && FramingReference.FramingInfo != null &&
+                FramingReference.FramingInfo.Treatment.Contains("H3"))
             {
                 treatmentMovement = 800;
                 if (this.Attributes.ContainsKey("Treatment"))
                 {
                     this.Attributes["Treatment"].Value = "H3 Treated";
                 }
-                
+
             }
             else
             {
@@ -456,7 +470,7 @@ namespace AppModels.CustomEntity
                 {
                     this.Attributes["Treatment"].Value = string.Empty;
                 }
-                
+
             }
             if (!string.IsNullOrEmpty(CustomAtrributeString))
             {
@@ -465,7 +479,7 @@ namespace AppModels.CustomEntity
                 {
                     this.Attributes["Custom"].Value = CustomAtrributeString;
                 }
-                
+
             }
             else
             {
@@ -473,10 +487,10 @@ namespace AppModels.CustomEntity
                 {
                     this.Attributes["Custom"].Value = string.Empty;
                 }
-                
+
             }
 
-            if (BeamReference!=null && BeamReference.Type==BeamType.Lintel && !ShowBeamNameOnly)
+            if (FramingReference != null && FramingReference.FramingType == FramingTypes.LintelBeam && !ShowBeamNameOnly)
             {
                 lintelMovement = 800;
                 if (this.Attributes.ContainsKey("Lintel"))
@@ -494,7 +508,7 @@ namespace AppModels.CustomEntity
 
             if (BeamMarkedLocation == BeamMarkedLocation.top)
             {
-                wallMoveDisctance = supportWallMovement + treatmentMovement + continuesMovement + customMovement+lintelMovement;
+                wallMoveDisctance = supportWallMovement + treatmentMovement + continuesMovement + customMovement + lintelMovement;
                 lintelMoveDistance = supportWallMovement + treatmentMovement + continuesMovement + customMovement;
                 supportMoveDisctance = treatmentMovement + continuesMovement + customMovement;
                 treatMentMoveDistance = continuesMovement + customMovement;
@@ -533,10 +547,10 @@ namespace AppModels.CustomEntity
             {
 
                 wallMoveDisctance = -lintelMovement;
-                lintelMoveDistance =- (supportWallMovement + lintelMovement);
+                lintelMoveDistance = -(supportWallMovement + lintelMovement);
                 supportMoveDisctance = -(treatmentMovement + supportWallMovement + lintelMovement);
                 treatMentMoveDistance = -(continuesMovement + treatmentMovement + supportWallMovement + lintelMovement);
-                continuesMoveDisctance = -(customMovement+continuesMovement+treatmentMovement+supportWallMovement+lintelMovement); ;
+                continuesMoveDisctance = -(customMovement + continuesMovement + treatmentMovement + supportWallMovement + lintelMovement); ;
                 if (this.Attributes.ContainsKey("Custom"))
                 {
                     this.Attributes["Custom"].InsertionPoint = new Point3D(BaseAttributePoint.X, BaseAttributePoint.Y + continuesMoveDisctance);
@@ -568,22 +582,22 @@ namespace AppModels.CustomEntity
                 }
             }
         }
-        private void _beamReference_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void FramingReferencePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(BeamReference.TimberInfo) || e.PropertyName == nameof(BeamReference.Quantity) || e.PropertyName == nameof(BeamReference.QuoteLength))
+            if (e.PropertyName == nameof(FramingReference.FramingInfo) || e.PropertyName == nameof(FramingReference.Quantity) || e.PropertyName == nameof(FramingReference.QuoteLength))
             {
-                if (BeamReference.TimberInfo != null && !ShowBeamNameOnly)
+                if (FramingReference.FramingInfo != null && !ShowBeamNameOnly)
                 {
                     if (this.Attributes.ContainsKey("Name"))
                     {
-                        this.Attributes["Name"].Value = BeamReference.TimberInfo.SizeGrade + " @ " + BeamReference.Quantity + "/" + BeamReference.QuoteLength;
+                        this.Attributes["Name"].Value = FramingReference.FramingInfo.SizeGrade + " @ " + FramingReference.Quantity + "/" + FramingReference.QuoteLength;
                     }
 
                     this.PreCalculatorAttributePoint();
                 }
             }
 
-            if ((e.PropertyName == nameof(BeamReference.Name) || e.PropertyName == nameof(BeamReference.Type)) && ShowBeamNameOnly)
+            if ((e.PropertyName == nameof(FramingReference.Name) || e.PropertyName == nameof(FramingReference.FramingType)) && (ShowBeamNameOnly|| FramingReference.FramingInfo==null))
             {
                 if (this.Attributes.ContainsKey("Name"))
                 {
@@ -591,6 +605,13 @@ namespace AppModels.CustomEntity
                 }
 
             }
+
+            if (e.PropertyName == nameof(FramingReference.FramingType))
+            {
+                this.PreCalculatorAttributePoint();
+            }
+
+           
         }
         private void RecalculatorBeamMarkedLocation()
         {
@@ -605,8 +626,8 @@ namespace AppModels.CustomEntity
             BeamLeader.LineWeightMethod = colorMethodType.byEntity;
             BeamLeader.LayerName = "Beam";
             BeamBlock.Entities.Add(BeamLeader);
-            //this.BeamName.InsertionPoint = beamNamePoint;
-            //this.BeamName.Alignment = textAlignment;
+            //this.Name.InsertionPoint = beamNamePoint;
+            //this.Name.Alignment = textAlignment;
             PreCalculatorAttributePoint();
             //this.Attributes["Name"].InsertionPoint = beamNamePoint;
             foreach (var attribute in Attributes)
@@ -614,9 +635,9 @@ namespace AppModels.CustomEntity
                 attribute.Value.Alignment = textAlignment;
             }
         }
-        public IEntityVm CreateEntityVm()
+        public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {
-            return new BeamEntityVm(this);
+            return new BeamEntityVm(this, entitiesManager);
         }
         public void ChangeColorBeam()
         {
@@ -641,13 +662,13 @@ namespace AppModels.CustomEntity
 
             }
 
-            if (BeamLine !=null)
+            if (BeamLine != null)
             {
                 BeamLine.Color = _beamLineColor;
                 BeamLine.LineTypeName = _beamLineType;
             }
 
-            if (BeamLeader!=null)
+            if (BeamLeader != null)
             {
                 BeamLeader.Color = _beamMarkedColor;
             }
@@ -664,12 +685,12 @@ namespace AppModels.CustomEntity
 
         public override object Clone()
         {
-            //return new BeamEntity(this);
-            return base.Clone();
+            return new BeamEntity(this);
+            //return base.Clone();
         }
-        protected override void Draw(DrawParams data)
-        {
-            base.Draw(data);
-        }
+       //public void SetFramingType(FramingTypes framingType)
+       // {
+       //     FramingType = framingType;
+       // }
     }
 }

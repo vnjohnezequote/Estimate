@@ -23,10 +23,10 @@ namespace AppModels.PocoDataModel
         public GlobalWallInfoPoco GlobalWallInfo { get; set; }
         [ProtoMember(3)]
         public List<LevelWallPoco> Levels { get; set; }
-
+        [ProtoMember(4)]
         public List<EngineerMemberInfoPoco> EngineerMemberList { get; set; }
+        [ProtoMember(5)]
         public List<OpeningInfoPoco> DoorSchedules { get; set; }
-
 
         public JobModelPoco()
         {
@@ -39,7 +39,6 @@ namespace AppModels.PocoDataModel
             InitializerEngineerList(jobModel.EngineerMemberList.ToList());
             InitializerDoorSchedules(jobModel.DoorSchedules.ToList());
             InitializerLevel(jobModel.Levels.ToList());
-            
         }
 
         private void InitializerLevel(List<LevelWall> levels)

@@ -41,14 +41,19 @@ namespace DrawingModule.ViewModels
         private ObservableCollection<WallBase> _wallList;
         private List<int> _doorWidthList;
         public ObservableCollection<EngineerMemberInfo> EngineerList { get; }
-        public List<int> WallThicknessList { get; set; } = new List<int>() {70, 90, 140, 200,230};
-        public List<int> DoorWidthList { get=>_doorWidthList; set=>SetProperty(ref _doorWidthList,value); }  
+        public List<int> WallThicknessList { get; set; } = new List<int>() { 70, 90, 140, 200, 230 };
+        public List<int> DoorWidthList { get => _doorWidthList; set => SetProperty(ref _doorWidthList, value); }
         public List<int> ExtDoorListHeights { get; set; } = new List<int> { 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000 };
-        public List<int> DoorSupportSpanList { get; set; } = new List<int>(){  3000, 6000, 9000, 12000, 15000 };
+        public List<int> DoorSupportSpanList { get; set; } = new List<int>() { 3000, 6000, 9000, 12000, 15000 };
         public List<TimberBase> OutTriggerATimberList { get => _outTriggerATimberList; set => SetProperty(ref _outTriggerATimberList, value); }
         public List<TimberBase> OutTriggerBTimberList { get => _outTriggerBTimberList; set => SetProperty(ref _outTriggerBTimberList, value); }
+        public List<string> ScaleList { get; } = new List<string>() { "1:50", "1:75", "1:100", "1:125", "1:150", "1:175", "1:200", "1:225", "1:250", "1:275", "1:300", "1:325", "1:350" };
         public Visibility WallVisibility => SelectedEntity is Wall2DVm ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility HangerVisibility => SelectedEntity is Hanger2DVm ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility OutTriggerVisibility => SelectedEntity is OutTrigger2dVm ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility FramingVisibility =>
+            SelectedEntity is IFramingVmBase ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility FBeamVisibility => SelectedEntity is Beam2DVm ? Visibility.Visible : Visibility.Collapsed;
         public IEntitiesManager EntitiesManager
         {
             get => _entitiesManger;
@@ -67,18 +72,31 @@ namespace DrawingModule.ViewModels
                 }
             }
         }
-        public Visibility LayerVisibility => _selectedEntity==null ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility LayerVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility ColorVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility ColorMethodVisibility => _selectedEntity == null ? Visibility.Collapsed : Visibility.Visible;
         public Visibility LeaderVisibility => SelectedEntity is LeaderVM ? Visibility.Visible : Visibility.Collapsed;
         public Visibility DoorVisibility =>
             SelectedEntity is DoorCountEntityVm ? Visibility.Visible : Visibility.Collapsed;
-        public List<string> ScaleList { get; } = new List<string>(){"1:50","1:75","1:100","1:125","1:150","1:175","1:200","1:225","1:250","1:275","1:300","1:325","1:350"};
         public Visibility BeamVisibility
         {
             get
             {
-                if (SelectedEntity is BeamEntityVm || SelectedEntity is Beam2DVm || SelectedEntity is Joist2dVm || SelectedEntity is OutTrigger2dVm)
+                if (SelectedEntity is BeamEntityVm)
+                {
+                    return Visibility.Visible;
+                }
+                else
+                {
+                    return Visibility.Collapsed;
+                }
+            }
+        }
+        public Visibility HangerVisibility
+        {
+            get
+            {
+                if (SelectedEntity is Hanger2DVm)
                 {
                     return Visibility.Visible;
                 }
@@ -120,6 +138,54 @@ namespace DrawingModule.ViewModels
                 }
             }
         }
+        public Visibility BlockingVisibility
+        {
+            get
+            {
+                if (SelectedEntity is BlockingVm)
+                {
+                    return Visibility.Visible;
+                }
+
+                return Visibility.Collapsed;
+            }
+        }
+        public Visibility HangerOutTriggerVisibility
+        {
+            get
+            {
+                if (SelectedEntity is EntityContainhangerAndOutTriggerVm)
+                    return Visibility.Visible;
+                return Visibility.Collapsed;
+            }
+        }
+
+        public Visibility FramingBaseVisibility
+        {
+            get
+            {
+                if (SelectedEntity is IFramingVmBase || SelectedEntity is Hanger2DVm)
+                {
+                    return Visibility.Visible;
+                }
+
+                return Visibility.Collapsed;
+            }
+        }
+
+        public bool IsBlockingVm
+        {
+            get
+            {
+                if (SelectedEntity is BlockingVm)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public IEntityVm SelectedEntity
         {
             get => _selectedEntity;
@@ -138,7 +204,14 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(BeamGradeList));
                 RaisePropertyChanged(nameof(DoorVisibility));
                 RaisePropertyChanged(nameof(WallVisibility));
+                RaisePropertyChanged(nameof(OutTriggerVisibility));
+                RaisePropertyChanged(nameof(FramingVisibility));
+                RaisePropertyChanged(nameof(BlockingVisibility));
                 RaisePropertyChanged(nameof(HangerVisibility));
+                RaisePropertyChanged(nameof(FBeamVisibility));
+                RaisePropertyChanged(nameof(HangerOutTriggerVisibility));
+                RaisePropertyChanged(nameof(FramingBaseVisibility));
+                RaisePropertyChanged(nameof(IsBlockingVm));
             }
         }
         public ObservableCollection<LevelWall> Levels { get; private set; }
@@ -154,12 +227,12 @@ namespace DrawingModule.ViewModels
                         return new List<string>(this.JobModel.Info.Client.Beams.Keys);
                     else return null;
                 }
-                else if(SelectedEntity is Beam2DVm || SelectedEntity is Joist2dVm|| SelectedEntity is OutTrigger2dVm)
+                else if (SelectedEntity is IFramingVmBase)
                 {
-                    if (this.JobModel.Info.Client!=null && this.JobModel.Info.Client.TimberMaterialList!=null)
+                    if (this.JobModel.Info.Client != null && this.JobModel.Info.Client.TimberMaterialList != null)
                     {
                         var materialGradeList = new List<string>();
-                        foreach ( var timberBase in JobModel.Info.Client.TimberMaterialList)
+                        foreach (var timberBase in JobModel.Info.Client.TimberMaterialList)
                         {
                             if (!materialGradeList.Contains(timberBase.TimberGrade))
                             {
@@ -177,27 +250,27 @@ namespace DrawingModule.ViewModels
         }
         public ObservableCollection<WallBase> WallList
         {
-            get=>_wallList;
-            set=>SetProperty(ref _wallList,value);
+            get => _wallList;
+            set => SetProperty(ref _wallList, value);
         }
-        public List<TimberBase> TimberList { get=>_timberList; set=>SetProperty(ref _timberList,value); } 
+        public List<TimberBase> TimberList { get => _timberList; set => SetProperty(ref _timberList, value); }
         public List<HangerMat> HangerList
         {
             get => _hangerList;
             set => SetProperty(ref _hangerList, value);
         }
-        public SelectedEntityPropertiesViewModel(): base()
+        public SelectedEntityPropertiesViewModel() : base()
         {
 
         }
-        public SelectedEntityPropertiesViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IEntitiesManager entitiesManager,IJob jobModel)
-            : base(unityContainer, regionManager, eventAggregator, layerManager,jobModel)
+        public SelectedEntityPropertiesViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator, ILayerManager layerManager, IEntitiesManager entitiesManager, IJob jobModel)
+            : base(unityContainer, regionManager, eventAggregator, layerManager, jobModel)
         {
-            EngineerList = new ObservableCollection<EngineerMemberInfo>(); 
+            EngineerList = new ObservableCollection<EngineerMemberInfo>();
             _entitiesManger = entitiesManager;
             this.RaisePropertyChanged(nameof(EntitiesManager));
             EntitiesManager.PropertyChanged += EntitiesManager_PropertyChanged;
-            if (jobModel!=null)
+            if (jobModel != null)
             {
                 this.Levels = jobModel.Levels;
             }
@@ -232,7 +305,7 @@ namespace DrawingModule.ViewModels
         {
             if (e.PropertyName == "WallLevelName")
             {
-                if (EntitiesManager!=null)
+                if (EntitiesManager != null)
                 {
                     if (EntitiesManager.SelectedEntity is IWall2D)
                     {
@@ -241,63 +314,50 @@ namespace DrawingModule.ViewModels
 
                     if (SelectedEntity is BeamEntityVm beam)
                     {
-                        if (JobModel!=null)
+                        var currentLevel = beam.FramingReference.Level;
+                        if (currentLevel!=null)
                         {
-                            LevelWall level = null;
-                            LevelWall newLevel = null;
+                            if (currentLevel.RoofBeams.Contains(beam.FramingReference))
+                            {
+                                var index = currentLevel.RoofBeams.IndexOf(beam.FramingReference);
+                                currentLevel.RoofBeams.Remove(beam.FramingReference);
+
+                                for (int i = index; i < currentLevel.RoofBeams.Count; i++)
+                                {
+                                    currentLevel.RoofBeams[i].Index = i+1;
+                                }
+                            }
+                        }
+                        LevelWall newLevel = null;
                             foreach (var levelWall in Levels)
                             {
-                                if (levelWall.LevelName == beam.OldLevelName)
-                                {
-                                    level = levelWall;
-                                }
-
                                 if (levelWall.LevelName == beam.WallLevelName)
                                 {
                                     newLevel = levelWall;
                                 }
                             }
-                            if (level != null)
+                            if (newLevel != null)
                             {
-                                if (level.RoofBeams.Contains(beam.BeamReference))
-                                {
-                                    level.RoofBeams.Remove(beam.BeamReference);
-                                }
-
-                                var i = 1;
-                                foreach (var levelRoofBeam in level.RoofBeams)
-                                {
-                                    levelRoofBeam.Id = i;
-                                    i++;
-                                }
-                            }
-
-                            if (newLevel!=null)
-                            {
-                                beam.BeamReference.InitGlobalInfor(newLevel.LevelInfo);
-                                beam.BeamReference.Id = newLevel.RoofBeams.Count + 1;
-                                beam.BeamName = beam.BeamReference.Name;
-                                //beam.BlockName = beam.BeamReference.Name+beam.WallLevelName;
+                                ((Beam)beam.FramingReference).InitGlobalInfor(newLevel.LevelInfo);
+                                beam.FramingReference.Level = newLevel;
+                                beam.FramingReference.Index = newLevel.RoofBeams.Count + 1;
+                                beam.Name = beam.FramingReference.Name;
                                 beam.EngineerMember = null;
-                                newLevel.RoofBeams.Add(beam.BeamReference);
+                                newLevel.RoofBeams.Add(beam.FramingReference);
                             }
-                        }
+                        
                     }
                 }
             }
 
-            if (e.PropertyName=="BeamGrade"|| e.PropertyName == "OutTriggerBGrade" || e.PropertyName == "OutTriggerAGrade")
+            if (e.PropertyName == "BeamGrade" || e.PropertyName == "OutTriggerBGrade" || e.PropertyName == "OutTriggerAGrade")
             {
-             GeneralTimberList();   
+                GeneralTimberList();
             }
-
-            
-
             if (e.PropertyName == "WallBelongTo")
             {
                 GeneralDoorWidthList();
             }
-
             if (e.PropertyName == "IsLoadBearingWall")
             {
                 if (SelectedEntity is Wall2DVm wallvm)
@@ -312,8 +372,7 @@ namespace DrawingModule.ViewModels
                     }
                 }
             }
-
-            if (e.PropertyName== "IsShowDimension")
+            if (e.PropertyName == "IsShowDimension")
             {
                 if (SelectedEntity is Wall2DVm wallvm)
                 {
@@ -327,136 +386,160 @@ namespace DrawingModule.ViewModels
                     }
                 }
             }
-
-            if (e.PropertyName=="IsHangerA")
+            if (e.PropertyName == "IsHangerA")
             {
-                if (SelectedEntity is Joist2dVm joist2d)
+                if (SelectedEntity is IFraming2DContainHangerAndOutTriggerVm framingVm)
                 {
-                    foreach (var selectedEntity in EntitiesManager.SelectedEntities)
-                    {
-                        if (selectedEntity is Joist2D joist)
+                    if (EntitiesManager != null)
+                        foreach (var selectedEntity in EntitiesManager.SelectedEntities)
                         {
-                            var joistVM = (Joist2dVm)joist.CreateEntityVm(EntitiesManager);
-                            joistVM.IsHangerA = joist2d.IsHangerA;
+                            if (selectedEntity == EntitiesManager.SelectedEntities[0])
+                            {
+                                continue;
+                            }
+                            if (selectedEntity is I2DContaintOutTrigger &&
+                                selectedEntity is IEntityVmCreateAble entityVmCreateAble)
+                            {
+                                var entityVm = entityVmCreateAble.CreateEntityVm(EntitiesManager);
+                                if (entityVm is EntityContainhangerAndOutTriggerVm framing)
+                                {
+                                    framingVm.IsHangerA = framingVm.IsHangerA;
+                                }
+                            }
                         }
-                    }
                 }
             }
             if (e.PropertyName == "IsHangerB")
             {
-                if (SelectedEntity is Joist2dVm joist2d)
+                if (SelectedEntity is IFraming2DContainHangerAndOutTriggerVm framingVm)
                 {
-                    foreach (var selectedEntity in EntitiesManager.SelectedEntities)
-                    {
-                        if (selectedEntity is Joist2D joist)
+                    if (EntitiesManager != null)
+                        foreach (var selectedEntity in EntitiesManager.SelectedEntities)
                         {
-                            var joistVM = (Joist2dVm)joist.CreateEntityVm(EntitiesManager);
-                            joistVM.IsHangerB = joist2d.IsHangerB;
+                            if (selectedEntity == EntitiesManager.SelectedEntities[0])
+                            {
+                                continue;
+                            }
+                            if (selectedEntity is I2DContaintOutTrigger &&
+                                selectedEntity is IEntityVmCreateAble entityVmCreateAble)
+                            {
+                                var entityVm = entityVmCreateAble.CreateEntityVm(EntitiesManager);
+                                if (entityVm is EntityContainhangerAndOutTriggerVm framing)
+                                {
+                                    framingVm.IsHangerB = framingVm.IsHangerB;
+                                }
+                            }
                         }
-                    }
                 }
             }
-
             if (e.PropertyName == "IsOutriggerA")
             {
-                if (SelectedEntity is Joist2dVm joist2d)
+                if (SelectedEntity is IFraming2DContainHangerAndOutTriggerVm framingVm)
                 {
                     foreach (var selectedEntity in EntitiesManager.SelectedEntities)
                     {
-                        if (selectedEntity is Joist2D joist)
+                        if (selectedEntity == EntitiesManager.SelectedEntities[0])
                         {
-                            var joistVM = (Joist2dVm)joist.CreateEntityVm(EntitiesManager);
-                            joistVM.IsOutriggerA = joist2d.IsOutriggerA;
+                            continue;
+                        }
+                        if (selectedEntity is I2DContaintOutTrigger && selectedEntity is IEntityVmCreateAble entityVmCreateAble)
+                        {
+                            var entityVm = entityVmCreateAble.CreateEntityVm(EntitiesManager);
+                            if (entityVm is EntityContainhangerAndOutTriggerVm framing)
+                            {
+                                framingVm.IsOutriggerA = framingVm.IsOutriggerA;
+                            }
                         }
                     }
                 }
             }
-
             if (e.PropertyName == "IsOutriggerB")
             {
-                if (SelectedEntity is Joist2dVm joist2d)
+                if (SelectedEntity is IFraming2DContainHangerAndOutTriggerVm framingVm)
                 {
-                    foreach (var selectedEntity in EntitiesManager.SelectedEntities)
-                    {
-                        if (selectedEntity is Joist2D joist)
+                    if (EntitiesManager != null)
+                        foreach (var selectedEntity in EntitiesManager.SelectedEntities)
                         {
-                            var joistVM = (Joist2dVm)joist.CreateEntityVm(EntitiesManager);
-                            joistVM.IsOutriggerB = joist2d.IsOutriggerB;
+                            if (selectedEntity == EntitiesManager.SelectedEntities[0])
+                            {
+                                continue;
+                            }
+                            if (selectedEntity is I2DContaintOutTrigger && selectedEntity is IEntityVmCreateAble entityVmCreateAble)
+                            {
+                                var entityVm = entityVmCreateAble.CreateEntityVm(EntitiesManager);
+                                if (entityVm is EntityContainhangerAndOutTriggerVm framing)
+                                {
+                                    framingVm.IsOutriggerB = framingVm.IsOutriggerB;
+                                }
+                            }
+                            //if (selectedEntity is Joist2D joist)
+                            //{
+                            //    var joistVM = (Joist2dVm) joist.CreateEntityVm(EntitiesManager);
+                            //    joistVM.IsOutriggerB = joist2d.IsOutriggerB;
+                            //}
                         }
-                    }
                 }
             }
-
-            if (e.PropertyName=="Material")
+            if (e.PropertyName == "Material")
             {
                 if (SelectedEntity is Hanger2DVm hanger2D)
                 {
-                    foreach (var selectedEntity in EntitiesManager.SelectedEntities)
-                    {
-                        if (selectedEntity is Hanger2D hanger)
+                    if (EntitiesManager != null)
+                        foreach (var selectedEntity in EntitiesManager.SelectedEntities)
                         {
-                            hanger.HangerReference.HangerMaterial = hanger2D.Material;
-                        }
-                    }
-                }
-            }
-
-            if (e.PropertyName =="BeamGrade")
-            {
-                if (SelectedEntity is ITimberVm timberVm)
-                {
-                    foreach (var selectedEntity in EntitiesManager.SelectedEntities)
-                    {
-                        switch (selectedEntity)
-                        {
-                            case Joist2D joist:
+                            if (selectedEntity is Hanger2D hanger)
                             {
-                                var joistVM = (Joist2dVm)joist.CreateEntityVm(EntitiesManager);
-                                joistVM.BeamGrade = timberVm.BeamGrade;
-                                break;
+                                ((Hanger) hanger.FramingReference).HangerMaterial = hanger2D.Material;
                             }
-                            case Beam2D beam:
-                                var beamVm = (Beam2DVm)beam.CreateEntityVm(EntitiesManager);
-                                beamVm.BeamGrade = timberVm.BeamGrade;
-                                break;
-                            case OutTrigger2D outTrigger:
-                                var outTriggerVm = (OutTrigger2dVm)outTrigger.CreateEntityVm(EntitiesManager);
-                                outTriggerVm.BeamGrade = timberVm.BeamGrade;
-                                break;
-                            case BeamEntity BeamEntity:
-                                var beamEntiyVm = (BeamEntityVm)BeamEntity.CreateEntityVm();
-                                beamEntiyVm.BeamGrade = timberVm.BeamGrade;
-                                break;
-
                         }
-                    }
                 }
             }
-            if (e.PropertyName == "TimberInfo")
+            if (e.PropertyName == "BeamGrade")
             {
-                if (SelectedEntity is ITimberVm timberVm)
+                if (SelectedEntity is IFramingVm timberVm)
+                {
+                    if (EntitiesManager != null)
+                        foreach (var selectedEntity in EntitiesManager.SelectedEntities)
+                        {
+                            if (selectedEntity is IFraming2D && selectedEntity is IEntityVmCreateAble entityCreateAble)
+                            {
+                                var entityVm = entityCreateAble.CreateEntityVm(EntitiesManager);
+                                if (entityVm is IFramingVm framingVm)
+                                {
+                                    framingVm.BeamGrade = timberVm.BeamGrade;
+                                }
+                            }
+                        }
+                }
+            }
+            if (e.PropertyName == "FramingInfo")
+            {
+                if (SelectedEntity is IFramingVm timberVm)
                 {
                     foreach (var selectedEntity in EntitiesManager.SelectedEntities)
                     {
-                        switch (selectedEntity)
+                        if (selectedEntity is IFraming2D && selectedEntity is IEntityVmCreateAble entityCreateAble)
                         {
-                            case Joist2D joist:
-                                var joistVM = (Joist2dVm)joist.CreateEntityVm(EntitiesManager);
-                                joistVM.TimberInfo = timberVm.TimberInfo;
-                                break;
-                            case Beam2D beam:
-                                var beamVm = (Beam2DVm)beam.CreateEntityVm(EntitiesManager);
-                                beamVm.TimberInfo = timberVm.TimberInfo;
-                                break;
-                            case OutTrigger2D outTrigger:
-                                var outTriggerVm = (OutTrigger2dVm)outTrigger.CreateEntityVm(EntitiesManager);
-                                outTriggerVm.TimberInfo = timberVm.TimberInfo;
-                                break;
-                            case BeamEntity BeamEntity:
-                                var beamEntiyVm = (BeamEntityVm)BeamEntity.CreateEntityVm();
-                                beamEntiyVm.TimberInfo = timberVm.TimberInfo;
-                                break;
-
+                            var entityVm = entityCreateAble.CreateEntityVm(EntitiesManager);
+                            if (entityVm is IFramingVm framingVm)
+                            {
+                                framingVm.FramingInfo = timberVm.FramingInfo;
+                            }
+                        }
+                       
+                    }
+                }
+            }
+            if (e.PropertyName == "BlockingType")
+            {
+                if (SelectedEntity is BlockingVm blocking)
+                {
+                    foreach (var selectedEntity in EntitiesManager.SelectedEntities)
+                    {
+                        if (selectedEntity is Blocking2D blocking2D)
+                        {
+                            var blockingVm = blocking2D.CreateEntityVm(EntitiesManager) as BlockingVm;
+                            blockingVm.BlockingType = blocking.BlockingType;
                         }
                     }
                 }
@@ -466,85 +549,49 @@ namespace DrawingModule.ViewModels
 
         private void GeneralTimberList()
         {
+            if (SelectedEntity is IFramingVmBase framingVm && !(SelectedEntity is BeamEntityVm) )
+            {
+                if (JobModel.Info.Client != null)
+                {
+                    if (JobModel.Info.Client.TimberMaterialList != null)
+                    {
+                        if (!string.IsNullOrEmpty(framingVm.BeamGrade))
+                        {
+                            TimberList = GeneralTimberListForFraming(framingVm.BeamGrade, JobModel.Info.Client.TimberMaterialList);
+                        }
+                    }
+                }
+
+            }
             //TimberList.Clear();
-            if (SelectedEntity is BeamEntityVm beam)
+            else if (SelectedEntity is BeamEntityVm beam)
             {
                 if (JobModel.Info.Client != null && JobModel.Info.Client.Beams != null)
                 {
-                    if(string.IsNullOrEmpty(beam.BeamGrade))
+                    if (string.IsNullOrEmpty(beam.BeamGrade))
                         return;
                     if (JobModel.Info.Client.Beams.ContainsKey(beam.BeamGrade))
                     {
                         JobModel.Info.Client.Beams.TryGetValue(beam.BeamGrade, out var timberList);
-                        TimberList=timberList;
+                        TimberList = timberList;
                     }
                 }
             }
-            else if(SelectedEntity is Beam2DVm beam2D)
+            if (SelectedEntity is EntityContainhangerAndOutTriggerVm framing)
             {
-                if (JobModel.Info.Client!=null && JobModel.Info.Client.TimberMaterialList!=null)
-                {
-                    if (string.IsNullOrEmpty((beam2D.BeamGrade)))
-                    {
-                        return;
-                    }
-
-                    var tempList = new List<TimberBase>();
-                    foreach (var timber in JobModel.Info.Client.TimberMaterialList)
-                    {
-                        if (timber.TimberGrade == beam2D.BeamGrade)
-                        {
-                            tempList.Add(timber);
-                        }
-                    }
-
-                    TimberList = tempList;
-                }
-            }
-            else if(SelectedEntity is Joist2dVm joist)
-            {
-                if (JobModel.Info.Client!=null)
+                if (JobModel.Info.Client != null)
                 {
                     if (JobModel.Info.Client.TimberMaterialList != null)
                     {
-                        if (!string.IsNullOrEmpty((joist.BeamGrade)))
+                        if (!string.IsNullOrEmpty((framing.OutTriggerAGrade)))
                         {
-                            var tempList = new List<TimberBase>();
-                            foreach (var timber in JobModel.Info.Client.TimberMaterialList)
-                            {
-                                if (timber.TimberGrade == joist.BeamGrade)
-                                {
-                                    tempList.Add(timber);
-                                }
-                            }
-
-                            TimberList = tempList;
+                            OutTriggerATimberList = GeneralTimberListForFraming(framing.OutTriggerAGrade,
+                                JobModel.Info.Client.TimberMaterialList);
                         }
-                        if (!string.IsNullOrEmpty((joist.OutTriggerAGrade)))
+                        if (!string.IsNullOrEmpty((framing.OutTriggerBGrade)))
                         {
-                            var tempList = new List<TimberBase>();
-                            foreach (var timber in JobModel.Info.Client.TimberMaterialList)
-                            {
-                                if (timber.TimberGrade == joist.OutTriggerAGrade)
-                                {
-                                    tempList.Add(timber);
-                                }
-                            }
-
-                            OutTriggerATimberList = tempList;
-                        }
-                        if (!string.IsNullOrEmpty((joist.OutTriggerBGrade)))
-                        {
-                            var tempList = new List<TimberBase>();
-                            foreach (var timber in JobModel.Info.Client.TimberMaterialList)
-                            {
-                                if (timber.TimberGrade == joist.OutTriggerBGrade)
-                                {
-                                    tempList.Add(timber);
-                                }
-                            }
-
-                            OutTriggerBTimberList = tempList;
+                            OutTriggerBTimberList = GeneralTimberListForFraming(framing.OutTriggerBGrade,
+                                JobModel.Info.Client.TimberMaterialList);
                         }
                     }
 
@@ -552,30 +599,43 @@ namespace DrawingModule.ViewModels
                 }
 
             }
-            else if(SelectedEntity is OutTrigger2dVm outTrigger)
-            {
-                if (JobModel.Info.Client != null)
-                {
-                    if (JobModel.Info.Client.TimberMaterialList != null)
-                    {
-                        if (!string.IsNullOrEmpty((outTrigger.BeamGrade)))
-                        {
-                            var tempList = new List<TimberBase>();
-                            foreach (var timber in JobModel.Info.Client.TimberMaterialList)
-                            {
-                                if (timber.TimberGrade == outTrigger.BeamGrade)
-                                {
-                                    tempList.Add(timber);
-                                }
-                            }
+            //else if (SelectedEntity is OutTrigger2dVm outTrigger)
+            //{
+            //    if (JobModel.Info.Client != null)
+            //    {
+            //        if (JobModel.Info.Client.TimberMaterialList != null)
+            //        {
+            //            if (!string.IsNullOrEmpty((outTrigger.BeamGrade)))
+            //            {
+            //                var tempList = new List<TimberBase>();
+            //                foreach (var timber in JobModel.Info.Client.TimberMaterialList)
+            //                {
+            //                    if (timber.TimberGrade == outTrigger.BeamGrade)
+            //                    {
+            //                        tempList.Add(timber);
+            //                    }
+            //                }
 
-                            TimberList = tempList;
-                        }
-                        
-                        
-                    }
+            //                TimberList = tempList;
+            //            }
+
+
+            //        }
+            //    }
+            //}
+        }
+
+        public List<TimberBase> GeneralTimberListForFraming(string timberGrade,List<TimberBase> timberList)
+        {
+            List<TimberBase> timbers = new List<TimberBase>();
+            foreach (var timber in timberList)    
+            {
+                if (timber.TimberGrade == timberGrade)
+                {
+                    timbers.Add(timber);
                 }
             }
+            return timbers;
         }
 
         private void GeneralEngineerList()
@@ -587,14 +647,14 @@ namespace DrawingModule.ViewModels
                 {
                     foreach (var engineerMemberInfo in JobModel.EngineerMemberList)
                     {
-                        if (engineerMemberInfo.LevelType == beam.WallLevelName || engineerMemberInfo.LevelType =="Global")
+                        if (engineerMemberInfo.LevelType == beam.WallLevelName || engineerMemberInfo.LevelType == "Global")
                         {
                             EngineerList.Add(engineerMemberInfo);
                         }
                     }
                 }
             }
-            
+
         }
 
         private void GeneralWallList()
@@ -602,7 +662,7 @@ namespace DrawingModule.ViewModels
             if (SelectedEntity is DoorCountEntityVm door)
             {
                 //WallList.Clear();
-                if (JobModel!=null && JobModel.Levels!=null)
+                if (JobModel != null && JobModel.Levels != null)
                 {
                     foreach (var jobModelLevel in JobModel.Levels)
                     {
@@ -619,9 +679,9 @@ namespace DrawingModule.ViewModels
         {
             if (SelectedEntity is DoorCountEntityVm door)
             {
-                if (door.WallBelongTo!=null)
+                if (door.WallBelongTo != null)
                 {
-                    if (door.WallBelongTo.WallType!=null )
+                    if (door.WallBelongTo.WallType != null)
                     {
                         if (door.WallBelongTo.WallType.IsLoadBearingWall)
                         {

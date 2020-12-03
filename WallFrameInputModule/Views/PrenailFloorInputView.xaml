@@ -32,10 +32,10 @@
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
 
-                    <ObjectDataProvider x:Key="BeamTypes"
+                    <ObjectDataProvider x:Key="FramingTypes"
 										MethodName="GetValues" ObjectType="{x:Type system:Enum}">
                         <ObjectDataProvider.MethodParameters>
-                            <x:Type TypeName="appModelEnum:BeamType"/>
+                            <x:Type TypeName="appModelEnum:FramingTypes"/>
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
                     <ObjectDataProvider x:Key="OpeningTypes"
@@ -48,6 +48,12 @@
                                         MethodName="GetValues" ObjectType="{x:Type system:Enum}">
                         <ObjectDataProvider.MethodParameters>
                             <x:Type TypeName="appModelEnum:DoorTypes"/>
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <ObjectDataProvider x:Key="FramingSheetTypes"
+                                        MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="appModelEnum:FramingSheetTypes"/>
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
                     <converter:IntToBooleanConverter x:Key="IntToBooleanConverter"/>
@@ -205,7 +211,7 @@
                         <syncfusion:SfDataGrid.Columns>
                             <syncfusion:GridNumericColumn AllowEditing="False"
                                                           HeaderText="Item"
-                                                          MappingName="Id"
+                                                          MappingName="Index"
                                                           ParsingMode = "int"
                                                           NumberDecimalDigits="0"
                                                           UseBindingValue="True"/>
@@ -371,11 +377,13 @@
                                     <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
                                 </syncfusion:SfDataGrid.Resources>
                                 <syncfusion:SfDataGrid.Columns>
-                                    <syncfusion:GridTextColumn HeaderText="Beam Id"
-                                                           MappingName="Id"/>
+                                    <syncfusion:GridTextColumn HeaderText="Beam Index"
+                                                           MappingName="Index"/>
                                     <syncfusion:GridComboBoxColumn HeaderText="Beam Type"
-                                                               MappingName="Type"
-                                                               ItemsSource="{Binding Source={StaticResource BeamTypes}}"/>
+                                                               MappingName="FramingType"
+                                                               ItemsSource="{Binding Source={StaticResource FramingTypes}}"/>
+                                    <syncfusion:GridTextColumn HeaderText="Beam name"
+                                                                   MappingName="Name"/>
                                     <syncfusion:GridTextColumn HeaderText="Beam Location"
                                                            MappingName="Location" />
                                     <syncfusion:GridComboBoxColumn HeaderText="Engineer Reference"
@@ -398,14 +406,17 @@
                                                                UseBindingValue="True"/>
                                     <syncfusion:GridComboBoxColumn HeaderText="Size &amp; Treatment"
                                                                ItemsSourceSelector="{StaticResource BeamSelectConverter}"
-                                                               MappingName="TimberInfo"
+                                                               MappingName="FramingInfo"
                                                                DisplayMemberPath="SizeTreatment"
                                                                UseBindingValue="True"/>
                                     <syncfusion:GridTextColumn HeaderText="Beam Span"
-                                                           MappingName="SpanLength" />
+                                                               MappingName="FramingSpan" />
+                                    <syncfusion:GridTextColumn HeaderText="Beam Length"
+                                                               MappingName="FullLength" 
+                                                               AllowEditing="False"/>
                                     <syncfusion:GridTextColumn HeaderText="Extra Length"
                                                            MappingName="ExtraLength"/>
-                                    <syncfusion:GridTextColumn HeaderText="Qty"
+                                    <syncfusion:GridTextColumn HeaderText="NoOfBlocking"
                                                            MappingName="Quantity" />
                                     <syncfusion:GridTextColumn HeaderText="Quote Length"
                                                            MappingName="QuoteLength">
@@ -415,18 +426,20 @@
                                                 <Setter Property="FontSize" Value="14"/>
                                                 <Setter Property="Foreground" Value="LimeGreen"/>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Path=IsBeamToLongWithStockList}" Value="True">
+                                                    <DataTrigger Binding="{Binding Path=IsLongerStockList}" Value="True">
                                                         <Setter Property="Foreground" Value="Red"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </syncfusion:GridTextColumn.CellStyle>
                                     </syncfusion:GridTextColumn>
+                                    <syncfusion:GridCheckBoxColumn HeaderText="Is Existing Beam"
+                                                                   MappingName="IsExisting"/>
                                     <syncfusion:GridTextColumn HeaderText="Unit Price"
-                                                           MappingName="TimberInfo.UnitPrice"/>
+                                                               MappingName="FramingInfo.UnitPrice"/>
                                     <syncfusion:GridTextColumn HeaderText="Maximum Length Available"
-                                                           MappingName="TimberInfo.MaximumLength"
-                                                           HeaderStyle="{StaticResource BeamMaximumLengthHeaderStyle}">
+                                                               MappingName="FramingInfo.MaximumLength"
+                                                               HeaderStyle="{StaticResource BeamMaximumLengthHeaderStyle}">
                                         <syncfusion:GridTextColumn.CellStyle>
                                             <Style TargetType="syncfusion:GridCell">
                                                 <Setter Property="Foreground" Value="Red" />
@@ -549,7 +562,7 @@
                         </syncfusion:SfDataGrid.Resources>
                         <syncfusion:SfDataGrid.Columns>
                             <syncfusion:GridTextColumn HeaderText="ID"
-                                               MappingName="Id"
+                                               MappingName="Index"
                                                UseBindingValue="True"/>
                             <syncfusion:GridComboBoxColumn HeaderText="Door/Window Name"
                                                    UseBindingValue="True"
@@ -619,7 +632,7 @@
                 </StackPanel>
 
                 <!-- FloorFramingInput -->
-                <Grid Visibility="Visible">
+                <Grid Visibility="Visible" Margin="0 10 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="1"/>
@@ -628,26 +641,41 @@
                     <StackPanel>
                         <Button Content="Add New Floor Sheet" Command="{Binding AddNewFloorSheetCommand}"/>
                         <Button Content="Remove Floor Sheet" Command="{Binding RemoveFloorSheetCommand}"/>
-                        <TreeView x:Name="FloorSheetsTree"
-                                  ItemsSource="{Binding Level.FloorSheets}"
+                        <TreeView x:Name="FramingSheetsTree"
+                                  ItemsSource="{Binding Level.FramingSheets}"
                                   DisplayMemberPath="Name">
                             <interactions:Interaction.Triggers>
                                 <interactions:EventTrigger EventName="SelectedItemChanged">
                                     <interactions:InvokeCommandAction Command="{Binding SelectedFloorFramingChanged}"
-                                                                      CommandParameter="{Binding ElementName=FloorSheetsTree,Path=SelectedItem}"/>
+                                                                      CommandParameter="{Binding ElementName=FramingSheetsTree,Path=SelectedItem}"/>
                                 </interactions:EventTrigger>
-
                             </interactions:Interaction.Triggers>
-
                         </TreeView>
                     </StackPanel>
-                    <Border Width="1" Background="Brown" Grid.Column="1"
+                    <Border Width="1" Background="Black" Grid.Column="1"
                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                     <StackPanel Grid.Column="2">
+                        <StackPanel Margin="10 0 0 10">
+                            <DockPanel Width="500" HorizontalAlignment="Left">
+                                <TextBlock Text="Sheet Name" VerticalAlignment="Center"/>
+                                <ComboBox ItemsSource="{Binding Source={StaticResource FramingSheetTypes}}"
+                                          SelectedItem="{Binding JobModel.ActiveFloorSheet.FramingSheetType}"
+                                          Width="150"/>
+                                <TextBox Text="{Binding JobModel.ActiveFloorSheet.Index}" Width="150"/>
+                            </DockPanel>
+                        </StackPanel>
+                        <TextBlock Text="Joists"/>
                         <syncfusion:SfDataGrid x:Name="FloorJoistGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Joists}"/>
+                        <TextBlock Text="Beams"/>
                         <syncfusion:SfDataGrid x:Name="FloorBeamstGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Beams}"/>
+                        <TextBlock Text="Outriggers"/>
                         <syncfusion:SfDataGrid x:Name="OutTriggerGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.OutTriggers}"/>
+                        <TextBlock Text="Hangers"/>
                         <syncfusion:SfDataGrid x:Name="HangersGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Hangers}"/>
+                        <TextBlock Text ="Blockings"/>
+                        <syncfusion:SfDataGrid x:Name="BlockingGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Blockings}"/>
+                        <TextBlock Text="TieDown"></TextBlock>
+                        <syncfusion:SfDataGrid x:Name="TieDownGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.TieDowns}"/>
 
                     </StackPanel>
                 </Grid>

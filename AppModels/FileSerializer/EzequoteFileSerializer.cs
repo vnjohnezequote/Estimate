@@ -68,6 +68,8 @@ namespace AppModels.FileSerializer
                 .Add(1, "LevelName")
                 .Add(2, "DoorReferenceId")
                 .UseConstructor = false;
+            Model[typeof(PlanarEntity)]
+                .AddSubType(1001, typeof(Joist2D));
 
         }
 

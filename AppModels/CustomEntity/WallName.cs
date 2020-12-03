@@ -1,7 +1,5 @@
-﻿using System.Runtime.Serialization;
-using AppModels.Interaface;
+﻿using AppModels.Interaface;
 using AppModels.ViewModelEntity;
-using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 

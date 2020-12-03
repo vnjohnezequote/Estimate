@@ -30,7 +30,7 @@ namespace DrawingModule.UserInteractive
 
         #region public method
 
-        protected internal override PromptResult DoIt(CanvasDrawing canvasDrawing, DynamicInputViewModel dynamicInput)
+        protected internal override PromptResult DoIt(CanvasDrawing canvasDrawing, DynamicInputViewModel dynamicInput,bool isResetBeforeGet = false)
         {
             string stringResult = null;
             base.InitGet(dynamicInput);

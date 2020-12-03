@@ -647,8 +647,9 @@ namespace DrawingModule.CustomControl.CanvasControl
         private Point3D GetCurrentPoint(System.Drawing.Point mouseLocations)
         {
             this.ScreenToPlane(mouseLocations, this._drawingPlane, out var currentPoint);
-            currentPoint = new Point3D((int)currentPoint.X,(int)currentPoint.Y,(int)currentPoint.Z);
-            return currentPoint;
+            
+            //currentPoint = new Point3D((int)currentPoint.X,(int)currentPoint.Y,(int)currentPoint.Z);
+            return currentPoint.RoundPoint();
         }
 
         private void RaisePropertiesChangedForDynamicInput()
@@ -862,8 +863,12 @@ namespace DrawingModule.CustomControl.CanvasControl
             return promptStatus;
 
         }
-        public PromptStatus GetEntities(out string stringResult, out Point3D clickedPoint, List<Entity> entities)
+        public PromptStatus GetEntities(out string stringResult, out Point3D clickedPoint, List<Entity> entities,bool isResetBeforeGet)
         {
+            if (isResetBeforeGet)
+            {
+                this.ClearSelectionEntity();
+            }
             var seletedEntities = GetEntities();
             if (seletedEntities.Count <= 0)
             {

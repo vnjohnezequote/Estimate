@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web.ModelBinding;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ViewModelEntity;
@@ -13,9 +7,6 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
-using Newtonsoft.Json.Bson;
-using Environment = devDept.Eyeshot.Environment;
-using Region = devDept.Eyeshot.Entities.Region;
 
 namespace AppModels.CustomEntity
 {
@@ -173,7 +164,7 @@ namespace AppModels.CustomEntity
                 ShowEndWallLine = true;
                 RegenEntityGeometry(CenterLine.P0.ConvertPoint2DtoPoint3D(),CenterLine.P1.ConvertPoint2DtoPoint3D());
             }
-            this.LineTypeScale = 10;
+            //this.LineTypeScale = 10;
 
             //this.InsertionPoint = new Point3D(DimensionLine.MidPoint.X,DimensionLine.MidPoint.Y, 0);
             //var distace = StartPoint.DistanceTo(EndPoint);

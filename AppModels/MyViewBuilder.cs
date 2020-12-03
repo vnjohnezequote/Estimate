@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Windows.Documents;
-using System.Linq;
 using AppModels.CustomEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
-using devDept.Graphics;
 using Block = devDept.Eyeshot.Block;
-using Environment = devDept.Eyeshot.Environment;
-using ProgressChangedEventArgs = devDept.Eyeshot.ProgressChangedEventArgs;
 
 
 namespace AppModels

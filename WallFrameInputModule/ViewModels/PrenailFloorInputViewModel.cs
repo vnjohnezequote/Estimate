@@ -10,29 +10,17 @@
 
 using System;
 using System.ComponentModel;
-using System.Globalization;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Windows.Controls;
 using ApplicationInterfaceCore;
 using ApplicationService;
-using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.ExportData;
 using AppModels.Factories;
 using AppModels.Interaface;
-using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;
-using AppModels.ResponsiveData.WallMemberData;
-using devDept.Eyeshot;
-using devDept.Eyeshot.Entities;
-using Syncfusion.Data.Extensions;
-using Syncfusion.Office;
-using Syncfusion.XlsIO;
-using Syncfusion.XlsIO.Implementation.Security;
 using WallFrameInputModule.Views;
 using Environment = System.Environment;
 
@@ -42,17 +30,10 @@ namespace WallFrameInputModule.ViewModels
     using System.Collections.ObjectModel;
     using System.Diagnostics.CodeAnalysis;
     //using System.Drawing;
-    using System.IO;
     using System.Linq;
     using System.Windows;
     using System.Windows.Input;
-    using System.Windows.Media;
-
     using ApplicationCore.BaseModule;
-
-    using AppModels;
-    using CsvHelper;
-
     using MaterialDesignExtensions.Controls;
 
     using Prism.Commands;
@@ -60,8 +41,6 @@ namespace WallFrameInputModule.ViewModels
     using Prism.Regions;
 
     using Syncfusion.UI.Xaml.Grid;
-    using Syncfusion.UI.Xaml.Grid.Helpers;
-
     using Unity;
     using Excel= Microsoft.Office.Interop.Excel;
 
@@ -204,8 +183,8 @@ namespace WallFrameInputModule.ViewModels
             this.NewWallRowInputCommand = new DelegateCommand(this.OnAddNewWallRow);
             this.DeleteWallRowCommand = new DelegateCommand<SfDataGrid>(this.OnDeleteWallRow);
             this.WallInputSortCommand = new DelegateCommand(this.OnWallInputSort);
-            this.LoadCSVFileCommand = new DelegateCommand(this.OnLoadCSVFile);
-            this.AddBeamCommand = new DelegateCommand(this.OnAddNewBeam);
+            //this.LoadCSVFileCommand = new DelegateCommand(this.OnLoadCSVFile);
+            //this.AddBeamCommand = new DelegateCommand(this.OnAddNewBeam);
             this.AddBracingCommand = new DelegateCommand(OnAddBracing);
             this.ReFreshWallCommand = new DelegateCommand(this.CalculatorWallLength);
             DeleteBracingCommand = new DelegateCommand<SfDataGrid>(OnDeleteBracing);
@@ -234,24 +213,26 @@ namespace WallFrameInputModule.ViewModels
         {
             if (this.JobModel.ActiveFloorSheet != null)
             {
-                if (this.Level.FloorSheets.Contains(this.JobModel.ActiveFloorSheet))
+                if (this.Level.FramingSheets.Contains(this.JobModel.ActiveFloorSheet))
                 {
-                    this.Level.FloorSheets.Remove(this.JobModel.ActiveFloorSheet);
+                    this.Level.FramingSheets.Remove(this.JobModel.ActiveFloorSheet);
                 }
             }
         }
         private void AddNewFloorSheet()
         {
-            var floorSheet = new FramingSheet(this.Level.LevelInfo);
-            floorSheet.FloorName = "Floor - "+ this.Level.LevelName;
-            var id = Level.FloorSheets.Count+1;
-            if (id>1)
+            var floorSheet = new FramingSheet(this.Level);
+            floorSheet.FramingSheetType = FramingSheetTypes.FloorFraming;
+            floorSheet.FloorName = this.Level.LevelName;
+            floorSheet.LevelId = this.Level.Id;
+            var id = Level.FramingSheets.Count;
+            if (id>0)
             {
                 floorSheet.ShowSheetId = true;
-                Level.FloorSheets[0].ShowSheetId = true;
+                Level.FramingSheets[0].ShowSheetId = true;
             }
-            floorSheet.Id = id;
-            Level.FloorSheets.Add(floorSheet);
+            floorSheet.Index = id;
+            Level.FramingSheets.Add(floorSheet);
 
         }
         private void JobInfoPropertyChanged(object sender,PropertyChangedEventArgs e)
@@ -311,7 +292,7 @@ namespace WallFrameInputModule.ViewModels
 
             foreach (var beam in Level.RoofBeams)
             {
-                beam.NotifyPropertyChanged();
+                ((Beam)beam).NotifyPropertyChanged();
             }
             RaisePropertyChanged(nameof(EngineerReferenceVisibility));
         }
@@ -886,7 +867,7 @@ namespace WallFrameInputModule.ViewModels
             var rowIndex = 40 + movementIndexRow;
             foreach (var roofBeam in level.RoofBeams)
             {
-                if (roofBeam.MaterialType == MaterialTypes.Steel)
+                if (roofBeam.FramingInfo.MaterialType == MaterialTypes.Steel|| !roofBeam.IsExisting)
                 {
                     continue;
                 }
@@ -896,9 +877,9 @@ namespace WallFrameInputModule.ViewModels
                 var qty = "F" + rowIndex;
                 var length = "G" + rowIndex;
 
-                inputSheet.Range[location].Value = roofBeam.Location;
-                inputSheet.Range[grade].Value = roofBeam.TimberInfo.TimberGrade;
-                inputSheet.Range[sizeTreatement].Value = roofBeam.TimberInfo.SizeTreatment;
+                inputSheet.Range[location].Value = ((Beam)roofBeam).Location;
+                inputSheet.Range[grade].Value = roofBeam.FramingInfo.TimberGrade;
+                inputSheet.Range[sizeTreatement].Value = roofBeam.FramingInfo.SizeTreatment;
                 inputSheet.Range[qty].Value = roofBeam.Quantity;
                 inputSheet.Range[length].Value = roofBeam.QuoteLength;
                 rowIndex++;
@@ -1089,7 +1070,7 @@ namespace WallFrameInputModule.ViewModels
                         int countBeam = 0;
                         foreach (var roofBeam in Level.RoofBeams)
                         {
-                            if (roofBeam.MaterialType != MaterialTypes.Steel)
+                            if (roofBeam.FramingInfo.MaterialType != MaterialTypes.Steel&& !roofBeam.IsExisting)
                             {
                                 countBeam++;
                             }
@@ -1101,25 +1082,29 @@ namespace WallFrameInputModule.ViewModels
                         }
                         foreach (var roofBeam in Level.RoofBeams)
                         {
+                            if (roofBeam.IsExisting)
+                            {
+                                return true;
+                            }
                             if (roofBeam.Quantity == 0)
                             {
                                 message = "You Missed Roof Beam Quantity";
                                 return false;
                             }
 
-                            if (roofBeam.IsBeamToLongWithStockList)
+                            if (roofBeam.IsLongerStockList)
                             {
                                 message = "Your's beams has a beam out of stock, please check again";
                                 return false;
                             }
 
-                            if (roofBeam.TimberInfo == null)
+                            if (roofBeam.FramingInfo == null)
                             {
                                 message = "You Missed choose beam in your's Beams List, please check againt";
                                 return false;
                             }
 
-                            if (string.IsNullOrEmpty(roofBeam.Location))
+                            if (string.IsNullOrEmpty(((Beam)roofBeam).Location))
                             {
                                 message = "Yours Beam Missed Beam Location";
                                 return false;
@@ -1401,12 +1386,12 @@ namespace WallFrameInputModule.ViewModels
         /// <summary>
         /// Gets the load csv file command.
         /// </summary>
-        public ICommand LoadCSVFileCommand { get; private set; }
+        //public ICommand LoadCSVFileCommand { get; private set; }
 
         /// <summary>
         /// Gets the add beam command.
         /// </summary>
-        public ICommand AddBeamCommand { get; private set; }
+        //public ICommand AddBeamCommand { get; private set; }
 
         public ICommand ReFreshWallCommand { get; private set; }
 
@@ -1530,16 +1515,16 @@ namespace WallFrameInputModule.ViewModels
         /// <summary>
         /// The on add new beam.
         /// </summary>
-        private void OnAddNewBeam()
-        {
-            if (this.Level.RoofBeams == null)
-            {
-                this.Level.RoofBeams = new ObservableCollection<Beam>();
-            }
-            var beamId = Level.RoofBeams.Count + 1;
-            var newBeam = new Beam(BeamType.TrussBeam, Level.LevelInfo) { Id = beamId };
-            this.Level.RoofBeams.Add(newBeam);
-        }
+        //private void OnAddNewBeam()
+        //{
+        //    if (this.Level.RoofBeams == null)
+        //    {
+        //        this.Level.RoofBeams = new ObservableCollection<IFraming>();
+        //    }
+        //    var beamId = Level.RoofBeams.Count + 1;
+        //    var newBeam = new Beam(FramingTypes.TrussBeam, Level) { Index = beamId };
+        //    this.Level.RoofBeams.Add(newBeam);
+        //}
 
         private void OnAddBracing()
         {
@@ -1550,25 +1535,25 @@ namespace WallFrameInputModule.ViewModels
         /// <summary>
         /// The on load csv file.
         /// </summary>
-        private async void OnLoadCSVFile()
-        {
-            OpenFileDialogArguments dialogArgs = new OpenFileDialogArguments()
-            {
-                Width = 600,
-                Height = 1600,
-                Filters = "All files|*.*|CSv files|*.csv|Text files|*.txt"
-            };
-            OpenFileDialogResult result = await OpenFileDialog.ShowDialogAsync("openFileDialogHost", dialogArgs);
+        //private async void OnLoadCSVFile()
+        //{
+        //    OpenFileDialogArguments dialogArgs = new OpenFileDialogArguments()
+        //    {
+        //        Width = 600,
+        //        Height = 1600,
+        //        Filters = "All files|*.*|CSv files|*.csv|Text files|*.txt"
+        //    };
+        //    OpenFileDialogResult result = await OpenFileDialog.ShowDialogAsync("openFileDialogHost", dialogArgs);
 
-            if (result.File == null)
-            {
-                return;
-            }
-            this._csvFilePath = result.File;
+        //    if (result.File == null)
+        //    {
+        //        return;
+        //    }
+        //    this._csvFilePath = result.File;
 
-            //this.LoadCsvLength();
-            //this.LoadDataLength();
-        }
+        //    //this.LoadCsvLength();
+        //    //this.LoadDataLength();
+        //}
 
         /// <summary>
         /// The load data length.
@@ -1597,7 +1582,7 @@ namespace WallFrameInputModule.ViewModels
         //    //    WallTempLength first = null;
         //    //    foreach (var x in this.Level.TempLengths)
         //    //    {
-        //    //        if (x.Id != wallLayer.WallColorLayer.Name)
+        //    //        if (x.Index != wallLayer.WallColorLayer.Name)
         //    //        {
         //    //            continue;
         //    //        }

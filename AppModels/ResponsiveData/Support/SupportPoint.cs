@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AppModels.Enums;
 using AppModels.Interaface;
@@ -8,7 +9,7 @@ using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Support
 {
-    public class SupportPoint : BindableBase
+    public class SupportPoint : BindableBase,ICloneable
     {
         #region Field
         private IBeam _supportMemberInfo;
@@ -17,7 +18,18 @@ namespace AppModels.ResponsiveData.Support
         private EngineerMemberInfo _engineerMemberInfo;
         #endregion
 
-        public IBeam SupportMemberInfor => _supportMemberInfo;
+        public IBeam SupportMemberInfor
+        {
+            get=>_supportMemberInfo;
+            private set
+            {
+                SetProperty(ref _supportMemberInfo, value);
+                if (value!=null)
+                {
+                    value.PropertyChanged += SupportMemberInfor_PropertyChanged;
+                }
+            }
+        } 
         public LoadPointLocation PointLocation { get; private set; }
         public EngineerMemberInfo EngineerMemberInfo
         {
@@ -40,6 +52,8 @@ namespace AppModels.ResponsiveData.Support
                     }
                 }
                 SetProperty(ref _engineerMemberInfo, value);
+                RaisePropertyChanged(nameof(SupportWidth));
+                RaisePropertyChanged(nameof(SupportHeight));
             }
         }
         
@@ -97,6 +111,8 @@ namespace AppModels.ResponsiveData.Support
                 }
 
                 SetProperty(ref _pointSupportType, value);
+                RaisePropertyChanged(nameof(SupportWidth));
+                RaisePropertyChanged(nameof(SupportHeight));
             }
         }
 
@@ -113,21 +129,13 @@ namespace AppModels.ResponsiveData.Support
         {
             PointLocation = location;
             _supportMemberInfo = supportMember;
-            PropertyChanged += LoadPointSupport_PropertyChanged;
-            SupportMemberInfor.PropertyChanged += SupportMemberInfor_PropertyChanged;
         }
 
-        private void LoadPointSupport_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        public SupportPoint(SupportPoint another)
         {
-            switch (e.PropertyName)
-            {
-                case nameof(PointSupportType):
-                case nameof(EngineerMemberInfo):
-                    RaisePropertyChanged(nameof(SupportWidth));
-                    RaisePropertyChanged(nameof(SupportHeight));
-                    break;
-            }
-
+            PointLocation = another.PointLocation;
+            EngineerMemberInfo = another.EngineerMemberInfo;
+            PointSupportType = another.PointSupportType;
         }
 
         private void SupportMemberInfor_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -150,15 +158,23 @@ namespace AppModels.ResponsiveData.Support
         public void LoadSupportPoint(SupportPointPoco supportPoint,List<EngineerMemberInfo> engineerSchedules)
         {
             PointLocation = supportPoint.PointLocation;
-            foreach (var engineerMemberInfo in engineerSchedules.Where(engineerMemberInfo => engineerMemberInfo.Id == supportPoint.EngineerReferenceId))
+            if (engineerSchedules!=null)
             {
-                this.EngineerMemberInfo = engineerMemberInfo;
+                foreach (var engineerMemberInfo in engineerSchedules.Where(engineerMemberInfo => engineerMemberInfo.Id == supportPoint.EngineerReferenceId))
+                {
+                    this.EngineerMemberInfo = engineerMemberInfo;
+                }
             }
+            
             PointSupportType = supportPoint.PointSupportType;
         }
         
         #endregion
 
 
+        public object Clone()
+        {
+            return new SupportPoint(this);
+        }
     }
 }

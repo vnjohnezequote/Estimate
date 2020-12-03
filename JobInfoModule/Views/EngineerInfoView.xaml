@@ -93,13 +93,13 @@
                                            MappingName="MinSpan"/>
                 <Syncfusion:GridTextColumn HeaderText="Max Size"
                                            MappingName="MaxSpan"/>
-                <Syncfusion:GridTextColumn HeaderText="Qty"
+                <Syncfusion:GridTextColumn HeaderText="NoOfBlocking"
                                            MappingName="NoItem"/>
                 <Syncfusion:GridComboBoxColumn HeaderText="Timber Grade"
                                                MappingName="TimberGrade"
                                                ItemsSource="{Binding TimberGradeList}"/>
                 <Syncfusion:GridComboBoxColumn HeaderText="Size Grade"
-                                               MappingName="TimberInfo"
+                                               MappingName="FramingInfo"
                                                DisplayMemberPath="SizeTreatment"
                                                ItemsSourceSelector="{StaticResource BeamSelectListConverter}"/>
                 <Syncfusion:GridTextColumn HeaderText="Real Size Grade"

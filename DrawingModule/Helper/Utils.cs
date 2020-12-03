@@ -147,6 +147,10 @@ namespace DrawingModule.Helper
 
         public static bool IsEntityContainPoint3D(Entity entity, Point3D point)
         {
+            if (entity.Vertices==null)
+            {
+                return false;
+            }
             return entity.Vertices.Any(entVertex => Math.Abs(entVertex.X - point.X) < 0.0001 && Math.Abs(entVertex.Y - point.Y) < 0.0001) || false;
         }
         public static Point3D GetEndPoint(Point3D basePoint, Point3D currentPoint)
@@ -198,8 +202,9 @@ namespace DrawingModule.Helper
             //}
 
             endPoint = CalculatorPointWithLengthAndAngle(basePoint,null, length, angle);
+            
 
-            return endPoint;
+            return endPoint.RoundPoint();
         }
         public static HashSet<SnapPoint> GetPerpenticalSnapPoints(Point3D basePoint, ICurve entity)
         {
@@ -256,20 +261,15 @@ namespace DrawingModule.Helper
             foreach (var line in lines)
             {
                 tempoints.Add(GetPerpendicularPoints(line, basePoint));
-
             }
-
             return tempoints;
-
         }
         public static Point3D GetPerpendicularPoints(Line line, Point3D basePoint)
         {
             var tempSegment = new Segment2D(line.StartPoint, line.EndPoint);
             var temptDistance = tempSegment.ClosestPointTo(basePoint);
             var tempPoint = tempSegment.PointAt(temptDistance);
-            tempPoint = new Point3D((int)tempPoint.X,(int)tempPoint.Y);
-            return tempPoint.ConvertPoint2DtoPoint3D();
-
+            return tempPoint.ConvertPoint2DtoPoint3D().RoundPoint();
         }
         public static double GetDistanceFromPointToLine(Line line, Point3D point)
         {
@@ -319,9 +319,47 @@ namespace DrawingModule.Helper
 
 
         }
+        public static Line GetClosestSegment(LinearPath linearPath, Point3D mousePosition)
+        {
+            var lines = linearPath.ConvertToLines();
+            var minDist = Double.MaxValue;
+            foreach (var line in lines)
+            {
+                var sussess = line.Project(mousePosition, out var t);
+                var projectP = line.PointAt(t);
+                if (Utility.IsPointOnSegment(projectP,line.StartPoint,line.EndPoint,0.0001))
+                {
+                    return line;
+                }
+            }
+
+            return null;
+            //var count = lines.Length;
+
+            //for (int i = 0; i < lines.Length; i++)
+            //{
+            //    var distance = this.GetDistanceFromPointToLine(lines[i], point);
+            //    if (distance<minDist)
+            //    {
+            //        tempLine = lines[i];
+            //        minDist = distance;
+            //    }
+            //}
+
+
+
+        }
         public static Point3D GetMidPoint3D(Point3D pointA, Point3D pointB)
         {
             return new Point3D((pointA.X + pointB.X) / 2, (pointA.Y + pointB.Y) / 2);
+        }
+
+        public static Point3D RoundPoint(this Point3D point)
+        {
+            var x = Math.Round(point.X, 1);
+            var y = Math.Round(point.Y, 1);
+            var z = Math.Round(point.Z, 1);
+            return new Point3D(x, y, z);
         }
         public static HashSet<Point3D> GetIntersectBySeft(LinearPath linearPath)
         {
@@ -496,7 +534,41 @@ namespace DrawingModule.Helper
                             }
                         }
                     }
+                    else if(cadDraw.Entities[index] is IRectangleSolid solidRectangle)
+                    {
+                        var joistLines = new List<Line>();
+                        var JoistLine = new Line(solidRectangle.StartPoint, solidRectangle.EndPoint);
+                        joistLines.Add(JoistLine);
+                        JoistLine = new Line(solidRectangle.OuterStartPoint, solidRectangle.OuterEndPoint);
+                        joistLines.Add(JoistLine);
+                        JoistLine = new Line(solidRectangle.InnerStartPoint, solidRectangle.InnerEndPoint);
+                        joistLines.Add(JoistLine);
+                        foreach (var line in joistLines)
+                        {
+                            if (Utils.GetPerpenticalSnapPoints(cadDraw.LastClickPoint, line as ICurve).Count > 0)
+                            {
+                                snapPoints.UnionWith(Utils.GetPerpenticalSnapPoints(cadDraw.LastClickPoint, line as ICurve));
+                            }
+                            var vertices = line.Vertices;
+                            foreach (var vertex in vertices)
+                            {
+                                if (!Utils.CheckPointInSnapPoints(vertex, snapPoints))
+                                {
+                                    snapPoints.Add(new SnapPoint(vertex, ObjectSnapType.End));
+                                }
+                            }
+                            if (!Utils.CheckPointInSnapPoints(line.MidPoint, snapPoints))
+                                snapPoints.Add(new SnapPoint(line.MidPoint, ObjectSnapType.Mid));
 
+                            cadDraw.ScreenToPlane(mouseLocation, cadDraw.DrawingPlane, out var mousePos);
+                            var nearPoint = Utils.GetPerpendicularPoints(line, mousePos);
+                            if (!Utils.CheckPointInSnapPoints(nearPoint, snapPoints))
+                            {
+                                snapPoints.Add(new SnapPoint(nearPoint, ObjectSnapType.Nearest));
+                            }
+                        }
+
+                    }
                     else if (cadDraw.Entities[index] is Wall2D wall)
                     {
                         var wallLines = new List<Line>();

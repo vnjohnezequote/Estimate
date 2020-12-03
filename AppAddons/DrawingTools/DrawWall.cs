@@ -36,16 +36,18 @@ namespace AppAddons.DrawingTools
         public DrawWall() : base()
         {
             IsUsingInsideLength = true;
-            InsideLengthDistance = 90;
+            
         }
         #endregion
         [CommandMethod("Wall2D")]
         public void DrawWallLine()
         {
+            
             var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
             DynamicInput?.FocusLength();
             while (true)
             {
+                InsideLengthDistance = this.JobModel.SelectedWallThickness;
                 if (JobModel.CCMode)
                 {
                     this.IsUsingInsideLength = true;

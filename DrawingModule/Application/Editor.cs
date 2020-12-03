@@ -41,9 +41,9 @@ namespace DrawingModule.Application
             return (PromptPointResult)DoPrompt(options);
         }
 
-        public PromptEntityResult GetEntities(PromptEntityOptions options)
+        public PromptEntityResult GetEntities(PromptEntityOptions options,bool isReSetSelectBeforeGet = false)
         {
-            return (PromptEntityResult) DoPrompt(options);
+            return (PromptEntityResult) DoPrompt(options,isReSetSelectBeforeGet);
         }
 
         public PromptSelectionResult GetSelection(PromptSelectionOptions options)
@@ -90,10 +90,10 @@ namespace DrawingModule.Application
         //}
 
 
-        public PromptResult DoPrompt(PromptOptions opt)
+        public PromptResult DoPrompt(PromptOptions opt,bool isResetBeforeGet = false)
         {
             PromptResult result;
-            result = opt.DoIt(this._canvasDrawing, this._dynamicInputViewModel);
+            result = opt.DoIt(this._canvasDrawing, this._dynamicInputViewModel,isResetBeforeGet);
             return result;
         }
 

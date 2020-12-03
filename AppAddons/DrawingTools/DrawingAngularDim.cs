@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels;
@@ -12,7 +11,6 @@ using DrawingModule.CommandClass;
 using DrawingModule.Control;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.DrawToolBase;
-using DrawingModule.Helper;
 using DrawingModule.UserInteractive;
 
 namespace AppAddons.DrawingTools

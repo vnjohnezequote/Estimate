@@ -78,7 +78,7 @@ namespace DrawingModule.ViewModels
                 this.RaisePropertyChanged(SelectedLevel);
             }
         }
-        public List<int> WallThicknessList { get; set; } = new List<int>() { 70, 90, 140, 200, 230 };
+        public List<int> WallThicknessList { get; set; } = new List<int>() { 70, 90, 140,180,190, 200, 230 };
         public string SelectedLevel
         {
             get

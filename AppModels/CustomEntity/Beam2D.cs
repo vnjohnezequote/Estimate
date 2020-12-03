@@ -1,31 +1,32 @@
-﻿using System;
+﻿
+
+using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using AppModels.Enums;
+using System.Globalization;
+using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Interaface;
-using AppModels.ResponsiveData.Openings;
+using AppModels.ResponsiveData.Framings;
+using AppModels.ResponsiveData.Framings.FloorAndRafters.Beam;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
+using devDept.Geometry;
 using devDept.Graphics;
-using Plane = devDept.Geometry.Plane;
-using Point3D = devDept.Geometry.Point3D;
-using Segment2D = devDept.Geometry.Segment2D;
-using Vector3D = devDept.Geometry.Vector3D;
+using devDept.Serialization;
 
 namespace AppModels.CustomEntity
 {
-    public class Beam2D: Text,IEntityVmCreateAble
+    public sealed class Beam2D : Text, IFraming2DContaintHangerAndOutTrigger,IEntityVmCreateAble
     {
         #region private Field
         private Point3D _outerStartPoint;
         private Point3D _innerStartPoint;
         private Point3D _outerEndPoint;
         private Point3D _innerEndPoint;
-        private Beam _beamReference;
+        private IFraming _framingReference;
         private int _thickness;
-        private int _depth;
         private bool _isBeamUnder;
         private bool _outTriggerAFlipped;
         private bool _outTriggerBFlipped;
@@ -33,98 +34,107 @@ namespace AppModels.CustomEntity
 
         #region Properties
         public Guid Id { get; set; }
-        public string SheetName { get; set; }
+        
         public Point3D StartPoint { get; set; }
         public Point3D EndPoint { get; set; }
-        public int Thickness
-        {
-            get => _thickness;
-            set
-            {
-                _thickness = value;
-                this.RegenGeometry(this.OuterStartPoint,this.OuterEndPoint);
-                this.RegenMode = regenType.RegenAndCompile;
-            }
-        }
-        public int Depth
-        {
-            get => _depth;
-            set
-            {
-                _depth = value;
-                this.RegenGeometry(this.OuterStartPoint, this.OuterEndPoint);
-                this.RegenMode = regenType.RegenAndCompile;
-            }
-        }
-        public bool IsBeamUnder {
-            get=>_isBeamUnder;
-            set
-            {
-                _isBeamUnder = value;
-                if (_isBeamUnder )
-                {
-                    Color = Color.FromArgb(100, 255, 0, 127);
-                }
-
-                else
-                {
-                    Color = Color.Crimson;
-                }
-            }
-        }
-        public bool ShowDimension { get; set; }
-        public Segment2D CenterLine { get; set; }
-        public Segment2D Line1 { get; set; }
-        public Segment2D Line2 { get; set; }
-        public Segment2D DimensionLine { get; set; }
-        public Beam BeamReference { get; private set; }
-        public List<Point3D> StartVerticesBox { get; set; }
-        public List<Point3D> EndVerticesBox { get; set; }
         public Point3D OuterStartPoint
         {
             get => _outerStartPoint;
             set
             {
                 _outerStartPoint = value;
-                this.RegenMode = regenType.RegenAndCompile;
+                if (_outerStartPoint == null || _outerEndPoint == null)
+                {
+                    return;
+                }
+                this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint);
             }
         }
-        public Point3D InnerStartPoint
-        {
-            get => _innerStartPoint;
-            set
-            {
-                _innerStartPoint = value;
-                this.RegenMode = regenType.RegenAndCompile;
-            }
-        }
+        public Point3D InnerStartPoint { get; set; }
+        //{
+        //    get => _innerStartPoint;
+        //    set => _innerStartPoint = value;
+        //}
         public Point3D OuterEndPoint
         {
             get => _outerEndPoint;
             set
             {
                 _outerEndPoint = value;
+                if (_outerStartPoint == null || _outerEndPoint == null)
+                {
+                    return;
+                }
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-        public Point3D InnerEndPoint
+        public Point3D InnerEndPoint { get; set; }
+        //{
+        //    get => _innerEndPoint;
+        //    set
+        //    {
+        //        _innerEndPoint = value;
+        //        this.RegenMode = regenType.RegenAndCompile;
+        //    }
+
+        //}
+        public Point3D MidMPoint3D => Point3D.MidPoint(StartPoint, EndPoint);
+        public int Thickness
         {
-            get => _innerEndPoint;
+            get => _thickness;
+            set
+
+            {
+                _thickness = value;
+                if (_outerStartPoint == null || _outerEndPoint == null)
+                {
+                    return;
+                }
+                this.RegenFramingGeometry(this.OuterStartPoint, this.OuterEndPoint);
+            }
+        }
+        public int Depth { get; set; }
+       
+        public IFraming FramingReference
+        {
+            get => _framingReference;
             set
             {
-                _innerEndPoint = value;
-                this.RegenMode = regenType.RegenAndCompile;
+                _framingReference = value;
+                if(_framingReference!=null)
+                {
+                    _framingReference.PropertyChanged += FramingPropertiesChanged;
+                }
             }
-
         }
-        public string HangerAId { get; set; }
-        public string HangerBId { get; set; }
+        public Guid FramingReferenceId { get; set; }
+        public List<Point3D> FramingVertices { get; set; } = new List<Point3D>();
+        public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
+        public double FullLength
+        {
+            get
+            {
+                if (OuterStartPoint != null && OuterEndPoint != null)
+                {
+                    return OuterStartPoint.DistanceTo(OuterEndPoint);
+                }
+
+                return 0.0;
+            }
+            set
+            {
+
+            }
+        }
+
+        public Guid? HangerAId { get; set; }
+        public Guid? HangerBId { get; set; }
         public Hanger2D HangerA { get; set; }
         public Hanger2D HangerB { get; set; }
         public bool IsHangerA { get; set; }
         public bool IsHangerB { get; set; }
-        public string OutTriggerAId { get; set; }
-        public string OutTriggerBId { get; set; }
+        public Guid? OutTriggerAId { get; set; }
+        public Guid? OutTriggerBId { get; set; }
         public OutTrigger2D OutTriggerA { get; set; }
         public OutTrigger2D OutTriggerB { get; set; }
         public bool IsOutTriggerA { get; set; }
@@ -134,12 +144,11 @@ namespace AppModels.CustomEntity
             get => _outTriggerAFlipped;
             set
             {
+                if (this.OutTriggerA == null) return;
                 _outTriggerAFlipped = value;
 
-                if (this.OutTriggerA != null)
-                {
-                    OutTriggerA.Flipper(StartPoint, EndPoint);
-                }
+                OutTriggerA?.Flipper(StartPoint, EndPoint);
+
             }
         }
         public bool OutTriggerBFlipped
@@ -147,84 +156,94 @@ namespace AppModels.CustomEntity
             get => _outTriggerBFlipped;
             set
             {
-                if (this.OutTriggerB != null)
-                {
-                    _outTriggerBFlipped = value;
+                if (this.OutTriggerB == null) return;
+                _outTriggerBFlipped = value;
 
-                    if (this.OutTriggerB != null)
-                    {
-                        OutTriggerB.Flipper(StartPoint, EndPoint);
-                    }
-                }
+                OutTriggerB?.Flipper(StartPoint, EndPoint);
             }
         }
-        public double FullLength { get; set; }
-
-        public List<Segment2D> BoxLines { get; set; } = new List<Segment2D>();
-        public List<Point3D> BeamVertices { get; set; } = new List<Point3D>();
-        public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
+        public bool IsBeamUnder
+        {
+            get => _isBeamUnder;
+            set
+            {
+                _isBeamUnder = value;
+                Color = _isBeamUnder ? Color.FromArgb(100, 255, 0, 127) : Color.Crimson;
+            }
+        }
+        public bool ShowDimension { get; set; }
+        public List<Point3D> StartVerticesBox { get; set; }
+        public List<Point3D> EndVerticesBox { get; set; }
+        public Segment2D DimensionLine { get; set; }
 
         #endregion
-        public Beam2D(Plane wallPlan, Point3D startPoint, Point3D endPoint,Beam beamRef,
-            int thickness = 45, bool isBeamUnder = true, bool showDimension = false, double textHeight = 90) :
-            base(wallPlan, startPoint, textHeight, Text.alignmentType.BaselineCenter)
+        public Beam2D(Plane wallPlan, Point3D outerstartPoint, Point3D outerEndPoint, FBeam beamRef, int thickness = 45, bool isBeamUnder = true, bool showDimension = false, double textHeight = 90) :
+            base(wallPlan, outerstartPoint, textHeight, Text.alignmentType.BaselineCenter)
         {
             Id = new Guid();
-            ColorMethod = colorMethodType.byEntity;
-            if (isBeamUnder)
-            {
-                Color = Color.FromArgb(100,255,0,127);
-            }
-
-            else
-            {
-                Color = Color.Crimson;
-            }
             _thickness = thickness;
+            _outerStartPoint = outerstartPoint;
+            _outerEndPoint = outerEndPoint;
+            ColorMethod = colorMethodType.byEntity;
             IsBeamUnder = isBeamUnder;
             ShowDimension = showDimension;
-            this.BeamReference = beamRef;
-            if (BeamReference.TimberInfo!=null )
-            {
-                _depth = BeamReference.Thickness;
-            }
-            BeamReference.PropertyChanged += BeramReferencePropertiesChanged;
-            RegenGeometry(startPoint, endPoint);
             this.LineTypeScale = 10;
+            FramingReference = beamRef;
+            FramingReferenceId = beamRef.Id;
+            RegenFramingGeometry(_outerStartPoint, _outerEndPoint);
         }
-        private void BeramReferencePropertiesChanged(object sender, PropertyChangedEventArgs e)
+        public Beam2D(Text another):base(another)
+        { }
+        public Beam2D(Beam2D another) : base(another)
+        {
+            Id = Guid.NewGuid();
+            _thickness = another.Thickness;
+            _outerStartPoint = (Point3D)another.OuterStartPoint.Clone();
+            _outerEndPoint = (Point3D)another.OuterEndPoint.Clone();
+            _innerStartPoint = (Point3D)another.InnerStartPoint.Clone();
+            _innerEndPoint = (Point3D)another.InnerEndPoint.Clone();
+            StartPoint = (Point3D)another.StartPoint.Clone();
+            EndPoint = (Point3D)another.EndPoint.Clone();
+            FramingReference = (FramingBase)another.FramingReference.Clone();
+            FramingReferenceId = FramingReference.Id;
+
+        }
+
+        private void FramingPropertiesChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case nameof(BeamReference.TimberInfo):
-                    if (BeamReference.TimberInfo!=null)
+                case nameof(FramingReference.FramingInfo):
+                    if (FramingReference.FramingInfo != null)
                     {
-                        Thickness = BeamReference.Depth * BeamReference.NoItem;
-                        Depth = BeamReference.Thickness;
+                        Thickness = FramingReference.FramingInfo.Depth * FramingReference.FramingInfo.NoItem;
+                        Depth = FramingReference.FramingInfo.Thickness;
                     }
-                    
                     break;
-
                 default: break;
+
             }
         }
-
-        private void RegenGeometry(Point3D startPoint, Point3D endPoint)
+        private void RegenFramingGeometry(Point3D startPoint, Point3D endPoint, bool flipped = false)
         {
-            OuterStartPoint = startPoint;
-            OuterEndPoint = endPoint;
-            Line1 = new Segment2D(OuterStartPoint,OuterEndPoint);
-            Line2 = Line1.Offset(Thickness);
-            InnerStartPoint = Line2.P0.ConvertPoint2DtoPoint3D();
-            InnerEndPoint = Line2.P1.ConvertPoint2DtoPoint3D();
+            var flippedFactor = 1;
+            if (flipped)
+            {
+                flippedFactor = -1;
+            }
 
-            CenterLine = Line1.Offset((double)Thickness / 2);
-            CenterLine.ExtendBy(-(double)Thickness/2,-(double)Thickness/2);
+            var outerLine = new Segment2D(OuterStartPoint, OuterEndPoint);
+            var interLine = outerLine.Offset(Thickness * flippedFactor);
+            _innerStartPoint = interLine.P0.ConvertPoint2DtoPoint3D();
+            _innerEndPoint = interLine.P1.ConvertPoint2DtoPoint3D();
 
-            StartPoint = CenterLine.P0.ConvertPoint2DtoPoint3D();
-            EndPoint = CenterLine.P1.ConvertPoint2DtoPoint3D();
+            var centerLine = outerLine.Offset((double)Thickness * flippedFactor / 2);
+            centerLine.ExtendBy(-(double)Thickness / 2, -(double)Thickness / 2);
 
-            var offsetLine = Line1.Offset(-(double)Thickness / 2);
+            StartPoint = centerLine.P0.ConvertPoint2DtoPoint3D();
+            EndPoint = centerLine.P1.ConvertPoint2DtoPoint3D();
+
+            var offsetLine = outerLine.Offset(-(double)Thickness * flippedFactor / 2);
             DimensionLine = offsetLine;
 
             var segment1 = new Segment2D((Point3D)OuterStartPoint.Clone(), (Point3D)OuterEndPoint.Clone());
@@ -256,89 +275,134 @@ namespace AppModels.CustomEntity
             tempLine = new Segment2D(InnerEndPoint, p4);
             EndVerticesBox.Add(tempLine.MidPoint.ConvertPoint2DtoPoint3D());
             this.UpdateDistance();
+            this.RegenMode = regenType.RegenAndCompile;
         }
+        private void UpdateDistance()
+        {
+            if (this.OuterStartPoint != null && this.OuterEndPoint != null)
+            {
+                if (this.FramingReference != null)
+                {
+                    this.FramingReference.FullLength = (int)FullLength;
+                }
+            }
+        }
+
         protected override void Draw(DrawParams data)
         {
-            var points = new Point3D[] { OuterStartPoint, OuterEndPoint, InnerEndPoint, InnerStartPoint };
-            //data.RenderContext.SetState(depthStencilStateType.DepthTestOff);
-            data.RenderContext.PushRasterizerState();
-            data.RenderContext.SetRasterizerState(rasterizerPolygonDrawingType.Fill, rasterizerCullFaceType.None);
-            data.RenderContext.PushModelView();
-            data.RenderContext.DrawQuads(points, new Vector3D[]
-                {
-                    Vector3D.AxisZ
-                });
-            data.RenderContext.PopModelView();
-            data.RenderContext.PopRasterizerState();
+            DrawFraming(data, true, false);
+        }
+
+        private void DrawFraming(DrawParams data, bool disableCulling, bool drawForSelection)
+        {
+            base.PreDraw(data);
+            DrawExtraGeometry(data);
+            RenderContextBase renderContext = data.RenderContext;
+            renderContext.PushModelView();
+            if (renderContext.IsDirect3D)
+            {
+                this.PushLineSize(data);
+                this.DrawEntity(renderContext,null);
+                this.PopLineSize(data);
+            }
+            else
+            {
+                renderContext.Draw(this.drawData,primitiveType.Undefined);
+            }
+
             if (ShowDimension)
             {
                 this.DrawText(data);
             }
-
+            renderContext.PopModelView();
+            PostDraw(data);
         }
-        private void DrawDashWallLine(DrawParams data, Point3D startPoint, Point3D endPoint)
-        {
-            var lineTypePattername = this.LineTypeName;
-            var lineTypePattern = data.LineTypes[lineTypePattername];
-            if (lineTypePattern.Length * this.LineTypeScale > data.ScreenToWorld4Times && data.ScreenToWorld > 0f)
-            {
-                float num = 1f;
-                if (data.FullParents != null && data.FullParents.Count > 0)
-                {
-                    num = (float)data.FullParents.Peek().GetFullTransformation(data.Blocks).ScaleFactorX;
-                }
 
-                List<Point3D> list;
-                List<Point3D> list2;
-                var vertices = new Point3D[] { startPoint, endPoint };
-                lineTypePattern.GetPatternVertices(data.MaxPatternRepetitions, vertices, this.LineTypeScale / num, out list, out list2);
-                for (int i = 0; i < list.Count; i += 2)
-                {
-                    data.RenderContext.DrawBufferedLine(list[i], list[i + 1]);
-                }
-                data.RenderContext.DrawPointsOnTheFly(list2.ToArray());
+        protected override void DrawEntity(RenderContextBase context, object myParams)
+        {
+            if (base.Compiling)
+            {
+                context.DrawLine(StartPoint, EndPoint);
+            }
+            else
+            {
+                this.drawData.DrawD3D(context, 0);
             }
 
+            context.PushModelView();
+            DrawBackGroundRectangle(context);
+            context.PopModelView();
         }
+        private void DrawBackGroundRectangle(RenderContextBase context)
+        {
+            if (context.CurrentLineWidth > 1f)
+            {
+                context.SetLineSize(1f, true, false);
+            }
+            this.DrawRectangle(context);
+        }
+        private void DrawRectangle(RenderContextBase context)
+        {
+            context.PushModelView();
+            var points = new Point3D[] { OuterStartPoint, OuterEndPoint, InnerEndPoint, InnerStartPoint };
+            context.DrawQuads(points, new Vector3D[]
+            {
+                Vector3D.AxisZ
+            });
+            context.PopModelView();
+        }
+        protected override void DrawForSelection(GfxDrawForSelectionParams data)
+        {
+            this.DrawFraming(data, false, true);
+        }
+        internal void PopLineSize(DrawParams drawParams)
+        {
+            if (drawParams.RenderContext.CurrentLineWidth > 1f)
+            {
+                drawParams.RenderContext.PopShader();
+            }
+        }
+        internal void PushLineSize(DrawParams drawParams)
+        {
+            if (drawParams.RenderContext.CurrentLineWidth > 1f)
+            {
+                drawParams.RenderContext.PushShader();
+                drawParams.RenderContext.EnableThickLines();
+            }
+        }
+        private void DrawExtraGeometry(DrawParams data)
+        {
 
-        //protected override void DrawEdges(DrawParams data)
+        }
+        //private void DrawDashWallLine(DrawParams data, Point3D startPoint, Point3D endPoint)
         //{
-        //    base.DrawEdges(data);
-        //    data.RenderContext.SetLineSize(2);
-        //    //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //    data.RenderContext.PushModelView();
-        //    if (this.IsBeamUnder)
+        //    var lineTypePattername = this.LineTypeName;
+        //    var lineTypePattern = data.LineTypes[lineTypePattername];
+        //    if (lineTypePattern.Length * this.LineTypeScale > data.ScreenToWorld4Times && data.ScreenToWorld > 0f)
         //    {
-        //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(OuterStartPoint, InnerStartPoint);
-        //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(OuterEndPoint, InnerEndPoint);
-        //        //data.RenderContext.SetColorWireframe(Color.Crimson, true);
-        //        this.DrawDashWallLine(data, OuterStartPoint, OuterEndPoint);
-        //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        this.DrawDashWallLine(data, InnerStartPoint, InnerEndPoint);
-        //        data.RenderContext.DrawBufferedLine(StartVerticesBox[1], StartVerticesBox[2]);
-        //        data.RenderContext.DrawBufferedLine(EndVerticesBox[2], EndVerticesBox[3]);
+        //        float num = 1f;
+        //        if (data.FullParents != null && data.FullParents.Count > 0)
+        //        {
+        //            num = (float)data.FullParents.Peek().GetFullTransformation(data.Blocks).ScaleFactorX;
+        //        }
+
+        //        List<Point3D> list;
+        //        List<Point3D> list2;
+        //        var vertices = new Point3D[] { startPoint, endPoint };
+        //        lineTypePattern.GetPatternVertices(data.MaxPatternRepetitions, vertices, this.LineTypeScale / num, out list, out list2);
+        //        for (int i = 0; i < list.Count; i += 2)
+        //        {
+        //            data.RenderContext.DrawBufferedLine(list[i], list[i + 1]);
+        //        }
+        //        data.RenderContext.DrawPointsOnTheFly(list2.ToArray());
         //    }
-        //    else
-        //    {
-        //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(OuterStartPoint, InnerStartPoint);
-        //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(OuterEndPoint, InnerEndPoint);
-        //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(OuterStartPoint, OuterEndPoint);
-        //        //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(InnerStartPoint, InnerEndPoint);
-        //        data.RenderContext.DrawBufferedLine(StartVerticesBox[1], StartVerticesBox[2]);
-        //        data.RenderContext.DrawBufferedLine(EndVerticesBox[2], EndVerticesBox[3]);
-        //    }
-        //    data.RenderContext.PopModelView();
+
         //}
+
         public override void Regen(RegenParams data)
         {
-            var distance = (int)StartPoint.DistanceTo(EndPoint) - Thickness;
-            this.TextString = distance.ToString();
+            var distance = this.FullLength;
+            this.TextString = distance.ToString(CultureInfo.InvariantCulture);
             this.InsertionPoint = new Point3D(DimensionLine.MidPoint.X, DimensionLine.MidPoint.Y, 0);
             base.Regen(data);
             var listPoint = new List<Point3D>(Vertices);
@@ -368,69 +432,80 @@ namespace AppModels.CustomEntity
                 listPoint.Add(InnerEndPoint);
             }
             Vertices = listPoint.ToArray();
-            BeamVertices.Clear();
-            BeamVertices.Add(OuterStartPoint);
-            BeamVertices.Add(InnerStartPoint);
-            BeamVertices.Add(InnerEndPoint);
-            BeamVertices.Add(OuterEndPoint);
+            FramingVertices.Clear();
+            FramingVertices.Add(OuterStartPoint);
+            FramingVertices.Add(InnerStartPoint);
+            FramingVertices.Add(InnerEndPoint);
+            FramingVertices.Add(OuterEndPoint);
             base.UpdateBoundingBox(data);
             this.RegenMode = regenType.CompileOnly;
         }
-        public WallIntersectionType GetInterSection(Wall2D other, out Point3D intersectionPoint, out LinearPath centerLinePath)
+        public override void TransformBy(Transformation transform)
         {
-            intersectionPoint = null;
-            centerLinePath = null;
-            foreach (var otherCenterlineVertex in other.CenterlineVertices)
-            {
-                if (this.CenterlineVertices.Contains(otherCenterlineVertex))
-                {
-                    intersectionPoint = otherCenterlineVertex;
-                    if (intersectionPoint == this.StartPoint && intersectionPoint == other.StartPoint)
-                    {
-                        if (intersectionPoint == other.StartPoint)
-                        {
-                            var points = new List<Point3D>() { this.EndPoint, intersectionPoint, other.EndPoint };
-                            centerLinePath = new LinearPath(points.ToArray());
-                        }
-                        else
-                        {
-                            var points = new List<Point3D>() { this.EndPoint, intersectionPoint, other.StartPoint };
-                            centerLinePath = new LinearPath(points.ToArray());
-                        }
-                    }
-                    else if (intersectionPoint == this.EndPoint)
-                    {
-                        if (intersectionPoint == other.StartPoint)
-                        {
-                            var points = new List<Point3D>() { this.StartPoint, intersectionPoint, other.EndPoint };
-                            centerLinePath = new LinearPath(points.ToArray());
-                        }
-                        else
-                        {
-                            var points = new List<Point3D>() { this.StartPoint, intersectionPoint, other.StartPoint };
-                            centerLinePath = new LinearPath(points.ToArray());
-                        }
-                    }
-                    return WallIntersectionType.AtVertice;
-                }
-            }
-            return WallIntersectionType.None;
+            //base.TransformBy(transform);
+            var beamLine = new Line(this.OuterStartPoint, this.OuterEndPoint);
+            beamLine.TransformBy(transform);
+            this._outerStartPoint = beamLine.StartPoint;
+            this._outerEndPoint = beamLine.EndPoint;
+            this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint, false);
         }
+        public override void Translate(double dx, double dy, double dz = 0)
+        {
+            var joistLine = new Line((Point3D)this.OuterStartPoint.Clone(), (Point3D)this.OuterEndPoint.Clone());
+            joistLine.Translate(dx, dy, dz);
+            this._outerStartPoint = joistLine.StartPoint;
+            this._outerEndPoint = joistLine.EndPoint;
+            this.RegenFramingGeometry(OuterStartPoint, OuterEndPoint);
+        }
+        public bool Project(Point3D point, out double t)
+        {
+            Segment3D segment = new Segment3D(this.OuterStartPoint, this.OuterEndPoint);
+            Line joistLine = new Line(this.OuterStartPoint, this.OuterEndPoint);
+            return joistLine.Project(point, out t);
+        }
+        public Point3D PointAt(double t)
+        {
+            var joitsLine = new Line(OuterStartPoint, OuterEndPoint);
+            return joitsLine.PointAt(t);
+        }
+        public Beam2D Offset(double amount, Vector3D planeNormal, double tolerance, bool sharp)
+        {
+            Beam2D framing = (Beam2D)Clone();
+            Line framingLine = new Line(framing.OuterStartPoint, framing.OuterEndPoint);
+            Vector3D vector3D = Vector3D.Cross(framingLine.Tangent, planeNormal);
+            vector3D.Normalize();
+            Vector3D v = vector3D * amount;
+            framingLine.Translate(v);
+            framing.OuterStartPoint = framingLine.StartPoint;
+            framing.OuterEndPoint = framingLine.EndPoint;
+            return framing;
+        }
+        public Beam2D Offset(double amount, Vector3D planeNormal)
+        {
+            return this.Offset(amount, planeNormal, 0.0, false);
+        }
+        
         public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {
-            return new Beam2DVm(this,entitiesManager);
+            return new Beam2DVm(this, entitiesManager);
         }
 
-        private void UpdateDistance()
+        public override EntitySurrogate ConvertToSurrogate()
         {
-            if (this.OuterStartPoint != null && this.OuterEndPoint != null)
-            {
-                this.FullLength = OuterStartPoint.DistanceTo(OuterEndPoint);
-                if (this.BeamReference != null)
-                {
-                    //this.JoistReference.FullLength = (int)FullLength;
-                }
-            }
+            return new Beam2DSurrogate(this);
+        }
+
+        public void SetFlippedOutriggerA(bool outTriggerAFlipped)
+        {
+            _outTriggerAFlipped = outTriggerAFlipped;
+        }
+        public void SetFlippedOutriggerB(bool outTriggerBFlipped)
+        {
+            _outTriggerBFlipped = outTriggerBFlipped;
+        }
+        public override object Clone()
+        {
+            return new Beam2D(this);
         }
     }
 }

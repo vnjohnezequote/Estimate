@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+
+using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using devDept.Eyeshot;
 using Prism.Mvvm;
 
@@ -21,6 +19,7 @@ namespace AppModels.AppData
         private bool _visible;
         private bool _selectAble;
         private Color _color;
+        
 
         public bool IsSelected
         {
@@ -42,7 +41,6 @@ namespace AppModels.AppData
             set=>SetProperty(ref _locked, value);
 
         }
-
         public bool Visible
         {
             get=>_visible;
@@ -124,7 +122,7 @@ namespace AppModels.AppData
             Locked = layer.Locked;
             Visible = layer.Visible;
             Color = layer.Color;
-           InitCompnent();
+            InitCompnent();
             
         }
 

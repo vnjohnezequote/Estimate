@@ -15,12 +15,12 @@ namespace AppModels.PocoDataModel.Openings
     {
         public Suppliers Supplier { get; set; }
         public SupportType PointSupportType { get; set; }
-        public int SupportReferenceId { get; set; }
-        public int EngineerMemberInfoId { get ; set; }
+        public Guid SupportReferenceId { get; set; }
+        public Guid EngineerMemberInfoId { get ; set; }
         public List<SupportPointPoco> LoadPointSupports { get; }
             = new List<SupportPointPoco>();
         public int SupportHeight { get; set; }
-        public BeamType Type { get; set; }
+        public FramingTypes FramingType { get; set; }
         public int Id { get; set ; }
         public string Name { get; set ; }
         public string StandardDoorJambSupport { get; set ; }
@@ -44,20 +44,19 @@ namespace AppModels.PocoDataModel.Openings
                 SupportReferenceId = lintelInfo.SupportReference.Id;
             }
 
-            if (lintelInfo.EngineerMemberInfo!=null)
+            if (lintelInfo.EngineerMember!=null)
             {
-                EngineerMemberInfoId = lintelInfo.EngineerMemberInfo.Id;
+                EngineerMemberInfoId = lintelInfo.EngineerMember.Id;
             }
             IninitializerLoadPointSupport(lintelInfo.LoadPointSupports.ToList());
             SupportHeight = lintelInfo.SupportHeight;
-            Type = lintelInfo.Type;
-            Id = lintelInfo.Id;
+            FramingType = lintelInfo.FramingType;
+            Id = lintelInfo.Index;
             Name = lintelInfo.Name;
             StandardDoorJambSupport = lintelInfo.StandardDoorJambSupport;
             NoItem = lintelInfo.NoItem;
             Thickness = lintelInfo.Thickness;
             Depth = lintelInfo.Depth;
-            MaterialType = lintelInfo.MaterialType;
             TimberGrade = lintelInfo.TimberGrade;
             ExtraLength = lintelInfo.ExtraLength;
 

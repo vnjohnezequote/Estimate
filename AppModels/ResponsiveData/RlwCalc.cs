@@ -18,7 +18,7 @@ namespace AppModels.ResponsiveData
     public class RlwCalc : BindableBase
     {
         /// <summary>
-        /// Gets or sets the Id
+        /// Gets or sets the Index
         /// </summary>
         public int Id { get; set; }
 
