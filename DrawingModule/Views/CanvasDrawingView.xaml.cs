@@ -8,18 +8,15 @@ using AppModels.CustomEntity;
 using AppModels.EventArg;
 using AppModels.Factories;
 using AppModels.Interaface;
-using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Framings;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
-using DrawingModule.Control;
-using DrawingModule.CustomControl;
 using DrawingModule.CustomControl.PaperSpaceControl;
 using DrawingModule.Helper;
 using DrawingModule.ViewModels;
 using MathExtension;
 using Block = devDept.Eyeshot.Block;
-using Environment = devDept.Eyeshot.Environment;
 
 namespace DrawingModule.Views
 {
@@ -69,9 +66,10 @@ namespace DrawingModule.Views
                     _viewModel.JobModel.Info.PropertyChanged += Info_PropertyChanged;
                 }
             }
-            this.PaperSpace.WorkCompleted += TestPaperSpace_WorkCompleted;
+            this.PaperSpace.WorkCompleted += PaperSpace_WorkCompleted;
             this.TabControlDrawing.SelectionChanged += TabControlDrawing_SelectionChanged;
             Loaded += CanvasDrawingView_Loaded;
+            //this.CanvasDrawing.Wireframe
         }
 
         private void Info_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -162,7 +160,7 @@ namespace DrawingModule.Views
         }
         private bool IsFormatBlockReference(BlockReference blockReference)
         {
-            return blockReference is devDept.Eyeshot.Entities.View == false ;
+            return blockReference is View == false ;
                 //&& blockReference.Attributes.ContainsKey("Format")
         }
 
@@ -188,7 +186,7 @@ namespace DrawingModule.Views
 
             return null;
         }
-        private void TestPaperSpace_WorkCompleted(object sender, WorkCompletedEventArgs e)
+        private void PaperSpace_WorkCompleted(object sender, WorkCompletedEventArgs e)
         {
             if (_wallNameBuilder == null)
             {
@@ -197,7 +195,7 @@ namespace DrawingModule.Views
             }
             else
             {
-                if (_wallNameBuilder!=null)
+                if (_wallNameBuilder != null)
                 {
                     _wallNameBuilder.AddToDrawings();
                 }
@@ -244,7 +242,7 @@ namespace DrawingModule.Views
                 }
             }
 
-            
+
         }
 
 
@@ -261,6 +259,32 @@ namespace DrawingModule.Views
             //AddSheet("Sheet1", linearUnitsType.Millimeters, formatType.A4_ISO);
         }
 
+        public void AddSheet(FramingSheet framingSheet, linearUnitsType units, formatType formatType, IJob job,
+            bool addDefaultView = true)
+        {
+            Tuple<double, double> size = DrawingHelper.GetFormatSize(units, formatType);
+            CustomSheet sheet = null;
+            if (this._viewModel != null && this._viewModel.JobModel != null)
+            {
+                sheet = new CustomSheet(units, size.Item1, size.Item2, framingSheet, _viewModel.JobModel);
+            }
+            else
+            {
+                sheet = new CustomSheet(units, size.Item1, size.Item2, framingSheet);
+            }
+            //Sheet sheet = new Sheet(units,size.Item1,size.Item2,name);
+
+            Block block;
+            BlockReference br = CreateFormatBlock(formatType, sheet, out block, job);
+
+            this.PaperSpace.Blocks.Add(block);
+
+            sheet.Entities.Add(br);  // not possible adding the entity to Drawings because the control handle is not created yet. it will be added when this sheet will be set as the active one.
+            this.PaperSpace.Sheets.Add(sheet);
+
+            // adds a set of default views.
+            AddDefaultViews(sheet);
+        }
 
         public void AddSheet(string name, linearUnitsType units, formatType formatType, IJob job, bool addDefaultView = true)
         {

@@ -15,6 +15,8 @@ namespace AppModels.CustomEntity
     public sealed class Hanger2D: Text,IEntityVmCreateAble,IFraming2D
     {
         private IFraming _framingReference;
+        public Guid FramingSheetId { get; set; }
+
         public IFraming FramingReference
         {
             get => _framingReference;
@@ -30,19 +32,22 @@ namespace AppModels.CustomEntity
         public double FullLength { get; set; }
         
         public Guid Id{ get; set; }
+        public Guid LevelId { get; set; }
         public Guid FramingReferenceId { get; set; }
         
         
         public Hanger2D(Point3D insPoint, string textString, double height,Hanger reference) : base(insPoint, textString, height)
         {
             Id = Guid.NewGuid();
+            LevelId = reference.LevelId;
+            FramingSheetId = reference.FramingSheetId;
             FramingReference = reference;
             this.TextString = reference.Name;
         }
-        public Hanger2D(Point3D insPoint, string textString, double height):base(insPoint,textString, height)
-        {
+        //public Hanger2D(Point3D insPoint, string textString, double height):base(insPoint,textString, height)
+        //{
             
-        }
+        //}
 
         public Hanger2D(Text another) : base(another)
         {

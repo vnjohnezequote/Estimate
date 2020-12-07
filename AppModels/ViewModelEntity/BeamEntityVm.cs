@@ -118,7 +118,7 @@ namespace AppModels.ViewModelEntity
                 }
                 else
                 {
-                    return BeamMarkedLocation.top;
+                    return BeamMarkedLocation.Top;
                 }
             }
             set

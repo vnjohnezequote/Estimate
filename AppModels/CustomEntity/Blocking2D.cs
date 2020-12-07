@@ -22,6 +22,9 @@ namespace AppModels.CustomEntity
         #region Properties
         #endregion
         public Guid Id { get; set; }
+        public Guid LevelId { get; set; }
+        public Guid FramingSheetId { get; set; }
+
         public IFraming FramingReference
         {
             get => _framingReference;
@@ -61,6 +64,8 @@ namespace AppModels.CustomEntity
         public Blocking2D(Point3D insPoint,Blocking blockingRef, string textString = "B-B", double height = 225) : base(insPoint, textString, height)
         {
             Id = Guid.NewGuid();
+            LevelId = blockingRef.LevelId;
+            FramingSheetId = blockingRef.FramingSheetId;
             Color = Color.DarkGoldenrod;
             ColorMethod = colorMethodType.byEntity;
             this.Alignment = alignmentType.MiddleCenter;
@@ -79,6 +84,18 @@ namespace AppModels.CustomEntity
                 else
                 {
                     this.TextString = FramingReference.Name+"-"+FramingReference.Name;
+                }
+            }
+
+            if (e.PropertyName == "Name")
+            {
+                if (((Blocking)FramingReference).BlockingType == BlockingTypes.SingleBlocking)
+                {
+                    this.TextString = FramingReference.Name;
+                }
+                else
+                {
+                    this.TextString = FramingReference.Name + "-" + FramingReference.Name;
                 }
             }
         }

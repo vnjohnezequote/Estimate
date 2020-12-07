@@ -66,7 +66,7 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
             SetOutTriggerType(Parrent.FramingType);
             
         }
-        public OutTrigger(OutTriggerPoco outTrigger,LevelWall level, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(outTrigger,level, timberList,engineerMemberInfos)
+        public OutTrigger(OutTriggerPoco outTrigger,FramingSheet framingSheet, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(outTrigger,framingSheet, timberList,engineerMemberInfos)
         {
         }
         public OutTrigger(OutTrigger another) : base(another) { }

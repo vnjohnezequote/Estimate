@@ -134,7 +134,22 @@ namespace DrawingModule.ViewModels
             CanvasDrawingMouseEnter = new DelegateCommand(OnCanvasDrawingMouseEnter);
             this.EventAggregator.GetEvent<CommandExcuteStringEvent>().Subscribe(ExcuteCommand);
             this.EventAggregator.GetEvent<LevelNameService>().Subscribe(OnSelectedLevelChanged);
+            JobModel.PropertyChanged+= JobModelOnPropertyChanged;
             //this.EventAggregator.GetEvent<ScaleDrawingsChangedEvent>().Subscribe(OnDrawingScaleChanged);
+        }
+
+        private void JobModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(JobModel.ActiveFloorSheet))
+            {
+                foreach (var paperSpaceSheet in _paperSpace.Sheets)
+                {
+                    if (paperSpaceSheet.Name == JobModel.ActiveFloorSheet.Name)
+                    {
+                        _paperSpace.ActiveSheet = _paperSpace.Sheets[JobModel.ActiveFloorSheet.Name];
+                    }
+                }
+            }
         }
 
         private void OnDrawingScaleChanged(string scale)

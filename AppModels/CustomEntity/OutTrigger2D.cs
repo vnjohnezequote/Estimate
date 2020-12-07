@@ -50,12 +50,15 @@ namespace AppModels.CustomEntity
             _insizeLength = inSizeLength;
             _outSizeLength = outSizeLength;
         }
-
+        public OutTrigger2D(Point3D outerStartPoint, Point3D outerEndPoint, int thickness,bool flipped) : base(outerStartPoint,outerEndPoint,thickness,flipped)
+        {
+           
+        }
         public OutTrigger2D(OutTrigger2D another) : base(another)
         {
-            _insizeLength = this.InSizeLength;
-            _outSizeLength = this.OutSizeLength;
-            Flipped = this.Flipped;
+            _insizeLength = another.InSizeLength;
+            _outSizeLength = another.OutSizeLength;
+            Flipped = another.Flipped;
         }
         public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {

@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Animation;
-using AppModels.CustomEntity;
 using AppModels.Database;
 using AppModels.Enums;
 using AppModels.Interaface;
@@ -174,7 +168,7 @@ namespace AppModels.ResponsiveData.Framings
                         hangerMat = mat;
                     }
                 }
-                var hanger = new Hanger(hangerPoco,Level, hangerMat);
+                var hanger = new Hanger(hangerPoco,this, hangerMat);
                 this.Hangers.Add(hanger);
             }
 
@@ -183,7 +177,7 @@ namespace AppModels.ResponsiveData.Framings
         {
             foreach (var outTriggerPoco in outTriggers)
             {
-                var outTrigger = new OutTrigger(outTriggerPoco, this.Level, timberList,
+                var outTrigger = new OutTrigger(outTriggerPoco, this, timberList,
                     Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
                 this.OutTriggers.Add(outTrigger);
             }
@@ -193,7 +187,7 @@ namespace AppModels.ResponsiveData.Framings
         {
             foreach (var joistPoco in joists)
             {
-                var joist = new Joist(joistPoco,Level,timbersList,Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
+                var joist = new Joist(joistPoco,this,timbersList,Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
                 joist.LoadHangers(Hangers.ToList(),joistPoco);
                 joist.LoadOutTriggers(OutTriggers.ToList(),joistPoco);
                 Joists.Add(joist);
@@ -204,7 +198,7 @@ namespace AppModels.ResponsiveData.Framings
         {
             foreach (var beamPoco in beams)
             {
-                var fBeam = new FBeam(beamPoco, Level,timbersList,Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
+                var fBeam = new FBeam(beamPoco, this,timbersList,Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
                 fBeam.LoadHangers(Hangers.ToList(), beamPoco);
                 fBeam.LoadOutTriggers(OutTriggers.ToList(), beamPoco);
                 Beams.Add(fBeam);
@@ -215,7 +209,7 @@ namespace AppModels.ResponsiveData.Framings
         {
             foreach (var blockingPoco in blockings)
             {
-                var blocking = new Blocking.Blocking(blockingPoco, Level,timberList,Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
+                var blocking = new Blocking.Blocking(blockingPoco, this,timberList,Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
                 Blockings.Add(blocking);
             }
         }

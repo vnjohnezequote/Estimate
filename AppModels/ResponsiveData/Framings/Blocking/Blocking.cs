@@ -12,7 +12,6 @@ namespace AppModels.ResponsiveData.Framings.Blocking
         #region Field
 
         private BlockingTypes _blockingType;
-        private int _quantities;
         #endregion
 
         #region Properties
@@ -35,16 +34,11 @@ namespace AppModels.ResponsiveData.Framings.Blocking
             {
                 SetProperty(ref _blockingType, value);
                 RaisePropertyChanged(nameof(NoOfBlocking));
+                SetQuantities();
             } 
         }
 
         public int NoOfBlocking => BlockingType == BlockingTypes.SingleBlocking ? 1 : 2;
-
-        public int Quantities
-        {
-            get=>_quantities;
-            set=>SetProperty(ref _quantities,value);
-        }
         public Blocking():base()
         {
             
@@ -56,12 +50,23 @@ namespace AppModels.ResponsiveData.Framings.Blocking
             FramingType = FramingTypes.Blocking;
         }
 
-        public Blocking(BlockingPoco blockingPoco,LevelWall level, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos):base(blockingPoco,level,timberList,engineerMemberInfos)
+        public Blocking(BlockingPoco blockingPoco,FramingSheet framingSheet, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos):base(blockingPoco,framingSheet,timberList,engineerMemberInfos)
         {
             BlockingType = blockingPoco.BlockingType;
             FramingType = FramingTypes.Blocking;
         }
 
+        private void SetQuantities()
+        {
+            if (BlockingType == BlockingTypes.SingleBlocking)
+            {
+                Quantity = 1;
+            }
+            else
+            {
+                Quantity = 2;
+            }
+        }
         #endregion
 
     }

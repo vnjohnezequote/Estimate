@@ -24,7 +24,7 @@ namespace AppModels.ResponsiveData.Framings
         private int _fullLength;
         private string _timberGrade;
         private FramingTypes _framingType;
-        private int _quantitity;
+        private int _quantity;
         private EngineerMemberInfo _engineerMember;
         private int _subFixIndex;
 
@@ -196,7 +196,7 @@ namespace AppModels.ResponsiveData.Framings
             }
         }
         public abstract double QuoteLength { get; }
-        public int Quantity { get => _quantitity; set => SetProperty(ref _quantitity, value); }
+        public int Quantity { get => _quantity; set => SetProperty(ref _quantity, value); }
         public EngineerMemberInfo EngineerMember
         {
             get => _engineerMember;
@@ -291,7 +291,17 @@ namespace AppModels.ResponsiveData.Framings
             Level = another.Level;
         }
 
-        public FramingBase(FramingBasePoco framingPoco,LevelWall level, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMembers)
+        protected FramingBase(FramingBasePoco framingPoco,FramingSheet framingSheet, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMembers):this(framingPoco, timberList, engineerMembers)
+        {
+           if (framingSheet!=null)
+           {
+               FramingSheet = framingSheet;
+               Level = framingSheet.Level;
+           }
+           
+        }
+
+        protected FramingBase(FramingBasePoco framingPoco, List<TimberBase> timberList, List<EngineerMemberInfo> engineerMembers)
         {
             PropertyChanged += FramingBasePropertyChanged;
             Id = framingPoco.Id;
@@ -307,17 +317,16 @@ namespace AppModels.ResponsiveData.Framings
             ExtraLength = framingPoco.ExtraLength;
             Pitch = framingPoco.Pitch;
             TimberGrade = framingPoco.TimberGrade;
-            Level = level;
-            EngineerMember = InitEngineerInfo(framingPoco,engineerMembers);
-            FramingInfo = InitFramingInfo(framingPoco,timberList);
+            EngineerMember = InitEngineerInfo(framingPoco, engineerMembers);
+            FramingInfo = InitFramingInfo(framingPoco, timberList);
         }
         #endregion
 
         #region protected Method
 
-       
 
-       
+
+
         #endregion
 
         #region Public Method

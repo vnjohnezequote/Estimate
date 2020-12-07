@@ -76,7 +76,11 @@ namespace AppModels
                 var wallRef = wallName.Value;
                 var wallSheet = wallName.Key;
                 var wallBlock =GeneralWallList(wallRef,wallSheet,worker);
-                _wallNameBlockDict.Add(wallRef, wallBlock);
+                if (wallBlock!=null)
+                {
+                    _wallNameBlockDict.Add(wallRef, wallBlock);
+                }
+                
                 if (base.Cancelled(worker,null))
                 {
                     this._queueType = (QueueType) 2;
@@ -132,7 +136,8 @@ namespace AppModels
                 var wallBoxMin = wallFloorName.BoxMin;
                 if (!_drawings.TextStyles.Contains("FloorHeader"))
                 {
-                    _drawings.TextStyles.Add("FloorHeader",new TextStyle("FloorHeader","Areal",FontStyle.Underline));
+                    _drawings.TextStyles.Add(new TextStyle("FloorHeader","Areal",FontStyle.Underline));
+                    
                 }
                 //_drawings.TextStyles["Default"].Style = FontStyle.Underline;
                 wallFloorName.StyleName = "FloorHeader";

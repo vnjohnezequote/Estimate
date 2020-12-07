@@ -175,7 +175,8 @@ namespace AppModels.ResponsiveData
 		#region Public Method
 
 		public void LoadLevelInfo(LevelWallPoco level,ClientPoco client)
-		{
+        {
+            Id = level.Id;
             LevelName = level.LevelName;
 			TotalWallLength = level.TotalWallLength;
 			LintelLm = level.LintelLm;
@@ -227,15 +228,19 @@ namespace AppModels.ResponsiveData
             foreach (var framingSheetPoco in framingSheets)
             {
                 var framingSheet = new FramingSheet(framingSheetPoco,this,client);
-                //framingSheet.LoadFramingSheet(framingSheetPoco,client);
-				FramingSheets.Add(framingSheet);
+                FramingSheets.Add(framingSheet);
             }
         }
 		private void InitializerRoofBeams(List<BeamPoco> roofBeams,ClientPoco client)
 		{
 			foreach (var roofBeam in roofBeams)
-			{
-                client.Beams.TryGetValue(roofBeam.TimberGrade, out var timberList);
+            {
+                var timberGrade = string.Empty;
+                if (!string.IsNullOrEmpty(roofBeam.TimberGrade))
+                {
+                    timberGrade = roofBeam.TimberGrade;
+                }
+				client.Beams.TryGetValue(timberGrade, out var timberList);
                 var rBeam = new Beam(roofBeam, this, timberList,
                     LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
                 rBeam.LoadWallSupportBeam(this.WallLayers.ToList(),roofBeam);

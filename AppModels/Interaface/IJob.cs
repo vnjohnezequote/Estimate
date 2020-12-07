@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
@@ -8,7 +9,7 @@ using AppModels.ResponsiveData.Openings;
 
 namespace AppModels.Interaface
 {
-    public interface IJob
+    public interface IJob: INotifyPropertyChanged
     {
         JobInfo Info { get; }
         GlobalWallInfo GlobalWallInfo { get; }

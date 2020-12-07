@@ -221,6 +221,9 @@
     <Compile Include="EventArg\EntityEventArgs.cs" />
     <Compile Include="ExportData\ExportDoorData.cs" />
     <Compile Include="ExportData\ExportWallData.cs" />
+    <Compile Include="ExportData\FrameData\FrameData.cs" />
+    <Compile Include="ExportData\FrameData\FrameJob.cs" />
+    <Compile Include="ExportData\FrameData\FramingList.cs" />
     <Compile Include="ExportData\WarnervaleExcelDataRangeIndex.cs" />
     <Compile Include="ExportData\WarnervaleExportData.cs" />
     <Compile Include="ExportData\WarnervaleSheetFile.cs" />

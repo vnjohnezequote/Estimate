@@ -14,9 +14,9 @@ namespace AppModels.CustomEntity
     public class FramingRectangle2D : PlanarEntity, IRectangleSolid, IFraming2D
     {
         private Point3D _outerStartPoint;
-        private Point3D _innerStartPoint;
+        //private Point3D _innerStartPoint;
         private Point3D _outerEndPoint;
-        private Point3D _innerEndPoint;
+        //private Point3D _innerEndPoint;
         private IFraming _framingReference;
         private int _thickness;
 
@@ -38,15 +38,15 @@ namespace AppModels.CustomEntity
                 this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint);
             }
         }
-        public Point3D InnerStartPoint
-        {
-            get => _innerStartPoint;
-            set
-            {
-                _innerStartPoint = value;
-                this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint);
-            }
-        }
+        public Point3D InnerStartPoint { get; set; }
+        //{
+        //    get => _innerStartPoint;
+        //    set
+        //    {
+        //        _innerStartPoint = value;
+        //        this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint);
+        //    }
+        //}
         public Point3D OuterEndPoint
         {
             get => _outerEndPoint;
@@ -60,16 +60,16 @@ namespace AppModels.CustomEntity
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-        public Point3D InnerEndPoint
-        {
-            get => _innerEndPoint;
-            set
-            {
-                _innerEndPoint = value;
-                this.RegenMode = regenType.RegenAndCompile;
-            }
+        public Point3D InnerEndPoint { get; set; }
+        //{
+        //    get => _innerEndPoint;
+        //    set
+        //    {
+        //        _innerEndPoint = value;
+        //        this.RegenMode = regenType.RegenAndCompile;
+        //    }
 
-        }
+        //}
         public Point3D MidPoint => Point3D.MidPoint(StartPoint, EndPoint);
         public int Thickness
         {
@@ -101,7 +101,7 @@ namespace AppModels.CustomEntity
         }
         public Guid FramingReferenceId { get; set; }
         public List<Point3D> FramingVertices { get; set; } = new List<Point3D>();
-        public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
+        //public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
         public double FullLength
         {
             get
@@ -115,9 +115,7 @@ namespace AppModels.CustomEntity
             }
             set{}
         }
-
         
-
         #region Constructor
 
         public FramingRectangle2D(Point3D outerStartPoint, Point3D outerEndPoint, FramingBase framingReference, int thickness = 90, bool flipped = false) : base(Plane.XY)
@@ -130,14 +128,15 @@ namespace AppModels.CustomEntity
             _outerEndPoint = outerEndPoint;
             Flipped = flipped;
             FramingReference = framingReference;
+            FramingReferenceId = framingReference.Id;
             InitFramingGeometry(_outerStartPoint, _outerEndPoint, flipped);
         }
-        public FramingRectangle2D(Point3D outerStartPoint, Point3D outerEndPoint, int thickness) : base(Plane.XY)
+        public FramingRectangle2D(Point3D outerStartPoint, Point3D outerEndPoint, int thickness,bool flipped) : base(Plane.XY)
         {
             this._outerStartPoint = outerStartPoint;
-            this.OuterEndPoint = outerEndPoint;
+            this._outerEndPoint = outerEndPoint;
             _thickness = thickness;
-            InitFramingGeometry(_outerStartPoint, _outerEndPoint);
+            InitFramingGeometry(_outerStartPoint, _outerEndPoint,flipped);
         }
 
         protected FramingRectangle2D(FramingRectangle2D another) : base(another)
@@ -145,17 +144,15 @@ namespace AppModels.CustomEntity
             Id = Guid.NewGuid();
             LevelId = another.LevelId;
             FramingSheetId = another.FramingSheetId;
-            _thickness = another.Thickness;
+           _thickness = another.Thickness;
             _outerStartPoint = (Point3D)another.OuterStartPoint.Clone();
             _outerEndPoint = (Point3D)another.OuterEndPoint.Clone();
-            _innerStartPoint = (Point3D)another.InnerStartPoint.Clone();
-            _innerEndPoint = (Point3D)another.InnerEndPoint.Clone();
+            InnerStartPoint = (Point3D)another.InnerStartPoint.Clone();
+            InnerEndPoint = (Point3D)another.InnerEndPoint.Clone();
             StartPoint = (Point3D)another.StartPoint.Clone();
             EndPoint = (Point3D)another.EndPoint.Clone();
             FramingReference = (FramingBase)another.FramingReference.Clone();
             FramingReferenceId = FramingReference.Id;
-            //this.FullLength = another.FullLength;
-            //RegenMode = regenType.RegenAndCompile;
         }
 
 
@@ -190,8 +187,8 @@ namespace AppModels.CustomEntity
             }
             var outerLine = new Segment2D(OuterStartPoint, OuterEndPoint);
             var interLine = outerLine.Offset(Thickness * flippedFactor);
-            _innerStartPoint = interLine.P0.ConvertPoint2DtoPoint3D();
-            _innerEndPoint = interLine.P1.ConvertPoint2DtoPoint3D();
+            InnerStartPoint = interLine.P0.ConvertPoint2DtoPoint3D();
+            InnerEndPoint = interLine.P1.ConvertPoint2DtoPoint3D();
             var centerLine = outerLine.Offset((double)Thickness * flippedFactor / 2);
             centerLine.ExtendBy(-(double)Thickness / 2, -(double)Thickness / 2);
             StartPoint = centerLine.P0.ConvertPoint2DtoPoint3D();

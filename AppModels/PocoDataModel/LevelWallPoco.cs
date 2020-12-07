@@ -66,6 +66,7 @@ namespace AppModels.PocoDataModel
         }
         public LevelWallPoco(LevelWall level)
         {
+            Id = level.Id;
             LevelName = level.LevelName;
             TotalWallLength = level.TotalWallLength;
             LintelLm = level.LintelLm;

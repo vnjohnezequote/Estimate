@@ -42,7 +42,7 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
         {
 
         }
-        public Joist(JoistPoco joistPoco,LevelWall level, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(joistPoco, level,timberList,engineerMemberInfos)
+        public Joist(JoistPoco joistPoco,FramingSheet framingSheet, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(joistPoco, framingSheet,timberList,engineerMemberInfos)
         {
 
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using AppModels.CustomEntity;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.Framings;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -32,9 +34,32 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
         private IJob _job;
         private Point3D _logoInsertPoint;
         private PictureEntity _logoEntity;
+        private FramingSheet _framingSheet;
         #endregion
 
         #region Properties
+        //public Guid FramingSheetId { get; set; }
+        //public string FramingSheetName { get; set; }
+
+        public FramingSheet FramingSheet
+        {
+            get => _framingSheet;
+            set
+            {
+                _framingSheet = value;
+                _framingSheet.PropertyChanged+=FramingSheetOnPropertyChanged;
+            }
+            
+        }
+
+        private void FramingSheetOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(FramingSheet.Name))
+            {
+                //FramingSheetName = FramingSheet.Name;
+                this.Name = FramingSheet.Name;
+            }
+        }
 
         public IJob Job
         {
@@ -50,6 +75,18 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
 
         public CustomSheet(linearUnitsType units, double width, double height, string name) : base(units, width, height, name)
         {
+        }
+        public CustomSheet(linearUnitsType units, double width, double height, FramingSheet framingSheet) : base(units, width, height, framingSheet.Name)
+        {
+        }
+
+        public CustomSheet(linearUnitsType units, double width, double height, FramingSheet framingSheet, IJob jobInfo) : base(units, width,
+            height, framingSheet.Name)
+        {
+            FramingSheet = framingSheet;
+            //FramingSheetId = framingSheet.Id;
+            //FramingSheetName = framingSheet.Name;
+
         }
         public CustomSheet(linearUnitsType units, double width, double height, string name,IJob jobInfo) : base(units, width, height, name)
         {

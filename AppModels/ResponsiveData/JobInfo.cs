@@ -48,8 +48,8 @@ namespace AppModels.ResponsiveData
         private NoggingMethodType _noggingMethod;
         private int _raisedCeilingHeight;
         private CeilingBattensType _ceilingBattenType;
-        private string _jobAddress;
-        private string _subAddress;
+        private string _jobAddress=string.Empty;
+        private string _subAddress=string.Empty;
         private ClientPoco _client;
 
         /*** Bo sung thuoc tinh ***/

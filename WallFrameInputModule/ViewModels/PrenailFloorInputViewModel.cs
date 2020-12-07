@@ -15,6 +15,7 @@ using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels.Enums;
 using AppModels.ExportData;
+using AppModels.ExportData.FrameData;
 using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
@@ -64,6 +65,8 @@ namespace WallFrameInputModule.ViewModels
         /// The start item id.
         /// </summary>
         private int _startItemId;
+
+        private FramingSheet _activeFloorSheet;
 
         private Opening _selectedDoor;
 
@@ -118,6 +121,16 @@ namespace WallFrameInputModule.ViewModels
                 if (JobModel.Info.QuoteFloorFrame)
                     return Visibility.Visible;
                 else return Visibility.Collapsed;
+            }
+        }
+
+        public FramingSheet ActiveFloorSheet
+        {
+            get => _activeFloorSheet;
+            set
+            {
+                SetProperty(ref _activeFloorSheet, value);
+                JobModel.ActiveFloorSheet = value;
             }
         }
 
@@ -219,6 +232,7 @@ namespace WallFrameInputModule.ViewModels
                 }
             }
         }
+        
         private void AddNewFloorSheet()
         {
             var floorSheet = new FramingSheet(this.Level);
@@ -310,9 +324,52 @@ namespace WallFrameInputModule.ViewModels
                 {
                     ExportWarnervaleData();
                 }
+
+                if (this.JobModel.Info.QuoteFloorFrame)
+                {
+                    ExportDataToFloorFrame();
+                }
+
+                if (this.JobModel.Info.QuoteRafterFrame)
+                {
+                    ExportDataToRafterFrame();
+                }
             }
             
         }
+
+        private void ExportDataToFloorFrame()
+        {
+            var frameJobs = new List<FrameJob>();
+            if (JobModel.Levels!=null && JobModel.Levels.Count>0)
+            {
+                foreach (var level in JobModel.Levels)
+                {
+                    if (level.FramingSheets!=null && level.FramingSheets.Count>0)
+                    {
+                        foreach (var framingSheet in level.FramingSheets)
+                        {
+                            var frameJob = new FrameJob(JobModel, framingSheet);
+                            frameJobs.Add(frameJob);
+                        }
+                        
+                    }
+                }
+            }
+
+            foreach (var frameJob in frameJobs)
+            {
+                frameJob.ExportToExcel();
+            }
+            
+            
+        }
+
+        private void ExportDataToRafterFrame()
+        {
+
+        }
+
 
         private void ExportWarnervaleData()
         {

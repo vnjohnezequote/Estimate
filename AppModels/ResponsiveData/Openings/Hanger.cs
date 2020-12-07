@@ -18,7 +18,6 @@ namespace AppModels.ResponsiveData.Openings
         private HangerMat _hangerMat;
         private int _quantity;
         private string _name;
-        private FramingTypes _framingType;
         private int _index;
         private int _subFixIndex;
         private bool _isExisting;
@@ -97,7 +96,17 @@ namespace AppModels.ResponsiveData.Openings
             set {/***Not Implement***/ }
         }
         public int Quantity { get=>_quantity; set=>SetProperty(ref _quantity,value); }
-        public int Index { get => _index; set => SetProperty(ref _index, value); }
+
+        public int Index
+        {
+            get => _index;
+            set
+            {
+                SetProperty(ref _index, value);
+                RaisePropertyChanged(nameof(Name));
+            }
+            
+        }
         public EngineerMemberInfo EngineerMember { get; set; }
         
         
@@ -121,7 +130,7 @@ namespace AppModels.ResponsiveData.Openings
             Quantity = 1;
         }
 
-        public Hanger(HangerPoco hanger, LevelWall level,HangerMat hangerMat)
+        public Hanger(HangerPoco hanger, FramingSheet framingSheet,HangerMat hangerMat)
         {
             Id = hanger.Id;
             LevelId = hanger.LevelId;
@@ -130,7 +139,8 @@ namespace AppModels.ResponsiveData.Openings
             IsExisting = hanger.IsExisting;
             SubFixIndex = hanger.SubFixIndex;
             Index = hanger.Index;
-            Level = level;
+            FramingSheet = framingSheet;
+            Level = framingSheet.Level;
             Name = hanger.Name;
             Quantity = hanger.Quantity;
         }

@@ -641,7 +641,7 @@
                     <StackPanel>
                         <Button Content="Add New Floor Sheet" Command="{Binding AddNewFloorSheetCommand}"/>
                         <Button Content="Remove Floor Sheet" Command="{Binding RemoveFloorSheetCommand}"/>
-                        <TreeView x:Name="FramingSheetsTree"
+                        <!--<TreeView x:Name="FramingSheetsTree"
                                   ItemsSource="{Binding Level.FramingSheets}"
                                   DisplayMemberPath="Name">
                             <interactions:Interaction.Triggers>
@@ -650,7 +650,10 @@
                                                                       CommandParameter="{Binding ElementName=FramingSheetsTree,Path=SelectedItem}"/>
                                 </interactions:EventTrigger>
                             </interactions:Interaction.Triggers>
-                        </TreeView>
+                        </TreeView>-->
+                        <ListBox ItemsSource="{Binding Level.FramingSheets}"
+                                 SelectedItem="{Binding ActiveFloorSheet}"
+                                 DisplayMemberPath="Name"/>
                     </StackPanel>
                     <Border Width="1" Background="Black" Grid.Column="1"
                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
@@ -659,23 +662,23 @@
                             <DockPanel Width="500" HorizontalAlignment="Left">
                                 <TextBlock Text="Sheet Name" VerticalAlignment="Center"/>
                                 <ComboBox ItemsSource="{Binding Source={StaticResource FramingSheetTypes}}"
-                                          SelectedItem="{Binding JobModel.ActiveFloorSheet.FramingSheetType}"
+                                          SelectedItem="{Binding ActiveFloorSheet.FramingSheetType}"
                                           Width="150"/>
-                                <TextBox Text="{Binding JobModel.ActiveFloorSheet.Index}" Width="150"/>
+                                <TextBox Text="{Binding ActiveFloorSheet.Index}" Width="150"/>
                             </DockPanel>
                         </StackPanel>
                         <TextBlock Text="Joists"/>
-                        <syncfusion:SfDataGrid x:Name="FloorJoistGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Joists}"/>
+                        <syncfusion:SfDataGrid x:Name="FloorJoistGrid" ItemsSource="{Binding ActiveFloorSheet.Joists}"/>
                         <TextBlock Text="Beams"/>
-                        <syncfusion:SfDataGrid x:Name="FloorBeamstGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Beams}"/>
+                        <syncfusion:SfDataGrid x:Name="FloorBeamstGrid" ItemsSource="{Binding ActiveFloorSheet.Beams}"/>
                         <TextBlock Text="Outriggers"/>
-                        <syncfusion:SfDataGrid x:Name="OutTriggerGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.OutTriggers}"/>
+                        <syncfusion:SfDataGrid x:Name="OutTriggerGrid" ItemsSource="{Binding ActiveFloorSheet.OutTriggers}"/>
                         <TextBlock Text="Hangers"/>
-                        <syncfusion:SfDataGrid x:Name="HangersGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Hangers}"/>
+                        <syncfusion:SfDataGrid x:Name="HangersGrid" ItemsSource="{Binding ActiveFloorSheet.Hangers}"/>
                         <TextBlock Text ="Blockings"/>
-                        <syncfusion:SfDataGrid x:Name="BlockingGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.Blockings}"/>
+                        <syncfusion:SfDataGrid x:Name="BlockingGrid" ItemsSource="{Binding ActiveFloorSheet.Blockings}"/>
                         <TextBlock Text="TieDown"></TextBlock>
-                        <syncfusion:SfDataGrid x:Name="TieDownGrid" ItemsSource="{Binding JobModel.ActiveFloorSheet.TieDowns}"/>
+                        <syncfusion:SfDataGrid x:Name="TieDownGrid" ItemsSource="{Binding ActiveFloorSheet.TieDowns}"/>
 
                     </StackPanel>
                 </Grid>

@@ -56,8 +56,8 @@ namespace AppModels.CustomEntity
             
         }
 
-        public Joist2D(Point3D outerStartPoint, Point3D outerEndPoint, int thickness) : base(outerStartPoint,
-            outerEndPoint, thickness)
+        public Joist2D(Point3D outerStartPoint, Point3D outerEndPoint, int thickness,bool flipped) : base(outerStartPoint,
+            outerEndPoint, thickness,flipped)
         {
 
         }

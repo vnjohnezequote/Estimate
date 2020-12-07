@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using AppModels.CustomEntity;
+using AppModels.Interaface;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -53,14 +54,10 @@ namespace AppModels
             {
                 if (drawingsBlock.Name.Contains("View"))
                 {
-                    //floorBlocks.Add(drawingsBlock);
+                    floorBlocks.Add(drawingsBlock);
                     ReCalculatorFloorBlockColor(drawingsBlock);
                 }
             }
-            //foreach (var floorBlock in floorBlocks)
-            //{
-               
-            //}
         }
 
         private void ReCalculatorFloorBlockColor(Block floorBlock)
@@ -110,12 +107,39 @@ namespace AppModels
                             continue;
                         }
                     case BlockReference _:
+                        break;
+                    case Dimension _:
+                    case DoorCountEntity _:
                         continue;
-                }
-
-                if (modelEntity is Dimension || modelEntity is DoorCountEntity)
-                {
-                    continue;
+                    case Beam2D beam:
+                        var outerList = new List<Point2D>()
+                            {beam.OuterStartPoint, beam.OuterEndPoint, beam.InnerEndPoint, beam.InnerStartPoint,beam.OuterStartPoint};
+                        var beamQuad = Mesh.CreatePlanar(Plane.XY, outerList, Mesh.natureType.Plain);
+                        beamQuad.Color = beam.Color;
+                        beamQuad.ColorMethod = colorMethodType.byEntity;
+                        floorBlock.Entities.Add(beamQuad);
+                        continue;
+                    case IRectangleSolid rectangle:
+                        var outerList2 = new List<Point2D>()
+                            {rectangle.OuterStartPoint, rectangle.OuterEndPoint, rectangle.InnerEndPoint, rectangle.InnerStartPoint,rectangle.OuterStartPoint};
+                        //var quad = new Quad(Plane.XY, rectangle.OuterStartPoint, rectangle.OuterEndPoint, rectangle.InnerEndPoint,
+                        //    rectangle.InnerStartPoint);
+                        var quad = Mesh.CreatePlanar(Plane.XY, outerList2, Mesh.natureType.Plain);
+                        quad.Color = rectangle.Color;
+                        quad.ColorMethod = colorMethodType.byEntity;
+                        floorBlock.Entities.Add(quad);
+                        continue;
+                    case Hanger2D hanger:
+                        var hangerText = new Text(Plane.XY, hanger.InsertionPoint, hanger.TextString, hanger.Height,
+                            hanger.Alignment);
+                        hangerText.Color = hanger.Color;
+                        hangerText.ColorMethod = colorMethodType.byEntity;
+                        var hangerCirCle = new Circle(Plane.XY, hanger.InsertionPoint, hangerText.Height);
+                        hangerCirCle.Color = hanger.Color;
+                        hangerCirCle.ColorMethod = colorMethodType.byEntity;
+                        floorBlock.Entities.Add(hangerText);
+                        floorBlock.Entities.Add(hangerCirCle);
+                        continue;
                 }
                 var cloneEntitiy = modelEntity.Clone() as Entity;
                 if (cloneEntitiy != null)

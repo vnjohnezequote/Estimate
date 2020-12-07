@@ -26,7 +26,7 @@ namespace AppModels.CustomEntity
         private string _beamLineType;
         private string _clientName;
         private bool _supportWallOver;
-        private string _customAtrributeString;
+        private string _customAtrributeString=string.Empty;
         private string _beamName;
 
         public Line BeamLine { get; set; }
@@ -128,6 +128,9 @@ namespace AppModels.CustomEntity
             }
 
         }
+
+        public Guid FramingSheetId { get; set; }
+
         public IFraming FramingReference
         {
             get => _framingReference;
@@ -243,6 +246,9 @@ namespace AppModels.CustomEntity
         //    }
         //}
         public Guid Id { get; set; }
+
+        public Guid LevelId { get; set; }
+
         //public Guid LevelId { get; set; }
         //public Guid FramingSheetId { get; set; }
         //public Guid FramingReferenceId { get; }
@@ -275,12 +281,12 @@ namespace AppModels.CustomEntity
                     beamMarkAlignmentType = Text.alignmentType.MiddleCenter;
                     if (beamStartPoint.X < beamEndPoint.X)
                     {
-                        _beamMarkedLocation = BeamMarkedLocation.top;
+                        _beamMarkedLocation = BeamMarkedLocation.Top;
 
                     }
                     else
                     {
-                        _beamMarkedLocation = BeamMarkedLocation.bottom;
+                        _beamMarkedLocation = BeamMarkedLocation.Bottom;
                     }
                 }
                 else if (Math.Abs(beamStartPoint.X - beamEndPoint.X) < 0.001)
@@ -288,11 +294,11 @@ namespace AppModels.CustomEntity
 
                     if (beamStartPoint.Y > beamEndPoint.Y)
                     {
-                        _beamMarkedLocation = BeamMarkedLocation.right;
+                        _beamMarkedLocation = BeamMarkedLocation.Right;
                     }
                     else
                     {
-                        _beamMarkedLocation = BeamMarkedLocation.left;
+                        _beamMarkedLocation = BeamMarkedLocation.Left;
                     }
                 }
             }
@@ -375,25 +381,25 @@ namespace AppModels.CustomEntity
             beamNamePoint = null;
             switch (BeamMarkedLocation)
             {
-                case BeamMarkedLocation.top:
+                case BeamMarkedLocation.Top:
                     startPoint = new Point3D(BeamLine.MidPoint.X, BeamLine.MidPoint.Y + 50);
                     endPoint = new Point3D(BeamLine.MidPoint.X, BeamLine.MidPoint.Y + 1940);
                     beamNamePoint = new Point3D(BeamLine.MidPoint.X, BeamLine.MidPoint.Y + 2290);
                     BaseAttributePoint = beamNamePoint;
                     return Text.alignmentType.MiddleCenter;
-                case BeamMarkedLocation.bottom:
+                case BeamMarkedLocation.Bottom:
                     startPoint = new Point3D(BeamLine.MidPoint.X, BeamLine.MidPoint.Y - 50);
                     endPoint = new Point3D(BeamLine.MidPoint.X, BeamLine.MidPoint.Y - 1940);
                     beamNamePoint = new Point3D(BeamLine.MidPoint.X, BeamLine.MidPoint.Y - 2290);
                     BaseAttributePoint = beamNamePoint;
                     return Text.alignmentType.MiddleCenter;
-                case BeamMarkedLocation.right:
+                case BeamMarkedLocation.Right:
                     startPoint = new Point3D(BeamLine.MidPoint.X + 50, BeamLine.MidPoint.Y);
                     endPoint = new Point3D(BeamLine.MidPoint.X + 1940, BeamLine.MidPoint.Y);
                     beamNamePoint = new Point3D(BeamLine.MidPoint.X + 2290, BeamLine.MidPoint.Y);
                     BaseAttributePoint = beamNamePoint;
                     return Text.alignmentType.MiddleLeft;
-                case BeamMarkedLocation.left:
+                case BeamMarkedLocation.Left:
                     startPoint = new Point3D(BeamLine.MidPoint.X - 50, BeamLine.MidPoint.Y);
                     endPoint = new Point3D(BeamLine.MidPoint.X - 1940, BeamLine.MidPoint.Y);
                     beamNamePoint = new Point3D(BeamLine.MidPoint.X - 2290, BeamLine.MidPoint.Y);
@@ -506,7 +512,7 @@ namespace AppModels.CustomEntity
                 }
             }
 
-            if (BeamMarkedLocation == BeamMarkedLocation.top)
+            if (BeamMarkedLocation == BeamMarkedLocation.Top)
             {
                 wallMoveDisctance = supportWallMovement + treatmentMovement + continuesMovement + customMovement + lintelMovement;
                 lintelMoveDistance = supportWallMovement + treatmentMovement + continuesMovement + customMovement;

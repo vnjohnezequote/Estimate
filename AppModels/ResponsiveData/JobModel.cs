@@ -40,10 +40,11 @@ namespace AppModels.ResponsiveData
         /// The levels.
         /// </summary>
         private ObservableCollection<LevelWall> _levels;
-
         private FramingSheet _activeFloorSheet;
         private TimberBase _selectedJoistMaterial;
+        #region Property
 
+        #region MyRegion
         public FramingSheet ActiveFloorSheet
         {
             get => _activeFloorSheet;
@@ -52,13 +53,15 @@ namespace AppModels.ResponsiveData
                 SetProperty(ref _activeFloorSheet, value);
             }
         }
-        public bool CurrentIsLoadBearingWall { get=>_currentIsLoadBearingWall; set=>SetProperty(ref _currentIsLoadBearingWall,value); }
-        public int SelectedWallThickness { get=>_selectedWallThickness; set=>SetProperty(ref _selectedWallThickness, value); }
+        public bool CurrentIsLoadBearingWall { get => _currentIsLoadBearingWall; set => SetProperty(ref _currentIsLoadBearingWall, value); }
+        public int SelectedWallThickness { get => _selectedWallThickness; set => SetProperty(ref _selectedWallThickness, value); }
         #endregion
-        public bool CCMode { get=>_cCMode; set=>SetProperty(ref _cCMode,value); }
-        #region Property
-
+        public bool CCMode { get => _cCMode; set => SetProperty(ref _cCMode, value); }
+        
+        #endregion
+        
         #region Save Properties
+
         public JobInfo Info
         {
             get => this._inFor;
@@ -88,6 +91,7 @@ namespace AppModels.ResponsiveData
             this.Info = new JobInfo(this);
             GlobalWallInfo = new GlobalWallInfo(Info);
             this.Levels = new ObservableCollection<LevelWall>();
+            ActiveFloorSheet = null;
         }
 
         public void LoadJob(JobModelPoco jobLoaded,List<ClientPoco> clients)

@@ -34,7 +34,7 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Beam
         {
         }
 
-        public FBeam(FBeamPoco beamPoco, LevelWall level, List<TimberBase> timberList, List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco, level, timberList, engineerMemberInfos)
+        public FBeam(FBeamPoco beamPoco,FramingSheet framingSheet, List<TimberBase> timberList, List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco,framingSheet, timberList, engineerMemberInfos)
         {
         }
 

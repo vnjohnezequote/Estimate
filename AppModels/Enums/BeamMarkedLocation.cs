@@ -2,6 +2,6 @@
 {
     public enum BeamMarkedLocation
     {
-        top,bottom,left,right
+        Top,Bottom,Left,Right
     }
 }

@@ -94,7 +94,7 @@ namespace AppModels.ResponsiveData.Framings.Beams
         }
         public Suppliers? Supplier
         {
-            get => _supplier ?? GlobalInfo.GlobalInfo.Supplier;
+            get => _supplier ?? GlobalInfo?.GlobalInfo?.Supplier;
             set
             {
                 if (GlobalInfo?.GlobalInfo != null && GlobalInfo.GlobalInfo.Supplier == value)
@@ -360,27 +360,31 @@ namespace AppModels.ResponsiveData.Framings.Beams
             }
         }
 
+        public LevelWall Level { get; set; }
 
         #endregion
 
         #region Constructor
-        public BeamBase(FramingTypes beamType, LevelWall level)
+
+        protected BeamBase(FramingTypes beamType, LevelWall level)
         {
             Id = Guid.NewGuid();
             Quantity = 1;
             FramingType = beamType;
             InitGlobalInfor(level.LevelInfo);
             InitializedBeamSupportPoint();
-            IsExisting = false;
+            //IsExisting = false;
             PropertyChanged += FramingBasePropertyChanged;
         }
-        public BeamBase(FramingSheet framingSheet):base(framingSheet)
-        {
 
-        }
-        public BeamBase(BeamBasePoco beamPoco, LevelWall level, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco,level, timberList,engineerMemberInfos)
+        protected BeamBase(FramingSheet framingSheet):base(framingSheet)
         {
-            InitGlobalInfor(level.LevelInfo);
+            InitGlobalInfor(framingSheet.Level.LevelInfo);
+            InitializedBeamSupportPoint();
+        }
+        public BeamBase(BeamBasePoco beamPoco, FramingSheet framingSheet, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco,framingSheet, timberList,engineerMemberInfos)
+        {
+            InitGlobalInfor(framingSheet.Level.LevelInfo);
             Location = beamPoco.Location;
             PointSupportType = beamPoco.PointSupportType;
             Supplier = beamPoco.Suplier;
@@ -391,6 +395,11 @@ namespace AppModels.ResponsiveData.Framings.Beams
             LoadPointSupportInfo(beamPoco.LoadPointSupports, engineerMemberInfos);
         }
 
+        protected BeamBase(BeamPoco beamPoco, List<TimberBase> timberList, List<EngineerMemberInfo> engineerMemberInfos) :
+            base(beamPoco, timberList, engineerMemberInfos)
+        {
+
+        }
         protected BeamBase(BeamBase another) : base(another)
         {
             InitGlobalInfor(another.GlobalInfo);
@@ -567,7 +576,7 @@ namespace AppModels.ResponsiveData.Framings.Beams
             {
                 foreach (var wallBase in wallList)
                 {
-                    if (wallBase.Id == beam.WallReferenceID)
+                    if (wallBase.Id == beam.WallReferenceId)
                     {
                         this.WallReference = wallBase;
                     }

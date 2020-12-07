@@ -22,9 +22,9 @@ namespace AppModels.CustomEntity
     {
         #region private Field
         private Point3D _outerStartPoint;
-        private Point3D _innerStartPoint;
+        //private Point3D _innerStartPoint;
         private Point3D _outerEndPoint;
-        private Point3D _innerEndPoint;
+        //private Point3D _innerEndPoint;
         private IFraming _framingReference;
         private int _thickness;
         private bool _isBeamUnder;
@@ -34,7 +34,9 @@ namespace AppModels.CustomEntity
 
         #region Properties
         public Guid Id { get; set; }
-        
+        public Guid LevelId { get; set; }
+        public Guid FramingSheetId { get; set; }
+
         public Point3D StartPoint { get; set; }
         public Point3D EndPoint { get; set; }
         public Point3D OuterStartPoint
@@ -53,7 +55,11 @@ namespace AppModels.CustomEntity
         public Point3D InnerStartPoint { get; set; }
         //{
         //    get => _innerStartPoint;
-        //    set => _innerStartPoint = value;
+        //    set
+        //    {
+        //        _innerStartPoint = value;
+        //        this.RegenMode = regenType.RegenAndCompile;
+        //    }
         //}
         public Point3D OuterEndPoint
         {
@@ -65,7 +71,7 @@ namespace AppModels.CustomEntity
                 {
                     return;
                 }
-                this.RegenMode = regenType.RegenAndCompile;
+                this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint);
             }
         }
         public Point3D InnerEndPoint { get; set; }
@@ -109,7 +115,7 @@ namespace AppModels.CustomEntity
         }
         public Guid FramingReferenceId { get; set; }
         public List<Point3D> FramingVertices { get; set; } = new List<Point3D>();
-        public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
+        //public List<Point3D> CenterlineVertices { get; set; } = new List<Point3D>();
         public double FullLength
         {
             get
@@ -181,6 +187,8 @@ namespace AppModels.CustomEntity
             base(wallPlan, outerstartPoint, textHeight, Text.alignmentType.BaselineCenter)
         {
             Id = new Guid();
+            LevelId = beamRef.LevelId;
+            FramingSheetId = beamRef.FramingSheetId;
             _thickness = thickness;
             _outerStartPoint = outerstartPoint;
             _outerEndPoint = outerEndPoint;
@@ -197,11 +205,13 @@ namespace AppModels.CustomEntity
         public Beam2D(Beam2D another) : base(another)
         {
             Id = Guid.NewGuid();
+            LevelId = another.LevelId;
+            FramingSheetId = another.FramingSheetId;
             _thickness = another.Thickness;
             _outerStartPoint = (Point3D)another.OuterStartPoint.Clone();
             _outerEndPoint = (Point3D)another.OuterEndPoint.Clone();
-            _innerStartPoint = (Point3D)another.InnerStartPoint.Clone();
-            _innerEndPoint = (Point3D)another.InnerEndPoint.Clone();
+            InnerStartPoint = (Point3D)another.InnerStartPoint.Clone();
+            InnerEndPoint = (Point3D)another.InnerEndPoint.Clone();
             StartPoint = (Point3D)another.StartPoint.Clone();
             EndPoint = (Point3D)another.EndPoint.Clone();
             FramingReference = (FramingBase)another.FramingReference.Clone();
@@ -234,8 +244,8 @@ namespace AppModels.CustomEntity
 
             var outerLine = new Segment2D(OuterStartPoint, OuterEndPoint);
             var interLine = outerLine.Offset(Thickness * flippedFactor);
-            _innerStartPoint = interLine.P0.ConvertPoint2DtoPoint3D();
-            _innerEndPoint = interLine.P1.ConvertPoint2DtoPoint3D();
+            InnerStartPoint = interLine.P0.ConvertPoint2DtoPoint3D();
+            InnerEndPoint = interLine.P1.ConvertPoint2DtoPoint3D();
 
             var centerLine = outerLine.Offset((double)Thickness * flippedFactor / 2);
             centerLine.ExtendBy(-(double)Thickness / 2, -(double)Thickness / 2);
@@ -403,7 +413,10 @@ namespace AppModels.CustomEntity
         {
             var distance = this.FullLength;
             this.TextString = distance.ToString(CultureInfo.InvariantCulture);
-            this.InsertionPoint = new Point3D(DimensionLine.MidPoint.X, DimensionLine.MidPoint.Y, 0);
+            if (DimensionLine!=null)
+            {
+                this.InsertionPoint = new Point3D(DimensionLine.MidPoint.X, DimensionLine.MidPoint.Y, 0);
+            }
             base.Regen(data);
             var listPoint = new List<Point3D>(Vertices);
             if (!listPoint.Contains(this.StartPoint))
@@ -507,5 +520,15 @@ namespace AppModels.CustomEntity
         {
             return new Beam2D(this);
         }
+
+        //internal void SetInnerStartPoint(Point3D point)
+        //{
+        //    _innerStartPoint = point;
+        //}
+
+        //internal void SetOuterStartPoint(Point3D point)
+        //{
+        //    _outerEndPoint = point;
+        //}
     }
 }

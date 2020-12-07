@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 
 namespace AppModels.Interaface
 {
-    public interface IRectangleSolid
+    public interface IRectangleSolid:IEntity
     {
         Point3D StartPoint { get; }
         Point3D EndPoint { get;  }

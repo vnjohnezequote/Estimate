@@ -18,6 +18,8 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
     {
         public Guid Id { get; set; }
         public Guid FramingReferenceId { get; set; }
+        public Guid LevelId { get; set; }
+        public Guid FramingSheetId { get; set; }
         public double FullLength { get; set;  }
         
         public FramingBase2DSurrogate(Text text) : base(text)
@@ -26,21 +28,27 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
         protected override void CopyDataToObject(Entity entity)
         {
             base.CopyDataToObject(entity);
-            if (!(entity is IFraming2D joist2D)) return;
-            joist2D.Id = Id;
-            joist2D.FramingReferenceId = FramingReferenceId;
-            joist2D.FullLength = FullLength;
+            if (!(entity is IFraming2D framing2D)) return;
+            framing2D.Id = Id;
+            framing2D.FramingReferenceId = FramingReferenceId;
+            framing2D.FullLength = FullLength;
+            framing2D.LevelId = LevelId;
+            framing2D.FramingSheetId = FramingSheetId;
         }
         protected override void CopyDataFromObject(Entity entity)
         {
-            if (entity is IFraming2D joist2D)
+            base.CopyDataFromObject(entity);
+            if (entity is IFraming2D framing2D)
             {
-                Id = joist2D.Id;
-                FramingReferenceId = joist2D.FramingReference.Id;
-                FullLength = joist2D.FullLength;
+                Id = framing2D.Id;
+                FramingReferenceId = framing2D.FramingReference.Id;
+                FullLength = framing2D.FullLength;
+                LevelId = framing2D.LevelId;
+                FramingSheetId = framing2D.FramingSheetId;
+
 
             }
-            base.CopyDataFromObject(entity);
+            
         }
     }
 }

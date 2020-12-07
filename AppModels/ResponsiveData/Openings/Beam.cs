@@ -10,14 +10,10 @@
 using System;
 using System.Collections.Generic;
 using AppModels.Enums;
-using AppModels.Interaface;
-using AppModels.PocoDataModel;
-using AppModels.PocoDataModel.Framings.FloorAndRafter;
 using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Framings.Beams;
-using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using devDept.Geometry;
 
 namespace AppModels.ResponsiveData.Openings
@@ -56,8 +52,23 @@ namespace AppModels.ResponsiveData.Openings
         {
 
         }
-        public Beam(BeamPoco beamPoco, LevelWall level, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco, level, timberList,engineerMemberInfos)
+
+        public Beam(BeamPoco beamPoco, List<TimberBase> timberList, List<EngineerMemberInfo> engineerMemberInfos) :
+            base(beamPoco, timberList, engineerMemberInfos)
         {
+
+        }
+
+        public Beam(BeamPoco beamPoco, FramingSheet framingSheet, List<TimberBase> timberList,
+            List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco, framingSheet, timberList,
+            engineerMemberInfos)
+        {
+
+        }
+        public Beam(BeamPoco beamPoco, LevelWall level, List<TimberBase> timberList, List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco, timberList, engineerMemberInfos)
+        {
+            this.Level = level;
+            InitGlobalInfor(level.LevelInfo);
         }
 
         public Beam(Beam another) : base(another)

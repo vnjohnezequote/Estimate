@@ -403,7 +403,7 @@ namespace DrawingModule.ViewModels
                                 var entityVm = entityVmCreateAble.CreateEntityVm(EntitiesManager);
                                 if (entityVm is EntityContainhangerAndOutTriggerVm framing)
                                 {
-                                    framingVm.IsHangerA = framingVm.IsHangerA;
+                                    framing.IsHangerA = framingVm.IsHangerA;
                                 }
                             }
                         }
@@ -426,7 +426,7 @@ namespace DrawingModule.ViewModels
                                 var entityVm = entityVmCreateAble.CreateEntityVm(EntitiesManager);
                                 if (entityVm is EntityContainhangerAndOutTriggerVm framing)
                                 {
-                                    framingVm.IsHangerB = framingVm.IsHangerB;
+                                    framing.IsHangerB = framingVm.IsHangerB;
                                 }
                             }
                         }
@@ -447,7 +447,7 @@ namespace DrawingModule.ViewModels
                             var entityVm = entityVmCreateAble.CreateEntityVm(EntitiesManager);
                             if (entityVm is EntityContainhangerAndOutTriggerVm framing)
                             {
-                                framingVm.IsOutriggerA = framingVm.IsOutriggerA;
+                                framing.IsOutriggerA = framingVm.IsOutriggerA;
                             }
                         }
                     }
@@ -469,7 +469,7 @@ namespace DrawingModule.ViewModels
                                 var entityVm = entityVmCreateAble.CreateEntityVm(EntitiesManager);
                                 if (entityVm is EntityContainhangerAndOutTriggerVm framing)
                                 {
-                                    framingVm.IsOutriggerB = framingVm.IsOutriggerB;
+                                    framing.IsOutriggerB = framingVm.IsOutriggerB;
                                 }
                             }
                             //if (selectedEntity is Joist2D joist)
