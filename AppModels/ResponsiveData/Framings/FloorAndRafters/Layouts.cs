@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using AppModels.ResponsiveData.Framings.Blocking;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
-using AppModels.ResponsiveData.Openings;
 
 namespace AppModels.ResponsiveData.Framings.FloorAndRafters
 {

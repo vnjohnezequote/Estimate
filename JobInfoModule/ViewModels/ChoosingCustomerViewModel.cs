@@ -11,6 +11,7 @@ using ApplicationInterfaceCore;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using MaterialDesignExtensions.Controls;
+using Ookii.Dialogs.Wpf;
 
 namespace JobInfoModule.ViewModels
 {
@@ -134,17 +135,23 @@ namespace JobInfoModule.ViewModels
 
         private async void OnJobLocationSelect()
         {
-            OpenDirectoryDialogArguments dialogArgs = new OpenDirectoryDialogArguments()
+            var folderDialog = new VistaFolderBrowserDialog();
+            folderDialog.ShowNewFolderButton = true;
+            if (folderDialog.ShowDialog() == true)
             {
-                Width = 600,
-                Height = 400,
-                CreateNewDirectoryEnabled = true
-            };
-            OpenDirectoryDialogResult result = await OpenDirectoryDialog.ShowDialogAsync("dialogHost", dialogArgs);
-            if (!result.Canceled)
-            {
-                this.JobInfo.JobLocation = result.DirectoryInfo.FullName;
+                this.JobInfo.JobLocation = folderDialog.SelectedPath;
             }
+            //OpenDirectoryDialogArguments dialogArgs = new OpenDirectoryDialogArguments()
+            //{
+            //    Width = 600,
+            //    Height = 400,
+            //    CreateNewDirectoryEnabled = true
+            //};
+            //OpenDirectoryDialogResult result = await OpenDirectoryDialog.ShowDialogAsync("dialogHost", dialogArgs);
+            //if (!result.Canceled)
+            //{
+            //    this.JobInfo.JobLocation = result.DirectoryInfo.FullName;
+            //}
         }
 
 

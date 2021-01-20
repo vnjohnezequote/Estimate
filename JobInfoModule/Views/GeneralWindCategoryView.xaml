@@ -10,11 +10,7 @@
              xmlns:viewModels="clr-namespace:JobInfoModule.ViewModels"
              xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:GeneralWindCategoryViewModel, IsDesignTimeCreatable=True}"
-             Style="{DynamicResource MaterialDesignUserControl}">
-    <UserControl.Resources>
-        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
-    </UserControl.Resources>
+             d:DataContext="{d:DesignInstance viewModels:GeneralWindCategoryViewModel, IsDesignTimeCreatable=True}">
     <interactions:Interaction.Triggers>
         <interactions:EventTrigger EventName="Loaded">
             <interactions:InvokeCommandAction Command="{Binding WindLoadedCommand}"/>

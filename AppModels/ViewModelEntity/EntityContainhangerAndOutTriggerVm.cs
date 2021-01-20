@@ -1,4 +1,5 @@
-﻿using AppModels.CustomEntity;
+﻿using System.Linq;
+using AppModels.CustomEntity;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
@@ -79,7 +80,7 @@ namespace AppModels.ViewModelEntity
                     if (this.HangerA == null)
                     {
                         var hangerRef = new Hanger(framing.FramingReference.FramingSheet);
-                        var hanger = new Hanger2D(framing.StartPoint, "H", 140, hangerRef)
+                        var hanger = new Hanger2D(framing.HangerACenterPoint, "H", 140, hangerRef)
                         {
                             Alignment = Text.alignmentType.MiddleCenter,
                             Color = System.Drawing.Color.CadetBlue,
@@ -104,6 +105,7 @@ namespace AppModels.ViewModelEntity
                     framing.FramingReference.FramingSheet.Hangers.Remove(((IContaintHanger)(framing.FramingReference)).HangerA);
                     ((IContaintHanger)(framing.FramingReference)).HangerA = null;
                 }
+                Helper.RegenerationHangerName(framing.FramingReference.FramingSheet.Hangers.ToList());
                 RaisePropertyChanged(nameof(IsHangerA));
             }
         }
@@ -127,7 +129,7 @@ namespace AppModels.ViewModelEntity
                     if (this.HangerB == null)
                     {
                         var hangerRef = new Hanger(framing.FramingReference.FramingSheet);
-                        var hanger = new Hanger2D(framing.EndPoint, "H", 140, hangerRef)
+                        var hanger = new Hanger2D(framing.HangerBCenterPoint, "H", 140, hangerRef)
                         {
                             Alignment = Text.alignmentType.MiddleCenter,
                             Color = System.Drawing.Color.CadetBlue,
@@ -152,6 +154,7 @@ namespace AppModels.ViewModelEntity
                     framing.FramingReference.FramingSheet.Hangers.Remove(((IContaintHanger)(framing.FramingReference)).HangerB);
                     ((IContaintHanger)(framing.FramingReference)).HangerB = null;
                 }
+                Helper.RegenerationHangerName(framing.FramingReference.FramingSheet.Hangers.ToList());
                 RaisePropertyChanged(nameof(IsHangerB));
             }
         }
@@ -294,6 +297,7 @@ namespace AppModels.ViewModelEntity
                         
 
                     }
+                    Helper.RegenerationFramingName(framing.FramingReference.FramingSheet.OutTriggers.ToList());
                     RaisePropertyChanged(nameof(IsOutriggerA));
                 }
             }
@@ -347,6 +351,7 @@ namespace AppModels.ViewModelEntity
                         ((IContaintOutTrigger)framing.FramingReference).OutTriggerB = null;
                         
                     }
+                    Helper.RegenerationFramingName(framing.FramingReference.FramingSheet.OutTriggers.ToList());
                     RaisePropertyChanged(nameof(IsOutriggerB));
                 }
             }
@@ -408,7 +413,6 @@ namespace AppModels.ViewModelEntity
                     RaisePropertyChanged(nameof(OutTriggerAMat));
                 }
             }
-
         }
         public TimberBase OutTriggerBMat
         {

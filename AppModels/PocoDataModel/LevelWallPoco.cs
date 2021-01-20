@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppModels.Interaface;
-using AppModels.PocoDataModel.Bracing;
 using AppModels.PocoDataModel.Framings;
 using AppModels.PocoDataModel.Openings;
-using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;

@@ -2,7 +2,6 @@
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
-using AppModels.ResponsiveData.EngineerMember;
 using devDept.Eyeshot.Entities;
 
 namespace AppModels.ViewModelEntity

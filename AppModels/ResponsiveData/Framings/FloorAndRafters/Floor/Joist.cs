@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.Interaface;
-using AppModels.PocoDataModel;
 using AppModels.PocoDataModel.Framings.FloorAndRafter;
-using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Openings;
 using devDept.Geometry;
-using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
 {
     public class Joist: FramingBase,IContaintHanger,IContaintOutTrigger
     {
+        
+        protected override List<FramingTypes> FramingTypeAccepted { get; } = new List<FramingTypes>() {FramingTypes.RafterJoist,FramingTypes.FloorJoist,FramingTypes.BoundaryJoist,FramingTypes.CeilingJoist,FramingTypes.Purlin,FramingTypes.Fascia,FramingTypes.Trimmer,FramingTypes.Rimboard,FramingTypes.DeckJoist};
         public override double QuoteLength
         {
             get
@@ -26,7 +24,7 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
             }
        
         }
-
+        
         public override object Clone()
         {
             return new Joist(this);
@@ -40,7 +38,22 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
 
         public Joist(FramingSheet framingSheet) : base(framingSheet)
         {
-
+            if (framingSheet.FramingSheetType == FramingSheetTypes.FloorFraming)
+            {
+                FramingType = FramingTypes.FloorJoist;
+            }
+            else if(framingSheet.FramingSheetType == FramingSheetTypes.RafterFraming)
+            {
+                FramingType = FramingTypes.RafterJoist;
+            }
+            else if (framingSheet.FramingSheetType == FramingSheetTypes.CeilingJoistFraming)
+            {
+                FramingType = FramingTypes.CeilingJoist;
+            }
+            else
+            {
+                FramingType = FramingTypes.Purlin;
+            }
         }
         public Joist(JoistPoco joistPoco,FramingSheet framingSheet, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(joistPoco, framingSheet,timberList,engineerMemberInfos)
         {

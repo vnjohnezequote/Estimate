@@ -74,6 +74,12 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                 {
                     wall.Translate(movement);
                 }
+                else if(SelectedEntity is FloorQuantity floor)
+                {
+                    floor.Translate(movement);
+                }
+
+                
                 //SelectedEntity.Translate(movement);
                 //SelectedEntity.TransformBy();
                 Entities.Regen();
@@ -82,6 +88,11 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                 _currentMovementPoint = null;
             }
             base.OnMouseUp(e);
+        }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e);
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
@@ -99,7 +110,7 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                 if (index != -1)
                 {
                     var entity = Entities[index];
-                    if (entity is View || entity is WallName || entity is BlockReference)
+                    if (entity is BlockReference)
                     {
                         entity.Selected = true;
                         SelectedEntity = entity;
@@ -189,8 +200,6 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
                     view.Y += y;
                 }
                 
-                //Vector3D movement = new Vector3D(_startMovementPoint,_currentMovementPoint);
-                //((Entity)tempEntity).Translate(movement);
                 DrawCurveOrBlockRef(tempEntity);
             }
             base.DrawOverlay(myParams);

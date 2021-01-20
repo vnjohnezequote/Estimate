@@ -1,27 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using ApplicationService;
-using AppModels;
 using AppModels.CustomEntity;
-using AppModels.DynamicObject;
-using AppModels.Factories;
 using AppModels.Interaface;
-using AppModels.NewReposiveData;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Openings;
 using AppModels.ViewModelEntity;
-using devDept.Eyeshot;
-using devDept.Eyeshot.Entities;
-using GeometryGym.Ifc;
 using Prism.Events;
 using Prism.Regions;
 using Unity;
@@ -51,6 +39,21 @@ namespace DrawingModule.ViewModels
         public Visibility WallVisibility => SelectedEntity is Wall2DVm ? Visibility.Visible : Visibility.Collapsed;
         public Visibility OutTriggerVisibility => SelectedEntity is OutTrigger2dVm ? Visibility.Visible : Visibility.Collapsed;
 
+        public Visibility ShowFramingNameVisibility =>
+            SelectedEntity is FramingVm ? Visibility.Visible : Visibility.Collapsed;
+        
+        public bool FramingTypeCanChange
+        {
+            get
+            {
+                if (SelectedEntity is BlockingVm || SelectedEntity is Hanger2DVm)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
         public Visibility FramingVisibility =>
             SelectedEntity is IFramingVmBase ? Visibility.Visible : Visibility.Collapsed;
         public Visibility FBeamVisibility => SelectedEntity is Beam2DVm ? Visibility.Visible : Visibility.Collapsed;
@@ -212,6 +215,8 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(HangerOutTriggerVisibility));
                 RaisePropertyChanged(nameof(FramingBaseVisibility));
                 RaisePropertyChanged(nameof(IsBlockingVm));
+                RaisePropertyChanged(nameof(FramingTypeCanChange));
+                RaisePropertyChanged(nameof(ShowFramingNameVisibility));
             }
         }
         public ObservableCollection<LevelWall> Levels { get; private set; }
@@ -496,7 +501,7 @@ namespace DrawingModule.ViewModels
             }
             if (e.PropertyName == "BeamGrade")
             {
-                if (SelectedEntity is IFramingVm timberVm)
+                if (SelectedEntity is FramingVmBase timberVm)
                 {
                     if (EntitiesManager != null)
                         foreach (var selectedEntity in EntitiesManager.SelectedEntities)
@@ -504,7 +509,7 @@ namespace DrawingModule.ViewModels
                             if (selectedEntity is IFraming2D && selectedEntity is IEntityVmCreateAble entityCreateAble)
                             {
                                 var entityVm = entityCreateAble.CreateEntityVm(EntitiesManager);
-                                if (entityVm is IFramingVm framingVm)
+                                if (entityVm is IFramingVmBase framingVm)
                                 {
                                     framingVm.BeamGrade = timberVm.BeamGrade;
                                 }
@@ -514,15 +519,16 @@ namespace DrawingModule.ViewModels
             }
             if (e.PropertyName == "FramingInfo")
             {
-                if (SelectedEntity is IFramingVm timberVm)
+                if (SelectedEntity is FramingVmBase timberVm)
                 {
                     foreach (var selectedEntity in EntitiesManager.SelectedEntities)
                     {
                         if (selectedEntity is IFraming2D && selectedEntity is IEntityVmCreateAble entityCreateAble)
                         {
                             var entityVm = entityCreateAble.CreateEntityVm(EntitiesManager);
-                            if (entityVm is IFramingVm framingVm)
+                            if (entityVm is IFramingVmBase framingVm)
                             {
+                                framingVm.BeamGrade = timberVm.BeamGrade;
                                 framingVm.FramingInfo = timberVm.FramingInfo;
                             }
                         }

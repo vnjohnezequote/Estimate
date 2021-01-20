@@ -1,6 +1,4 @@
-﻿using System.Security.Permissions;
-using System.Text;
-using devDept.Eyeshot.Entities;
+﻿using System.Text;
 using ProtoBuf;
 
 namespace AppModels.PocoDataModel

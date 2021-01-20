@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
-using System.Windows;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;

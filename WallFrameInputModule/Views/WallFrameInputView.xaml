@@ -12,9 +12,6 @@
              d:DataContext="{d:DesignInstance viewModels:WallFrameInputViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              xmlns:materialDesignExtention="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions">
-    <UserControl.Resources>
-        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
-    </UserControl.Resources>
     <StackPanel>
         <ComboBox materialDesign:HintAssist.Hint="Floor Level"
                   IsEditable="True"
@@ -22,11 +19,10 @@
                   DisplayMemberPath="WallLevelName"/>
         <TabControl prism:RegionManager.RegionName="FloorInputRegion"
                     prism:RegionManager.RegionManager="{Binding RegionManager}"
-                    Style="{StaticResource MaterialDesignTabControlCustom}"
                     materialDesignExtention:TabControlAssist.TabHeaderHorizontalAlignment="Left">
             <TabControl.Resources>
                 <ResourceDictionary>
-                    <Style TargetType="TabItem" BasedOn="{StaticResource MaterialDesignTabItem}">
+                    <Style TargetType="TabItem">
 						<Setter Property="Header" Value="{Binding DataContext.Level.LevelName}" />
 					</Style>
                 </ResourceDictionary>

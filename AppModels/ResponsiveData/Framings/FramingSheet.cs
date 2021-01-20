@@ -124,7 +124,7 @@ namespace AppModels.ResponsiveData.Framings
         public ObservableCollection<IFraming> Beams { get; set; } = new ObservableCollection<IFraming>();
         public ObservableCollection<IFraming> OutTriggers { get; set; } = new ObservableCollection<IFraming>();
         public ObservableCollection<Hanger> Hangers { get; set; } = new ObservableCollection<Hanger>();
-        public ObservableCollection<Blocking.Blocking> Blockings { get; set; } = new ObservableCollection<Blocking.Blocking>();
+        public ObservableCollection<IFraming> Blockings { get; set; } = new ObservableCollection<IFraming>();
         public ObservableCollection<TieDown> TieDowns { get; set; } = new ObservableCollection<TieDown>();
         public FramingSheet(LevelWall level)
         {

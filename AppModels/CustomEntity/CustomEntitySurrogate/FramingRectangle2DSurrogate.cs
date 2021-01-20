@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Serialization;
@@ -21,6 +17,7 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
         public Point3D OuterStartPoint { get; set; }
         public Point3D OuterEndPoint { get; set; }
         public Guid FramingReferenceId { get; set; }
+
         //public Guid? HangerAId { get; set; }
         //public Guid? HangerBId { get; set; }
         //public bool IsHangerA { get; set; }

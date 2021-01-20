@@ -512,7 +512,6 @@ namespace DrawingModule.CustomControl.CanvasControl
                             if (PolaTrackingPoints.Count != 0)
                             {
                                 DrawSnappPointUtl.DisplayTrackingPoint(this, PolaTrackingPoints, renderContext);
-                                //DrawInteractiveUntilities.DrawInteractiveSpotLine(LastClickPoint,CurrentPoint,this);
                                 FindingPolaPoint();
                                 if (PolaTrackedPoint!=null)
                                 {

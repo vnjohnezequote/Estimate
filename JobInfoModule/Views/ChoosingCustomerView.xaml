@@ -12,12 +12,10 @@
              xmlns:converter ="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ChoosingCustomerViewModel, IsDesignTimeCreatable=True}"
-             Style="{DynamicResource MaterialDesignUserControl}"
              Padding="20 0 20 0">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
                 <ResourceDictionary>
                     <converter:StringToPackIconConverter x:Key="StringToPackIconConverter"/>
                 </ResourceDictionary>
@@ -60,10 +58,9 @@
             </StackPanel>
         </GroupBox>
         
-        <materialDesign:Card Margin="0 10 0 0">
+        <StackPanel Margin="0 10 0 0">
             <ListBox Name="CustomerMenu"
-            Style="{DynamicResource MaterialListBox}"
-            ItemsSource="{Binding Clients}"
+                     ItemsSource="{Binding Clients}"
             SelectedItem="{Binding SelectedClient, Mode=TwoWay}">
             <!-- Command Selection Customer -->
             <interactions:Interaction.Triggers>
@@ -99,21 +96,23 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
             </ListBox>
-        </materialDesign:Card>
+        </StackPanel>
         <!--<ComboBox ItemsSource="{Binding Clients}"
                   SelectedItem="{Binding JobInfo.Client,Mode=TwoWay}"
                   DisplayMemberPath="Name"/>-->
-        <TextBox Margin="0 10 0 0" materialDesign:HintAssist.Hint="Please Choose Your's Folder...!"
-                 Text="{Binding JobInfo.JobLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <DockPanel Margin="0 10 0 0">
+            <TextBlock Text="Job Folder: " Width="100"/>
+            <TextBox Text="{Binding JobInfo.JobLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+       
         <Button Content="Browser"
-                    Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
-                    Margin="{StaticResource ControlMargin}"
-                    HorizontalAlignment="Stretch"
-                    Command="{Binding JobLocationCommand}"/>
-        <TextBox Margin="0 10 0 0"
-                 x:Name="TxtJobNumber"
-                 materialDesign:HintAssist.Hint="Project Name/Job Number"
-                 Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-        </TextBox>
+                Command="{Binding JobLocationCommand}"
+                 Margin="0 10 0 0"/>
+        <DockPanel Margin="0 10 0 0">
+            <TextBlock Text="Job Number" Width="100"/>
+            <TextBox x:Name="TxtJobNumber"
+                     Text="{Binding JobInfo.JobNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+       
     </StackPanel>
 </UserControl>

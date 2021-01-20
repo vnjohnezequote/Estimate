@@ -54,7 +54,7 @@ namespace WindowControlModule
         /// </param>
         public override void OnInitialized(IContainerProvider containerProvider)
         {
-            this.RegionManager.RegisterViewWithRegion("WindowControlRegion", typeof(WindowControlBarView));
+            //this.RegionManager.RegisterViewWithRegion("WindowControlRegion", typeof(WindowControlBarView));
             //this.RegionManager.Regions["WindowControlRegion"].Add(UnityContainer.Resolve<WindowControlBarView>());
         }
     }

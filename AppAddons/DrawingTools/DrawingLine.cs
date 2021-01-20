@@ -99,7 +99,7 @@ namespace AppAddons.DrawingTools
         {
             DrawInteractiveLine((ICadDrawAble)sender, e);
         }
-        protected void DrawInteractiveLine(ICadDrawAble drawTable, DrawInteractiveArgs e)
+        protected virtual void DrawInteractiveLine(ICadDrawAble drawTable, DrawInteractiveArgs e)
         {
             drawTable.renderContext.SetColorWireframe(LayerManager.SelectedLayer.Color);
             drawTable.renderContext.SetLineSize(LayerManager.SelectedLayer.LineWeight);

@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using AppModels.Enums;
-using AppModels.PocoDataModel;
 
 namespace AppModels.Interaface
 {

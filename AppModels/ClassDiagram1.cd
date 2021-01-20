@@ -1,29 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.BeamEntitySurrogate" Collapsed="true">
-    <Position X="3.75" Y="11.5" Width="1.75" />
+    <Position X="20" Y="13.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>EKAAAAAAYABEAACAgARQAAAAABAgAQAAQEABAAAAyAA=</HashCode>
       <FileName>CustomEntity\CustomEntitySurrogate\BeamEntitySurrogate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.Beam2DSurrogate" Collapsed="true">
-    <Position X="8.25" Y="14" Width="1.5" />
+    <Position X="15.25" Y="20.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAAAAAAAAAhAAAAAEAAAAgACQAAMQQAQAABAAAGCQA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAABAAAECQA=</HashCode>
       <FileName>CustomEntity\CustomEntitySurrogate\Beam2DSurrogate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.CustomEntity.Beam2D" Collapsed="true">
-    <Position X="1.25" Y="12.5" Width="1.5" />
+    <Position X="5.5" Y="20.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AkCCWAlxIAElQgQBAEABCgsIDRACMQSgQAIUIAAGjxg=</HashCode>
+      <HashCode>AEAAEAAAAAEAAAAAAAAAAAAAAAACAAAAAAIAAAAECxA=</HashCode>
       <FileName>CustomEntity\Beam2D.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.CustomEntity.Hanger2D" Collapsed="true">
-    <Position X="16.5" Y="12.5" Width="1.5" />
+    <Position X="0.75" Y="20.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAABAIAAAAgAAAAABAAAAABACIBAAEAAQAAAACAA=</HashCode>
       <FileName>CustomEntity\Hanger2D.cs</FileName>
@@ -31,9 +31,9 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.CustomEntity.Blocking2D" Collapsed="true">
-    <Position X="1.5" Y="14" Width="1.5" />
+    <Position X="3" Y="20.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAABAIAAAAAAAAAABAAAAABACAAAAAAAQABAACAA=</HashCode>
+      <HashCode>AAACAABAIAAAAAAAAAABAAAAABACAAAAAAAQAFAACAA=</HashCode>
       <FileName>CustomEntity\Blocking2D.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -41,64 +41,64 @@
   <Class Name="AppModels.CustomEntity.Joist2D" Collapsed="true">
     <Position X="7.75" Y="20.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAAAAgAAAAAAAQBAEAAAgoACQACMAQAQAAAAAAACBA=</HashCode>
+      <HashCode>AAAAAAgAAAAAAAABAAAAAgAAAAACAAAAAAAAAAAAChA=</HashCode>
       <FileName>CustomEntity\Joist2D.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.CustomEntity.OutTrigger2D" Collapsed="true">
-    <Position X="10.75" Y="20.25" Width="1.5" />
+    <Position X="10.5" Y="18.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAABFCAAAAAABAAAAAAAQACAAAAAAAAAAAACBA=</HashCode>
+      <HashCode>AAQAAAAABFCAAAAAABAAAAAAAQACAAAAAAAAAAAAChA=</HashCode>
       <FileName>CustomEntity\OutTrigger2D.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.CustomEntity.FramingRectangle2D" Collapsed="true">
-    <Position X="9" Y="18.25" Width="1.5" />
+    <Position X="9" Y="16.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACCSAFRKIAlQhAAAAABCEEIFBACAYCgIAIUIAgChgg=</HashCode>
+      <HashCode>ACKGSAFxKIAlQhAAAACBCGEIFBBiAYCgIAIUIAgChgg=</HashCode>
       <FileName>CustomEntity\FramingRectangle2D.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.Blocking2DSurrogate" Collapsed="true">
-    <Position X="11.25" Y="14" Width="1.5" />
+    <Position X="20.25" Y="18" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAABAEAACAA=</HashCode>
       <FileName>CustomEntity\CustomEntitySurrogate\Blocking2DSurrogate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.DoorCountEntitySurrogate" Collapsed="true">
-    <Position X="1.25" Y="11.25" Width="1.5" />
+    <Position X="27.25" Y="15.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAECBAAAACAA=</HashCode>
       <FileName>CustomEntity\CustomEntitySurrogate\DoorCountEntitySurrogate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.Framing2DSurrogate" Collapsed="true">
-    <Position X="9.75" Y="12.5" Width="1.5" />
+    <Position X="20.25" Y="16.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>CustomEntity\CustomEntitySurrogate\Framing2DSurrogate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.FramingBase2DSurrogate" Collapsed="true">
-    <Position X="11.75" Y="11.25" Width="1.5" />
+    <Position X="22.25" Y="15.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAIAAAAAAAAAABAAAAABACAQAAAAAAAAAACAA=</HashCode>
       <FileName>CustomEntity\CustomEntitySurrogate\FramingBase2DSurrogate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.Hanger2DSurrogate" Collapsed="true">
-    <Position X="14.5" Y="12.5" Width="1.5" />
+    <Position X="25" Y="16.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>CustomEntity\CustomEntitySurrogate\Hanger2DSurrogate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.FramingRectangle2DSurrogate" Collapsed="true">
-    <Position X="15.25" Y="18.25" Width="1.5" />
+    <Position X="16.75" Y="16.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAIAAhABAAAAAAAAAAABACAQAgAAAAAAACCAA=</HashCode>
       <FileName>CustomEntity\CustomEntitySurrogate\FramingRectangle2DSurrogate.cs</FileName>
@@ -107,27 +107,27 @@
   <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.Joist2DSurrogate" Collapsed="true">
     <Position X="13.25" Y="20.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAAAAAAAAAAAAAAAEAAAAgACQAAMQQAQAABAAAACAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>CustomEntity\CustomEntitySurrogate\Joist2DSurrogate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.OutTrigger2DSurrogate" Collapsed="true">
-    <Position X="17.25" Y="20" Width="1.5" />
+    <Position X="18.25" Y="19" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAQAQAAAAABAAAACAA=</HashCode>
       <FileName>CustomEntity\CustomEntitySurrogate\OutTrigger2DSurrogate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.Framings.FramingBase" Collapsed="true">
-    <Position X="9.5" Y="2" Width="1.5" />
+    <Position X="8.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACIDIAAAQAAAAAAY5AApACQAABBCCIEBABFKgAAREBI=</HashCode>
+      <HashCode>ACIDIAAAQAAAAAAZZAApACQAABBCCIEBQBFKgAAREBI=</HashCode>
       <FileName>ResponsiveData\Framings\FramingBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.ResponsiveData.Framings.FloorAndRafters.Beam.FBeam" Collapsed="true">
-    <Position X="10" Y="5" Width="1.5" />
+    <Position X="9.25" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAAAAQAAAAAAAIACQAAAACAAAAAAAAAABA=</HashCode>
       <FileName>ResponsiveData\Framings\FloorAndRafters\Beam\FBeam.cs</FileName>
@@ -135,49 +135,175 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.ResponsiveData.Framings.FloorAndRafters.Floor.Joist" Collapsed="true">
-    <Position X="7" Y="4.25" Width="1.5" />
+    <Position X="6.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAACAAAAAAQAAAAAAAIACQAAAAGAAAAAAAAAABA=</HashCode>
+      <HashCode>AAAAAAACAAAAAAQAAAAAAAIACQAAAAGAQAAAAAAAABA=</HashCode>
       <FileName>ResponsiveData\Framings\FloorAndRafters\Floor\Joist.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.ResponsiveData.Framings.FloorAndRafters.Floor.OutTrigger" Collapsed="true">
-    <Position X="4.25" Y="4.25" Width="1.5" />
+    <Position X="3.75" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAACAAADAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAABA=</HashCode>
+      <HashCode>AAAAACAAADAAAQAAAAAAAAAAAAAAAIEAQAAAAAAAABA=</HashCode>
       <FileName>ResponsiveData\Framings\FloorAndRafters\Floor\OutTrigger.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.Openings.Beam" Collapsed="true">
-    <Position X="12.5" Y="5" Width="1.5" />
+    <Position X="11.75" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAABA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAQAAAAAAAABA=</HashCode>
       <FileName>ResponsiveData\Openings\Beam.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.Openings.Hanger" Collapsed="true">
-    <Position X="10.75" Y="7.5" Width="1.5" />
+    <Position X="16.5" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACIDIAAIAAAAAAAZIAAhACQAABBCCIEBgAFAgAAAEBI=</HashCode>
+      <HashCode>ACIDIAAIAAAAAAAZIAAhACQAABBCCAEBgAFAgAAAEBI=</HashCode>
       <FileName>ResponsiveData\Openings\Hanger.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AppModels.ResponsiveData.Openings.LintelBeam" Collapsed="true">
-    <Position X="15" Y="5.25" Width="1.5" />
+    <Position X="14.25" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IgCAAAAAAAAIAAACACAEAAAAAAEACAEIBgAAAAAAABA=</HashCode>
+      <HashCode>IgCAAAAAAAAIAAACACAEAAAAAAEACAEIRgAAAAAAABA=</HashCode>
       <FileName>ResponsiveData\Openings\LintelBeam.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AppModels.ResponsiveData.Framings.Beams.BeamBase" Collapsed="true">
-    <Position X="13.5" Y="3.5" Width="1.5" />
+    <Position X="12.75" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ECQMAApCAKAJiIAQRAIAgAAAwAAxCAClxCACAAIABRA=</HashCode>
+      <HashCode>ECQMAApCAKAJiIAQRAIAgAAAwAAxCACkxCACAAIABRA=</HashCode>
       <FileName>ResponsiveData\Framings\Beams\BeamBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.FramingRectangleContainHangerAndOutTrigger" Collapsed="true">
+    <Position X="6.75" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAgAAAAAAAQBAEAAAgoACQAAMAQAQAAAAAAAAAA=</HashCode>
+      <FileName>CustomEntity\FramingRectangleContainHangerAndOutTrigger.cs</FileName>
+      <NewMemberFileName>CustomEntity\FramingRectangleCOntainHangerAndOutTrigger.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.FramingRectangleContainHangerAndOutTriggerSurrogate" Collapsed="true">
+    <Position X="15.25" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAEAAAAgACQAAMQQAQAABAAAACAA=</HashCode>
+      <FileName>CustomEntity\CustomEntitySurrogate\FramingRectangleContainHangerAndOutTriggerSurrogate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.ResponsiveData.Framings.Blocking.Blocking" Collapsed="true">
+    <Position X="19.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAABAAAAAAAAAAAAAAAAAAAAAAEAEAQAAAABAAABA=</HashCode>
+      <FileName>ResponsiveData\Framings\Blocking\Blocking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.Beam2DVm" Collapsed="true">
+    <Position X="31.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModelEntity\Beam2DVm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.BeamEntityVm" Collapsed="true">
+    <Position X="30.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAABAAAAAAAAAAQEAAAAAQBAAAAAAQAAAAAIAiAY=</HashCode>
+      <FileName>ViewModelEntity\BeamEntityVm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.BlockingVm" Collapsed="true">
+    <Position X="39.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModelEntity\BlockingVm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.EntityContainhangerAndOutTriggerVm" Collapsed="true">
+    <Position X="33.75" Y="11.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAIAAEAAAQSAEAACAIACQBAAAAAQACABQAAkAA=</HashCode>
+      <FileName>ViewModelEntity\EntityContainhangerAndOutTriggerVm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.EntityVm" Collapsed="true">
+    <Position X="35.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModelEntity\EntityVm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.EntityVmBase" Collapsed="true">
+    <Position X="35.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAEAAAAAAAAIABAAAAAAgAAIAAA=</HashCode>
+      <FileName>ViewModelEntity\EntityVmBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.FramingVm" Collapsed="true">
+    <Position X="32.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAgAAAAAAAAIAAAAAAAAAAAAAAAAABAAAAAEAA=</HashCode>
+      <FileName>ViewModelEntity\FramingVm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.FramingVmBase" Collapsed="true">
+    <Position X="35.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAABAAQAAAAACAEEAAEAAAAgEAI=</HashCode>
+      <FileName>ViewModelEntity\FramingVmBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.Hanger2DVm" Collapsed="true">
+    <Position X="40.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAI=</HashCode>
+      <FileName>ViewModelEntity\Hanger2DVm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.Joist2dVm" Collapsed="true">
+    <Position X="36.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModelEntity\Joist2dVm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.ViewModelEntity.OutTrigger2dVm" Collapsed="true">
+    <Position X="28" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>ViewModelEntity\OutTrigger2dVm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.CustomEntity.FramingNameEntity" Collapsed="true">
+    <Position X="0.75" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgBAIAAEAAAAAAAAAAAAABACAAAAAAAQAAAECAA=</HashCode>
+      <FileName>CustomEntity\FramingNameEntitty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.CustomEntity.CustomEntitySurrogate.FramingNameSurrogate" Collapsed="true">
+    <Position X="30" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAIAAAAAAAAAAAAAAAABACAQAAAAABAAAACAA=</HashCode>
+      <FileName>CustomEntity\CustomEntitySurrogate\FramingNameSurrogate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="devDept.Serialization.PlanarEntitySurrogate" Collapsed="true">
+    <Position X="16.75" Y="15.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="devDept.Serialization.TextSurrogate" Collapsed="true">
+    <Position X="24.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

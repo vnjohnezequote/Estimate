@@ -25,6 +25,8 @@ namespace AppModels.ResponsiveData.Openings
     public class Beam: BeamBase
 {
         #region Field
+
+        
         #endregion
 
 
@@ -39,7 +41,11 @@ namespace AppModels.ResponsiveData.Openings
                 return quoteLength;
             }
         }
+
         
+
+        protected override List<FramingTypes> FramingTypeAccepted { get; } = new List<FramingTypes>() {FramingTypes.TrussBeam,FramingTypes.LintelBeam,FramingTypes.FloorBeam,FramingTypes.PolePlate,FramingTypes.RafterBeam,FramingTypes.HipRafter,FramingTypes.SteelBeam,FramingTypes.RidgeBeam};
+
         #endregion
 
         #region Constructor

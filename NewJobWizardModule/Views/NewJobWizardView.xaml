@@ -1,4 +1,4 @@
-﻿<controls:FlatWindow x:Class="NewJobWizardModule.Views.NewJobWizardView"
+﻿<Window x:Class="NewJobWizardModule.Views.NewJobWizardView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,25 +15,16 @@
         xmlns:wizardRegions="clr-namespace:DataType.Class;assembly=DataType"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        TitleHeight="0"
-        Style="{StaticResource MaterialDesignWindow}"
         d:DataContext="{d:DesignInstance viewModels:NewJobWizardViewModel, IsDesignTimeCreatable=True}"
         Height="550" Width="1000"
         MinHeight="550">
-    <controls:FlatWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/NewJobWizardStyle.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </controls:FlatWindow.Resources>
     <Grid Name="GridRoot">
         <interactions:Interaction.Triggers>
             <interactions:EventTrigger EventName="Loaded">
                 <interactions:InvokeCommandAction Command="{Binding LoadedCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=GridRoot, Mode=OneWay}" />
             </interactions:EventTrigger>
         </interactions:Interaction.Triggers>
-        <materialDesign:DialogHost Identifier="dialogHost" DialogTheme="Dark">
+        
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -41,20 +32,18 @@
                     <RowDefinition Height="2"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Panel.ZIndex="3"
+                <!--<StackPanel Panel.ZIndex="3"
                     WindowChrome.IsHitTestVisibleInChrome="True"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     Margin="0 10 10 0"
                     Orientation="Horizontal">
                     <Button Content="{materialDesign:PackIcon Kind=WindowMinimize}"
-                    Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
-                    Command="{Binding MinimizeWindowCommand,Mode=OneWay}"/>
+                            Command="{Binding MinimizeWindowCommand,Mode=OneWay}"/>
                     <Button Content="{materialDesign:PackIcon Kind=Power}"
-                    Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
-                    Margin="1 0 0 0"
-                    Command="{Binding CloseWindowCommand,Mode=OneWay}"/>
-                </StackPanel>
+                            Margin="1 0 0 0"
+                            Command="{Binding CloseWindowCommand,Mode=OneWay}"/>
+                </StackPanel>-->
                 <!-- Caption -->
                 <materialDesign:ColorZone Mode="PrimaryDark"
                                   Height="80"
@@ -65,12 +54,10 @@
                                   Panel.ZIndex="2">
                     <TextBlock />
                 </materialDesign:ColorZone>
-                <materialDesign:ColorZone Mode="Dark"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"
-                                  Grid.Row="1">
-                    <TabControl Style="{StaticResource MaterialDesignTabControlCustom}"
-                       SelectedIndex="{Binding SelectedIndexTab, Mode=TwoWay}">
+                <StackPanel HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Grid.Row="1">
+                    <TabControl SelectedIndex="{Binding SelectedIndexTab, Mode=TwoWay}">
                         <interactions:Interaction.Triggers>
                             <interactions:EventTrigger EventName="SelectionChanged">
                                 <interactions:InvokeCommandAction Command="{Binding TabChangedCommand}"/>
@@ -80,9 +67,8 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconSimpleIcons Kind="ProductHunt" Style="{StaticResource MaterialDesignTabHeaderMahIcon}"/>
-                                    <TextBlock Text="New Project"
-                                       Style="{StaticResource MaterialDesignTabHeaderTextBlock}"/>
+                                    <iconPacks:PackIconSimpleIcons Kind="ProductHunt"/>
+                                    <TextBlock Text="New Project"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <ContentControl prism:RegionManager.RegionName="{x:Static wizardRegions:NewJobWizardRegions.NewProJectRegion}"/>
@@ -91,9 +77,8 @@
                         <TabItem IsEnabled="{Binding CanChangedTab}">
                             <TabItem.Header>
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="InformationVariant" Style="{StaticResource MaterialDesignTabHeaderMaterialPackIcon}"/>
-                                    <TextBlock Text="JobInfo" 
-                                       Style="{StaticResource MaterialDesignTabHeaderTextBlock}"/>
+                                    <materialDesign:PackIcon Kind="InformationVariant" />
+                                    <TextBlock Text="JobInfo" />
                                 </StackPanel>
                             </TabItem.Header>
                             <ContentControl prism:RegionManager.RegionName="{x:Static wizardRegions:NewJobWizardRegions.BasicInfoRegion}"/>
@@ -102,9 +87,8 @@
                         <TabItem IsEnabled="{Binding CanChangedTab}">
                             <TabItem.Header>
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="CompassOutline" Style="{StaticResource MaterialDesignTabHeaderMaterialPackIcon}"/>
-                                    <TextBlock Text="Wind Category"
-                                       Style="{StaticResource MaterialDesignTabHeaderTextBlock}"/>
+                                    <materialDesign:PackIcon Kind="CompassOutline"/>
+                                    <TextBlock Text="Wind Category"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <StackPanel>
@@ -115,10 +99,8 @@
                         <TabItem IsEnabled="{Binding CanChangedTab}">
                             <TabItem.Header>
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="AndroidAuto" 
-                                                     Style="{StaticResource MaterialDesignTabHeaderMaterialPackIcon}"/>
-                                    <TextBlock Text="Roof"
-                                       Style="{StaticResource MaterialDesignTabHeaderTextBlock}"/>
+                                    <materialDesign:PackIcon Kind="AndroidAuto" />
+                                    <TextBlock Text="Roof"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <ContentControl prism:RegionManager.RegionName="{x:Static wizardRegions:NewJobWizardRegions.RoofInfoRegion}"/>
@@ -127,10 +109,8 @@
                         <TabItem Visibility="{Binding IsStickFrameVisibitily}">
                             <TabItem.Header>
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="Add" 
-                                                             Style="{StaticResource MaterialDesignTabHeaderMaterialPackIcon}"/>
-                                    <TextBlock Text="Stick Frame Info"
-                                               Style="{StaticResource MaterialDesignTabHeaderTextBlock}"/>
+                                    <materialDesign:PackIcon Kind="Add" />
+                                    <TextBlock Text="Stick Frame Info"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <ContentControl prism:RegionManager.RegionName="{x:Static wizardRegions:NewJobWizardRegions.AddStickFrameInfoRegion}"/>
@@ -139,10 +119,8 @@
                         <TabItem Visibility="{Binding IsDesignVisibility}" >
                             <TabItem.Header>
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="Arch" 
-                                                     Style="{StaticResource MaterialDesignTabHeaderMaterialPackIcon}"/>
-                                    <TextBlock Text="Design"
-                                       Style="{StaticResource MaterialDesignTabHeaderTextBlock}"/>
+                                    <materialDesign:PackIcon Kind="Arch" />
+                                    <TextBlock Text="Design"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <ContentControl prism:RegionManager.RegionName="{x:Static wizardRegions:NewJobWizardRegions.DesignInfoRegion}"/>
@@ -151,10 +129,8 @@
                         <TabItem IsEnabled="{Binding CanChangedTab}">
                             <TabItem.Header>
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="Buffer"
-                                                     Style="{StaticResource MaterialDesignTabHeaderMaterialPackIcon}"/>
-                                    <TextBlock Text="Floor"
-                                       Style="{StaticResource MaterialDesignTabHeaderTextBlock}"/>
+                                    <materialDesign:PackIcon Kind="Buffer"/>
+                                    <TextBlock Text="Floor"/>
                                 </StackPanel>
                             </TabItem.Header>
                             <ScrollViewer HorizontalScrollBarVisibility="Auto">
@@ -164,24 +140,20 @@
 
                     </TabControl>
 
-                </materialDesign:ColorZone>
+                </StackPanel>
                 <!-- Spliter Area -->
-                <Border Grid.Row="2" Style="{StaticResource DarkBorder}" Background="{StaticResource AccentOrange700}"/>
+                <Border Grid.Row="2" />
                 <!-- Button Area -->
                 <Border Grid.Row="3" Padding="5">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <StackPanel.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource FlatButton}"></Style>
-                        </StackPanel.Resources>
                         <!--<Button Content="Back" Command="{Binding BackTabCommand}"/>
                         <Button Content="Next" Command="{Binding NextTabCommand}"/>-->
                         <Button Content="Create" IsEnabled="{Binding CheckJob.CanCreateJob}" Command="{Binding CreateJobCommand}"/>
                         <Button Content="Close"
-                        Command="{Binding CloseWindowCommand,Mode=OneWay}"/>
+                                Command="{Binding CloseWindowCommand,Mode=OneWay}"/>
                     </StackPanel>
 
                 </Border>
             </Grid>
-        </materialDesign:DialogHost>
     </Grid>
-</controls:FlatWindow>
+</Window>

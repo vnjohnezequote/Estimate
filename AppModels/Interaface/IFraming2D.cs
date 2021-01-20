@@ -1,6 +1,4 @@
 ﻿using System;
-using AppModels.Enums;
-using AppModels.ResponsiveData.Framings;
 
 namespace AppModels.Interaface
 {

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.Interaface;
+﻿using AppModels.Interaface;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot.Entities;
-using GeometryGym.Ifc;
 
 namespace AppModels.Factories
 {
@@ -37,9 +31,9 @@ namespace AppModels.Factories
             return new LeaderVM(leader);
         }
 
-        public static VectorViewVm CreateVectorViewVm(this VectorView vectorView)
+        public static VectorViewVm CreateVectorViewVm(this VectorView vectorView,IEntitiesManager entitiesManager)
         {
-            return new VectorViewVm(vectorView);
+            return new VectorViewVm(vectorView,entitiesManager);
         }
 
         public static BlockReferenceVm CreateBlockReferenceVm(this BlockReference blockRef)

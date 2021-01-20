@@ -1,6 +1,4 @@
-﻿using devDept.Eyeshot.Entities;
-
-namespace AppModels.Interaface
+﻿namespace AppModels.Interaface
 {
     public interface ITextVm
     {

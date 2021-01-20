@@ -17,15 +17,10 @@
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:applicationconverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:LevelInfoViewModel, IsDesignTimeCreatable=True}"
-             Style="{DynamicResource MaterialDesignUserControl}"
              Padding="20 0 20 0">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />-->
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
-                <!--<ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/ComboBoxStyle.xaml"/>-->
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/TextBoxStyle.xaml"/>
                 <ResourceDictionary>
                     <ObjectDataProvider x:Key="NoggingMethodTypes"
                                         MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
@@ -56,7 +51,6 @@
                 <TextBox materialDesign:HintAssist.Hint="Global Wall2D Height"
                          materialDesign:HintAssist.IsFloating="True"
                          controls:TextBoxHelper.ClearTextButton="False"
-                         
                          Text="{Binding JobModel.GlobalWallInfo.WallHeight}"/>
                 <ComboBox materialDesign:HintAssist.Hint="Load Bearing Wall2D Spacing"
                           materialDesign:HintAssist.IsFloating="True"
@@ -74,7 +68,6 @@
                           Text="{Binding JobModel.GlobalWallInfo.InternalWallSpacing}"/>
                 <!--Hack Textbox Reset-->
                 <TextBox Name="HackNonLbwCmb" TextChanged="NumericInputChanged" Visibility="Collapsed" Text="{Binding ElementName=NonLbwCmb, Path=Text,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-
                 <TextBox materialDesign:HintAssist.Hint="Raised Ceiling Height"
                          materialDesign:HintAssist.IsFloating="True"
                          TextChanged="NumericInputChanged"
@@ -82,22 +75,11 @@
                          Text="{Binding JobInfo.RaisedCeilingHeight}"/>
             </DockPanel>
             <Border Margin="0 10 0 0"
-                Background="{DynamicResource MaterialDesignDivider}"
-                Height="1"
+                    Height="1"
                 HorizontalAlignment="Stretch"
                 SnapsToDevicePixels="True" />
             <StackPanel Orientation="Horizontal" Margin="0 10 0 10">
                 <Grid VerticalAlignment="Center" >
-                    <Grid.Resources>
-                        <ResourceDictionary>
-                            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-                                <Setter Property="BorderThickness" Value="1"/>
-                                <Setter Property="Padding" Value="5 0 5 0"/>
-                                <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="False"/>
-                                <Setter Property ="materialDesign:HintAssist.IsFloating" Value="False"/>
-                            </Style>
-                        </ResourceDictionary>
-                    </Grid.Resources>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="1"/>
@@ -119,9 +101,9 @@
                     <!--<Border Grid.Row="1" Background="{StaticResource AccentColorBrush}" Grid.ColumnSpan="9"/>-->
                     <Label Content="External Wall2D" Grid.Row="0" Background="Chocolate"/>
                     <!--<Border Grid.Row="3" Background="{StaticResource AccentColorBrush}" Grid.ColumnSpan="9"/>-->
-                    <Label Content="Internal Wall2D" Grid.Row="2" Background="{StaticResource MahApps.Brushes.Accent}"/>
+                    <Label Content="Internal Wall2D" Grid.Row="2" Grid.Column="0"/>
                     <!--<Border Grid.Row="5" Background="{StaticResource AccentColorBrush}" Grid.ColumnSpan="9"/>-->
-                    <Label Content="Nogging" Grid.Row="4" Background="DarkSlateGray"/>
+                    <Label Content="Nogging" Grid.Row="4" Grid.Column="0" Background="DarkSlateGray"/>
 
                     <!--External Wall-->
                     <TextBox Grid.Row="0" Grid.Column="2" 
@@ -137,7 +119,6 @@
 
                     <!--Internal Wall-->
                     <TextBox Grid.Row="2" Grid.Column="2"
-                             Style="{StaticResource ClearButtonTextBox}"
                              materialDesign:HintAssist.IsFloating="False"
                              TextChanged="NumericInputChanged"
                              Padding="5 0 5 0"
@@ -156,14 +137,12 @@
                     <TextBox Grid.Row="4"
                              Grid.Column="2"
                              Padding="5 0 5 0"
-                             Style="{StaticResource ClearButtonTextBox}"
                              TextChanged="NumericInputChanged"
                              materialDesign:HintAssist.IsFloating="False"
                              Text="{Binding JobModel.GlobalWallInfo.GlobalNoggingInfo.Thickness}"
                              IsEnabled="{Binding JobInfo.NoggingMethod,Converter={StaticResource NoggingMethodToBoolConverter}}"/>
                     <TextBox Grid.Row="4"
                              Grid.Column="4"
-                             Style="{StaticResource ClearButtonTextBox}"
                              Padding="5 0 5 0"
                              materialDesign:HintAssist.IsFloating="False"
                              TextChanged="NumericInputChanged"
@@ -182,8 +161,7 @@
                               Grid.Column="0"
                               Grid.ColumnSpan="7"
                               ItemsSource="{Binding Source={ StaticResource NoggingMethodTypes}}"
-                              SelectedItem="{Binding JobInfo.NoggingMethod,Mode=TwoWay}"
-                              />
+                              SelectedItem="{Binding JobInfo.NoggingMethod,Mode=TwoWay}"/>
 
                 </Grid>
                 <Expander Header="Global Door Info"
@@ -192,20 +170,9 @@
                           IsExpanded="True"
                           Background="Transparent">
 
-                    <materialDesign:ColorZone Mode="Dark" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Grid>
-                                <!--<Grid.Resources>
-                                    <ResourceDictionary>
-                                        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-                                            <Setter Property="BorderThickness" Value="1"/>
-                                            <Setter Property="Padding" Value="5 0 5 0"/>
-                                            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="False"/>
-                                            <Setter Property ="materialDesign:HintAssist.IsFloating" Value="False"/>
-                                            <Setter Property="materialDesign:HintAssist.FloatingOffset" Value="1,20"></Setter>
-                                        </Style>
-                                    </ResourceDictionary>
-                                </Grid.Resources>-->
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
@@ -215,9 +182,6 @@
                                 <TextBox materialDesign:HintAssist.Hint="External Door Height"
                                          Text="{Binding JobModel.GlobalWallInfo.ExternalDoorHeight}"
                                          controls:TextBoxHelper.ClearTextButton="False"/>
-                                <!--<controls:NumericUpDown Minimum="1" Maximum="4" Interval="1"
-                                                        Margin="10 0 0 0"
-                                                        Value="{Binding JobInfo.DefaultInfo.GlobalDoorJambInfo.NoItem }"/>-->
                                 <TextBox materialDesign:HintAssist.Hint="Number of Jamb"
                                          Margin="10 0 0 0"
                                          Grid.Column="1"
@@ -244,17 +208,15 @@
                                      Text="{Binding JobModel.GlobalWallInfo.InternalDoorHeight}"
                                      TextChanged="NumericInputChanged"/>
                         </StackPanel>
-                    </materialDesign:ColorZone>
+                    </StackPanel>
 
                 </Expander>
             </StackPanel>
 
         </StackPanel>
-        <Border
-            Background="{DynamicResource MaterialDesignDivider}"
-            Height="1"
-            HorizontalAlignment="Stretch"
-            SnapsToDevicePixels="True" />
+        <Border Height="1"
+                HorizontalAlignment="Stretch"
+                SnapsToDevicePixels="True" />
         <StackPanel Margin="0 10 0 0">
             <Expander Header="Global Wall2D Info" IsExpanded="True">
                 <Grid>
@@ -877,21 +839,18 @@
         <!-- Floor Infor -->
         <TabControl prism:RegionManager.RegionManager="{Binding RegionManager}"
                     prism:RegionManager.RegionName="FloorInfoRegion"
-                    Style="{StaticResource MaterialDesignTabControlCustom}"
                     materialDesignExtention:TabControlAssist.TabHeaderHorizontalAlignment="Left" Margin="0 10 0 0">
             <TabControl.Resources>
                 <ResourceDictionary>
-                    <Style TargetType="TabItem" BasedOn="{StaticResource MaterialDesignTabItem}">
+                    <Style TargetType="TabItem">
                         <Setter Property="Header" Value="{Binding DataContext.Level.LevelName}" />
                     </Style>
                 </ResourceDictionary>
             </TabControl.Resources>
         </TabControl>
-        <Border
-            Background="{DynamicResource MaterialDesignDivider}"
-            Height="1"
-            HorizontalAlignment="Stretch"
-            SnapsToDevicePixels="True" />
+        <Border Height="1"
+                HorizontalAlignment="Stretch"
+                SnapsToDevicePixels="True" />
         <!-- Step Down -->
         <DockPanel Margin="0 10 0 0">
             <materialDesign:ColorZone Mode="PrimaryMid"

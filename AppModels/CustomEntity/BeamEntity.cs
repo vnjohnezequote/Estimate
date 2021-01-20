@@ -3,7 +3,6 @@ using System.Drawing;
 using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Enums;
 using AppModels.Interaface;
-using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;

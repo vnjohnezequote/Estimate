@@ -1,7 +1,6 @@
 ﻿using AppModels.Enums;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
-using devDept.Eyeshot.Entities;
 
 namespace AppModels.Interaface
 {

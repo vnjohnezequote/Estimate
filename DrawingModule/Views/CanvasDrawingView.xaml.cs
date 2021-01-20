@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -30,8 +31,8 @@ namespace DrawingModule.Views
     /// </summary>
     public partial class CanvasDrawingView : UserControl
     {
-        private MyViewBuilder _viewBuilder;
-        private WallNameBuilder _wallNameBuilder;
+        //private MyViewBuilder _viewBuilder;
+        //private WallNameBuilder _wallNameBuilder;
         private CanvasDrawingViewModel _viewModel;
         public static readonly DependencyProperty ActiveLayerNameProperty =
             DependencyProperty.Register("ActiveLayerName", typeof(string), typeof(CanvasDrawingView),
@@ -56,7 +57,7 @@ namespace DrawingModule.Views
                 MessageBox.Show(e.Message);
                 throw;
             }
-            
+
             //this.PaperSpace.Unlock("PF20 - 21MV5 - 0NHNJ - WYUX - F6CQ");
             if (this.DataContext != null)
             {
@@ -188,59 +189,59 @@ namespace DrawingModule.Views
         }
         private void PaperSpace_WorkCompleted(object sender, WorkCompletedEventArgs e)
         {
-            if (_wallNameBuilder == null)
-            {
-                _wallNameBuilder = new WallNameBuilder(PaperSpace, _viewModel.JobModel);
-                PaperSpace.StartWork(_wallNameBuilder);
-            }
-            else
-            {
-                if (_wallNameBuilder != null)
-                {
-                    _wallNameBuilder.AddToDrawings();
-                }
-                if (_viewBuilder != null)
-                {
-                    _viewBuilder.AddToDrawings(PaperSpace);
+            //if (_wallNameBuilder == null)
+            //{
+            //    _wallNameBuilder = new WallNameBuilder(PaperSpace, _viewModel.JobModel);
+            //    PaperSpace.StartWork(_wallNameBuilder);
+            //}
+            //else
+            //{
+            //    //if (_wallNameBuilder != null)
+            //    //{
+            //    //    _wallNameBuilder.AddToDrawings();
+            //    //}
+            //    //if (_viewBuilder != null)
+            //    //{
+            //    //    _viewBuilder.AddToDrawings(PaperSpace);
 
-                    if (PaperSpace.ActiveSheet == null)
-                    {
-                        var sheet = PaperSpace.Sheets[0];
-                        PaperSpace.ActiveSheet = sheet;
-                        var blockRefSheet = GetFormatBlockReference(PaperSpace.ActiveSheet);
-                        var vectorView = GetVecterViewRef(PaperSpace.ActiveSheet);
-                        if (blockRefSheet!=null && vectorView!=null)
-                        {
-                            if (blockRefSheet.Attributes.ContainsKey("Scale"))
-                            {
-                                var f = (Rational)vectorView.Scale;
-                                var scale =  f.ToString().Replace('/', ':');
-                                blockRefSheet.Attributes["Scale"].Value = scale;
-                            }
-                        }
-                        PaperSpace.ZoomFit();
-                    }
-                    PaperSpace.Entities.Regen();
-                    PaperSpace.Invalidate();
+            //    //    if (PaperSpace.ActiveSheet == null)
+            //    //    {
+            //    //        var sheet = PaperSpace.Sheets[0];
+            //    //        PaperSpace.ActiveSheet = sheet;
+            //    //        var blockRefSheet = GetFormatBlockReference(PaperSpace.ActiveSheet);
+            //    //        var vectorView = GetVecterViewRef(PaperSpace.ActiveSheet);
+            //    //        if (blockRefSheet!=null && vectorView!=null)
+            //    //        {
+            //    //            if (blockRefSheet.Attributes.ContainsKey("Scale"))
+            //    //            {
+            //    //                var f = (Rational)vectorView.Scale;
+            //    //                var scale =  f.ToString().Replace('/', ':');
+            //    //                blockRefSheet.Attributes["Scale"].Value = scale;
+            //    //            }
+            //    //        }
+            //    //        PaperSpace.ZoomFit();
+            //    //    }
+            //    //    PaperSpace.Entities.Regen();
+            //    //    PaperSpace.Invalidate();
 
-                    if (!_viewBuilder.QueueCompleted)
-                    {
-                        PaperSpace.StartWork(_viewBuilder);
-                    }
-                    else
-                    {
-                        _viewBuilder.Dispose();
-                        _viewBuilder = null;
-                        _wallNameBuilder.Dispose();
-                        _wallNameBuilder = null;
-                    }
+            //    //    if (!_viewBuilder.QueueCompleted)
+            //    //    {
+            //    //        PaperSpace.StartWork(_viewBuilder);
+            //    //    }
+            //    //    else
+            //    //    {
+            //    //        _viewBuilder.Dispose();
+            //    //        _viewBuilder = null;
+            //    //        _wallNameBuilder.Dispose();
+            //    //        _wallNameBuilder = null;
+            //    //    }
 
-                    if (PaperSpace.IsToReload && !PaperSpace.IsImported && PaperSpace.IsModified)
-                    {
-                        PaperSpace.IsToReload = false;
-                    }
-                }
-            }
+            //    //    if (PaperSpace.IsToReload && !PaperSpace.IsImported && PaperSpace.IsModified)
+            //    //    {
+            //    //        PaperSpace.IsToReload = false;
+            //    //    }
+            //    //}
+            //}
 
 
         }
@@ -406,14 +407,20 @@ namespace DrawingModule.Views
             var view = new CustomVectorView(127.5, 105, viewType.Top, 0.02, GetViewName(sheet, viewType.Front, false)) { CenterlinesExtensionAmount = extensionAmount };
             var wallName = new WallName(new Point3D(0,0,0),sheet.Name+"Wall2D" );
             wallName.Attributes["Title"] = new AttributeReference(sheet.Name);
+
+            var floorQty = new FloorQuantity(new Point3D(0, 0, 0), sheet.Name + "FloorQty");
+            floorQty.Attributes["Title"] = new AttributeReference(sheet.Name);
+            
             ////{ CenterlinesExtensionAmount = extensionAmount}
             view.KeepEntityColor = true;
             view.KeepEntityLineType = true;
             view.KeepEntityLineWeight = true;
+            view.FillRegions = true;
             //view.HiddenSegments = false;
             //view.ColorMethod = colorMethodType.byEntity;
             //view.LineTypeMethod = colorMethodType.byEntity;
             sheet.AddWallPlaceHolder(wallName, PaperSpace, "Wall2D Name Place");
+            sheet.AddFloorQtyPaceHolder(floorQty,PaperSpace, "Floor Qty Place");
             sheet.AddViewPlaceHolder(view,CanvasDrawing,PaperSpace,view.BlockName.Replace(sheet.Name,String.Empty));
             
             //var view = new RasterView(7 * unitsConversionFactor, 100 * unitsConversionFactor, viewType.Top, 0.5, GetViewName(sheet, viewType.Top, true));
@@ -430,35 +437,175 @@ namespace DrawingModule.Views
             return String.Format("{0} {1} {2}", sheet.Name, viewType.ToString(), isRaster ? "Raster View" : "Vector View");
         }
 
-        public void StartViewBuilder(View singleView = null, bool dirtyOnly = true)
+        private WorkManager<MyViewBuilder> _workManager;
+        private void CreateWorkManager()
         {
-            var initViewBuilder = _viewBuilder == null;
-            if (initViewBuilder)
+            if (_workManager !=null) return;
+            _workManager = new WorkManager<MyViewBuilder>();
+            _workManager.WorkUnitCompleted += WorkManagerWorkUnitCompleted;
+            _workManager.QueueCompleted += WorkManagerQueueCompleted;
+            _workManager.QueueCancelled += WorkManagerQueueCancelled;
+        }
+
+        
+
+        //private void CreateWallNameBuilderManager()
+        //{
+        //    if (_wallNameBuilderManager!=null) return;
+        //    _wallNameBuilderManager = new WorkManager<WallNameBuilder>();
+        //    _wallNameBuilderManager.WorkUnitCompleted += WallNameBuilderManagerOnWorkUnitCompleted;
+        //    _wallNameBuilderManager.QueueCompleted+= WallNameBuilderManagerOnQueueCompleted;
+        //    _wallNameBuilderManager.QueueCancelled += WallNameBuilderManagerOnQueueCancelled;
+        //}
+
+        //private void WallNameBuilderManagerOnQueueCompleted(object sender, EventArgs e)
+        //{
+        //    DestroyWallBuilderManager();
+        //}
+
+        //private void WallNameBuilderManagerOnQueueCancelled(object sender, WorkUnitEventArgs e)
+        //{
+        //    DestroyWallBuilderManager();
+        //}
+
+        //private void WallNameBuilderManagerOnWorkUnitCompleted(object sender, WorkUnitEventArgs e)
+        //{
+        //    var wallNameBuilder = (WallNameBuilder) e.WorkUnit;
+        //    wallNameBuilder.AddToDrawings();
+        //    _wallNameBuilderManager.RemoveFromQueue(wallNameBuilder);
+        //}
+
+        //private void DestroyWallBuilderManager()
+        //{
+        //    if(_wallNameBuilderManager== null) return;
+        //    _wallNameBuilderManager.WorkUnitCompleted -= WallNameBuilderManagerOnWorkUnitCompleted;
+        //    _wallNameBuilderManager.QueueCompleted -= WallNameBuilderManagerOnQueueCompleted;
+        //    _wallNameBuilderManager.QueueCancelled -= WallNameBuilderManagerOnQueueCancelled;
+        //    _wallNameBuilderManager.Dispose();
+        //    _wallNameBuilderManager = null;
+        //}
+        
+
+        private void DestroyWorkManager()
+        {
+            if (_workManager == null) return;
+            _workManager.WorkUnitCompleted -= WorkManagerWorkUnitCompleted;
+            _workManager.QueueCompleted -= WorkManagerQueueCompleted;
+            _workManager.QueueCancelled -= WorkManagerQueueCancelled;
+            _workManager.Dispose();
+            _workManager = null;
+        }
+
+        private void WorkManagerWorkUnitCompleted(object sender, WorkUnitEventArgs e)
+        {
+            MyViewBuilder vb = (MyViewBuilder) e.WorkUnit;
+            vb.AddToDrawings(PaperSpace);
+            _workManager.RemoveFromQueue(vb);
+            RefreshDrawings();
+        }
+
+        private void RefreshDrawings()
+        {
+            if (PaperSpace.ActiveSheet == null)
             {
-                _viewBuilder = new MyViewBuilder(CanvasDrawing,PaperSpace,dirtyOnly,ViewBuilder.operatingType.Queue);
+                if (PaperSpace.Sheets.Count == 0)
+                {
+                    return;
+                }
+                this.ActivateSheet(PaperSpace.Sheets[0]);
+                PaperSpace.ZoomFit();
             }
+
+            if (PaperSpace.IsToReload && !PaperSpace.IsImported && !PaperSpace.IsModified)
+            {
+                //PaperSpace.IsToReload = false;
+            }
+            PaperSpace.Invalidate();
+        }
+
+        private void ActivateSheet(Sheet sheet)
+        {
+            if (PaperSpace.ActiveSheet == null || sheet != null || PaperSpace.ActiveSheet.Name.Equals(sheet.Name))
+            {
+                PaperSpace.ActiveSheet = sheet;
+                var blockRefSheet = GetFormatBlockReference(PaperSpace.ActiveSheet);
+                var vectorView = GetVecterViewRef(PaperSpace.ActiveSheet);
+                if (blockRefSheet != null && vectorView != null)
+                {
+                    if (blockRefSheet.Attributes.ContainsKey("Scale"))
+                    {
+                        var f = (Rational)vectorView.Scale;
+                        var scale = f.ToString().Replace('/', ':');
+                        blockRefSheet.Attributes["Scale"].Value = scale;
+                    }
+                    PaperSpace.UpdateBoundingBox();
+                }
+                PaperSpace.Invalidate();
+            }
+            
+        }
+        private void WorkManagerQueueCancelled(object sender, WorkUnitEventArgs e)
+        {
+            DestroyWorkManager();
+        }
+
+        private void WorkManagerQueueCompleted(object sender, EventArgs e)
+        {
+            DestroyWorkManager();
+        }
+        public void StartViewBuilder(View singleView = null, bool changedOnly = true)
+        {
+            //CreateWallNameBuilderManager();
+            CreateWorkManager();
             if (singleView!=null)
             {
-                if (initViewBuilder)
-                {
-                    _viewBuilder.ClearQueue();
-                    _viewBuilder.AddToQueue(singleView,PaperSpace.ActiveSheet);
-                }
-
+                PaperSpace.ActiveSheet.AddViewPlaceHolder(singleView,CanvasDrawing,PaperSpace);
+                _workManager.AppendToQueue(new MyViewBuilder(CanvasDrawing,PaperSpace,singleView,PaperSpace.ActiveSheet,_viewModel.JobModel));
             }
             else
             {
-                if (!initViewBuilder)
+                foreach (var paperSpaceSheet in PaperSpace.Sheets)
                 {
-                    _viewBuilder.AddToQueue(PaperSpace,dirtyOnly,PaperSpace.ActiveSheet);
-                    
+                    for (int i = 0; i < paperSpaceSheet.Entities.Count; i++)
+                    {
+                        var view  = paperSpaceSheet.Entities[i] as CustomVectorView;
+                        if (view!=null )
+                        {
+                            if (_workManager.GetQueueItems().Count(x => x.Contains(view)) > 0)
+                                continue;
+                            paperSpaceSheet.AddViewPlaceHolder(view,CanvasDrawing,PaperSpace);
+                            var wallName = new WallName(new Point3D(0,0,0), paperSpaceSheet.Name+"Wall2D" );
+                            wallName.Attributes["Title"] = new AttributeReference(paperSpaceSheet.Name);
+                            ((CustomSheet)paperSpaceSheet).AddWallPlaceHolder(wallName,PaperSpace, "Wall2D Name Place");
+                            var floorQty = new FloorQuantity(new Point3D(0, 0, 0), paperSpaceSheet.Name + "FloorQty");
+                            floorQty.Attributes["Title"] = new AttributeReference(paperSpaceSheet.Name);
+                            ((CustomSheet)paperSpaceSheet).AddFloorQtyPaceHolder(floorQty, PaperSpace, "Floor Qty Place");
+                            _workManager.AppendToQueue(new MyViewBuilder(CanvasDrawing,PaperSpace,view, paperSpaceSheet,_viewModel.JobModel));
+                            //_wallNameBuilderManager.AppendToQueue(new WallNameBuilder(PaperSpace,_viewModel.JobModel));
+                            
+                        }
+                    }
                 }
             }
-
-            if (!PaperSpace.IsBusy)
+            if (_workManager.QueueCount > 0)
             {
-                PaperSpace.StartWork(_viewBuilder);
+                //_wallNameBuilderManager.RunAll(PaperSpace);
+                _workManager.RunAll(PaperSpace);
             }
+            else
+            {
+               RefreshDrawings();
+               DestroyWorkManager();
+               //DestroyWallBuilderManager();
+                
+            }
+
+            
+            
+            //if (!PaperSpace.IsBusy)
+            //{
+            //    PaperSpace.StartWork(_viewBuilder);
+            //}
 
         }
 

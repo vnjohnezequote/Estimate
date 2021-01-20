@@ -50,20 +50,25 @@ namespace AppAddons.DrawingTools
                 var index2 = Points.Count - 1;
                 var startPoint = (Point3D)Points[index2 - 1].Clone();
                 var endPoint = (Point3D)Points[index2].Clone();
+                if (JobModel.ActiveFloorSheet== null)
+                {
+                    continue;
+                }
                 LevelWall level = JobModel.ActiveFloorSheet.Level;
-                FBeam newBeam = null;
 
                 if (level != null && this.JobModel.ActiveFloorSheet!=null)
                 {
-                    var beamId = level.RoofBeams.Count + 1;
+                    var beamId = JobModel.ActiveFloorSheet.Beams.Count + 1;
                     var beamType = FramingTypes.FloorBeam;
                     if (JobModel.ActiveFloorSheet.FramingSheetType == FramingSheetTypes.RafterFraming)
                     {
                         beamType = FramingTypes.RafterBeam;
                     }
-                    newBeam = new FBeam(JobModel.ActiveFloorSheet) { Index = beamId };
-                    newBeam.FramingType = beamType;
-                    newBeam.FullLength = (int)(startPoint.DistanceTo(endPoint));
+
+                    var newBeam = new FBeam(JobModel.ActiveFloorSheet)
+                    {
+                        Index = beamId, FramingType = beamType, FullLength = (int) (startPoint.DistanceTo(endPoint))
+                    };
                     var beamThickness = 45;
                     if (JobModel.SelectedJoitsMaterial != null)
                     {
@@ -71,9 +76,10 @@ namespace AppAddons.DrawingTools
                         beamThickness = newBeam.FramingInfo.NoItem * newBeam.FramingInfo.Depth;
                     }
                     this.JobModel.ActiveFloorSheet.Beams.Add(newBeam);
-                    var beam = new Beam2D(Plane.XY, startPoint, endPoint, newBeam,beamThickness, false, true);
-                    beam.LineTypeName = "Dash Space";
-                    beam.LineTypeMethod = colorMethodType.byEntity;
+                    var beam = new Beam2D(startPoint, endPoint, newBeam, beamThickness)
+                    {
+                        ColorMethod = colorMethodType.byEntity
+                    };
                     this.EntitiesManager.AddAndRefresh(beam, LayerManager.SelectedLayer.Name);
                     
                 }

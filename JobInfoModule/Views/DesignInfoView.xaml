@@ -12,37 +12,27 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d"
-             Style="{DynamicResource MaterialDesignUserControl}">
-    <UserControl.Resources>
-        <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
-    </UserControl.Resources>
+             mc:Ignorable="d">
     <StackPanel>
         <!-- Engineer Infor-->
         <DockPanel Margin="20 0 20 0">
-            <materialDesign:ColorZone Mode="Dark"
-                                      Width="120"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Bottom"
-                                      VerticalContentAlignment="Bottom">
+            <StackPanel Width="120"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Bottom">
                 <Label Content="{Binding JobModel.Info.FrameDesignInfor.Header, FallbackValue='Frame as per'}"/>
-            </materialDesign:ColorZone>
+            </StackPanel>
             <ComboBox SelectedItem="{Binding JobModel.Info.FrameDesignInfor, Mode=TwoWay}"
                       DisplayMemberPath="Content"
                       Text="{Binding JobModel.Info.FrameDesignInfor.Content}"
                       ItemsSource="{Binding FrameDesignInfors}"
                       Margin="20 0 0 0"/>
-            <!--<TextBox Text="{Binding JobModel.Info.FrameDesignInfor.Content}"/>-->
-
         </DockPanel>
         <DockPanel Margin="20 0 20 0">
-            <materialDesign:ColorZone Mode="Dark"
-                                      Width="120"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Bottom"
-                                      VerticalContentAlignment="Center">
+            <StackPanel Width="120"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Bottom">
                 <Label Content="{Binding JobModel.Info.BeamDesignInfor.Header, FallbackValue='Beam as per'}"/>
-            </materialDesign:ColorZone>
+            </StackPanel>
             <ComboBox SelectedItem="{Binding JobModel.Info.BeamDesignInfor,Mode=TwoWay}"
                       Text="{Binding JobModel.Info.BeamDesignInfor.Content}"
                       DisplayMemberPath="Content"
@@ -51,12 +41,10 @@
             <!--<TextBox Text="{Binding JobModel.Info.BeamDesignInfor.Content}"/>-->
         </DockPanel>
         <DockPanel Margin="20 0 20 0">
-            <materialDesign:ColorZone Mode="Dark" Width="120"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Bottom"
-                                      VerticalContentAlignment="Center">
+            <StackPanel HorizontalAlignment="Stretch"
+                        VerticalAlignment="Bottom">
                 <Label Content="{Binding JobModel.Info.BracingDesignInfor.Header, FallbackValue='Bracing as per'}"/>
-            </materialDesign:ColorZone>
+            </StackPanel>
             <ComboBox SelectedItem="{Binding JobModel.Info.BracingDesignInfor,Mode=TwoWay}"
                       SelectedValue="{Binding JobModel.Info.BracingDesignInfor,Mode=TwoWay}"
                       Text="{Binding JobModel.Info.BracingDesignInfor.Content}"
@@ -67,19 +55,15 @@
         </DockPanel>
         <!-- Plan Infor -->
         <DockPanel Margin="20 10 20 0">
-            <materialDesign:ColorZone Mode="Dark"
-                                      Width="120"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Bottom"
-                                      VerticalContentAlignment="Center">
+            <StackPanel Width="120"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Bottom">
                 <Label Content="Plan Issue"/>
-            </materialDesign:ColorZone>
-            <DatePicker materialDesign:HintAssist.Hint="Pick Date"
-                        SelectedDate="{Binding JobModel.Info.PlanIsueDate}"
+            </StackPanel>
+            <DatePicker SelectedDate="{Binding JobModel.Info.PlanIsueDate}"
                         IsTodayHighlighted="False"
                         Language="en-AU"
                         Margin="20 0 0 0"/>
-
             <CheckBox Content="E - Plan" IsChecked="{Binding JobModel.Info.IsEPlan}" Margin="20 0 0 0"/>
             <CheckBox Content="Engineer" IsChecked="{Binding JobModel.Info.IsEngineer, Mode=OneWay}" Margin="20 0 0 0"/>
             <CheckBox Content="Bracing Plan" IsChecked="{Binding JobModel.Info.IsBracingPlan,Mode=OneWay}" Margin="20 0 0 0"/>

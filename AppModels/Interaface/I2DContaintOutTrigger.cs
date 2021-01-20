@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using AppModels.CustomEntity;
-using AppModels.PocoDataModel.Framings.FloorAndRafter;
 
 namespace AppModels.Interaface
 {

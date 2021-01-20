@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using AppModels.Enums;
-using AppModels.Interaface;
 using AppModels.PocoDataModel;
-using AppModels.PocoDataModel.Framings.FloorAndRafter;
 using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
-using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Framings.Beams;
 using AppModels.ResponsiveData.Support;
-using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Openings
 {
@@ -44,6 +39,10 @@ namespace AppModels.ResponsiveData.Openings
                 return (double)((FramingSpan * cavityFactor + supportWidth).RoundUpTo300()) / 1000 + ExtraLength;
             }
         }
+
+        protected override List<FramingTypes> FramingTypeAccepted { get; } =
+            new List<FramingTypes>() {FramingTypes.LintelBeam};
+
         public override int TotalSupportWidth
         {
             get

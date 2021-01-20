@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+
 namespace NewJobWizardModule.Views
 {
     using System.Diagnostics.CodeAnalysis;
@@ -17,7 +19,7 @@ namespace NewJobWizardModule.Views
     /// Interaction logic for NewJobView.xaml
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-    public partial class NewJobWizardView : FlatWindow
+    public partial class NewJobWizardView : Window
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NewJobWizardView"/> class.

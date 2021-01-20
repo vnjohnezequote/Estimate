@@ -59,7 +59,7 @@ namespace NewJobWizardModule.ViewModels
         /// <summary>
         /// The _window.
         /// </summary>
-        private FlatWindow _window;
+        private Window _window;
 
         /// <summary>
         /// The is design visibility.
@@ -241,7 +241,7 @@ namespace NewJobWizardModule.ViewModels
         {
             var parrentWindow = WindowHelper.GetWindowParent(param);
             if (parrentWindow == null) return;
-            if (parrentWindow is FlatWindow window)
+            if (parrentWindow is Window window)
             {
                 this._window = window;
             }

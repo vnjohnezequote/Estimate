@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+
+using System.Windows;
 using System.Windows.Input;
 using Estimate.ViewModels;
 
@@ -22,7 +24,7 @@ namespace Estimate.Views
     /// Interaction logic for MainWindowView.xaml
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-    public partial class MainWindowView : FlatWindow
+    public partial class MainWindowView : Window
     {
         private MainWindowViewModel _viewModel;
         /// <summary>

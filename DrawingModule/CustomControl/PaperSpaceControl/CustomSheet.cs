@@ -543,6 +543,20 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             }
             this.Entities.Add(wallName);
         }
+
+        public void AddFloorQtyPaceHolder(FloorQuantity floorQty, Drawings drawings,string placeHolderText)
+        {
+            if (drawings.Blocks.Contains(floorQty.BlockName) ) return;
+            var block = new Block(floorQty.BlockName);
+            block.Entities.Add(new Line(new Point3D(0, 0, 0), new Point3D(50, 0, 0)) { LayerName = drawings.WiresLayerName, ColorMethod = colorMethodType.byEntity, Color = Color.Red, LineWeightMethod = colorMethodType.byEntity });
+            drawings.Blocks.Add(block);
+            if (this==drawings.ActiveSheet)
+            {
+                drawings.Entities.Add(floorQty);
+                return;
+            }
+            this.Entities.Add(floorQty);
+        }
         #endregion
 
         #region MyRegion

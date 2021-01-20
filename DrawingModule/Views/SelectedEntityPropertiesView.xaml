@@ -23,7 +23,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
                 <ResourceDictionary>
                     <ObjectDataProvider x:Key="ColorMethods"
                                         MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
@@ -82,7 +81,6 @@
                     <Style TargetType="DockPanel">
                         <Setter Property="Margin" Value="15 5 0 5"/>
                     </Style>
-                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
                 </ResourceDictionary>
             </StackPanel.Resources>
             <DockPanel  Visibility="{Binding LayerVisibility}">
@@ -139,7 +137,6 @@
                 <TextBlock Text="Client Name" />
                 <TextBox Text="{Binding SelectedEntity.ClientName}"/>
             </DockPanel>
-            
             <DockPanel Visibility="{Binding FramingVisibility}">
                 <TextBlock Text="Engineer Reference" />
                 <ComboBox ItemsSource="{Binding EngineerList}"
@@ -171,14 +168,12 @@
             <DockPanel Visibility="{Binding BeamVisibility}">
                 <TextBlock Text="Beam Text Alignment" />
                 <ComboBox Text="{Binding SelectedEntity.BeamMarkedAlignmentType}"
-                          ItemsSource="{Binding Source={StaticResource AlignmentTypes}}"
-                          Style="{StaticResource MahApps.Styles.ComboBox}"/>
+                          ItemsSource="{Binding Source={StaticResource AlignmentTypes}}"/>
             </DockPanel>
             <DockPanel Visibility="{Binding BeamVisibility}">
                 <TextBlock Text="Beam Alignment" />
                 <ComboBox ItemsSource="{Binding Source={StaticResource BeamMarkedLocation}}"
-                          SelectedItem="{Binding SelectedEntity.BeamMarkLocation}"
-                          Style="{StaticResource MahApps.Styles.ComboBox}"/>
+                          SelectedItem="{Binding SelectedEntity.BeamMarkLocation}"/>
             </DockPanel>
             <DockPanel Visibility="{Binding BeamVisibility}">
                 <TextBlock Text="Beam Location"/>
@@ -201,7 +196,8 @@
             <DockPanel Visibility="{Binding FramingVisibility}">
                 <TextBlock Text="Framing Type" />
                 <ComboBox ItemsSource="{Binding Source={StaticResource FramingTypes}}"
-                          SelectedItem="{Binding SelectedEntity.FramingType}"/>
+                          SelectedItem="{Binding SelectedEntity.FramingType}"
+                          IsEnabled="{Binding FramingTypeCanChange}"/>
             </DockPanel>
             <DockPanel Visibility="{Binding BeamVisibility}">
                 <TextBlock Text="Is Continues Beam" />
@@ -364,6 +360,18 @@
                 <TextBlock Text="Blocking Types" />
                 <ComboBox SelectedItem="{Binding SelectedEntity.BlockingType}"
                           ItemsSource="{Binding Source={StaticResource BlockingTypes}}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding ShowFramingNameVisibility}">
+                <TextBlock Text="Is Show Framing Name"/>
+                <CheckBox IsChecked="{Binding SelectedEntity.IsShowFramingName}"/>
+            </DockPanel>
+            <DockPanel Visibility="{Binding BlockingVisibility}">
+                <TextBlock Text="Is Rotate"/>
+                <CheckBox IsChecked="{Binding SelectedEntity.IsRotateBlocking}"/>
+            </DockPanel>
+            <DockPanel>
+                <Button Content="Select Joist"/>
+                <TextBlock Text="{Binding SelectedEntity.FramingName}"/>
             </DockPanel>
         </StackPanel>
     </Grid>

@@ -1,5 +1,4 @@
-﻿using AppModels.ResponsiveData;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace AppModels.Interaface
 {

@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
-using AppModels.PocoDataModel;
 using AppModels.PocoDataModel.Framings.FloorAndRafter;
 using AppModels.ResponsiveData.EngineerMember;
-using AppModels.ResponsiveData.Openings;
 using devDept.Geometry;
-using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
 {
     public class OutTrigger: FramingBase
     {
         private IFraming _parrent;
+        private FramingTypes _framingType;
         public override double QuoteLength
         {
             get
@@ -29,7 +23,9 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
                 return quoteLength;
             }
             
-        } 
+        }
+        protected override List<FramingTypes> FramingTypeAccepted { get; }= new List<FramingTypes>() {FramingTypes.RafterOutTrigger,FramingTypes.OutTrigger};
+        
         public IFraming Parrent { 
             get=>_parrent;
             set
@@ -57,8 +53,18 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
         public OutTrigger() : base()
         {
         }
-        public OutTrigger(FramingSheet framingSheet):base(framingSheet)
-        { }
+
+        public OutTrigger(FramingSheet framingSheet) : base(framingSheet)
+        {
+            if (FramingSheet.FramingSheetType == FramingSheetTypes.RafterFraming)
+            {
+                FramingType = FramingTypes.RafterOutTrigger;
+            }
+            else
+            {
+                FramingType = FramingTypes.OutTrigger;
+            }
+        }
 
         public OutTrigger(IFraming framingRef):base(framingRef.FramingSheet)
         {
@@ -75,7 +81,6 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
         {
             return new OutTrigger(this);
         }
-
         private void SetOutTriggerType(FramingTypes framingType)
         {
             switch (framingType)

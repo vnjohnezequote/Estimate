@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.Enums;
 using AppModels.Interaface;
-using AppModels.ResponsiveData;
-using AppModels.ResponsiveData.EngineerMember;
-using AppModels.ResponsiveData.Framings;
 using devDept.Eyeshot.Entities;
 using devDept.Serialization;
 

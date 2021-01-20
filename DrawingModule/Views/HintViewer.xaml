@@ -17,7 +17,6 @@
     <FrameworkElement.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkColor.xaml"/>
                 <ResourceDictionary >
                     <Geometry x:Key="LeftArrowGeometry" x:Uid="Geometry_3">M 4 0 L 0 4 L 4 8 Z</Geometry>
                     <BooleanToVisibilityConverter
@@ -512,7 +511,7 @@
                     <Style
 						x:Key="hintListBoxStyle"
 						TargetType="{x:Type ListBox}">
-                        <Setter Property="Background" Value="{StaticResource DarkBackGround}"/>
+                        <!--<Setter Property="Background" Value="{StaticResource DarkBackGround}"/>-->
                         <Setter Property="Opacity" Value="0.8"/>
                         <Setter Property="BorderThickness" Value="1" />
                         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />

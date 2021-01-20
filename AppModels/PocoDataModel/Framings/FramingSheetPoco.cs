@@ -92,12 +92,12 @@ namespace AppModels.PocoDataModel.Framings
             }
         }
 
-        private void LoadBlockings(List<ResponsiveData.Framings.Blocking.Blocking> blockings)
+        private void LoadBlockings(List<IFraming> blockings)
         {
             Blockings = new List<BlockingPoco>();
             foreach (var blocking in blockings)
             {
-                var blockingPoco = new BlockingPoco(blocking);
+                var blockingPoco = new BlockingPoco((ResponsiveData.Framings.Blocking.Blocking)blocking);
                 Blockings.Add(blockingPoco);
             }
         }

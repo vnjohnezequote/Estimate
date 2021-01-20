@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
@@ -102,6 +104,28 @@ namespace AppModels.CustomEntity
         public override object Clone()
         {
             return new OutTrigger2D(this);
+        }
+        protected override void FramingPropertiesChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.FramingPropertiesChanged(sender, e);
+            switch (e.PropertyName)
+            {
+                case "FramingInfo":
+                case "FramingType":
+                case "QuoteLength":
+                    Helper.RegenerationFramingName(FramingReference.FramingSheet.OutTriggers.ToList());
+                    var orderedEnumerable = FramingReference.FramingSheet.OutTriggers.OrderBy(framing => framing.Name);
+                    var sortedList = orderedEnumerable.ToList();
+                    FramingReference.FramingSheet.OutTriggers.Clear();
+                    FramingReference.FramingSheet.OutTriggers.AddRange(sortedList);
+                    break;
+                default: break;
+            }
+        }
+
+        protected override void SetFramingColor(int thickness)
+        {
+            
         }
     }
 }

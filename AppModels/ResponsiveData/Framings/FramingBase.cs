@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using AppModels.Enums;
 using AppModels.Interaface;
-using AppModels.PocoDataModel;
 using AppModels.PocoDataModel.Framings.FloorAndRafter;
 using AppModels.ResponsiveData.EngineerMember;
 using Prism.Mvvm;
@@ -23,10 +21,11 @@ namespace AppModels.ResponsiveData.Framings
         private double _extraLength;
         private int _fullLength;
         private string _timberGrade;
-        private FramingTypes _framingType;
+        //private FramingTypes _framingType;
         private int _quantity;
         private EngineerMemberInfo _engineerMember;
         private int _subFixIndex;
+        private FramingTypes _framingType;
 
         #endregion
 
@@ -48,10 +47,16 @@ namespace AppModels.ResponsiveData.Framings
             get => _framingType;
             set
             {
+                if (!FramingTypeAccepted.Contains(value))
+                {
+                    return;
+                }
                 SetProperty(ref _framingType, value);
+                RaisePropertyChanged(nameof(NamePrefix));
                 RaisePropertyChanged(nameof(Name));
             }
         }
+        protected abstract List<FramingTypes> FramingTypeAccepted { get; }
         public virtual string NamePrefix
         {
             get
@@ -110,6 +115,8 @@ namespace AppModels.ResponsiveData.Framings
                         return "OJ";
                     case FramingTypes.DeckJoist:
                         return "DJ";
+                    case FramingTypes.SteelBeam:
+                        return "SB";
                     default:
                         return string.Empty;
                 }
@@ -246,7 +253,13 @@ namespace AppModels.ResponsiveData.Framings
                     value = null;
                 }
                 SetProperty(ref _framingInfo, value);
-                RaisePropertyChanged(nameof(IsLongerStockList));
+                if (value!=null)
+                {
+                    TimberGrade = value.TimberGrade;
+                }
+                
+                RaisePropertyChanged(nameof(NamePrefix));
+                RaisePropertyChanged(nameof(Name));
             }
         }
         public FramingSheet FramingSheet { get; set; }
@@ -279,16 +292,19 @@ namespace AppModels.ResponsiveData.Framings
             LevelId = another.LevelId;
             FramingSheetId = another.FramingSheetId;
             FramingSheet = another.FramingSheet;
+            FramingType = another.FramingType;
+            Index = another.Index;
+            SubFixIndex = another.SubFixIndex;
+            FramingInfo = another.FramingInfo;
             Name = another.Name;
             IsExisting = another.IsExisting;
             FramingSpan = another.FramingSpan;
             FullLength = another.FullLength;
             ExtraLength = another.ExtraLength;
             Pitch = another.Pitch;
-            FramingInfo = another.FramingInfo;
             TimberGrade = another.TimberGrade;
-            FramingType = another.FramingType;
             Level = another.Level;
+            Quantity = another.Quantity;
         }
 
         protected FramingBase(FramingBasePoco framingPoco,FramingSheet framingSheet, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMembers):this(framingPoco, timberList, engineerMembers)
@@ -307,9 +323,9 @@ namespace AppModels.ResponsiveData.Framings
             Id = framingPoco.Id;
             LevelId = framingPoco.LevelId;
             FramingSheetId = framingPoco.FramingSheetId;
+            FramingType = framingPoco.FramingType;
             Index = framingPoco.Index;
             SubFixIndex = framingPoco.SubfixIndex;
-            FramingType = framingPoco.FramingType;
             IsExisting = framingPoco.IsExisting;
             Name = framingPoco.Name;
             FramingSpan = framingPoco.FramingSpan;

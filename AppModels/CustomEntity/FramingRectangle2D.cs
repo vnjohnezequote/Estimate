@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings;
@@ -11,7 +12,7 @@ using devDept.Graphics;
 
 namespace AppModels.CustomEntity
 {
-    public class FramingRectangle2D : PlanarEntity, IRectangleSolid, IFraming2D
+    public abstract class FramingRectangle2D : PlanarEntity, IRectangleSolid, IFraming2D
     {
         private Point3D _outerStartPoint;
         //private Point3D _innerStartPoint;
@@ -19,7 +20,9 @@ namespace AppModels.CustomEntity
         //private Point3D _innerEndPoint;
         private IFraming _framingReference;
         private int _thickness;
-
+        public bool IsShowLeader { get; set; }
+        public Guid? FramingNameId { get; set; }
+        public FramingNameEntity FramingName { get; set; }
         public Guid Id { get; set; }
         public Guid LevelId { get; set; }
         public Guid FramingSheetId { get; set; }
@@ -70,6 +73,8 @@ namespace AppModels.CustomEntity
         //    }
 
         //}
+        public Point3D StartTopPoint { get; set; }
+        public Point3D EndTopPoint { get; set; }
         public Point3D MidPoint => Point3D.MidPoint(StartPoint, EndPoint);
         public int Thickness
         {
@@ -82,6 +87,8 @@ namespace AppModels.CustomEntity
         }
         public bool Flipped { get; set; }
         public int Depth { get; set; }
+        public Point3D HangerACenterPoint { get; set; }
+        public Point3D HangerBCenterPoint { get; set; }
         //public FramingTypes FramingType
         //{
         //    get => FramingReference.FramingType;
@@ -115,7 +122,9 @@ namespace AppModels.CustomEntity
             }
             set{}
         }
-        
+        public bool IsShowFramingName { get; set; }
+        public bool IsShowFramingLeader { get; set; }
+
         #region Constructor
 
         public FramingRectangle2D(Point3D outerStartPoint, Point3D outerEndPoint, FramingBase framingReference, int thickness = 90, bool flipped = false) : base(Plane.XY)
@@ -167,12 +176,17 @@ namespace AppModels.CustomEntity
                     {
                         Thickness = FramingReference.FramingInfo.Depth * FramingReference.FramingInfo.NoItem;
                         Depth = FramingReference.FramingInfo.Thickness;
+                        SetFramingColor(Thickness);
+                        
                     }
                     break;
                 default: break;
 
             }
         }
+
+        protected abstract void SetFramingColor(int thickness);
+        
 
         private void InitFramingGeometry(Point3D outerStartPoint, Point3D outerEndPoint, bool flipped = false)
         {
@@ -190,10 +204,17 @@ namespace AppModels.CustomEntity
             InnerStartPoint = interLine.P0.ConvertPoint2DtoPoint3D();
             InnerEndPoint = interLine.P1.ConvertPoint2DtoPoint3D();
             var centerLine = outerLine.Offset((double)Thickness * flippedFactor / 2);
+            var centerCircleLine = outerLine.Offset((double)Thickness * flippedFactor / 2);
+            StartTopPoint = centerLine.P0.ConvertPoint2DtoPoint3D();
+            EndTopPoint = centerLine.P1.ConvertPoint2DtoPoint3D();
             centerLine.ExtendBy(-(double)Thickness / 2, -(double)Thickness / 2);
             StartPoint = centerLine.P0.ConvertPoint2DtoPoint3D();
             EndPoint = centerLine.P1.ConvertPoint2DtoPoint3D();
+            centerCircleLine.ExtendBy(-140,-140);
+            HangerACenterPoint = centerCircleLine.P0.ConvertPoint2DtoPoint3D();
+            HangerBCenterPoint = centerCircleLine.P1.ConvertPoint2DtoPoint3D();
             this.UpdateDistance();
+            this.SetFramingColor(Thickness);
             this.RegenMode = regenType.RegenAndCompile;
         }
         protected void UpdateDistance()

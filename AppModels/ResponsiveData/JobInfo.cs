@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using AppModels.Enums;
 using AppModels.PocoDataModel;
 using Prism.Mvvm;

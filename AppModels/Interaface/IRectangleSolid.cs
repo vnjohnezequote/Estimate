@@ -12,6 +12,10 @@ namespace AppModels.Interaface
         Point3D InnerStartPoint { get; }
         Point3D OuterEndPoint { get; }
         Point3D InnerEndPoint { get; }
+        Point3D StartTopPoint { get; }
+        Point3D EndTopPoint { get; }
+        Point3D HangerACenterPoint { get; }
+        Point3D HangerBCenterPoint { get; }
         int Thickness { get; }
         List<Point3D> FramingVertices { get;  }
 

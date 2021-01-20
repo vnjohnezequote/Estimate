@@ -12,54 +12,36 @@
              d:DataContext="{d:DesignInstance viewModels:JobInfomationViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              Width="Auto"
-             HorizontalAlignment="Center"
-             Style="{StaticResource MaterialDesignUserControl}">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
+             HorizontalAlignment="Center">
     <StackPanel>
-        <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                  Mode="PrimaryMid" DockPanel.Dock="Top">
+        <StackPanel>
             <TextBlock Text="{Binding JobModel.Info.Client.Name}" HorizontalAlignment="Center" FontSize="22" />
-        </materialDesign:ColorZone>
-        <materialDesign:Card Background="{StaticResource MaterialDesignBackground}">
-            <StackPanel>
+        </StackPanel>
+        <StackPanel>
                 <Expander Header="Basic Job Info">
                     <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.HJobInformation}"/>
                 </Expander>
                 <Expander Header="Wind Rate Info">
                     <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainWindInforRegion}"/>
                 </Expander>
-                <Border
-                    Background="{DynamicResource MaterialDesignDivider}"
-                    Height="1"
-                    HorizontalAlignment="Stretch"
-                    SnapsToDevicePixels="True" />
+                <Border Height="1"
+                        HorizontalAlignment="Stretch"
+                        SnapsToDevicePixels="True" />
                 <Expander Header="Roof Info">
                     <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainRoofInfoRegion}"/>
                 </Expander>
-                <Border
-                    Background="{DynamicResource MaterialDesignDivider}"
-                    Height="1"
-                    HorizontalAlignment="Stretch"
-                    SnapsToDevicePixels="True" />
+                <Border Height="1"
+                        HorizontalAlignment="Stretch"
+                        SnapsToDevicePixels="True" />
                 <Expander Header="Design Info" Visibility="{Binding IsDesignVisibility}">
                     <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainDesignRegion}"/>
                 </Expander>
-                <Border
-                    Background="{DynamicResource MaterialDesignDivider}"
-                    Height="1"
-                    HorizontalAlignment="Stretch"
-                    SnapsToDevicePixels="True" Visibility="{Binding IsDesignVisibility}" />
+                <Border Height="1"
+                        HorizontalAlignment="Stretch"
+                        SnapsToDevicePixels="True" Visibility="{Binding IsDesignVisibility}" />
                 <Expander Header="Wall2D Info">
                     <ContentControl prism:RegionManager.RegionName="{x:Static jobInforRegions:JobInformationRegions.MainFloorChooseRegion}"/>
                 </Expander>
             </StackPanel>
-        </materialDesign:Card>
     </StackPanel>
 </UserControl>

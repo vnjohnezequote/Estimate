@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel.Openings;
@@ -127,6 +122,7 @@ namespace AppModels.ResponsiveData.Openings
             FramingSheetId = framingSheet.Id;
             FramingSheet = framingSheet;
             Level = framingSheet.Level;
+            FramingType = FramingTypes.Hanger;
             Quantity = 1;
         }
 
@@ -134,6 +130,7 @@ namespace AppModels.ResponsiveData.Openings
         {
             Id = hanger.Id;
             LevelId = hanger.LevelId;
+            FramingType = FramingTypes.Hanger;
             FramingSheetId = hanger.FramingSheetId;
             HangerMaterial = hangerMat;
             IsExisting = hanger.IsExisting;
@@ -151,6 +148,7 @@ namespace AppModels.ResponsiveData.Openings
             LevelId = another.LevelId;
             FramingSheetId = another.FramingSheetId;
             FramingSheet = another.FramingSheet;
+            FramingType = another.FramingType;
             HangerMaterial = another.HangerMaterial;
             IsExisting = another.IsExisting;
             SubFixIndex = another.SubFixIndex;

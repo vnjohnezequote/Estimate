@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using AppModels.Enums;
 using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;

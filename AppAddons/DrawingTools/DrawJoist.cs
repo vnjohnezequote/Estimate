@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using ApplicationService;
 using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.Interaface;
-using AppModels.NewReposiveData;
-using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -64,6 +57,7 @@ namespace AppAddons.DrawingTools
                     {
                         if (JobModel.SelectedJoitsMaterial !=null)
                         {
+                            //joistMember.TimberGrade = JobModel.SelectedJoitsMaterial.TimberGrade;
                             joistMember.FramingInfo = JobModel.SelectedJoitsMaterial;
                             joistThickness = joistMember.FramingInfo.NoItem * joistMember.FramingInfo.Depth;
                         }
@@ -114,18 +108,21 @@ namespace AppAddons.DrawingTools
                             joistMember.SubFixIndex = maximumSubFixIndex + 1;
                         }
 
-                        if (maxIndexJoist!=null)
+                        else if (maxIndexJoist!=null)
                         {
                             joistMember.Index = maximumIndex + 1;
                         }
                     }
                     this.JobModel.ActiveFloorSheet.Joists.Add(joistMember);
-
+                    var orderedEnumerable = this.JobModel.ActiveFloorSheet.Joists.OrderBy(framing => framing.Name);
+                    var sortedList = orderedEnumerable.ToList();
+                    this.JobModel.ActiveFloorSheet.Joists.Clear();
+                    this.JobModel.ActiveFloorSheet.Joists.AddRange(sortedList);
 
                     //joists.LevelId = JobModel.ActiveFloorSheet.LevelId;
                     //joists.FramingSheetId = JobModel.ActiveFloorSheet.Id;
                     //var beam = new Beam2D(Plane.XY, startPoint, endPoint, 45, false, true);
-                    joists.Color = this.LayerManager.SelectedLayer.Color;
+                    //joists.Color = this.LayerManager.SelectedLayer.Color;
                     joists.ColorMethod = colorMethodType.byEntity;
                     this.EntitiesManager.AddAndRefresh(joists, LayerManager.SelectedLayer.Name);
 

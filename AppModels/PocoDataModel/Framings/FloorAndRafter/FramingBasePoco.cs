@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppModels.Enums;
-using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Framings;
 
 namespace AppModels.PocoDataModel.Framings.FloorAndRafter

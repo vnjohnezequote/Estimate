@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.Interaface;
-using devDept.Eyeshot.Entities;
+﻿using devDept.Eyeshot.Entities;
 
 namespace AppModels.CustomEntity.CustomEntitySurrogate
 {

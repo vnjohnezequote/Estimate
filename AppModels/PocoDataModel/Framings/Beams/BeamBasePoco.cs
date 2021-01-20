@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.PocoDataModel.Framings.FloorAndRafter;
-using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Framings.Beams;
-using AppModels.ResponsiveData.Openings;
 
 namespace AppModels.PocoDataModel.Framings.Beams
 {

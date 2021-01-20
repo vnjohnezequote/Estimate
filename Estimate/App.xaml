@@ -6,7 +6,6 @@
     <unity:PrismApplication.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </unity:PrismApplication.Resources>

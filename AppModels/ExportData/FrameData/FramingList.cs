@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
 
 namespace AppModels.ExportData.FrameData
 {
@@ -12,6 +6,7 @@ namespace AppModels.ExportData.FrameData
     {
         
         public ObservableCollection<FrameData> FrameList { get; } = new ObservableCollection<FrameData>();
+        
         public FramingList()
         {
         
@@ -19,17 +14,29 @@ namespace AppModels.ExportData.FrameData
 
         public void Add(FrameData frame)
         {
-            foreach (var framing in FrameList)
+            if (FrameList.Count == 0)
             {
-                if (framing.IsSameWith(frame))
+                FrameList.Add(frame);
+            }
+            else
+            {
+                bool checkifExisting = false;
+                for (int i = 0; i < FrameList.Count; i++)
                 {
-                    framing.Quantity += framing.Quantity;
+                    if (FrameList[i].IsSameWith(frame))
+                    {
+                        FrameList[i].Quantity += frame.Quantity;
+                        checkifExisting = true;
+                    }
                 }
-                else
+
+                if (!checkifExisting)
                 {
                     FrameList.Add(frame);
                 }
+
             }
+            
         }
     }
 }

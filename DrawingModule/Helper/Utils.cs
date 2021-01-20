@@ -14,13 +14,36 @@ using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CustomControl;
+using DrawingModule.CustomControl.CanvasControl;
 using DrawingModule.Enums;
 using DrawingModule.Interface;
+using Microsoft.Win32;
 
 namespace DrawingModule.Helper
 {
     public static class Utils
     {
+        public static string FolderName(this OpenFileDialog ofd)
+        {
+            string resp = "";
+            resp = ofd.FileName.Substring(0, 3);
+            var final = ofd.FileName.Substring(3);
+            var info = final.Split('\\');
+            for (int i = 0; i < info.Length - 1; i++)
+            {
+                if (i == info.Length-2)
+                {
+                    resp += info[i];
+                }
+                else
+                {
+                    resp += info[i] + "\\";
+                }
+                
+            }
+
+            return resp;
+        }
         public static T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
         {
             if (obj != null)
@@ -383,26 +406,26 @@ namespace DrawingModule.Helper
         }
         public static bool CheckPointInSnapPoints(Point3D point, HashSet<SnapPoint> snapPoints)
         {
-            return snapPoints.Any(snapPoint => point.X == snapPoint.X && point.Y == snapPoint.Y);
+            return snapPoints.Any(snapPoint => Math.Abs(point.X - snapPoint.X) < 0.001 && Math.Abs(point.Y - snapPoint.Y) < 0.001);
         }
         public static HashSet<SnapPoint> GetSnapPoints(System.Drawing.Point mouseLocation, ICadDrawAble cadDraw)
         {
             var snapPoints = new HashSet<SnapPoint>();
             Line tempLine = null;
-
-            var entityIndexs = cadDraw.GetAllEntitiesUnderMouseCursor(mouseLocation, false);
+            var entityIndexs = cadDraw.GetAllEntitiesUnderMouseCursor(mouseLocation);
+            
             if (entityIndexs.Length <= 0) return snapPoints;
             var countIndex = 0;
+            
             foreach (var index in entityIndexs)
             {
-                if (index>cadDraw.Entities.Count-1)
-                {
-                    return snapPoints;
-                }
+                //if (index>cadDraw.Entities.Count-1)
+                //{
+                //    return snapPoints;
+                //}
                 if (cadDraw.Entities[index] is ICurve entCurve)
                 {
                     var indexVertex = 0;
-
                     if (Utils.GetPerpenticalSnapPoints(cadDraw.LastClickPoint, entCurve).Count > 0)
                     {
                         snapPoints.UnionWith(Utils.GetPerpenticalSnapPoints(cadDraw.LastClickPoint, entCurve));
@@ -636,7 +659,7 @@ namespace DrawingModule.Helper
 
                 countIndex++;
             }
-
+            
 
             return snapPoints;
         }

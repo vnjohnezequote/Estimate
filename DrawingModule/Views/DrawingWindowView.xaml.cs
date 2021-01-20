@@ -29,7 +29,7 @@ using Size = System.Drawing.Size;
 namespace DrawingModule.Views
 {
     using CustomControls.Controls;
-    public partial class DrawingWindowView : FlatWindow
+    public partial class DrawingWindowView : Window
     {
         #region Field
 
@@ -97,14 +97,14 @@ namespace DrawingModule.Views
                 CanvasDrawing.CanvasDrawingControl.StartViewBuilder();
             }
 
-            CanvasDrawing.PaperSpace.IsToReload = true;
+            CanvasDrawing.CanvasDrawingControl.PaperSpace.IsToReload = true;
         }
 
         private void InitializeDrawing()
         {
             CanvasDrawing.CanvasDrawingControl.CLear();
             // this code to check Frame Sheet, to be delete when running ok
-            _drawingWindowViewModel.JobModel.Info.QuoteFloorFrame=true;
+            //_drawingWindowViewModel.JobModel.Info.QuoteFloorFrame=true;
             if (_drawingWindowViewModel != null && ( _drawingWindowViewModel.JobModel.Info.QuoteRafterFrame||_drawingWindowViewModel.JobModel.Info.QuoteFloorFrame) )
             {
                 foreach (var level in _drawingWindowViewModel.Levels)
@@ -209,6 +209,7 @@ namespace DrawingModule.Views
                     //ReloadJoistReferenceForLayout();
                     ReloadFramingReferenceForLayout();
                     ReloadBlockingForBeamLayout();
+                    ReloadFramingNameForLayOut();
                 }
             }
             catch (Exception exception)
@@ -487,6 +488,71 @@ namespace DrawingModule.Views
                 }
             }
         }
+
+        private void ReloadFramingNameForLayOut()
+        {
+            var entitiesManager = _drawingWindowViewModel.EntitiesManager;
+            var jobModel = _drawingWindowViewModel.JobModel;
+            if (entitiesManager != null && entitiesManager.Entities != null &&
+                entitiesManager.Entities.Count != 0 && jobModel != null && jobModel.Levels != null &&
+                jobModel.Levels.Count != 0)
+            {
+                foreach (var entity in entitiesManager.Entities)
+                {
+                    if (!(entity is FramingNameEntity framingName)) continue;
+                    LevelWall currentLevel = null;
+                    foreach (var level in jobModel.Levels)
+                    {
+                        if (level.Id == framingName.LevelId)
+                        {
+                            currentLevel = level;
+                        }
+                    }
+
+                    if (currentLevel == null) continue;
+                    FramingSheet currentSheet = null;
+                    foreach (var framingSheet in currentLevel.FramingSheets)
+                    {
+                        if (framingSheet.Id == framingName.FramingSheetId)
+                        {
+                            currentSheet = framingSheet;
+                        }
+                    }
+
+                    if (currentSheet == null) continue;
+                    foreach (var framing in currentSheet.Joists)
+                    {
+                        if (framing.Id == framingName.FramingReferenceId)
+                        {
+                            framingName.FramingReference = framing;
+                        }
+                    }
+
+                    if (framingName.FramingReference!=null)
+                    {
+                        foreach (var framing in currentSheet.Beams)
+                        {
+                            if (framing.Id == framingName.FramingReferenceId)
+                            {
+                                framingName.FramingReference = framing;
+                            }
+                        }
+                    }
+
+                    if (framingName.FramingReference != null)
+                    {
+                        foreach (var framing in currentSheet.OutTriggers)
+                        {
+                            if (framing.Id == framingName.FramingReferenceId)
+                            {
+                                framingName.FramingReference = framing;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
         //private void ReloadJoistReferenceForLayout()
         //{
         //    var entitiesManager = _drawingWindowViewModel.EntitiesManager;
@@ -752,6 +818,11 @@ namespace DrawingModule.Views
             //    }
             //}
             CanvasDrawing.CanvasDrawingControl.StartViewBuilder(null,false);
+            CanvasDrawing.CanvasDrawingControl.PaperSpace.Entities.Regen();
+            CanvasDrawing.CanvasDrawingControl.PaperSpace.UpdateBoundingBox();
+            CanvasDrawing.CanvasDrawingControl.PaperSpace.Invalidate();
+            CanvasDrawing.CanvasDrawingControl.PaperSpace.Refresh();
+            
 
             //if (CanvasDrawing.PaperSpace.Blocks.Contains(view.BlockName))
             //   CanvasDrawing.PaperSpace.Blocks.Remove(view.BlockName); // it removes also related block references.

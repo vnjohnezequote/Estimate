@@ -10,8 +10,8 @@ namespace AppModels.Interaface
     public interface IFraming : INotifyPropertyChanged, ICloneable
     {
         Guid Id { get; }
-        //Guid LevelId { get; }
-        //Guid FramingSheetId { get; }
+        Guid LevelId { get; }
+        Guid FramingSheetId { get; }
         LevelWall Level { get; set; }
         string Name { get; set; }
         string NamePrefix { get; }

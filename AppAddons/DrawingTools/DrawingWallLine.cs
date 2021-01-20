@@ -36,7 +36,8 @@ namespace AppAddons.DrawingTools
         }
         #endregion
 
-        [CommandMethod("WallLine")] public void DrawWallLine()
+        [CommandMethod("WallLine")]
+        public void DrawWallLine()
         {
             var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
             DynamicInput?.FocusLength();

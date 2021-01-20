@@ -15,7 +15,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
                 <ResourceDictionary>
                     <applicationConverter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
                 </ResourceDictionary>
@@ -25,30 +24,34 @@
     <Grid>
         <ScrollViewer>
             <StackPanel Margin="20 0 20 0">
-                <materialDesign:ColorZone Mode="Accent" HorizontalContentAlignment="Center">
+                <StackPanel>
                     <Label FontSize="18" Content="Wall2D Properties" />
-                </materialDesign:ColorZone>
+                </StackPanel>
                 <DockPanel Margin="0 10 0 0">
-                    <TextBox materialDesign:HintAssist.Hint="Wall2D ID" Width="170"
-                         Text="{Binding SelectedWall.Id}"/>
-                    <TextBox materialDesign:HintAssist.Hint="Wall2D Type ID"
-                         Text="{Binding SelectedWall.TypeId}"
-                         Margin="15 0 0 0"/>
+                    <TextBlock Width="170" Text="Wall ID"/>
+                    <TextBox Margin="15 0 0 0" Text="{Binding SelectedWall.Id}"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBlock Width="170" Text="Wall Type Index"/>
+                    <TextBox Text="{Binding SelectedWall.TypeId}"
+                             Margin="15 0 0 0"/>
                 </DockPanel>
                 <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Is Raking Wall2D" VerticalAlignment="Bottom" Width="170"/>
                     <CheckBox IsChecked="{Binding SelectedWall.WallType.IsRaked}"
                           Margin="15 0 0 0"
                           VerticalAlignment="Bottom"/>
-                    <TextBox  materialDesign:HintAssist.Hint="Run Length"
-                          Text="{Binding SelectedWall.RunLength}"
-                          Margin="15 0 0 0"/>
-                    <TextBox materialDesign:HintAssist.Hint="Ceiling Pitch"
-                         Text="{Binding SelectedWall.CeilingPitch}"
-                         Margin="15 0 0 0"/>
-                    <TextBox materialDesign:HintAssist.Hint="Pitching Height"
-                         Text="{Binding SelectedWall.HPitching, Mode=OneWay}" 
-                         Margin="15 0 0 0"/>
+                    <TextBlock Text="RungLength" Margin="15 0 0 0"/>
+                    <TextBox  Width="50" 
+                              Text="{Binding SelectedWall.RunLength}"
+                              Margin="15 0 0 0"/>
+                    <TextBlock Text="Ceiling Pitch" Margin="15 0 0  0"/>
+                    <TextBox Width="50"
+                             Text="{Binding SelectedWall.CeilingPitch}"
+                             Margin="15 0 0 0"/>
+                    <TextBlock Text="Pitching Height" Margin="15 0 0 0"/>
+                    <TextBox Text="{Binding SelectedWall.HPitching, Mode=OneWay}" 
+                             Margin="15 0 0 0"/>
                 </DockPanel>
                 <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Is Wall2D Under Raked Area" Width="170" />
@@ -62,23 +65,23 @@
                           Margin="15 0 0 0"/>
                 </DockPanel>
                 <DockPanel Margin="0 10 0 0">
-                    <TextBlock Text="Is Stepdown Wall2D"
+                    <TextBlock Text="Is Step Down Wall2D"
                            Width="170" 
                            VerticalAlignment="Bottom"/>
                     <CheckBox IsChecked="{Binding SelectedWall.IsStepDown}"
                           Margin="15 0 0 0"
                           VerticalAlignment="Bottom"/>
-                    <TextBox materialDesign:HintAssist.Hint="StepDown"
-                         Text="{Binding SelectedWall.StepDown}"
-                         Margin="15 0 0 0"/>
+                    <TextBlock Text="StepDown" Margin="15 0 0 0"/>
+                    <TextBox Text="{Binding SelectedWall.StepDown}"
+                             Margin="15 0 0 0"/>
                 </DockPanel>
                 <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Is Wall2D Under Raicing Ceiling" Width="170" VerticalAlignment="Bottom"/>
                     <CheckBox IsChecked="{Binding SelectedWall.IsRaisedCeiling}"
                           Margin="15 0 0 0"
                           VerticalAlignment="Bottom"/>
-                    <TextBox materialDesign:HintAssist.Hint="Raiced Ceiling Height"
-                         Text="{Binding SelectedWall.RaisedCeiling}" Margin="15 0 0 0"/>
+                    <TextBlock Text="Raiced Ceiling Height" Margin="15 0 0 0"/>
+                    <TextBox Text="{Binding SelectedWall.RaisedCeiling}" Margin="15 0 0 0"/>
                 </DockPanel>
                 <DockPanel Margin="0 10 0 0">
                     <TextBlock Text="Is Shorted Wall2D" Width="170"/>
@@ -87,34 +90,39 @@
                           IsEnabled="False"/>
                 </DockPanel>
                 <DockPanel Margin="0 10 0 0">
-                    <TextBox materialDesign:HintAssist.Hint="Wall2D Pitching Height"
-                             Width="170"
-                             Text="{Binding SelectedWall.WallPitchingHeight}" />
-                    <TextBox materialDesign:HintAssist.Hint="Wall2D End Height"
-                             Text="{Binding SelectedWall.WallEndHeight, Mode=OneWay}"
+                    <TextBlock Text="Wall Pitching Height" Width="170"/>
+                    <TextBox Margin="15 0 0 0" Text="{Binding SelectedWall.WallPitchingHeight}"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                <TextBlock Text="Wall End Height" Width="170"/>
+                    <TextBox Text="{Binding SelectedWall.WallEndHeight, Mode=OneWay}"
                              Margin="15 0 0 0"
                              IsEnabled="False"
                              Foreground="Coral"/>
                 </DockPanel>
                 <DockPanel Margin="0 10 0 0">
-                    <TextBox materialDesign:HintAssist.Hint="Wall2D Height"
-                             Text="{Binding SelectedWall.WallHeight}"
-                             Width="170"/>
-                    <TextBox materialDesign:HintAssist.Hint="Quote Height"
-                             Text="{Binding SelectedWall.FinalWallHeight, Mode=OneWay}"
+                    <TextBlock Text="Wall Height" Width="170"/>
+                    <TextBox Text="{Binding SelectedWall.WallHeight}"
+                             Margin="15 0 0 0"/>
+                    </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBlock Width="170" Text="Quote Height"/>
+                    <TextBox Text="{Binding SelectedWall.FinalWallHeight, Mode=OneWay}"
                              Margin="15 0 0 0"
                              IsEnabled="False"
                              Foreground="LimeGreen"/>
                 </DockPanel>
                 <DockPanel Margin="0 10 0 0" >
-                    <ComboBox materialDesign:HintAssist.Hint="Wall2D Type"
-                              Width="170"
-                              ItemsSource="{Binding SelectedClient.WallTypes}"
+                    <TextBlock Text="Wall Type" Width="170"/>
+                    <ComboBox ItemsSource="{Binding SelectedClient.WallTypes}"
                               SelectedItem="{Binding SelectedWall.WallType,Mode=TwoWay}"
                               Text="{Binding SelectedWall.WallType.AliasName}"
-                              DisplayMemberPath="AliasName"/>
-                    <ComboBox materialDesign:HintAssist.Hint="Wall2D Layer"
-                              ItemsSource="{Binding LayerManager.Layers}"
+                              DisplayMemberPath="AliasName"
+                              Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0">
+                    <TextBlock Text="Wall Layer" Width="170"/>
+                    <ComboBox ItemsSource="{Binding LayerManager.Layers}"
                               SelectedItem="{Binding SelectedWall.WallColorLayer}"
                               Margin="15 0 0 0"
                               Foreground="{Binding SelectedWall.WallColorLayer.Color,FallbackValue=White, Converter= {StaticResource ColorToBrushConverter}}">
@@ -129,12 +137,14 @@
                     </ComboBox>
                 </DockPanel>
                 <DockPanel Margin="0 10 0 0">
-                    <ComboBox materialDesign:HintAssist.Hint="Wall2D Thickness"
-                              ItemsSource ="{Binding WallThicknessList}"
+                    <TextBlock Text="Wall Thickness" Width="170"/>
+                    <ComboBox ItemsSource ="{Binding WallThicknessList}"
                               SelectedItem="{Binding SelectedWall.WallThickness}"
-                              Width="170"/>
-                    <ComboBox materialDesign:HintAssist.Hint="Wall2D Spacing"
-                              ItemsSource="{Binding WallSpacingList}"
+                              Margin="15 0 0 0"/>
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0 ">
+                    <TextBlock Text="Wall Spacing" Width="170"/>
+                    <ComboBox ItemsSource="{Binding WallSpacingList}"
                               SelectedItem="{Binding SelectedWall.WallSpacing}"
                               Margin="15 0 0 0"/>
                 </DockPanel>
@@ -189,52 +199,52 @@
                     <TextBlock Text="Wall2D Name" Width="170" VerticalAlignment="Bottom"/>
                     <TextBox Text="{Binding SelectedWall.WallName, Mode=OneWay}" Margin="15 0 0 0" IsEnabled="False"/>
                 </DockPanel>
-                <materialDesign:Card Background="{StaticResource DarkBackGround}" Margin="0 10 0 0"  Foreground="GreenYellow">
+                <StackPanel Margin="0 10 0 0" >
                     <Expander Header="Warnervale Properties" Background="Transparent">
                         <StackPanel>
                             <DockPanel>
-                                <TextBlock Text="No of Beam Pockets" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
-                                <TextBox Text="{Binding SelectedWall.BeamPockets}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
-                            </DockPanel>
-                            <DockPanel>
-                                <TextBlock Text="No of Corners" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
-                                <TextBox Text="{Binding SelectedWall.Corners}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
-                            </DockPanel>
-                            <DockPanel>
-                                <TextBlock Text="No of T Corners" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
-                                <TextBox Text="{Binding SelectedWall.TCorners}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
-                            </DockPanel>
-                            <DockPanel>
-                                <TextBlock Text="Supports" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
-                                <TextBox Text="{Binding SelectedWall.InWallSupports}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
-                            </DockPanel>
-                            <DockPanel>
-                                <TextBlock Text="Number if same Walls" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
-                                <TextBox Text="{Binding SelectedWall.NumberOfSameWall}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBlock Text="No of Beam Pockets" Width="170" VerticalAlignment="Bottom"/>
+                                <TextBox Text="{Binding SelectedWall.BeamPockets}" Margin="15 0 0 0" />
                             </DockPanel>
                             <DockPanel Margin="0 10 0 0">
-                                <TextBlock Text="Bath Checkouts" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
-                                <TextBox Text="{Binding SelectedWall.BathCheckout,Mode=TwoWay}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBlock Text="No of Corners" Width="170" VerticalAlignment="Bottom" />
+                                <TextBox Text="{Binding SelectedWall.Corners}" Margin="15 0 0 0"/>
                             </DockPanel>
                             <DockPanel Margin="0 10 0 0">
-                                <TextBlock Text="Wet Area Length" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
-                                <TextBox Text="{Binding SelectedWall.WetAreaLength,Mode=TwoWay}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBlock Text="No of T Corners" Width="170" VerticalAlignment="Bottom" />
+                                <TextBox Text="{Binding SelectedWall.TCorners}" Margin="15 0 0 0"/>
                             </DockPanel>
                             <DockPanel Margin="0 10 0 0">
-                                <TextBlock Text="Is Need To be Design" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
-                                <CheckBox IsChecked="{Binding SelectedWall.IsNeedTobeDesign,Mode=OneWay}" IsEnabled="False" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBlock Text="Supports" Width="170" VerticalAlignment="Bottom" />
+                                <TextBox Text="{Binding SelectedWall.InWallSupports}" Margin="15 0 0 0"/>
                             </DockPanel>
                             <DockPanel Margin="0 10 0 0">
-                                <TextBlock Text="Is Designed" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
-                                <CheckBox IsChecked="{Binding SelectedWall.IsDesigned,Mode=TwoWay}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBlock Text="Number if same Walls" Width="170" VerticalAlignment="Bottom" />
+                                <TextBox Text="{Binding SelectedWall.NumberOfSameWall}" Margin="15 0 0 0"/>
                             </DockPanel>
                             <DockPanel Margin="0 10 0 0">
-                                <TextBlock Text="Export Wall To Upper" Width="170" VerticalAlignment="Bottom" Foreground="{StaticResource MaterialDesignBody}"/>
-                                <CheckBox IsChecked="{Binding SelectedWall.IsExportToUpper,Mode=TwoWay}" Margin="15 0 0 0" Foreground="{StaticResource MaterialDesignBody}"/>
+                                <TextBlock Text="Bath Checkouts" Width="170" VerticalAlignment="Bottom" />
+                                <TextBox Text="{Binding SelectedWall.BathCheckout,Mode=TwoWay}" Margin="15 0 0 0"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 10 0 0">
+                                <TextBlock Text="Wet Area Length" Width="170" VerticalAlignment="Bottom" />
+                                <TextBox Text="{Binding SelectedWall.WetAreaLength,Mode=TwoWay}" Margin="15 0 0 0"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 10 0 0">
+                                <TextBlock Text="Is Need To be Design" Width="170" VerticalAlignment="Bottom" />
+                                <CheckBox IsChecked="{Binding SelectedWall.IsNeedTobeDesign,Mode=OneWay}" IsEnabled="False" Margin="15 0 0 0"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 10 0 0">
+                                <TextBlock Text="Is Designed" Width="170" VerticalAlignment="Bottom" />
+                                <CheckBox IsChecked="{Binding SelectedWall.IsDesigned,Mode=TwoWay}" Margin="15 0 0 0"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 10 0 0">
+                                <TextBlock Text="Export Wall To Upper" Width="170" VerticalAlignment="Bottom" />
+                                <CheckBox IsChecked="{Binding SelectedWall.IsExportToUpper,Mode=TwoWay}" Margin="15 0 0 0" />
                             </DockPanel>
                         </StackPanel>
                     </Expander>
-                </materialDesign:Card>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
 

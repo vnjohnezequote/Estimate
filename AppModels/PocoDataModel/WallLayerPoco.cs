@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.AppData;
-using AppModels.Interaface;
+﻿using AppModels.AppData;
 using AppModels.PocoDataModel.WallMemberData;
 using AppModels.ResponsiveData;
-using AppModels.ResponsiveData.WallMemberData;
 
 namespace AppModels.PocoDataModel
 {

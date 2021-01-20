@@ -11,17 +11,13 @@ using System.IO;
 using System.Linq;
 using System.Timers;
 using ApplicationInterfaceCore;
-using AppModels.CustomEntity;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData;
-using LiteDB;
-using MaterialDesignExtensions.Controls;
-using MaterialDesignThemes.Wpf;
+using DrawingModule.Helper;
+using Microsoft.Win32;
 using NewJobWizardModule.Views;
 using Newtonsoft.Json;
-using Prism.Services.Dialogs;
-using JsonReader = Newtonsoft.Json.JsonReader;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 using JsonWriter = Newtonsoft.Json.JsonWriter;
 
@@ -216,8 +212,6 @@ namespace Estimate.ViewModels
             //_autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
             this.EventAggregator.GetEvent<DrawingSaveJobEvent>().Subscribe(OnSaveJobCommand);
             //this.EventAggregator.GetEvent<JobModelService>().Subscribe(this.OnChangeClient);
-
-
         }
 
         private void _autoSaveTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -479,9 +473,35 @@ namespace Estimate.ViewModels
                 //var jobOpen = JsonConvert.DeserializeObject<JobModelPoco>(Chuoiluu);
             }
         }
-
         private async void OnOpenJobCommand()
         {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Estimate Files(*.db)|*.db";
+            
+            
+            if (openFileDialog.ShowDialog()==true)
+            {
+                using (var stream = File.OpenRead(openFileDialog.FileName))
+                {
+                    var folderString = openFileDialog.FolderName();
+                    TextReader text = new StreamReader(stream);
+                    var jsonReader = new JsonTextReader(text);
+                    var serializer = new JsonSerializer();
+                    var jobOpen = serializer.Deserialize<JobModelPoco>(jsonReader);
+                    jobOpen.Info.JobLocation = folderString;
+                    var drawingFile = folderString + "\\" + jobOpen.Info.JobNumber + ".eye";
+                    if (File.Exists(drawingFile))
+                    {
+                        this.LoadDrawingWindow();
+                        this.EventAggregator.GetEvent<OpenJobEvent>().Publish(drawingFile);
+                    }
+                    JobModel.LoadJob(jobOpen, Clients.ToList());
+                    EventAggregator.GetEvent<RefreshFloorEvent>().Publish(true);
+                }
+            }
+
+            /*
+            
             OpenFileDialogArguments dialogArgs = new OpenFileDialogArguments()
             {
                 Width = 600,
@@ -510,7 +530,7 @@ namespace Estimate.ViewModels
                     EventAggregator.GetEvent<RefreshFloorEvent>().Publish(true);
                     //ReloadBeamReferenceForBeamLayout();
                 }
-            }
+            }*/
         }
 
         private void Info_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -835,7 +855,7 @@ namespace Estimate.ViewModels
         /// </summary>
         private void LoadLogoButton()
         {
-            this.RegionManager.RegisterViewWithRegion("LogoButtonRegion", typeof(LogoMenuView));
+            //this.RegionManager.RegisterViewWithRegion("LogoButtonRegion", typeof(LogoMenuView));
         }
 
         /// <summary>

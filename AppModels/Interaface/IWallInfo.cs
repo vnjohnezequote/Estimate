@@ -3,7 +3,6 @@ using AppModels.AppData;
 using AppModels.Enums;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData.WallMemberData;
-using Newtonsoft.Json;
 
 namespace AppModels.Interaface
 {

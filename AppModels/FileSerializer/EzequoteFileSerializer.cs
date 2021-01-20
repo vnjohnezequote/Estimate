@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.CustomEntity;
+﻿using AppModels.CustomEntity;
 using AppModels.CustomEntity.CustomEntitySurrogate;
 using devDept.Eyeshot.Entities;
 using devDept.Serialization;
@@ -62,18 +56,20 @@ namespace AppModels.FileSerializer
                 .UseConstructor = false;
             Model[typeof(Text)]
                 .AddSubType(1001, typeof(DoorCountEntity))
-                .AddSubType(1002,typeof(Hanger2D))
-                .AddSubType(1003,typeof(Blocking2D))
-                .AddSubType(1004,typeof(Beam2D));
+                .AddSubType(1002, typeof(Hanger2D))
+                .AddSubType(1003, typeof(Blocking2D))
+                .AddSubType(1004, typeof(FramingNameEntity));
+                //.AddSubType(1004,typeof(Beam2D));
             Model[typeof(TextSurrogate)]
                 .AddSubType(1001, typeof(DoorCountEntitySurrogate))
-                .AddSubType(1002, typeof(FramingBase2DSurrogate));
+                .AddSubType(1002, typeof(FramingBase2DSurrogate))
+                .AddSubType(1003, typeof(FramingNameSurrogate));
             Model[typeof(FramingBase2DSurrogate)]
                 .AddSubType(1001, typeof(Framing2DSurrogate))
                 .AddSubType(1002, typeof(Hanger2DSurrogate));
             Model[typeof(Framing2DSurrogate)]
-                .AddSubType(1001, typeof(Beam2DSurrogate))
-                .AddSubType(1002, typeof(Blocking2DSurrogate));
+                //.AddSubType(1001, typeof(Beam2DSurrogate))
+                .AddSubType(1001, typeof(Blocking2DSurrogate));
             Model[typeof(DoorCountEntitySurrogate)]
                 .Add(1, "LevelName")
                 .Add(2, "DoorReferenceId")
@@ -85,36 +81,32 @@ namespace AppModels.FileSerializer
                 .Add(4,"LevelId")
                 .Add(5,"FramingSheetId")
                 .UseConstructor = false;
-            Model[typeof(Beam2DSurrogate)]
-                .Add(6, "OuterStartPoint")
-                .Add(7, "OuterEndPoint")
-                .Add(8, "Thickness")
-                .Add(9, "HangerAId")
-                .Add(10, "HangerBId")
-                .Add(11, "IsHangerA")
-                .Add(12, "IsHangerB")
-                .Add(13, "OutTriggerAId")
-                .Add(14, "OutTriggerBId")
-                .Add(15, "IsOutTriggerA")
-                .Add(16, "IsOutTriggerB")
-                .Add(17, "OutTriggerAFlipped")
-                .Add(18, "OutTriggerBFlipped")
-                .Add(19, "IsBeamUnder")
-                .Add(20, "ShowDimension")
-                .Add(21,"DimensionLine")
+            Model[typeof(FramingNameSurrogate)]
+                .Add(1, "Id")
+                .Add(2, "LevelId")
+                .Add(3, "FramingSheetId")
+                .Add(4, "FramingReferenceId")
                 .UseConstructor = false;
             Model[typeof(Hanger2DSurrogate)].UseConstructor = false;
-            Model[typeof(Blocking2DSurrogate)].UseConstructor = false;
+            Model[typeof(Blocking2DSurrogate)]
+                .Add(1,"IsRotate")
+                .UseConstructor = false;
             Model[typeof(PlanarEntity)]
                 .AddSubType(1001, typeof(FramingRectangle2D));
+            Model[typeof(FramingRectangle2D)]
+                .AddSubType(1001, typeof(FramingRectangleContainHangerAndOutTrigger))
+                .AddSubType(1002,typeof(OutTrigger2D));
+            Model[typeof(FramingRectangleContainHangerAndOutTrigger)]
+                .AddSubType(1001, typeof(Beam2D))
+                .AddSubType(1002, typeof(Joist2D));
             Model[typeof(PlanarEntitySurrogate)]
                 .AddSubType(1001, typeof(FramingRectangle2DSurrogate));
-            Model[typeof(FramingRectangle2D)]
-                .AddSubType(1001, typeof(Joist2D))
-                .AddSubType(1002,typeof(OutTrigger2D));
             Model[typeof(FramingRectangle2DSurrogate)]
-                .AddSubType(1001, typeof(Joist2DSurrogate))
+                .AddSubType(1001, typeof(FramingRectangleContainHangerAndOutTriggerSurrogate))
                 .AddSubType(1002, typeof(OutTrigger2DSurrogate));
+            Model[typeof(FramingRectangleContainHangerAndOutTriggerSurrogate)]
+                .AddSubType(1002, typeof(Beam2DSurrogate))
+                .AddSubType(1001, typeof(Joist2DSurrogate));
             Model[typeof(FramingRectangle2DSurrogate)]
                 .Add(1, "Thickness")
                 .Add(2, "Depth")
@@ -127,7 +119,7 @@ namespace AppModels.FileSerializer
                 .Add(9,"LevelId")
                 .Add(10,"FramingSheetId")
                 .UseConstructor = false;
-            Model[typeof(Joist2DSurrogate)]
+            Model[typeof(FramingRectangleContainHangerAndOutTriggerSurrogate)]
                 .Add(11, "OuterStartPoint")
                 .Add(12, "OuterEndPoint")
                 .Add(13, "Thickness")
@@ -141,6 +133,13 @@ namespace AppModels.FileSerializer
                 .Add(21, "IsOutTriggerB")
                 .Add(22, "OutTriggerAFlipped")
                 .Add(23, "OutTriggerBFlipped")
+                .UseConstructor = false;
+            Model[typeof(Joist2DSurrogate)]
+                .UseConstructor = false;
+            Model[typeof(Beam2DSurrogate)]
+                .Add(24, "IsBeamUnder")
+                .Add(25, "ShowDimension")
+                //.Add(26, "DimensionLine")
                 .UseConstructor = false;
             Model[typeof(OutTrigger2DSurrogate)]
                 .Add(11, "InsideLength")

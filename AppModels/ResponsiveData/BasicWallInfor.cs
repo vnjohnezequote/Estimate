@@ -1,7 +1,6 @@
 ﻿using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
-using Newtonsoft.Json;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData

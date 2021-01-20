@@ -25,7 +25,7 @@ namespace DrawingModule.ViewModels
         #region Properties
         public ICommand DeleteLayerCommand { get; private set; }
         public ICommand AddNewLayerCommand { get; private set; }
-        public ObservableCollection<LinePattern> LineTypes { get; set; }
+        public ObservableCollection<LineType> LineTypes { get; set; }
         #endregion
 
         #region Constructor
@@ -38,7 +38,7 @@ namespace DrawingModule.ViewModels
             : base(unityContainer, regionManager, eventAggregator,layerManager,jobModel)
         {
             _entitiesManger = entitiesManager;
-            LineTypes = new ObservableCollection<LinePattern>();
+            LineTypes = new ObservableCollection<LineType>();
             PrepareLineTypes();
             PrepareLayers();
             DeleteLayerCommand = new DelegateCommand<SfDataGrid>(OnDeleteLayerRow);
@@ -63,17 +63,17 @@ namespace DrawingModule.ViewModels
         private void PrepareLineTypes()
         {
             //LineTypes.Add(new LinePattern("Continues",null,"Continues __________________"));
-            var continues = new LinePattern("Continues", null, "Continues __________________");
+            var continues = new LineType("Continues", null, "Continues __________________");
             if (!LineTypes.Contains(continues))
             {
                 LineTypes.Add(continues);
             }
-            var dashDot =  new LinePattern("Dash Dot", new[] { 5f, -1f, 1f, -1f }, "Dash dot _ . _ . _ . _ .");
+            var dashDot =  new LineType("Dash Dot", new[] { 5f, -1f, 1f, -1f }, "Dash dot _ . _ . _ . _ .");
             if (!LineTypes.Contains(continues))
             {
                 LineTypes.Add(dashDot);
             }
-            var dashSpace = new LinePattern("Dash Space", new[] { 5f, -5f }, "Dash space __ __ __ __ __");
+            var dashSpace = new LineType("Dash Space", new[] { 5f, -5f }, "Dash space __ __ __ __ __");
 
             if (!LineTypes.Contains(dashSpace))
             {

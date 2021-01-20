@@ -7,14 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.ResponsiveData.EngineerMember;
-using Newtonsoft.Json.Bson;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData.Openings

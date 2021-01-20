@@ -17,6 +17,7 @@ using DrawingModule.CommandClass;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CommandClass(typeof(DrawingLine))]
+[assembly: CommandClass(typeof(DrawJoistArrowName))]
 [assembly: CommandClass(typeof(DrawBlocking))]
 [assembly: CommandClass(typeof(DrawJoist))]
 [assembly: CommandClass(typeof(DrawOrderTools))]

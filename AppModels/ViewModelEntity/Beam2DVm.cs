@@ -1,10 +1,6 @@
 ﻿using AppModels.CustomEntity;
 using AppModels.Interaface;
-using AppModels.ResponsiveData;
-using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
-using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot.Entities;
-using devDept.Geometry;
 
 namespace AppModels.ViewModelEntity
 {

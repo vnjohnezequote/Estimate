@@ -17,6 +17,7 @@ using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
 using AppModels.AppData;
+using AppModels.CustomEntity;
 using AppModels.FileSerializer;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
@@ -24,8 +25,10 @@ using devDept.Diagnostic;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
+using devDept.Geometry;
 using devDept.Serialization;
 using DrawingModule.Views;
+using DynamicData;
 using Microsoft.Win32;
 using CanvasDrawing = DrawingModule.CustomControl.CanvasControl.CanvasDrawing;
 
@@ -79,6 +82,7 @@ namespace DrawingModule.ViewModels
             }
         }
         public List<int> WallThicknessList { get; set; } = new List<int>() { 70, 90, 140,180,190, 200, 230 };
+        public List<int> WallSpacingList { get; set; } = new List<int>() { 300,450,600,900,1200};
         public string SelectedLevel
         {
             get
@@ -179,7 +183,7 @@ namespace DrawingModule.ViewModels
             EventAggregator.GetEvent<AutoSaveDrawingEvent>().Subscribe(OnAutoSaveDrawing);
             EventAggregator.GetEvent<SaveDrawingEvent>().Subscribe(OnSaveDrawing);
             //ImportPDFCommand = new DelegateCommand(OnImportPDF);
-            //_autoSaveTimer.Elapsed += _autoSaveTimer_Elapsed;
+            //_autoSaveTimer.Elapsed += AutoSaveTimer_Elapsed;
             //_autoSaveTimer.Start();
 
             //this.DrawLineCommand = new DelegateCommand(this.OnDrawLine);
@@ -218,7 +222,7 @@ namespace DrawingModule.ViewModels
             System.Windows.Application.Current.Dispatcher.Invoke((Action)(OnAutoSaveDrawingExcute));
         }
 
-        private void _autoSaveTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void AutoSaveTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>
             {//this refer to form in WPF application 
@@ -285,21 +289,105 @@ namespace DrawingModule.ViewModels
                 //EnableControls(false);
 
                 WriteFileAsync wfa = null;
+                GereralDatatoExport(_drawingModel,_canvasExport);
                 switch (saveFileDialog.FilterIndex)
                 {
                     case 1:
                     case 2:
-                        wfa = new WriteAutodesk(new WriteAutodeskParams(_drawingModel), saveFileDialog.FileName);
+                        wfa = new WriteAutodesk(new WriteAutodeskParams(_canvasExport), saveFileDialog.FileName);
                         break;
                     case 3:
                         wfa = new WritePDF(
-                            new WritePdfParams(_drawingModel, new Size(595, 842), new Rect(10, 10, 575, 822)),
+                            new WritePdfParams(_canvasExport, new Size(595, 842), new Rect(10, 10, 575, 822)),
                             saveFileDialog.FileName);
                         break;
                 }
+                
 
-                _drawingModel.StartWork(wfa);
+                _canvasExport.StartWork(wfa);
             }
+        }
+
+        private void GereralDatatoExport(CanvasDrawing drawing,CanvasDrawing canvasExport)
+        {
+            
+            foreach (var drawingLineType in drawing.LineTypes)
+            {
+                if (!canvasExport.LineTypes.Contains(drawingLineType))
+                {
+                    canvasExport.LineTypes.Add(drawingLineType);
+                }
+                
+            }
+
+            foreach (var drawingLayer in drawing.Layers)
+            {
+                if (!canvasExport.Layers.Contains(drawingLayer))
+                {
+                    canvasExport.Layers.Add(drawingLayer);
+                }
+                
+            }
+
+            foreach (var drawingBlock in drawing.Blocks)
+            {
+                if (!canvasExport.Blocks.Contains(drawingBlock))
+                {
+                    canvasExport.Blocks.Add(drawingBlock);
+                }
+            }
+            
+            var entities = new List<Entity>(drawing.Entities) ;
+            foreach (var modelEntity in entities)
+            {
+                if (modelEntity is IRectangleSolid beam)
+                {
+                    //var outerList = new List<Point2D>()
+                    //    {beam.OuterStartPoint, beam.OuterEndPoint, beam.InnerEndPoint, beam.InnerStartPoint,beam.OuterStartPoint};
+                    //var beamQuad = Mesh.CreatePlanar(Plane.XY, outerList, Mesh.natureType.Plain);
+                    var beamPolyLine = new LinearPath(beam.StartTopPoint, beam.EndTopPoint);
+                    beamPolyLine.Color = beam.Color;
+                    beamPolyLine.ColorMethod = colorMethodType.byEntity;
+                    beamPolyLine.GlobalWidth = beam.Thickness;
+                    foreach (var point3D in beamPolyLine.Vertices)
+                    {
+                        point3D.Z = 0.0;
+                    }
+                    canvasExport.Entities.Add(beamPolyLine);
+                    continue;
+                }
+
+                else if (modelEntity is Hanger2D hanger)
+                {
+                    var hangerText = new Text(Plane.XY, hanger.InsertionPoint, hanger.TextString, hanger.Height,
+                        hanger.Alignment);
+                    hangerText.Color = hanger.Color;
+                    hangerText.ColorMethod = colorMethodType.byEntity;
+                    var hangerCirCle = new Circle(Plane.XY, hanger.InsertionPoint, hangerText.Height);
+                    hangerCirCle.Color = hanger.Color;
+                    hangerCirCle.ColorMethod = colorMethodType.byEntity;
+                    canvasExport.Entities.Add(hangerText);
+                    canvasExport.Entities.Add(hangerCirCle);
+                    continue;
+                }
+
+                else if (modelEntity is JoistArrowEntity joistArrow)
+                {
+                    var points = new List<Point3D>()
+                        {joistArrow.StartArrow, joistArrow.StartPoint, joistArrow.EndPoint, joistArrow.EndArrow};
+                    var joistArrowPath = new LinearPath(points);
+                    joistArrowPath.Color = joistArrow.Color;
+                    joistArrowPath.ColorMethod = colorMethodType.byEntity;
+                    canvasExport.Entities.Add(joistArrowPath);
+                    continue;
+                }
+                else
+                {
+                    canvasExport.Entities.Add(modelEntity);
+                }
+               
+            }
+            canvasExport.Entities.Regen();
         }
 
         private void OnImPortPDF()
@@ -474,11 +562,13 @@ namespace DrawingModule.ViewModels
         //    this._entitiesManager.SetEntitiesList(this._drawingModel.Entities);
 
         //}
+        private CanvasDrawing _canvasExport;
         private void WindowLoaded(DrawingWindowView window)
         {
             if (window == null) throw new ArgumentNullException(nameof(window));
             this._window = window ?? throw new ArgumentNullException(nameof(window));
             this._drawingModel = window.CanvasDrawing.CanvasDrawing;
+            _canvasExport = window.CanvasDrawing.CanvasExportDrawing;
             //InitsLayers();
             //InitEntitiesManager();
             this.SetRegionManager();

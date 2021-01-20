@@ -95,11 +95,14 @@ namespace WallFrameInputModule.ViewModels
         /// </summary>
         private string _csvFilePath;
 
+        private FrameJob _framingJob;
+
         private PrenailWallLayer _selectedWall;
         #endregion
 
         #region Properties
         public List<int> SupportSpans { get; set; } = new List<int>(){3000,6000,9000,12000,15000};
+        public List<int> FramingSpacings { get; set; } = new List<int>() { 300,450,600,900,1200};
         public List<int> ExtDoorListHeights { get; set; } = new List<int> { 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000 };
         public Visibility PrenailVisibility
         {
@@ -158,7 +161,7 @@ namespace WallFrameInputModule.ViewModels
         public ICommand AddNewFloorSheetCommand { get; private set; }
         public ICommand RemoveFloorSheetCommand { get; private set; }
         public ICommand SelectedFloorFramingChanged { get; private set; }
-
+        public FrameJob FramingJob { get=>_framingJob; set=>SetProperty(ref _framingJob,value); }
         #endregion
         #region Constructor
 
@@ -352,7 +355,6 @@ namespace WallFrameInputModule.ViewModels
                             var frameJob = new FrameJob(JobModel, framingSheet);
                             frameJobs.Add(frameJob);
                         }
-                        
                     }
                 }
             }
@@ -559,6 +561,8 @@ namespace WallFrameInputModule.ViewModels
             {
                 fileSave = JobModel.Info.JobLocation + "\\" + fileSave;
             }
+
+            fileSave = fileSave + ".xls";
             if (!isNeedSecondWorkBook)
             {
                 try

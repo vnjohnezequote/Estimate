@@ -1,8 +1,5 @@
 ﻿using System;
-using AppModels.CustomEntity;
 using AppModels.Interaface;
-using AppModels.ViewModelEntity;
-using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 
 namespace AppModels.Factories
@@ -26,7 +23,7 @@ namespace AppModels.Factories
             }
             else if (entity is VectorView view)
             {
-                return view.CreateBlockReferenceVm();
+                return view.CreateVectorViewVm(entitiesManager);
             }
             else if (entity is Text text)
             {

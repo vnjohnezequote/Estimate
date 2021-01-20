@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 
 namespace AppModels.PocoDataModel.Framings.FloorAndRafter

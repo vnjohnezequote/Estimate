@@ -11,7 +11,6 @@
              xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
              d:DataContext="{d:DesignInstance viewModels:RoofInfoViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
-             Style="{DynamicResource MaterialDesignUserControl}"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              Padding="20 0 20 0">
     <UserControl.Resources>

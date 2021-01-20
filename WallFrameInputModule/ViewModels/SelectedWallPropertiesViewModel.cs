@@ -57,6 +57,8 @@ namespace WallFrameInputModule.ViewModels
 
         #endregion
 
+        public SelectedWallPropertiesViewModel()
+        { }    
         public SelectedWallPropertiesViewModel(IUnityContainer unityContainer, IRegionManager regionManager,
             IEventAggregator eventAggregator, ILayerManager layerManager, IJob jobModel) : base(unityContainer,
             regionManager, eventAggregator, layerManager, jobModel)

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel.Framings.Beams;
 using AppModels.PocoDataModel.Framings.FloorAndRafter;
-using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using AppModels.ResponsiveData.Openings;
@@ -32,6 +27,14 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Beam
 
         public FBeam(FramingSheet framingSheet) : base(framingSheet)
         {
+            if (FramingSheet.FramingSheetType == FramingSheetTypes.RafterFraming)
+            {
+                FramingType = FramingTypes.RafterBeam;
+            }
+            else
+            {
+                FramingType = FramingTypes.FloorBeam;
+            }
         }
 
         public FBeam(FBeamPoco beamPoco,FramingSheet framingSheet, List<TimberBase> timberList, List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco,framingSheet, timberList, engineerMemberInfos)

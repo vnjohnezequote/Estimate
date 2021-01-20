@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using AppModels.Enums;
-using AppModels.PocoDataModel;
 using AppModels.PocoDataModel.Framings.Blocking;
-using AppModels.PocoDataModel.Framings.FloorAndRafter;
 using AppModels.ResponsiveData.EngineerMember;
 
 namespace AppModels.ResponsiveData.Framings.Blocking
@@ -16,7 +15,8 @@ namespace AppModels.ResponsiveData.Framings.Blocking
 
         #region Properties
         public override double QuoteLength => ((double)FullLength / 1000);
-        
+        protected override List<FramingTypes> FramingTypeAccepted { get; } = new List<FramingTypes>() {FramingTypes.Blocking};
+
         public Blocking(Blocking another) : base(another)
         {
 
@@ -48,6 +48,15 @@ namespace AppModels.ResponsiveData.Framings.Blocking
         public Blocking(FramingSheet framingSheet) : base(framingSheet)
         {
             FramingType = FramingTypes.Blocking;
+            FramingSheet.PropertyChanged+= FramingSheetOnPropertyChanged;
+        }
+
+        private void FramingSheetOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(FramingSheet.FramingSpacing))
+            {
+                this.FullLength = FramingSheet.FramingSpacing;
+            }    
         }
 
         public Blocking(BlockingPoco blockingPoco,FramingSheet framingSheet, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos):base(blockingPoco,framingSheet,timberList,engineerMemberInfos)
@@ -67,6 +76,9 @@ namespace AppModels.ResponsiveData.Framings.Blocking
                 Quantity = 2;
             }
         }
+
+       
+
         #endregion
 
     }

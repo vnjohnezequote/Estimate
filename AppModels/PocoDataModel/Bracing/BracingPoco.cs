@@ -1,5 +1,4 @@
-﻿using AppModels.ResponsiveData;
-using ProtoBuf;
+﻿using ProtoBuf;
 
 namespace AppModels.PocoDataModel.Bracing
 {

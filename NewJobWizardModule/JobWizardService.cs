@@ -70,7 +70,6 @@ namespace NewJobWizardModule
                 return;
             }
             shell.Show();
-            
         }
     }
 }

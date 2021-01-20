@@ -53,17 +53,30 @@ namespace AppAddons.DrawingTools
                 return;
             }
 
-            if (click1.X < click0.X || click1.Y < click0.Y)
+            if (click0.X<click1.X && click0.Y>click1.Y)
             {
-                Point3D p0 = click0;
-                Point3D p1 = click1;
-
-                Utility.Swap(ref p0, ref p1);
-
-
-                click0 = p0;
-                click1 = p1;
+                var tempP = click0;
+                var temP1 = click1;
+                Utility.Swap(ref tempP,ref temP1);
+                click0 = tempP;
+                click1 = temP1;
             }
+            else
+            {
+                if (click1.X < click0.X || click1.Y < click0.Y)
+                {
+                    Point3D p0 = click0;
+                    Point3D p1 = click1;
+
+                    Utility.Swap(ref p0, ref p1);
+
+
+                    click0 = p0;
+                    click1 = p1;
+                }
+            }
+
+            
 
             Vector3D axisX = new Vector3D(click0, click1);
             Vector3D axisY = Vector3D.Cross(Vector3D.AxisZ, axisX);

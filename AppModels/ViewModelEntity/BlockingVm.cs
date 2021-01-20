@@ -3,6 +3,7 @@ using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings.Blocking;
 using devDept.Eyeshot.Entities;
+using devDept.Geometry;
 
 namespace AppModels.ViewModelEntity
 {
@@ -29,6 +30,37 @@ namespace AppModels.ViewModelEntity
 
             }
         }
+
+        public bool IsRotateBlocking
+        {
+            get
+            {
+                if (Entity is Blocking2D blocking)
+                {
+                    return blocking.IsRotate;
+                }
+
+                return false;
+            }
+            set
+            {
+                if (Entity is Blocking2D blocking)
+                {
+                    blocking.IsRotate = value;
+                    var angleRadian = Utility.DegToRad(90);
+                    if (value)
+                    {
+                       blocking.Rotate(angleRadian,Vector3D.AxisZ,blocking.InsertionPoint);
+                    }
+                    else
+                    {
+                        blocking.Rotate(-angleRadian, Vector3D.AxisZ, blocking.InsertionPoint);
+                    }
+                    RaisePropertyChanged(nameof(IsRotateBlocking));
+                }
+            }
+        }
+
         public BlockingVm(Entity entity,IEntitiesManager entManger) : base(entity,entManger)
         {
         }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Enums;
 using AppModels.Interaface;
@@ -24,7 +26,7 @@ namespace AppModels.CustomEntity
         public Guid Id { get; set; }
         public Guid LevelId { get; set; }
         public Guid FramingSheetId { get; set; }
-
+        public bool IsRotate { get; set; }
         public IFraming FramingReference
         {
             get => _framingReference;
@@ -75,28 +77,27 @@ namespace AppModels.CustomEntity
 
         private void BlockingReferenceOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "BlockingType")
+            switch (e.PropertyName)
             {
-                if (((Blocking)FramingReference).BlockingType == BlockingTypes.SingleBlocking)
-                {
+                case "BlockingType" when ((Blocking)FramingReference).BlockingType == BlockingTypes.SingleBlocking:
                     this.TextString = FramingReference.Name;
-                }
-                else
-                {
+                    break;
+                case "BlockingType":
                     this.TextString = FramingReference.Name+"-"+FramingReference.Name;
-                }
-            }
-
-            if (e.PropertyName == "Name")
-            {
-                if (((Blocking)FramingReference).BlockingType == BlockingTypes.SingleBlocking)
-                {
+                    break;
+                case "Name" when ((Blocking)FramingReference).BlockingType == BlockingTypes.SingleBlocking:
                     this.TextString = FramingReference.Name;
-                }
-                else
-                {
+                    break;
+                case "Name":
                     this.TextString = FramingReference.Name + "-" + FramingReference.Name;
-                }
+                    break;
+                case "FramingInfo":
+                    Helper.RegenerationFramingName(FramingReference.FramingSheet.Blockings.ToList());
+                    var items = FramingReference.FramingSheet.Blockings.OrderBy(blocking => blocking.Name);
+                    var sortedList = items.ToList();
+                    FramingReference.FramingSheet.Blockings.Clear();
+                    FramingReference.FramingSheet.Blockings.AddRange(sortedList);
+                    break;
             }
         }
 
@@ -109,5 +110,6 @@ namespace AppModels.CustomEntity
         {
             return new Blocking2DSurrogate(this);
         }
+
     }
 }

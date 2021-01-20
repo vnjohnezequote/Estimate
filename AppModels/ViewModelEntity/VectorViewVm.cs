@@ -1,4 +1,5 @@
 ﻿using System;
+using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using MathExtension;
 
@@ -76,7 +77,7 @@ namespace AppModels.ViewModelEntity
                 }
             }
         }
-        public VectorViewVm(IEntity entity) : base(entity)
+        public VectorViewVm(IEntity entity,IEntitiesManager entitiesManager) : base(entity)
         {
            
         }

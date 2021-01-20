@@ -15,7 +15,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
                 <ResourceDictionary>
                     <converter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
                     <converter:ColorToColorConverter x:Key="ColorToColorConverter"/>
@@ -65,13 +64,7 @@
                                    SelectionMode="Extended"
                                    SelectedItem="{Binding LayerManager.SelectedLayer}"
                                    SelectedItems="{Binding LayerManager.SelectedLayers}"
-                                   Background="DimGray"
-            >
-                <syncfusion:SfDataGrid.Resources>
-                    <Style TargetType="TextBox" />
-                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-                </syncfusion:SfDataGrid.Resources>
-
+                                   Background="DimGray">
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridCheckBoxColumn HeaderText="Status" MappingName="IsSelected"/>
                     <syncfusion:GridTextColumn HeaderText="Layer Name" MappingName="Name"/>
@@ -120,7 +113,7 @@
                     </syncfusion:GridTemplateColumn>
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>
-            <Button Content="Add New Layer" Command="{Binding AddNewLayerCommand}" Style="{StaticResource MahApps.Styles.Button}"/>
+            <Button Content="Add New Layer" Command="{Binding AddNewLayerCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

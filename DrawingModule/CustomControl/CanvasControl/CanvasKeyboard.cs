@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
@@ -13,6 +14,7 @@ using AppModels.ResponsiveData.Framings.Blocking;
 using AppModels.ViewModelEntity;
 using DrawingModule.Application;
 using DrawingModule.EditingTools;
+using Syncfusion.Data.Extensions;
 
 namespace DrawingModule.CustomControl.CanvasControl
 {
@@ -148,26 +150,29 @@ namespace DrawingModule.CustomControl.CanvasControl
                                     joistVm.IsHangerB = false;
                                     joistVm.IsOutriggerA = false;
                                     joistVm.IsOutriggerB = false;
-                                    if(activesheet.Joists.Contains(joist.FramingReference))
+                                    if (activesheet.Joists.Contains(joist.FramingReference))
                                         activesheet.Joists.Remove(joist.FramingReference);
+                                    AppModels.Helper.RegenerationFramingName(activesheet.Joists.ToList());
                             }
 
                             if (entitiesManagerSelectedEntity is Beam2D beam2D)
                             {
                                 var activesheet = beam2D.FramingReference.FramingSheet;
-                                if (activesheet.Beams.Contains(beam2D.FramingReference))
-                                    activesheet.Beams.Remove(beam2D.FramingReference);
                                 var beamVm = (Beam2DVm) beam2D.CreateEntityVm(EntitiesManager);
                                 beamVm.IsHangerA = false;
                                 beamVm.IsHangerB = false;
                                 beamVm.IsOutriggerA = false;
                                 beamVm.IsOutriggerB = false;
+                                if (activesheet.Beams.Contains(beam2D.FramingReference))
+                                    activesheet.Beams.Remove(beam2D.FramingReference);
+                                AppModels.Helper.RegenerationBeamName(activesheet.Beams.ToList());
                             }
 
                             if (entitiesManagerSelectedEntity is Hanger2D hangert)
                             {
                                 Joist2D joistHangerBelongTo=null;
                                 Beam2D beamHangerBelongTo = null;
+                                //var activeSheet = hangert.FramingReference.FramingSheet;
                                 foreach ( var entity in EntitiesManager.Entities)
                                 {
                                     if (entity is Joist2D joistt && (joistt.HangerAId == hangert.Id||joistt.HangerBId== hangert.Id))
@@ -204,6 +209,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                                         beamVm.IsHangerB = false;
                                     }
                                 }
+                                //AppModels.Helper.RegenerationHangerName(activeSheet.Hangers);
                             }
 
                             if (entitiesManagerSelectedEntity is OutTrigger2D outTrigger2D)
@@ -250,8 +256,9 @@ namespace DrawingModule.CustomControl.CanvasControl
                                 }
                             }
 
-                            if (entitiesManagerSelectedEntity is Blocking2D)
+                            if (entitiesManagerSelectedEntity is Blocking2D blocking2D)
                             {
+                                var activeSheet = blocking2D.FramingReference.FramingSheet;
                                 foreach (var entity in EntitiesManager.SelectedEntities)
                                 {
                                     if (entity is Blocking2D blocking)
@@ -260,6 +267,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                                             .FramingReference);
                                     }
                                 }
+                                AppModels.Helper.RegenerationFramingName(activeSheet.Blockings.ToList());
 
                             }
                         }

@@ -55,12 +55,12 @@
     <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.4\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Eyeshot.Control.Wpf.v2021" />
-    <Reference Include="devDept.Geometry.v2021">
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v2021, Version=2021.0.152.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Geometry.v2021, Version=2021.0.152.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL">
       <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 2021\Bin\devDept.Geometry.v2021.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Graphics.Shaders.v2021" />
-    <Reference Include="devDept.Graphics.Wpf.v2021" />
+    <Reference Include="devDept.Graphics.Shaders.v2021, Version=2021.0.152.0, Culture=neutral, PublicKeyToken=54ce5f5f803e4b42, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Graphics.Wpf.v2021, Version=2021.0.152.0, Culture=neutral, PublicKeyToken=f3cd437f0d8061b5, processorArchitecture=MSIL" />
     <Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.2.0.1422\lib\net45\Prism.dll</HintPath>
     </Reference>
@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppAddonsModuleControl.cs" />
+    <Compile Include="DrawingTools\BreakJoist.cs" />
     <Compile Include="DrawingTools\CountDoor.cs" />
     <Compile Include="DrawingTools\Draw2DBeam.cs" />
     <Compile Include="DrawingTools\DrawBeamCommand.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="DrawingTools\DrawingWallLine.cs" />
     <Compile Include="DrawingTools\DrawingRectangle.cs" />
     <Compile Include="DrawingTools\DrawJoist.cs" />
+    <Compile Include="DrawingTools\DrawJoistArrowName.cs" />
     <Compile Include="DrawingTools\DrawLeader.cs" />
     <Compile Include="DrawingTools\DrawText.cs" />
     <Compile Include="DrawingTools\DrawLinearDim.cs" />

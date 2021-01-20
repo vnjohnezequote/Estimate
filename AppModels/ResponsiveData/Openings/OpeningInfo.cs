@@ -1,5 +1,4 @@
-﻿using System;
-using AppModels.Enums;
+﻿using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel.Openings;
 using Prism.Mvvm;

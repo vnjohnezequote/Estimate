@@ -162,28 +162,26 @@ namespace AppDataBase.DataBase
             Layers[13].Color = Color.SaddleBrown;
             Layers[14].Color = Color.MidnightBlue;
             Layers[15].Color = Color.MediumSpringGreen;
-            var beamLayer = new LayerItem();
-            beamLayer.Color = Color.Blue;
-            beamLayer.Name = "Beam";
-            beamLayer.LineWeight = 5;
-            Layers.Add(beamLayer);
-            var beamLayer2 = new LayerItem();
-            beamLayer2.Color = Color.Aqua;
-            beamLayer2.Name = "Beam Stick Frame";
-            beamLayer2.LineTypeName = "Dash Space";
-            beamLayer2.LineWeight = 5;
-            Layers.Add(beamLayer2);
-            var planLayer = new LayerItem();
-            planLayer.Name = "Plan";
-            planLayer.Color = Color.Red;
-            planLayer.PrintAble = false;
-            Layers.Add(planLayer);
-            var beamMarkedLayer = new LayerItem();
-            beamMarkedLayer.Name = "BeamMarked";
-            beamMarkedLayer.Color = Color.Blue;
-            beamMarkedLayer.LineWeight = 3;
-            Layers.Add(beamMarkedLayer);
-        
+            var beamLayer = new LayerItem {Color = Color.Blue, Name = "Beam", LineWeight = 5};
+            Add(beamLayer);
+            var beamLayer2 = new LayerItem
+            {
+                Color = Color.Aqua, Name = "Beam Stick Frame", LineTypeName = "Dash Space", LineWeight = 5
+            };
+            Add(beamLayer2);
+            //Layers.Add(beamLayer2);
+            var planLayer = new LayerItem {Name = "Plan", Color = Color.Red, PrintAble = false};
+            Add(planLayer);
+            //Layers.Add(planLayer);
+            var beamMarkedLayer = new LayerItem {Name = "BeamMarked", Color = Color.Blue, LineWeight = 3};
+            //Layers.Add(beamMarkedLayer);
+            Add(beamMarkedLayer);
+            var lbw = new LayerItem() { Name = "LBW", LineWeight = 0.5f };
+            var nlbw = new LayerItem() { Name = "NLBW", LineWeight = 0.5f,LineTypeName = "Dash Space"};
+            Add(lbw);
+            Add(nlbw);
+            Layers[20].Color = Color.White;
+            Layers[21].Color = Color.White;
         }
         public void Add(LayerItem addLayerItem)
         {

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.CustomEntity;
+﻿using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
-using AppModels.ResponsiveData.Framings.Blocking;
 using devDept.Eyeshot.Entities;
 
 namespace AppModels.ViewModelEntity

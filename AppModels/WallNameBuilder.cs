@@ -3,30 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppModels.CustomEntity;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
-using devDept.Geometry;
 using Attribute = devDept.Eyeshot.Entities.Attribute;
 
 namespace AppModels
 {
-    public enum QueueType
-    {
-
-    }
     public class WallNameBuilder: WorkUnit, IDisposable
     {
         private Drawings _drawings;
         private IJob _jobModel;
         private BackgroundWorker _backgroundWorker;
-        private QueueType _queueType;
-        public ViewBuilder.operatingType OperatingMode { get; set; }
+        //public ViewBuilder.operatingType OperatingMode { get; set; }
 
         private Dictionary<Sheet, WallName> _wallNamesDict;
         private Dictionary<WallName, Block> _wallNameBlockDict;
@@ -62,32 +53,26 @@ namespace AppModels
         {
             _wallNameBlockDict = new Dictionary<WallName, Block>();
             _backgroundWorker = worker;
-            if (_backgroundWorker!=null)
-            {
-                _queueType =(QueueType)1;
-            }
-            else
-            {
-                _queueType = (QueueType) 0;
-            }
+            //if (_backgroundWorker!=null)
+            //{
+            //    _queueType =(QueueType)1;
+            //}
+            //else
+            //{
+            //    _queueType = (QueueType) 0;
+            //}
 
             foreach (var wallName in _wallNamesDict)
             {
                 var wallRef = wallName.Value;
                 var wallSheet = wallName.Key;
-                var wallBlock =GeneralWallList(wallRef,wallSheet,worker);
-                if (wallBlock!=null)
+                var wallBlock = GeneralWallList(wallRef, wallSheet, worker);
+                if (wallBlock != null)
                 {
                     _wallNameBlockDict.Add(wallRef, wallBlock);
                 }
-                
-                if (base.Cancelled(worker,null))
-                {
-                    this._queueType = (QueueType) 2;
-                    break;
-                }
 
-                if (worker!=null && this.OperatingMode == ViewBuilder.operatingType.Queue)
+                if (base.Cancelled(worker, null))
                 {
                     break;
                 }

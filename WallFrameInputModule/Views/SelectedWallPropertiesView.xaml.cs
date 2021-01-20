@@ -24,5 +24,7 @@ namespace WallFrameInputModule.Views
         {
             InitializeComponent();
         }
+
+       
     }
 }

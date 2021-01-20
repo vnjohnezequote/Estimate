@@ -23,7 +23,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/DarkStyle.xaml"/>
                 <ResourceDictionary>
                     <ObjectDataProvider x:Key="WallTypes"
 										MethodName="GetValues" ObjectType="{x:Type system:Enum}">
@@ -80,16 +79,12 @@
                 <interactions:InvokeCommandAction Command="{Binding WallInputLoadedCommand}" CommandParameter="{Binding ElementName=MainGridInput}"/>
             </interactions:EventTrigger>
         </interactions:Interaction.Triggers>
-        <materialDesign:DialogHost Identifier="openFileDialogHost" DialogTheme="Dark">
 
-            <StackPanel>
+        <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <!-- Job Information -->
                     <StackPanel>
-                        <materialDesign:ColorZone Mode="PrimaryDark" Padding="10">
-                            <TextBlock Text="{Binding Title}" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </materialDesign:ColorZone>
-
+                        <TextBlock Text="{Binding Title}" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         <StackPanel Margin="0 10 0 0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBox materialDesign:HintAssist.Hint="External Wall2D Height" Text="{Binding Level.LevelInfo.WallHeight}" />
@@ -111,7 +106,7 @@
                     </StackPanel>
                     <!-- Button -->
                     <StackPanel Margin="50 10 0 0">
-                        <Button Content="Reset Wall2D" Style="{StaticResource MaterialDesignRaisedAccentButton}"/>
+                        <Button Content="Reset Wall2D"/>
                         <Button Content="Sort" Command="{Binding WallInputSortCommand}"/>
                         <Button Content="Undo" />
                         <Button Content="Refresh" Command="{Binding ReFreshWallCommand}" />
@@ -120,42 +115,11 @@
                     </StackPanel>
                     <!-- Report Button -->
                     <StackPanel Margin="50 10 0 0">
-
-                        <!--<Button Content="Single" />
-                        <Button Content="Double Story" />
-                        <Button Content="Three Story" />-->
                         <Button Content="{materialDesign:PackIcon MicrosoftExcel}" Command="{Binding ExportDataToExcelCommand}"/>
                     </StackPanel>
-                    <!--<StackPanel>
-                        <TextBlock Text="Bracing Input"/>
-                        <syncfusion:SfDataGrid AllowDeleting="True"
-                                               AllowEditing="True"
-                                               AutoGenerateColumns="False"
-                                               ItemsSource="{Binding Level.TimberWallBracings}"
-                                               NavigationMode="Cell"
-                                               SelectionMode="Extended"
-                                               SelectionUnit="Any"
-                                               ColumnSizer="Auto"
-                                               EditorSelectionBehavior="SelectAll"
-                                               EditTrigger="OnTap"
-                                               HeaderRowHeight="0"
-                                               AddNewRowPosition="Bottom">
-                            <syncfusion:SfDataGrid.Resources>
-                                <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
-                                <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-                            </syncfusion:SfDataGrid.Resources>
-                            <syncfusion:SfDataGrid.Columns>
-                                <syncfusion:GridComboBoxColumn 	MappingName="BracingInfo"
-                                                                DisplayMemberPath="Size"
-                                                                ItemsSource="{Binding SelectedClient.TimberBracingBases}"/>
-                                <syncfusion:GridTextColumn MappingName="Quantity" />
-                            </syncfusion:SfDataGrid.Columns>
-                        </syncfusion:SfDataGrid>
-                    </StackPanel>-->
                 </StackPanel>
                 <StackPanel Orientation="Vertical"
-                            Margin="0 20 0 0"
-                            Background="{StaticResource InputBackground}">
+                            Margin="0 20 0 0">
                     <StackPanel.Resources>
                         <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
                             <Setter Property="Foreground" Value="{Binding WallColorLayer.Color, FallbackValue=Black, Converter={StaticResource ColorToBrushConverter}}" />
@@ -173,9 +137,9 @@
                         </Style>
                     </StackPanel.Resources>
                     <!-- Input Wall -->
-                    <materialDesign:ColorZone Mode="Accent" HorizontalAlignment="Stretch" Margin="0 0 0 10">
+                    <StackPanel HorizontalAlignment="Stretch" Margin="0 0 0 10">
                         <Label FontSize="18" Content="Wall2D Input" Margin="50 0 0 0"/>
-                    </materialDesign:ColorZone>
+                    </StackPanel>
                     <syncfusion:SfDataGrid Name="WallInput"
                                            AllowDeleting="True"
                                            AllowEditing="True"
@@ -195,10 +159,6 @@
                                            CurrentCellDropDownSelectionChanged="WallInput_OnCurrentCellDropDownSelectionChanged"
                                            CurrentCellValidated="WallInput_OnCurrentCellValidated"
                                            SelectedItem="{Binding SelectedWall}">
-                        <syncfusion:SfDataGrid.Resources>
-                            <Style TargetType="TextBox" />
-                            <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-                        </syncfusion:SfDataGrid.Resources>
                         <syncfusion:SfDataGrid.SortComparers>
                             <data:SortComparer Comparer="{StaticResource WallTypeComparer}" PropertyName="WallType" />
                         </syncfusion:SfDataGrid.SortComparers>
@@ -211,7 +171,7 @@
                         <syncfusion:SfDataGrid.Columns>
                             <syncfusion:GridNumericColumn AllowEditing="False"
                                                           HeaderText="Item"
-                                                          MappingName="Index"
+                                                          MappingName="Id"
                                                           ParsingMode = "int"
                                                           NumberDecimalDigits="0"
                                                           UseBindingValue="True"/>
@@ -343,9 +303,9 @@
                 </StackPanel>
                 <!-- Prenail Beam Input Wall -->
                 <StackPanel Visibility="{Binding PrenailVisibility}">
-                    <materialDesign:ColorZone Mode="PrimaryDark" Margin="0 10 0 10">
+                    <StackPanel Margin="0 10 0 10">
                         <Label Content="Beam and Bracing Input" FontSize="18" Margin="50 0 0 0"/>
-                    </materialDesign:ColorZone>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <StackPanel.Resources>
                             <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
@@ -372,10 +332,6 @@
                                                ColumnSizer="Auto"
                                                EditorSelectionBehavior="SelectAll"
                                                EditTrigger="OnTap">
-                                <syncfusion:SfDataGrid.Resources>
-                                    <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
-                                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-                                </syncfusion:SfDataGrid.Resources>
                                 <syncfusion:SfDataGrid.Columns>
                                     <syncfusion:GridTextColumn HeaderText="Beam Index"
                                                            MappingName="Index"/>
@@ -469,10 +425,6 @@
                                                ColumnSizer="Auto"
                                                EditorSelectionBehavior="SelectAll"
                                                EditTrigger="OnTap">
-                                <syncfusion:SfDataGrid.Resources>
-                                    <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
-                                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-                                </syncfusion:SfDataGrid.Resources>
                                 <syncfusion:SfDataGrid.Columns>
                                     <syncfusion:GridTextColumn 	HeaderText="Description"
                                                             MappingName="BracingInfo.Name"
@@ -496,10 +448,6 @@
                                                EditorSelectionBehavior="SelectAll"
                                                EditTrigger="OnTap"
                                                Name="BracingGrid">
-                                <syncfusion:SfDataGrid.Resources>
-                                    <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"/>
-                                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-                                </syncfusion:SfDataGrid.Resources>
                                 <syncfusion:SfDataGrid.Columns>
                                     <syncfusion:GridComboBoxColumn 	HeaderText="Description"
                                                                 MappingName="BracingInfo"
@@ -534,8 +482,7 @@
                     </StackPanel>
                 </StackPanel>
                 <!-- Warnervale Door Input -->
-                <StackPanel Visibility="{Binding WarnervaleVisibility}"
-                            Background="{StaticResource InputBackground}">
+                <StackPanel Visibility="{Binding WarnervaleVisibility}">
                     <StackPanel.Resources>
                         <Style TargetType="syncfusion:VirtualizingCellsControl" x:Key="TextRowStyle">
                             <Setter Property="Foreground" Value="{Binding WallReference.WallColorLayer.Color, FallbackValue=Black, Converter={StaticResource ColorToBrushConverter}}" />
@@ -556,10 +503,6 @@
                                            ItemsSource="{Binding Level.Openings}"
                                            SelectedItem="{Binding SelectedDoor}"
                                            RowStyle="{StaticResource TextRowStyle}">
-                        <syncfusion:SfDataGrid.Resources>
-                            <Style TargetType="TextBox"/>
-                            <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}"/>
-                        </syncfusion:SfDataGrid.Resources>
                         <syncfusion:SfDataGrid.Columns>
                             <syncfusion:GridTextColumn HeaderText="ID"
                                                MappingName="Index"
@@ -664,7 +607,10 @@
                                 <ComboBox ItemsSource="{Binding Source={StaticResource FramingSheetTypes}}"
                                           SelectedItem="{Binding ActiveFloorSheet.FramingSheetType}"
                                           Width="150"/>
-                                <TextBox Text="{Binding ActiveFloorSheet.Index}" Width="150"/>
+                                <TextBox Text="{Binding ActiveFloorSheet.Index}" Width="150" Margin="5 0 0 0"/>
+                                <ComboBox ItemsSource="{Binding FramingSpacings}"
+                                          SelectedItem="{Binding ActiveFloorSheet.FramingSpacing}"
+                                          Width="150"/>
                             </DockPanel>
                         </StackPanel>
                         <TextBlock Text="Joists"/>
@@ -683,7 +629,6 @@
                     </StackPanel>
                 </Grid>
             </StackPanel>
-        </materialDesign:DialogHost>
     </StackPanel>
 
 </UserControl>

@@ -16,9 +16,6 @@
              d:DataContext="{d:DesignInstance viewModels:AdditionInforForStickFrameViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/AppThemes;component/DarkTheme/UserControlStyle.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
             <ObjectDataProvider x:Key="CeillingBattenTypes"
                                 MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
@@ -48,21 +45,19 @@
     </UserControl.Resources>
     <StackPanel>
         <DockPanel VerticalAlignment="Center" Margin="0 10 0 0">
-            <Label Content="Quote Noggings, Sill in Lms" Name="QuoteNoggingLabels" Background="{StaticResource MahApps.Brushes.Accent2}"/>
+            <Label Content="Quote Noggings, Sill in Lms" Name="QuoteNoggingLabels" />
             <CheckBox IsChecked="{Binding JobInfo.NoggingsAndSillInLM}" Margin="10 0 10 0"/>
         </DockPanel>
         <DockPanel VerticalAlignment="Center" Margin="0 10 0 0">
             <Label Width="{Binding ElementName=QuoteNoggingLabels, Path=ActualWidth}"
                    Content="Up to Length"
-                   VerticalContentAlignment="Bottom"
-                   Background="{StaticResource MahApps.Brushes.Accent2}"/>
+                   VerticalContentAlignment="Bottom"/>
             <CheckBox VerticalContentAlignment="Bottom" IsChecked="{Binding JobInfo.UpToLength}" Margin="10 0 10 0"/>
             <TextBox materialDesign:HintAssist.Hint="Length Size" Text="{Binding JobInfo.QuoteToLengthSize}"/>
         </DockPanel>
         <DockPanel VerticalAlignment="Center" Margin="0 10 0 0 ">
             <Label Content="Quote Ceiling Batten"
                    Width="{Binding ElementName=QuoteNoggingLabels, Path=ActualWidth}"
-                   Background="{StaticResource MahApps.Brushes.Accent2}"
                    VerticalContentAlignment="Bottom"/>
             <CheckBox VerticalContentAlignment="Bottom"
                       IsChecked="{Binding JobInfo.QuoteCeilingBattent}"
@@ -78,8 +73,7 @@
         <DockPanel VerticalAlignment="Center" Margin="0 10 0 0">
             <Label Content="Beams Need Jamb Support"
                    Width="{Binding ElementName=QuoteNoggingLabels, Path=ActualWidth}"
-                   VerticalContentAlignment="Bottom"
-                   Background="{StaticResource MahApps.Brushes.Accent2}"/>
+                   VerticalContentAlignment="Bottom"/>
             <CheckBox VerticalContentAlignment="Bottom" IsChecked="{Binding JobInfo.JambBeamSupport}"
                       Margin="10 0 10 0"/>
         </DockPanel>

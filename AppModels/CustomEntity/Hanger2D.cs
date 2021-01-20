@@ -1,8 +1,10 @@
 ﻿using devDept.Eyeshot.Entities;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
 using AppModels.CustomEntity.CustomEntitySurrogate;
-using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Openings;
 using AppModels.ViewModelEntity;
@@ -30,7 +32,7 @@ namespace AppModels.CustomEntity
             }
         }
         public double FullLength { get; set; }
-        
+
         public Guid Id{ get; set; }
         public Guid LevelId { get; set; }
         public Guid FramingReferenceId { get; set; }
@@ -43,6 +45,7 @@ namespace AppModels.CustomEntity
             FramingSheetId = reference.FramingSheetId;
             FramingReference = reference;
             this.TextString = reference.Name;
+            Color = Color.FromArgb(127,127,63);
         }
         //public Hanger2D(Point3D insPoint, string textString, double height):base(insPoint,textString, height)
         //{
@@ -56,12 +59,28 @@ namespace AppModels.CustomEntity
         
         private void HangerRefOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == "HangerMaterial")
+            {
+                RegenerationHangeName();
+            }
             if (e.PropertyName == nameof(FramingReference.Name))
             {
                 TextString = FramingReference.Name;
             }
         }
 
+        private void RegenerationHangeName()
+        {
+            if (FramingReference!=null && FramingReference.FramingSheet!=null)
+            {
+               
+                Helper.RegenerationHangerName(FramingReference.FramingSheet.Hangers.ToList());
+                var items = FramingReference.FramingSheet.Hangers.OrderBy(hanger => hanger.Name);
+                var sortedList = items.ToList();
+                FramingReference.FramingSheet.Hangers.Clear();
+                FramingReference.FramingSheet.Hangers.AddRange(sortedList);
+            }
+        }
         protected override void Draw(DrawParams data)
         {
             base.Draw(data);

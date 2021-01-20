@@ -42,16 +42,19 @@ namespace DrawingModule.CustomControl.CanvasControl
         }
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            //PaintBackBuffer();
-            //SwapBuffers();
+            if (e.MiddleButton == MouseButtonState.Pressed)
+            {
+                base.OnMouseMove(e);
+                return;
+            }
+
             _mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
             this.CurrentPoint = GetCurrentPoint(_mousePosition);
             CurrentIndex = this.GetEntityUnderMouseCursor(_mousePosition, true);
             _entityUnderMouse = CurrentIndex > -1 ? this.Entities[CurrentIndex] : null;
             if (_entityUnderMouse is PictureEntity picture)
             {
-                bool isPointInsidePicture = Utility.PointInRect(CurrentPoint,picture.BoxMin,picture.BoxMax);
-                //picture.Visible = false;
+                bool isPointInsidePicture = Utility.PointInRect(CurrentPoint, picture.BoxMin, picture.BoxMax);
                 if (isPointInsidePicture)
                 {
                     _entityUnderMouse = null;
@@ -61,16 +64,16 @@ namespace DrawingModule.CustomControl.CanvasControl
             {
                 this._selectTool.ProcessMouseMoveForSelection(e, this);
             }
-            else if (this.IsProcessingTool && this._currentTool!=null)
+            else if (this.IsProcessingTool && this._currentTool != null)
             {
                 if (_waitingForSelection && this._selectTool.StartPoint != null)
                 {
                     this._selectTool.ProcessMouseMoveForSelection(e, this);
                 }
-                else 
+                else
                 {
-                    if(IsOrthoModeEnable)
-                        if (this.CurrentTool.IsUsingOrthorMode && this.CurrentTool.BasePoint!=null)
+                    if (IsOrthoModeEnable)
+                        if (this.CurrentTool.IsUsingOrthorMode && this.CurrentTool.BasePoint != null)
                         {
                             CurrentPoint = Utils.GetEndPoint(this.CurrentTool.BasePoint, CurrentPoint);
                         }
@@ -78,7 +81,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                         this.SetCurrentPoint(_mousePosition);
                 }
                 this.OnMouseMove_Drawing(e);
-               
+
             }
             PaintBackBuffer();
             SwapBuffers();
@@ -92,7 +95,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             var entIndex = GetEntityUnderMouseCursor(mousePosition);
             if (entIndex > -1)
             {
-                if (entIndex > this.Entities.Count-1)
+                if (entIndex > this.Entities.Count - 1)
                 {
                     _entityUnderMouse = null;
                     return false;
@@ -101,7 +104,6 @@ namespace DrawingModule.CustomControl.CanvasControl
                 if (_entityUnderMouse is Picture picture)
                 {
                     bool isPointInsidePicture = Utility.PointInRect(CurrentPoint, picture.BoxMin, picture.BoxMax);
-                    //picture.Visible = false;
                     if (isPointInsidePicture)
                     {
                         _entityUnderMouse = null;
@@ -116,16 +118,20 @@ namespace DrawingModule.CustomControl.CanvasControl
                 _entityUnderMouse = null;
                 return false;
             }
+
         }
-        //private List<Point3D> test = new List<Point3D>();
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
+            if (e.ChangedButton == MouseButton.Middle)
+            {
+                base.OnMouseDown(e);
+                return;
+            }
             var mousePosition = RenderContextUtility.ConvertPoint(this.GetMousePosition(e));
             var check = GetEntitiesUnderMouse(mousePosition);
             
             _isUserClicked = true;
             this.LastClickPoint = CurrentPoint;
-            //test.Add(LastClickPoint);
 
             if (this.ActionMode == actionType.None && e.ChangedButton == MouseButton.Left)
             {
@@ -239,7 +245,6 @@ namespace DrawingModule.CustomControl.CanvasControl
             MouseDown_Drawing += tool.NotifyMouseDown;
             PreviewKeybordDown_Drawing += tool.NotifyPreviewKeyDown;
             DrawOverlay_Jigging += tool.OnJigging;
-            
         }
         internal void ReleaseDrawing()
         {

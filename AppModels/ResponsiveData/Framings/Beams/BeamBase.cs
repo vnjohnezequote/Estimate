@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
@@ -12,8 +9,6 @@ using AppModels.PocoDataModel.Framings.Beams;
 using AppModels.PocoDataModel.Framings.FloorAndRafter;
 using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
-using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
-using AppModels.ResponsiveData.Openings;
 using AppModels.ResponsiveData.Support;
 
 namespace AppModels.ResponsiveData.Framings.Beams
@@ -359,8 +354,6 @@ namespace AppModels.ResponsiveData.Framings.Beams
 
             }
         }
-
-        public LevelWall Level { get; set; }
 
         #endregion
 

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.Enums;
+﻿using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
 using AppModels.PocoDataModel.WallMemberData;
-using Newtonsoft.Json;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData

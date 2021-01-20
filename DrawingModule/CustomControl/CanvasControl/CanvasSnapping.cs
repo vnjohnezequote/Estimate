@@ -49,7 +49,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             _snapPoints = Utils.GetSnapPoints(mouseLocation,this);
 
             
-            if (_snapPoints.Count == 0)
+            if (_snapPoints!=null && _snapPoints.Count == 0)
             {
                 SnapPoint = null;
                 return;

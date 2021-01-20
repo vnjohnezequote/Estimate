@@ -2,27 +2,27 @@
 {
     public enum FramingTypes
     {
-        RafterBeam,
-        FloorBeam,
         RafterJoist,
         FloorJoist,
-        BoundaryJoist,
         CeilingJoist,
+        DeckJoist,
         Purlin,
-        PolePlate,
+        RafterOutTrigger,
+        OutTrigger,
+        BoundaryJoist,
         Fascia,
-        TieDown,
-        Hanger,
         Trimmer,
         Rimboard,
-        HipRafter,
-        LintelBeam,
-        TrussBeam,
-        Blocking,
+        RafterBeam,
         RidgeBeam,
-        OutTrigger,
-        RafterOutTrigger,
-        DeckJoist
-
+        HipRafter,
+        TrussBeam,
+        FloorBeam,
+        LintelBeam,
+        PolePlate,
+        Blocking,
+        Hanger,
+        TieDown,
+        SteelBeam
     }
 }

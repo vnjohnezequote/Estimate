@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels.Enums;
-using AppModels.Interaface;
+﻿using AppModels.Enums;
 using AppModels.PocoDataModel.Openings;
-using AppModels.PocoDataModel.WallMemberData;
-using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Openings;
-using ProtoBuf;
 
 namespace AppModels.PocoDataModel
 {

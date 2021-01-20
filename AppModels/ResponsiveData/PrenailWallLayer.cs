@@ -7,13 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.PocoDataModel;
-using Newtonsoft.Json;
 
 namespace AppModels.ResponsiveData
 {

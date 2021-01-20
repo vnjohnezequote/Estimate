@@ -1,6 +1,4 @@
-﻿using devDept.Eyeshot;
-
-namespace AppModels.NewReposiveData.Interface
+﻿namespace AppModels.NewReposiveData.Interface
 {
     public interface IJob
     {

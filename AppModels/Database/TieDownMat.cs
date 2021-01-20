@@ -1,6 +1,4 @@
-﻿using Prism.Mvvm;
-
-namespace AppModels.Database
+﻿namespace AppModels.Database
 {
     public class TieDownMat
     {
