@@ -63,6 +63,7 @@ namespace AppAddons.DrawingTools
                         }
                     }
                     joistMember.FramingSpan= (int)(startPoint.DistanceTo(endPoint)) - 90;
+                    //joistMember.FullLength = (int)(startPoint.DistanceTo(endPoint));
                     joistMember.FramingType = FramingTypes.FloorJoist;
                     var joists = new Joist2D(startPoint, endPoint, joistMember,joistThickness);
                     if (JobModel.ActiveFloorSheet.Joists.Count>0)
@@ -118,7 +119,6 @@ namespace AppAddons.DrawingTools
                     var sortedList = orderedEnumerable.ToList();
                     this.JobModel.ActiveFloorSheet.Joists.Clear();
                     this.JobModel.ActiveFloorSheet.Joists.AddRange(sortedList);
-
                     //joists.LevelId = JobModel.ActiveFloorSheet.LevelId;
                     //joists.FramingSheetId = JobModel.ActiveFloorSheet.Id;
                     //var beam = new Beam2D(Plane.XY, startPoint, endPoint, 45, false, true);

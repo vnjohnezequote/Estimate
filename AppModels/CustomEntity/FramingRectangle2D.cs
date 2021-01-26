@@ -9,9 +9,16 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
+using Point = System.Drawing.Point;
 
 namespace AppModels.CustomEntity
 {
+    public enum CrossTypeLocation
+    {
+        AtStartPoint,
+        AtEndPoint,
+        None
+    }
     public abstract class FramingRectangle2D : PlanarEntity, IRectangleSolid, IFraming2D
     {
         private Point3D _outerStartPoint;
@@ -60,7 +67,7 @@ namespace AppModels.CustomEntity
                 {
                     return;
                 }
-                this.RegenMode = regenType.RegenAndCompile;
+                this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint);
             }
         }
         public Point3D InnerEndPoint { get; set; }
@@ -186,8 +193,159 @@ namespace AppModels.CustomEntity
         }
 
         protected abstract void SetFramingColor(int thickness);
-        
 
+        public bool IntersectWith(FramingRectangle2D other, out Point3D farPoint, out Point3D closerPoint)
+        {
+            var outerSegment = new Segment2D(OuterStartPoint, OuterEndPoint);
+            var otherOuterSegment = new Segment2D(other.OuterStartPoint, other.OuterEndPoint);
+            farPoint = null;
+            closerPoint = null;
+            var otherInnerSegment = new Segment2D(other.InnerStartPoint, other.InnerEndPoint);
+            var isFirstIntersection = Segment2D.IntersectionLine(outerSegment, otherOuterSegment, out var p1);
+            var isSecondIntersection = Segment2D.IntersectionLine(outerSegment, otherInnerSegment, out var p2);
+            if (!isFirstIntersection)
+            {
+                return false;
+            }
+            else
+            {
+                if (p1!=null && p2!=null)
+                {
+                    var distance1 = OuterStartPoint.DistanceTo(p1);
+                    var distance2 = OuterStartPoint.DistanceTo(p2);
+                    if (distance1>distance2)
+                    {
+                        closerPoint = p2.ConvertPoint2DtoPoint3D();
+                        farPoint = p1.ConvertPoint2DtoPoint3D();
+                    }
+                    else
+                    {
+                        closerPoint = p1.ConvertPoint2DtoPoint3D();
+                        farPoint = p2.ConvertPoint2DtoPoint3D();
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+
+        }
+
+        public bool IntersectWith(FramingRectangle2D other, List<Point3D> intersectPoints, out segmentIntersectionType intersectType)
+        {
+            var outerSegment = new Segment2D(OuterStartPoint, OuterEndPoint);
+            //var innerSegment = new Segment2D(InnerStartPoint, InnerEndPoint);
+            var otherOuterSegment = new Segment2D(other.OuterStartPoint, other.OuterEndPoint);
+            var otherInnerSegment = new Segment2D(other.InnerStartPoint, other.InnerEndPoint);
+            
+            var firstInterSectype =
+                Segment2D.Intersection(outerSegment, otherOuterSegment, out var p1, out var p2, 0.0001);
+            var secondInterSecType =
+                Segment2D.Intersection(outerSegment, otherInnerSegment, out var p3, out var p4, 0.0001);
+            if (firstInterSectype == segmentIntersectionType.Cross && secondInterSecType == segmentIntersectionType.Cross)
+            {
+                intersectType = segmentIntersectionType.Cross;
+                intersectPoints.Add(p1.ConvertPoint2DtoPoint3D());
+                intersectPoints.Add(p3.ConvertPoint2DtoPoint3D());
+                return true;
+            }
+
+            if (firstInterSectype==segmentIntersectionType.Cross&& (secondInterSecType==segmentIntersectionType.Touch|| secondInterSecType == segmentIntersectionType.Disjoint))
+            {
+                intersectType = segmentIntersectionType.Touch;                                                             
+                intersectPoints.Add(p1.ConvertPoint2DtoPoint3D());
+                return true;
+            }
+
+            if ((firstInterSectype== segmentIntersectionType.Touch|| firstInterSectype == segmentIntersectionType.Disjoint) && secondInterSecType == segmentIntersectionType.Cross)
+            {
+                intersectType = segmentIntersectionType.Touch;
+                intersectPoints.Add(p3.ConvertPoint2DtoPoint3D());
+                return true;
+            }
+
+            if (firstInterSectype==segmentIntersectionType.Touch && secondInterSecType == segmentIntersectionType.Touch)
+            {
+                intersectType = segmentIntersectionType.Cross;
+                intersectPoints.Add(p1.ConvertPoint2DtoPoint3D());
+                intersectPoints.Add(p3.ConvertPoint2DtoPoint3D());
+                return true;
+            }
+
+            if (firstInterSectype==segmentIntersectionType.Touch && (secondInterSecType == segmentIntersectionType.EndPointTouch || secondInterSecType == segmentIntersectionType.Disjoint))
+            {
+                intersectType = segmentIntersectionType.EndPointTouch;
+                intersectPoints.Add(p1.ConvertPoint2DtoPoint3D());
+                return true;
+            }
+
+            if ((firstInterSectype == segmentIntersectionType.Disjoint || firstInterSectype == segmentIntersectionType.EndPointTouch) && secondInterSecType == segmentIntersectionType.Touch)
+            {
+                intersectType = segmentIntersectionType.EndPointTouch;
+                intersectPoints.Add(p3.ConvertPoint2DtoPoint3D());
+                return true;
+            }
+
+            intersectType = segmentIntersectionType.Disjoint;
+            return false;
+        }
+
+        public bool IntersectWith(Line line, out Point3D intersectPoint, out segmentIntersectionType intersctionType)
+        {
+            var thisSegment = new Segment2D(OuterStartPoint, OuterEndPoint);
+            var otherSegment = new Segment2D(line.StartPoint, line.EndPoint);
+            intersctionType = Segment2D.Intersection(thisSegment, otherSegment, out var p1, out var p2, 0.0001);
+            if (intersctionType == segmentIntersectionType.Cross)
+            {
+                intersectPoint = p1.ConvertPoint2DtoPoint3D();
+                return true;
+            }
+
+            if (intersctionType == segmentIntersectionType.EndPointTouch)
+            {
+                intersectPoint = p1.ConvertPoint2DtoPoint3D();
+                return true;
+
+            }
+
+            if (intersctionType == segmentIntersectionType.Touch)
+            {
+                intersectPoint = p1.ConvertPoint2DtoPoint3D();
+                return true;
+            }
+
+            intersectPoint = null;
+            return false;
+
+        }
+        public bool IntersectWith(Line line, out Point3D intersectPoint)
+        {
+            var thisSegment = new Segment2D(OuterStartPoint, OuterEndPoint);
+            var otherSegment = new Segment2D(line.StartPoint, line.EndPoint);
+            var result = Segment2D.IntersectionLine(thisSegment, otherSegment, out var tempIntersectPoint);
+            intersectPoint = tempIntersectPoint.ConvertPoint2DtoPoint3D();
+            return result;
+
+        }
+        public bool IsPointInside(Point3D point)
+        {
+            var linearPath = new List<Point3D>()
+                {OuterStartPoint, OuterEndPoint, InnerEndPoint, InnerStartPoint, OuterStartPoint};
+            var quad = Mesh.CreatePlanar(linearPath, Mesh.natureType.Plain);
+            return quad.IsPointInside(point);
+        }
+
+        private void Extend(double atStart, double atEnd)
+        {
+            var segmentFirstLine = new Segment2D(_outerStartPoint, _outerEndPoint);
+            segmentFirstLine.ExtendBy(atStart,atEnd);
+            _outerStartPoint = segmentFirstLine.P0.ConvertPoint2DtoPoint3D();
+            _outerEndPoint = segmentFirstLine.P1.ConvertPoint2DtoPoint3D();
+            this.RegenFramingGeometry(_outerStartPoint,_outerEndPoint);
+        }
         private void InitFramingGeometry(Point3D outerStartPoint, Point3D outerEndPoint, bool flipped = false)
         {
             RegenFramingGeometry(outerStartPoint, outerEndPoint, flipped);

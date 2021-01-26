@@ -11,8 +11,6 @@ using AppModels.ResponsiveData;
 
 namespace ApplicationService
 {
-    using AppModels;
-
     using Prism.Events;
 
     /// <summary>

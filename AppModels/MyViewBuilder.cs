@@ -424,6 +424,7 @@ namespace AppModels
                         //var meshs = quad.GetPolygonMeshes();
                         var quad = Mesh.CreatePlanar(outerList2, Mesh.natureType.Smooth);
                         quad.PrintOrder = 1;
+                        
                         //foreach (var quadVertex in quad.Vertices)
                         //{
                         //    quadVertex.Z = -10;
@@ -447,7 +448,7 @@ namespace AppModels
                         continue;
                     case Hanger2D hanger:
                         var hangerInsertPoint = hanger.InsertionPoint;
-                        hangerInsertPoint.Z = 10;
+                        //hangerInsertPoint.Z = 10;
                         var hangerText = new Text(Plane.XY, hangerInsertPoint, hanger.TextString, hanger.Height,
                             hanger.Alignment);
                         hangerText.Color = hanger.Color;
@@ -473,8 +474,10 @@ namespace AppModels
                         var points = new List<Point3D>()
                             {joistArrow.StartArrow, joistArrow.StartPoint, joistArrow.EndPoint, joistArrow.EndArrow};
                         var joistArrowPath = new LinearPath(points);
-                        joistArrowPath.Color = joistArrow.Color;
+                        joistArrowPath.Color = Color.Black;
                         joistArrowPath.ColorMethod = colorMethodType.byEntity;
+                        joistArrowPath.LineWeight = 0.1f;
+                        joistArrowPath.LineWeightMethod = colorMethodType.byEntity;
                         floorBlock.Entities.Add(joistArrowPath);
                         continue;
                     case Line wallLine:
@@ -501,6 +504,18 @@ namespace AppModels
                             line.LineTypeScale = 0.5f;
                             floorBlock.Entities.Add(line);
                             continue;
+                        }
+                        break;
+                    case Blocking2D blocking:
+                        var cloneBlocking = blocking.Clone() as Entity;
+                        if (cloneBlocking!=null)
+                        {
+                            cloneBlocking.PrintOrder = 2;
+                            cloneBlocking.Color = blocking.Color;
+                            cloneBlocking.ColorMethod = colorMethodType.byEntity;
+                            cloneBlocking.LineWeight = 0.6f;
+                            cloneBlocking.LineWeightMethod = colorMethodType.byEntity;
+                            floorBlock.Entities.Add(cloneBlocking);
                         }
                         break;
                 }

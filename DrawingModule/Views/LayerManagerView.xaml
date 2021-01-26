@@ -64,7 +64,8 @@
                                    SelectionMode="Extended"
                                    SelectedItem="{Binding LayerManager.SelectedLayer}"
                                    SelectedItems="{Binding LayerManager.SelectedLayers}"
-                                   Background="DimGray">
+                                   Background="DimGray"
+                                   EnableDataVirtualization="True">
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridCheckBoxColumn HeaderText="Status" MappingName="IsSelected"/>
                     <syncfusion:GridTextColumn HeaderText="Layer Name" MappingName="Name"/>

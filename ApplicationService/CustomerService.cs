@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.Threading.Tasks;
-using AppModels;
-using AppModels.PocoDataModel;
-using AppModels.ResponsiveData;
+﻿using AppModels.PocoDataModel;
 using Prism.Events;
 
 namespace ApplicationService

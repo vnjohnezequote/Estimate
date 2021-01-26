@@ -158,7 +158,8 @@
                                            RowStyle="{StaticResource TextRowStyle}"
                                            CurrentCellDropDownSelectionChanged="WallInput_OnCurrentCellDropDownSelectionChanged"
                                            CurrentCellValidated="WallInput_OnCurrentCellValidated"
-                                           SelectedItem="{Binding SelectedWall}">
+                                           SelectedItem="{Binding SelectedWall}"
+                                           EnableDataVirtualization="True">
                         <syncfusion:SfDataGrid.SortComparers>
                             <data:SortComparer Comparer="{StaticResource WallTypeComparer}" PropertyName="WallType" />
                         </syncfusion:SfDataGrid.SortComparers>
@@ -215,7 +216,7 @@
                             <syncfusion:GridComboBoxColumn ItemsSource="{Binding LayerManager.Layers}"
 														   HeaderText="Layer"
 														   MappingName="WallColorLayer"
-														   UseBindingValue="True"
+                                                           UseBindingValue="True"
                                                            Width="200">
                                 <syncfusion:GridComboBoxColumn.ItemTemplate>
                                     <DataTemplate>

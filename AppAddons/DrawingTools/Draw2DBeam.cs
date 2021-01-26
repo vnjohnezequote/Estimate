@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ApplicationService;
+using AppModels;
 using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.ResponsiveData;
@@ -74,6 +75,13 @@ namespace AppAddons.DrawingTools
                     {
                         newBeam.FramingInfo = JobModel.SelectedJoitsMaterial;
                         beamThickness = newBeam.FramingInfo.NoItem * newBeam.FramingInfo.Depth;
+                    }
+                    if (JobModel.CCMode)
+                    {
+                        var segment = new Segment2D(startPoint, endPoint);
+                        var rectangleEgle = segment.Offset(-beamThickness/2);
+                        startPoint = rectangleEgle.P0.ConvertPoint2DtoPoint3D();
+                        endPoint = rectangleEgle.P1.ConvertPoint2DtoPoint3D();
                     }
                     this.JobModel.ActiveFloorSheet.Beams.Add(newBeam);
                     var beam = new Beam2D(startPoint, endPoint, newBeam, beamThickness)

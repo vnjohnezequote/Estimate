@@ -287,51 +287,7 @@ namespace AppModels.CustomEntity
 
         }
 
-        //private void DrawWallBorder(DrawParams data)
-        //{
-        //    data.RenderContext.SetLineSize(2);
-        //    //data.RenderContext.SetColorWireframe(Color.Crimson);
-        //    data.RenderContext.PushModelView();
-        //    if (!this.IsBeamUnder)
-        //    {
-        //        if (ShowStartWallLine)
-        //        {
-        //            data.RenderContext.SetColorWireframe(Color.Crimson);
-        //            data.RenderContext.DrawBufferedLine(OuterStartPoint, InnerStartPoint);
-        //        }
-
-        //        if (ShowEndWallLine)
-        //        {
-        //            data.RenderContext.SetColorWireframe(Color.Crimson);
-        //            data.RenderContext.DrawBufferedLine(OuterEndPoint, InnerEndPoint);
-        //        }
-
-        //        data.RenderContext.SetColorWireframe(Color.Crimson, true);
-        //        this.DrawDashWallLine(data, OuterStartPoint, OuterEndPoint);
-        //        data.RenderContext.SetColorWireframe(Color.LimeGreen);
-        //        this.DrawDashWallLine(data, InnerStartPoint, InnerEndPoint);
-
-        //    }
-        //    else
-        //    {
-        //        if (ShowStartWallLine)
-        //        {
-        //            data.RenderContext.SetColorWireframe(Color.Crimson);
-        //            data.RenderContext.DrawBufferedLine(OuterStartPoint, InnerStartPoint);
-        //        }
-
-        //        if (ShowEndWallLine)
-        //        {
-        //            data.RenderContext.SetColorWireframe(Color.Crimson);
-        //            data.RenderContext.DrawBufferedLine(OuterEndPoint, InnerEndPoint);
-        //        }
-        //        data.RenderContext.SetColorWireframe(Color.Crimson);
-        //        data.RenderContext.DrawBufferedLine(OuterStartPoint, OuterEndPoint);
-        //        data.RenderContext.SetColorWireframe(Color.LimeGreen);
-        //        data.RenderContext.DrawBufferedLine(InnerStartPoint, InnerEndPoint);
-        //    }
-        //    data.RenderContext.PopModelView();
-        //}
+        
 
         protected override void DrawEdges(DrawParams data)
         {
@@ -399,20 +355,7 @@ namespace AppModels.CustomEntity
             //data.RenderContext.SetState(currentState);
         }
 
-        protected override void DrawSelected(DrawParams data)
-        {
-            base.DrawSelected(data);
-        }
-
-        protected override void DrawFlatSelected(DrawParams drawParams)
-        {
-            base.DrawFlatSelected(drawParams);
-        }
-
-        protected override void DrawWireframeSelected(DrawParams data)
-        {
-            base.DrawWireframeSelected(data);
-        }
+       
 
         public override void Regen(RegenParams data)
         {
@@ -573,6 +516,7 @@ namespace AppModels.CustomEntity
             }
         }
 
+        
         public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {
             return new Wall2DVm(this);

@@ -26,15 +26,12 @@ using AppModels.EventArg;
 using AppModels.Interaface;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
-using devDept.Eyeshot.Translators;
 using devDept.Geometry;
-using devDept.Graphics;
 using DrawingModule.Application;
 using DrawingModule.CommandClass;
 using DrawingModule.Control;
 using DrawingModule.DrawInteractiveUtilities;
 using DrawingModule.EditingTools;
-using DrawingModule.Enums;
 using DrawingModule.Helper;
 using DrawingModule.Views;
 using Size = System.Drawing.Size;
@@ -414,7 +411,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         public CanvasDrawing()
 
         {
-            //PickBoxSize = 16;
+            PickBoxSize = 16;
             DimTextHeight = 500;
             IsUserInteraction = false;
             _waitingForSelection = false;

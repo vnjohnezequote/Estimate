@@ -41,16 +41,16 @@ namespace DrawingModule.Views
         public DrawingWindowView()
         {
             this.InitializeComponent();
-            try
-            {
-                this.CanvasDrawing.CanvasDrawing.Unlock("PF21-12NG0-L7K3F-M0CS-FE82");
-                this.CanvasDrawing.PaperSpace.Unlock("PF21-12NG0-L7K3F-M0CS-FE82");
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw;
-            }
+            //try
+            //{
+            //    this.CanvasDrawing.CanvasDrawing.Unlock("PF21-12NG0-L7K3F-M0CS-FE82");
+            //    this.CanvasDrawing.PaperSpace.Unlock("PF21-12NG0-L7K3F-M0CS-FE82");
+            //}
+            //catch (Exception e)
+            //{
+            //    MessageBox.Show(e.Message);
+            //    throw;
+            //}
             if (this.DataContext != null)
             {
                 _drawingWindowViewModel = this.DataContext as DrawingWindowViewModel;
