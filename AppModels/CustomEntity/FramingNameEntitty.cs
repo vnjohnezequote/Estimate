@@ -44,6 +44,14 @@ namespace AppModels.CustomEntity
             this.ColorMethod = colorMethodType.byEntity;
         }
 
+        public FramingNameEntity(FramingNameEntity another):base(another)
+        {
+            this.ColorMethod = colorMethodType.byEntity;
+            Id = Guid.NewGuid();
+            LevelId = another.LevelId;
+            FramingSheetId = another.FramingSheetId;
+        }
+
         private void SetFramingNameColor()
         {
             if (FramingReference.FramingInfo != null)
@@ -96,6 +104,9 @@ namespace AppModels.CustomEntity
             return new FramingNameSurrogate(this);
         }
 
-        
+        public override object Clone()
+        {
+            return new FramingNameEntity(this);
+        }
     }
 }

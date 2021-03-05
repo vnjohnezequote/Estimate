@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ApplicationService;
 using AppModels;
 using AppModels.CustomEntity;
+using AppModels.EntityCreator;
 using AppModels.Enums;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Beam;
@@ -55,40 +56,17 @@ namespace AppAddons.DrawingTools
                 {
                     continue;
                 }
-                LevelWall level = JobModel.ActiveFloorSheet.Level;
 
-                if (level != null && this.JobModel.ActiveFloorSheet!=null)
+                if (this.JobModel.ActiveFloorSheet!=null)
                 {
-                    var beamId = JobModel.ActiveFloorSheet.Beams.Count + 1;
-                    var beamType = FramingTypes.FloorBeam;
+                     var beamType = FramingTypes.FloorBeam;
                     if (JobModel.ActiveFloorSheet.FramingSheetType == FramingSheetTypes.RafterFraming)
                     {
                         beamType = FramingTypes.RafterBeam;
                     }
-
-                    var newBeam = new FBeam(JobModel.ActiveFloorSheet)
-                    {
-                        Index = beamId, FramingType = beamType, FullLength = (int) (startPoint.DistanceTo(endPoint))
-                    };
-                    var beamThickness = 45;
-                    if (JobModel.SelectedJoitsMaterial != null)
-                    {
-                        newBeam.FramingInfo = JobModel.SelectedJoitsMaterial;
-                        beamThickness = newBeam.FramingInfo.NoItem * newBeam.FramingInfo.Depth;
-                    }
-                    if (JobModel.CCMode)
-                    {
-                        var segment = new Segment2D(startPoint, endPoint);
-                        var rectangleEgle = segment.Offset(-beamThickness/2);
-                        startPoint = rectangleEgle.P0.ConvertPoint2DtoPoint3D();
-                        endPoint = rectangleEgle.P1.ConvertPoint2DtoPoint3D();
-                    }
-                    this.JobModel.ActiveFloorSheet.Beams.Add(newBeam);
-                    var beam = new Beam2D(startPoint, endPoint, newBeam, beamThickness)
-                    {
-                        ColorMethod = colorMethodType.byEntity
-                    };
-                    this.EntitiesManager.AddAndRefresh(beam, LayerManager.SelectedLayer.Name);
+                    var beamCreator = new Beam2DCreator(JobModel.ActiveFloorSheet, startPoint, endPoint, beamType,
+                        JobModel.SelectedJoitsMaterial, JobModel.CCMode);
+                    this.EntitiesManager.AddAndRefresh((Beam2D)beamCreator.GetFraming2D(), LayerManager.SelectedLayer.Name);
                     
                 }
                 

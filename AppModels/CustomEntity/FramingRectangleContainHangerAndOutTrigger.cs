@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings;
+using AppModels.ResponsiveData.Openings;
+using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 
 namespace AppModels.CustomEntity
@@ -51,20 +54,51 @@ namespace AppModels.CustomEntity
                 OutTriggerB?.Flipper(StartPoint, EndPoint);
             }
         }
+        public Guid? FramingNameId { get; set; }
+        public bool IsShowFramingName { get; set; }
+        public FramingNameEntity FramingName { get; set; }
 
+        public List<FramingRectangleContainHangerAndOutTrigger> ConectedFramings =
+            new List<FramingRectangleContainHangerAndOutTrigger>();
         #endregion
         #region Constructor
 
-        public FramingRectangleContainHangerAndOutTrigger(Point3D outerStartPoint, Point3D outerEndPoint, FramingBase framingReference, int thickness = 90, bool flipped = false) : base(outerStartPoint, outerEndPoint, framingReference, thickness, flipped)
+        public FramingRectangleContainHangerAndOutTrigger(Point3D outerStartPoint, Point3D outerEndPoint,IFraming framingReference, int thickness = 90, bool flipped = false,bool centerCreater = false) : base(outerStartPoint, outerEndPoint, framingReference, thickness, flipped,centerCreater)
         {
         }
 
-        public FramingRectangleContainHangerAndOutTrigger(Point3D outerStartPoint, Point3D outerEndPoint, int thickness, bool flipped) : base(outerStartPoint, outerEndPoint, thickness, flipped)
+        public FramingRectangleContainHangerAndOutTrigger(Point3D outerStartPoint, Point3D outerEndPoint, int thickness, bool flipped,bool centerCreater = false) : base(outerStartPoint, outerEndPoint, thickness, flipped,centerCreater)
         {
         }
 
-        protected FramingRectangleContainHangerAndOutTrigger(FramingRectangle2D another) : base(another)
+        protected FramingRectangleContainHangerAndOutTrigger(FramingRectangleContainHangerAndOutTrigger another) : base(another)
         {
+            if (another.IsHangerA)
+            {
+                var hangerA = (Hanger2D)another.HangerA.Clone();
+                hangerA.Framing2D = this;
+                HangerAId = hangerA.Id;
+                this.HangerA = hangerA;
+                this.IsHangerA = true;
+                ((IContaintHanger) FramingReference).HangerA = (Hanger)hangerA.FramingReference;
+            }
+            if (another.IsHangerB)
+            {
+                var hangerB = (Hanger2D) another.HangerB.Clone();
+                hangerB.Framing2D = this;
+                HangerBId = hangerB.Id;
+                this.HangerB = hangerB;
+                this.IsHangerB = true;
+                ((IContaintHanger) FramingReference).HangerB = (Hanger)hangerB.FramingReference;
+            }
+            IsShowFramingName = another.IsShowFramingName;
+            if (another.FramingName != null)
+            {
+                FramingName = (FramingNameEntity)another.FramingName.Clone();
+                FramingName.FramingReference = this.FramingReference;
+                FramingReferenceId = this.FramingReference.Id;
+            }
+
         }
 
         #endregion
@@ -84,5 +118,51 @@ namespace AppModels.CustomEntity
         {
             
         }
+
+        protected override void HangerACenterPointChanged()
+        {
+            if (HangerA!=null)
+            {
+                HangerA.InsertionPoint = HangerACenterPoint;
+            }
+        }
+
+        protected override void HangerBCenterPointChanged()
+        {
+            if (HangerB!=null)
+            {
+                HangerB.InsertionPoint = HangerBCenterPoint;
+            }
+        }
+
+        public override void Translate(double dx, double dy, double dz = 0)
+        {
+            base.Translate(dx, dy, dz);
+            FramingName?.Translate(dx,dy,dz);
+            OutTriggerA?.Translate(dx,dy,dz);
+            OutTriggerB?.Translate(dx,dy,dz);
+        }
+
+        public override IRectangleSolid Offset(double amount, Vector3D planeNormal, double tolerance, bool sharp)
+        {
+            var framing = (IRectangleSolid)Clone();
+            Line framingLine = new Line(framing.OuterStartPoint, framing.OuterEndPoint);
+            Vector3D vector3D = Vector3D.Cross(framingLine.Tangent, planeNormal);
+            vector3D.Normalize();
+            Vector3D v = vector3D * amount;
+            framingLine.Translate(v);
+            framing.OuterStartPoint = framingLine.StartPoint;
+            framing.OuterEndPoint = framingLine.EndPoint;
+            if (framing is IFraming2DContaintHangerAndOutTrigger framingContaintFraming)
+            {
+                if (framingContaintFraming.FramingName!=null)
+                {
+                    framingContaintFraming.FramingName.Translate(v);
+                }
+            }
+
+            return framing;
+        }
+
     }
 }

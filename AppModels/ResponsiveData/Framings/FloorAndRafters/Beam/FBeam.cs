@@ -27,14 +27,7 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Beam
 
         public FBeam(FramingSheet framingSheet) : base(framingSheet)
         {
-            if (FramingSheet.FramingSheetType == FramingSheetTypes.RafterFraming)
-            {
-                FramingType = FramingTypes.RafterBeam;
-            }
-            else
-            {
-                FramingType = FramingTypes.FloorBeam;
-            }
+            FramingType = FramingSheet.FramingSheetType == FramingSheetTypes.RafterFraming ? FramingTypes.RafterBeam : FramingTypes.FloorBeam;
         }
 
         public FBeam(FBeamPoco beamPoco,FramingSheet framingSheet, List<TimberBase> timberList, List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco,framingSheet, timberList, engineerMemberInfos)
@@ -50,12 +43,12 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Beam
             {
                 if (hanger.Id == ((FBeamPoco)joistPoco).HangerAId)
                 {
-                    HangerA = hanger;
+                    HangerA = (Hanger)hanger;
                 }
 
                 if (hanger.Id == ((FBeamPoco)joistPoco).HangerBId)
                 {
-                    HangerB = hanger;
+                    HangerB = (Hanger)hanger;
                 }
             }
         }

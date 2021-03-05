@@ -44,15 +44,16 @@ namespace AppModels.CustomEntity
                 this.RegenMode = regenType.RegenAndCompile;
             }
         }
-
+        public IFraming2DContaintHangerAndOutTrigger Framing2D { get; set; }
         
-        public OutTrigger2D(Point3D outerStartPoint, Point3D outerEndPoint, OutTrigger outrigger, int thickness, bool flipped = true,
+        public OutTrigger2D(Point3D outerStartPoint, Point3D outerEndPoint, OutTrigger outrigger,IFraming2DContaintHangerAndOutTrigger framing2D, int thickness=35, bool flipped = true,
             int outSizeLength = 450, int inSizeLength = 900) : base(outerStartPoint,outerEndPoint,outrigger,thickness,flipped)
         {
             _insizeLength = inSizeLength;
             _outSizeLength = outSizeLength;
+            Framing2D = framing2D;
         }
-        public OutTrigger2D(Point3D outerStartPoint, Point3D outerEndPoint, int thickness,bool flipped) : base(outerStartPoint,outerEndPoint,thickness,flipped)
+        public OutTrigger2D(Point3D outerStartPoint, Point3D outerEndPoint, int thickness,bool flipped,bool centerCreator = false) : base(outerStartPoint,outerEndPoint,thickness,flipped,centerCreator)
         {
            
         }
@@ -96,7 +97,6 @@ namespace AppModels.CustomEntity
             this.RegenFramingGeometry(OuterStartPoint,OuterEndPoint,Flipped);
             this.RegenMode = regenType.RegenAndCompile;
         }
-
         public override EntitySurrogate ConvertToSurrogate()
         {
             return new OutTrigger2DSurrogate(this);
@@ -122,8 +122,15 @@ namespace AppModels.CustomEntity
                 default: break;
             }
         }
-
         protected override void SetFramingColor(int thickness)
+        {
+            
+        }
+        protected override void HangerACenterPointChanged()
+        {
+
+        }
+        protected override void HangerBCenterPointChanged()
         {
             
         }

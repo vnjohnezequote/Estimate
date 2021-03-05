@@ -16,22 +16,22 @@ namespace AppModels.CustomEntity
         private bool _outTriggerAFlipped;
         private bool _outTriggerBFlipped;
 
-        public Joist2D(Point3D outerStartPoint, Point3D outerEndPoint, Joist joistReference,
-            int thickness = 90) :
-            base(outerStartPoint,outerEndPoint,joistReference,thickness)
+        public Joist2D(Point3D outerStartPoint, Point3D outerEndPoint, IFraming joistReference,
+            int thickness = 90,bool flipped = false,bool centerCreater = false) :
+            base(outerStartPoint,outerEndPoint,joistReference,thickness,flipped,centerCreater)
         {
             
         }
 
-        public Joist2D(Point3D outerStartPoint, Point3D outerEndPoint, int thickness,bool flipped) : base(outerStartPoint,
-            outerEndPoint, thickness,flipped)
+        public Joist2D(Point3D outerStartPoint, Point3D outerEndPoint, int thickness,bool flipped,bool centerCreator = false) : base(outerStartPoint,
+            outerEndPoint, thickness,flipped,centerCreator)
         {
 
         }
 
         public Joist2D(Joist2D another) : base(another)
         {
-
+            
         }
 
         
@@ -55,7 +55,7 @@ namespace AppModels.CustomEntity
         }
 
         public override object Clone()
-        {
+        { 
             return new Joist2D(this);
         }
 
@@ -79,36 +79,39 @@ namespace AppModels.CustomEntity
 
         protected override void SetFramingColor(int thickness)
         {
-            
-                switch (thickness)
-                {
-                    case 45:
-                        if (FramingReference.FramingType == FramingTypes.FloorJoist)
-                        {
-                            Color = System.Drawing.Color.FromArgb(82, 165, 0);
-                        }
-                        break;
-                    case 50:
-                        if (FramingReference.FramingType == FramingTypes.FloorJoist)
-                        {
-                            Color = System.Drawing.Color.White;
-                        }
-                        break;
-                    case 63:
-                        if (FramingReference.FramingType == FramingTypes.FloorJoist)
-                        {
-                            Color = System.Drawing.Color.FromArgb(0, 76, 0);
-                        }
-                        break;
-                    case 90:
-                        if (FramingReference.FramingType == FramingTypes.FloorJoist)
-                        {
-                            Color = System.Drawing.Color.FromArgb(0, 63, 255);
-                        }
-                        break;
-                    default:
-                        break;
-                }
+            if (FramingReference==null)
+            {
+                return;
+            } 
+            switch (thickness)
+            {
+                case 45:
+                    if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                    {
+                        Color = System.Drawing.Color.FromArgb(82, 165, 0);
+                    }
+                    break;
+                case 50:
+                    if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                    {
+                        Color = System.Drawing.Color.White;
+                    }
+                    break;
+                case 63:
+                    if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                    {
+                        Color = System.Drawing.Color.FromArgb(0, 76, 0);
+                    }
+                    break;
+                case 90:
+                    if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                    {
+                        Color = System.Drawing.Color.FromArgb(0, 63, 255);
+                    }
+                    break;
+                default:
+                    break;
+            }
             
         }
     }

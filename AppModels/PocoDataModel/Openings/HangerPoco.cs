@@ -8,6 +8,7 @@ namespace AppModels.PocoDataModel.Openings
         public Guid Id { get; set; }
         public Guid LevelId { get; set; }
         public Guid FramingSheetId { get; set; }
+        //public Guid Framing2DId { get; set; }
         public int Quantity { get; set; }
         public bool IsExisting { get; set; }
         public int Index { get; set; }

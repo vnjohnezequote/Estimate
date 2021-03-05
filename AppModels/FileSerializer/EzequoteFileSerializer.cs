@@ -111,39 +111,37 @@ namespace AppModels.FileSerializer
                 .Add(1, "Thickness")
                 .Add(2, "Depth")
                 .Add(3, "Id")
-                .Add(4, "Flipped")
-                .Add(5, "OuterStartPoint")
-                .Add(6, "OuterStartPoint")
-                .Add(7, "OuterEndPoint")
-                .Add(8, "FramingReferenceId")
-                .Add(9,"LevelId")
-                .Add(10,"FramingSheetId")
+                .Add(4, "LevelId")
+                .Add(5, "FramingSheetId")
+                .Add(6, "Flipped")
+                .Add(7, "OuterStartPoint")
+                .Add(8, "OuterEndPoint")
+                .Add(9, "FramingReferenceId")
                 .UseConstructor = false;
             Model[typeof(FramingRectangleContainHangerAndOutTriggerSurrogate)]
-                .Add(11, "OuterStartPoint")
-                .Add(12, "OuterEndPoint")
-                .Add(13, "Thickness")
-                .Add(14, "HangerAId")
-                .Add(15, "HangerBId")
-                .Add(16, "IsHangerA")
-                .Add(17, "IsHangerB")
-                .Add(18, "OutTriggerAId")
-                .Add(19, "OutTriggerBId")
-                .Add(20, "IsOutTriggerA")
-                .Add(21, "IsOutTriggerB")
-                .Add(22, "OutTriggerAFlipped")
-                .Add(23, "OutTriggerBFlipped")
+                .Add(10, "HangerAId")
+                .Add(11, "HangerBId")
+                .Add(12, "IsHangerA")
+                .Add(13, "IsHangerB")
+                .Add(14, "OutTriggerAId")
+                .Add(15, "OutTriggerBId")
+                .Add(16, "IsOutTriggerA")
+                .Add(17, "IsOutTriggerB")
+                .Add(18, "OutTriggerAFlipped")
+                .Add(19, "OutTriggerBFlipped")
+                .Add(20, "FramingNameId")
+                .Add(21, "IsShowFramingName")
                 .UseConstructor = false;
             Model[typeof(Joist2DSurrogate)]
                 .UseConstructor = false;
             Model[typeof(Beam2DSurrogate)]
-                .Add(24, "IsBeamUnder")
-                .Add(25, "ShowDimension")
+                .Add(22, "IsBeamUnder")
+                .Add(23, "ShowDimension")
                 //.Add(26, "DimensionLine")
                 .UseConstructor = false;
             Model[typeof(OutTrigger2DSurrogate)]
-                .Add(11, "InsideLength")
-                .Add(12, "OutSideLength")
+                .Add(10, "InsideLength")
+                .Add(11, "OutSideLength")
                 .UseConstructor = false;
 
         }

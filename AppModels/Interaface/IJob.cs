@@ -18,6 +18,7 @@ namespace AppModels.Interaface
         MyObservableCollection<EngineerMemberInfo> EngineerMemberList { get; }
         bool CurrentIsLoadBearingWall { get; set; }
         bool CCMode { get; set; }
+        int DefaultJoistSpacing { get; set; }
         ObservableCollection<OpeningInfo> DoorSchedules { get; }
         FramingSheet ActiveFloorSheet { get; set; }
         TimberBase SelectedJoitsMaterial { get; set; }

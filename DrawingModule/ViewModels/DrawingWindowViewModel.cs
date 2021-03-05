@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Timers;
 using System.Windows;
 using System.Windows.Forms.VisualStyles;
+using System.Windows.Media.Animation;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels;
@@ -29,6 +30,7 @@ using devDept.Geometry;
 using devDept.Serialization;
 using DrawingModule.Views;
 using DynamicData;
+using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using CanvasDrawing = DrawingModule.CustomControl.CanvasControl.CanvasDrawing;
 
@@ -62,6 +64,8 @@ namespace DrawingModule.ViewModels
         private Timer _autoSaveTimer = new Timer(1 * 60 * 1000);
         private Entity _selectedEntity;
         private bool _isSaving;
+        private bool _isPropertyBarOpened = false;
+        private int _lastPropertyWidth;
 
         #endregion
         #region public Property
@@ -110,6 +114,11 @@ namespace DrawingModule.ViewModels
             set => this.SetProperty(ref this._isOrthorMode, value);
         }
 
+        public int LastPropertyPanelWidth
+        {
+            get => _lastPropertyWidth == 0 ? 250 : this._lastPropertyWidth;
+            private set => this.SetProperty(ref this._lastPropertyWidth, value);
+        }
 
         #endregion
         #region Command
@@ -142,7 +151,9 @@ namespace DrawingModule.ViewModels
         public ICommand FilletCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
         public ICommand OpenCommand { get; private set; }
-
+        public ICommand ExpanderPropertyPanelCommamd { get; private set; }
+        public ICommand PropertyPanelGridSplitterDragDeltaCommand { get; private set; }
+        public ICommand PropertyPanelGridSplitterDragCompleteCommand { get; private set; }
         #endregion
         #region Constructor
 
@@ -177,11 +188,16 @@ namespace DrawingModule.ViewModels
             this.WindowLoadedCommand = new DelegateCommand<DrawingWindowView>(this.WindowLoaded);
             ExportDWGCommand = new DelegateCommand(this.OnExportDWG);
             ImportDWGCommand = new DelegateCommand(this.OnImportDWG);
+            
             SaveCommand = new DelegateCommand(this.OnSaveDrawing);
             OpenCommand = new DelegateCommand(this.OnOpenDrawing);
             EventAggregator.GetEvent<OpenJobEvent>().Subscribe(OnOpenDrawingEventSubcribe);
             EventAggregator.GetEvent<AutoSaveDrawingEvent>().Subscribe(OnAutoSaveDrawing);
             EventAggregator.GetEvent<SaveDrawingEvent>().Subscribe(OnSaveDrawing);
+            ExpanderPropertyPanelCommamd = new DelegateCommand(OnOpenPropertiesPanelCommand);
+            PropertyPanelGridSplitterDragDeltaCommand = new DelegateCommand(this.OnPropertyPanelSizeChanged);
+             this.PropertyPanelGridSplitterDragCompleteCommand = new DelegateCommand(this.OnPropertyPanelGridSplitterDragComplete);
+
             //ImportPDFCommand = new DelegateCommand(OnImportPDF);
             //_autoSaveTimer.Elapsed += AutoSaveTimer_Elapsed;
             //_autoSaveTimer.Start();
@@ -207,8 +223,64 @@ namespace DrawingModule.ViewModels
             //this.FilletCommand = new DelegateCommand(this.OnFilletCommand);
             this.RegionManager = RegionManager.CreateRegionManager();
             this.IsOrthorMode = true;
+            // LastPropertyPanelWidth = 0;
 
         }
+private void OnPropertyPanelGridSplitterDragComplete()
+        {
+            if ((int)this._window.PropertyPanel.ActualWidth <= 0
+                || (int)this._window.PropertyPanel.ActualWidth >= 150) return;
+            this._isPropertyBarOpened = false;
+            this._window.ButtonOpenPropertyPanel.Visibility = Visibility.Visible;
+            this._window.ButtonClosePropertyPanel.Visibility = Visibility.Collapsed;
+            this._window.PropertyPanel.Width = new GridLength(0);
+            this.LastPropertyPanelWidth = 150;
+        }
+
+
+        public void OnOpenPropertiesPanelCommand()
+        {
+
+            if (this._isPropertyBarOpened == false)
+            {
+                this._isPropertyBarOpened = true;
+                 var openProperty = this._window.FindResource("OpenPropertyPanel") as Storyboard;
+                this._window.ButtonOpenPropertyPanel.Visibility = Visibility.Collapsed;
+                this._window.ButtonClosePropertyPanel.Visibility = Visibility.Visible;
+                // LastPropertyPanelWidth = 150;
+                 openProperty?.Begin();
+            }
+            else
+            {
+                this._isPropertyBarOpened = false;
+                 var closeProperty = this._window.FindResource("ClosePropertyPanel") as Storyboard;
+                this._window.ButtonOpenPropertyPanel.Visibility = Visibility.Visible;
+                this._window.ButtonClosePropertyPanel.Visibility = Visibility.Collapsed;
+                 closeProperty?.Begin();
+                // LastPropertyPanelWidth = 0;
+
+            }
+
+
+        }
+private void OnPropertyPanelSizeChanged()
+        {
+            if ((int)this._window.PropertyPanel.ActualWidth > 0)
+            {
+                this._isPropertyBarOpened = true;
+                this._window.ButtonOpenPropertyPanel.Visibility = Visibility.Collapsed;
+                this._window.ButtonClosePropertyPanel.Visibility = Visibility.Visible;
+                this.LastPropertyPanelWidth = (int)this._window.PropertyPanel.ActualWidth;
+            }
+            else
+            {
+                this._isPropertyBarOpened = false;
+                this._window.ButtonOpenPropertyPanel.Visibility = Visibility.Visible;
+                this._window.ButtonClosePropertyPanel.Visibility = Visibility.Collapsed;
+                this.LastPropertyPanelWidth = 150;
+            }
+        }
+
 
         public void SaveJob()
         {
@@ -297,8 +369,8 @@ namespace DrawingModule.ViewModels
                         wfa = new WriteAutodesk(new WriteAutodeskParams(_canvasExport), saveFileDialog.FileName);
                         break;
                     case 3:
-                        wfa = new WritePDF(
-                            new WritePdfParams(_canvasExport, new Size(595, 842), new Rect(10, 10, 575, 822)),
+                        wfa = new Write3DPDF(
+                            new Write3DPdfParams(_canvasExport, new Size(595, 842), new Rect(10, 10, 575, 822)),
                             saveFileDialog.FileName);
                         break;
                 }
@@ -345,7 +417,7 @@ namespace DrawingModule.ViewModels
                     //var outerList = new List<Point2D>()
                     //    {beam.OuterStartPoint, beam.OuterEndPoint, beam.InnerEndPoint, beam.InnerStartPoint,beam.OuterStartPoint};
                     //var beamQuad = Mesh.CreatePlanar(Plane.XY, outerList, Mesh.natureType.Plain);
-                    var beamPolyLine = new LinearPath(beam.StartTopPoint, beam.EndTopPoint);
+                    var beamPolyLine = new LinearPath(beam.StartCenterLinePoint, beam.EndCenterLinePoint);
                     beamPolyLine.Color = beam.Color;
                     beamPolyLine.ColorMethod = colorMethodType.byEntity;
                     beamPolyLine.GlobalWidth = beam.Thickness;

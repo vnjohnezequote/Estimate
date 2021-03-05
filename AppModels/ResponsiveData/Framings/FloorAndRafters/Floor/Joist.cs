@@ -17,6 +17,10 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
         {
             get
             {
+                //if (FramingType == FramingTypes.RafterJoist)
+                //{
+                    
+                //}
                 var fullLength = FullLength / Math.Cos(Utility.DegToRad(Pitch));
                 var quoteLengthinMM = ((int)fullLength).RoundUpTo300();
                 var quoteLength = (double) quoteLengthinMM / 1000 + ExtraLength;
@@ -71,12 +75,12 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
             {
                 if (hanger.Id == ((JoistPoco)joistPoco).HangerAId)
                 {
-                    HangerA = hanger;
+                    HangerA = (Hanger)hanger;
                 }
 
                 if (hanger.Id == ((JoistPoco)joistPoco).HangerBId)
                 {
-                    HangerB = hanger;
+                    HangerB = (Hanger)hanger;
                 }
             }
         }

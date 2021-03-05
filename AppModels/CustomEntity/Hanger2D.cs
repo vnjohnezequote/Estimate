@@ -18,7 +18,7 @@ namespace AppModels.CustomEntity
     {
         private IFraming _framingReference;
         public Guid FramingSheetId { get; set; }
-
+        public IFraming2DContaintHangerAndOutTrigger Framing2D { get; set; }
         public IFraming FramingReference
         {
             get => _framingReference;
@@ -32,13 +32,12 @@ namespace AppModels.CustomEntity
             }
         }
         public double FullLength { get; set; }
-
         public Guid Id{ get; set; }
         public Guid LevelId { get; set; }
         public Guid FramingReferenceId { get; set; }
         
         
-        public Hanger2D(Point3D insPoint, string textString, double height,Hanger reference) : base(insPoint, textString, height)
+        public Hanger2D(Point3D insPoint, string textString, double height,Hanger reference,IFraming2DContaintHangerAndOutTrigger framing2D) : base(insPoint, textString, height)
         {
             Id = Guid.NewGuid();
             LevelId = reference.LevelId;
@@ -46,6 +45,7 @@ namespace AppModels.CustomEntity
             FramingReference = reference;
             this.TextString = reference.Name;
             Color = Color.FromArgb(127,127,63);
+            Framing2D = framing2D;
         }
         //public Hanger2D(Point3D insPoint, string textString, double height):base(insPoint,textString, height)
         //{
@@ -54,7 +54,16 @@ namespace AppModels.CustomEntity
 
         public Hanger2D(Text another) : base(another)
         {
+        }
 
+        public Hanger2D(Hanger2D another) :base(another)
+        {
+            Id = Guid.NewGuid();
+            LevelId = another.LevelId;
+            FramingSheetId = another.FramingSheetId;
+            FramingReference = (IFraming)another.FramingReference.Clone();
+            FramingReferenceId = FramingReference.Id;
+            Framing2D = another.Framing2D;
         }
         
         private void HangerRefOnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -129,6 +138,9 @@ namespace AppModels.CustomEntity
             return new Hanger2DSurrogate(this);
         }
 
-
+        public override Object Clone()
+        {
+            return new Hanger2D(this);
+        }
     }
 }

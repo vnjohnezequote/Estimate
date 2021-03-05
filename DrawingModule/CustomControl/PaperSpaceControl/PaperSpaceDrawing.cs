@@ -51,9 +51,9 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
 
         #region Constructor
 
-        public PaperSpaceDrawing() : base()
+        public PaperSpaceDrawing()
         {
-           
+            Unlock("PF21-12NG0-L7K3F-M0CS-FE82");
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs e)

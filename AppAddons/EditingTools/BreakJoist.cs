@@ -4,7 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels;
 using AppModels.CustomEntity;
+using AppModels.EntityCreator;
+using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using devDept.Eyeshot.Entities;
@@ -76,14 +79,11 @@ namespace AppAddons.EditingTools
                             _lineBreak = line;
                             break;
                         }
-                        else if (resultEnt.Value is Beam2D beam)
+
+                        if (resultEnt.Value is Beam2D beam)
                         {
                             _breakFraming = beam;
                             break;
-                        }
-                        else
-                        {
-                            continue;
                         }
                     }
                     else
@@ -107,6 +107,16 @@ namespace AppAddons.EditingTools
             }
         }
 
+        private Point3D FindClosePoint(Point3D point1,Point3D point2, Point3D checkPoint)
+        {
+            if (Point3D.Distance(checkPoint,point1)>Point3D.Distance(checkPoint,point2))
+            {
+                return point2;
+            }
+
+            return point1;
+        }
+
         public void ProcessBreakTool(List<FramingRectangle2D> framingList,Beam2D beam)
         {
             if (beam.IsBeamUnder)
@@ -121,11 +131,11 @@ namespace AppAddons.EditingTools
                 {
                     switch (intersectionType)
                     {
-                        case segmentIntersectionType.Cross:
-                            if(framing2D is Joist2D joist)
+                        case FramingIntersectionType.Cross:
+                        case FramingIntersectionType.TCross:
+                        case FramingIntersectionType.TOverlap:
+                            if (framing2D is Joist2D joist)
                             {
-                                joist.FramingReference.FramingSheet.Joists.Remove(joist.FramingReference);
-                                this.EntitiesManager.RemoveEntity(joist);
                                 Point3D endPoint1 = null;
                                 Point3D endPoint2 = null;
                                 if (joist.OuterStartPoint.DistanceTo(intersectPoints[0])>joist.OuterStartPoint.DistanceTo(intersectPoints[1]))
@@ -139,102 +149,124 @@ namespace AppAddons.EditingTools
                                     endPoint2 = intersectPoints[1];
                                 }
 
-                                var joistRef1 = new Joist(joist.FramingReference.FramingSheet);
-                                joistRef1.Index = 1;
-                                joistRef1.FramingType = joist.FramingReference.FramingType;
-                                var joistRef2 = new Joist(joist.FramingReference.FramingSheet);
-                                joistRef2.Index = 1;
-                                joistRef2.FramingType = joist.FramingReference.FramingType;
-                                if (joist.FramingReference.FramingInfo !=null)
-                                {
-                                    joistRef1.FramingInfo = joist.FramingReference.FramingInfo;
-                                    joistRef2.FramingInfo = joist.FramingReference.FramingInfo;
-                                }
-                                var joistThickness = joist.Thickness;
-                                var framingSpan1 = joist.OuterStartPoint.DistanceTo(endPoint1);
-                                var framingSpan2 = joist.OuterEndPoint.DistanceTo(endPoint2);
-                                joistRef1.FramingSpan = (int)framingSpan1-90;
-                                joistRef2.FramingSpan = (int)framingSpan2-90;
-                                var joist1 = new Joist2D(joist.OuterStartPoint, endPoint1, joistRef1,
-                                    joistThickness);
-                                joist1.ColorMethod = colorMethodType.byEntity;
-                                var joist2 = new Joist2D( endPoint2,joist.OuterEndPoint, joistRef2,
-                                    joistThickness);
-                                joist2.ColorMethod = colorMethodType.byEntity;
-                                GeneralJoistName(joistRef1);
-                                GeneralJoistName(joistRef2);
-                                joist.FramingReference.FramingSheet.Joists.Add(joistRef1);
-                                joist.FramingReference.FramingSheet.Joists.Add(joistRef2);
-                                var orderedEnumerable = joist.FramingReference.FramingSheet.Joists.OrderBy(framing => framing.Name);
-                                var sortedList = orderedEnumerable.ToList();
-                                joist.FramingReference.FramingSheet.Joists.Clear();
-                                joist.FramingReference.FramingSheet.Joists.AddRange(sortedList);
-                                this.EntitiesManager.AddAndRefresh(joist1,joist.LayerName);
-                                this.EntitiesManager.AddAndRefresh(joist2, joist.LayerName);
-
+                                var joistCreator = new Joist2DCreator(joist, joist.OuterStartPoint, endPoint1);
+                                this.EntitiesManager.AddAndRefresh((Joist2D)joistCreator.GetFraming2D(), joist.LayerName);
+                                joistCreator = new Joist2DCreator(joist, endPoint2, joist.OuterEndPoint);
+                                this.EntitiesManager.AddAndRefresh((Joist2D)joistCreator.GetFraming2D(), joist.LayerName);
+                                this.EntitiesManager.RemoveEntity(joist);
                             }
                             break;
-                        case segmentIntersectionType.EndPointTouch:
-                        case segmentIntersectionType.Touch:
-                            if (beam.IsPointInside(framing2D.OuterStartPoint))
+                        case FramingIntersectionType.TEndCross:
+                            if (intersectPoints.Contains(framing2D.OuterStartPoint))
+                            {
+                                framing2D.OuterStartPoint = FindClosePoint(intersectPoints[0], intersectPoints[1],
+                                    framing2D.OuterEndPoint);
+                            }
+                            else
+                            {
+                                framing2D.OuterEndPoint = FindClosePoint(intersectPoints[0], intersectPoints[1],
+                                    framing2D.OuterStartPoint);
+                            }
+                            break;
+                        case FramingIntersectionType.TEndOverlap:
+                        case FramingIntersectionType.LEndOverlap:
+                            if (beam.IsPointInside(framing2D.StartCenterLinePoint))
                             {
                                 framing2D.OuterStartPoint = intersectPoints[0];
-                                EntitiesManager.Refresh();
-
                             }
                             else
                             {
                                 framing2D.OuterEndPoint = intersectPoints[0];
-                                EntitiesManager.Refresh();
                             }
+                            break;
+                        case FramingIntersectionType.LEndCrossTouch:
+                            if (beam.IsPointIn(framing2D.StartCenterLinePoint))
+                            {
+                                framing2D.OuterStartPoint = intersectPoints[0];
+                            }
+                            else
+                            {
+                                framing2D.OuterEndPoint = intersectPoints[0];
+                            }
+                            break;
+                        case FramingIntersectionType.LOverlap:
+                            if (intersectPoints[1]==framing2D.OuterStartPoint || intersectPoints[1]==framing2D.InnerStartPoint)
+                            {
+                                framing2D.OuterStartPoint = intersectPoints[0];
+                            }
+                            else
+                            {
+                                framing2D.OuterEndPoint = intersectPoints[0];
+                            }
+                            break;
+                        case FramingIntersectionType.LEndCross:
+                            if (beam.IsPointInside(framing2D.OuterStartPoint) || beam.IsPointInside(framing2D.InnerStartPoint))
+                            {
+                                framing2D.OuterStartPoint = intersectPoints[0];
+                            }
+                            else
+                            {
+                                framing2D.OuterEndPoint = intersectPoints[0];
+                            }
+                            break;
+                        case FramingIntersectionType.ParallelOverlap:
+                            if (beam.IsPointInside(framing2D.OuterStartPoint) || beam.IsPointInside(framing2D.InnerStartPoint))
+                            {
+                                framing2D.OuterStartPoint = intersectPoints[0];
+                            }
+                            else
+                            {
+                                framing2D.OuterEndPoint = intersectPoints[0];
+                            }
+                            
+
+                            break;
+                        case FramingIntersectionType.ColinearOverlap:
+                            Point3D intersectPoint1 = null;
+                            if (intersectPoints[0]== framing2D.StartCenterLinePoint || intersectPoints[0] == framing2D.EndCenterLinePoint)
+                            {
+                                intersectPoint1 = intersectPoints[1];
+                            }
+                            else
+                            {
+                                intersectPoint1 = intersectPoints[0];
+                            }
+                            var framingOutnerSegment2 =
+                                new Segment2D(framing2D.OuterStartPoint, framing2D.OuterEndPoint);
+                            var d2 = framingOutnerSegment2.Project(intersectPoint1);
+                            var breakPoint2 = framingOutnerSegment2.PointAt(d2);
+                            if (breakPoint2!=null)
+                            {
+                                if (beam.IsPointInside(framing2D.StartCenterLinePoint))
+                                {
+                                    framing2D.OuterStartPoint = breakPoint2.ConvertPoint2DtoPoint3D();
+                                }
+                                else
+                                {
+                                    framing2D.OuterEndPoint = breakPoint2.ConvertPoint2DtoPoint3D();
+                                }
+                            }
+                            break;
+                        default:
                             break;
                     }
                 }
             }
+            EntitiesManager.EntitiesRegen();
         }
 
         public void ProcessBreakJoist(Joist2D joist, Point3D breakPoint)
         {
-                joist.FramingReference.FramingSheet.Joists.Remove(joist.FramingReference);
+                var joistCreator = new Joist2DCreator(joist, joist.OuterStartPoint, breakPoint);
+                this.EntitiesManager.AddAndRefresh((Joist2D) joistCreator.GetFraming2D(), joist.LayerName);
+                joistCreator = new Joist2DCreator(joist, breakPoint, joist.OuterEndPoint);
+                this.EntitiesManager.AddAndRefresh((Joist2D)joistCreator.GetFraming2D(), joist.LayerName);
                 this.EntitiesManager.RemoveEntity(joist);
-
-                var joistRef1 = new Joist(joist.FramingReference.FramingSheet);
-                joistRef1.Index = 1;
-                joistRef1.FramingType = joist.FramingReference.FramingType;
-                var joistRef2 = new Joist(joist.FramingReference.FramingSheet);
-                joistRef2.Index = 1;
-                joistRef2.FramingType = joist.FramingReference.FramingType;
-                if (joist.FramingReference.FramingInfo != null)
-                {
-                    joistRef1.FramingInfo = joist.FramingReference.FramingInfo;
-                    joistRef2.FramingInfo = joist.FramingReference.FramingInfo;
-                }
-                var joistThickness = joist.Thickness;
-                var framingSpan1 = joist.OuterStartPoint.DistanceTo(breakPoint);
-                var framingSpan2 = joist.OuterEndPoint.DistanceTo(breakPoint);
-                joistRef1.FramingSpan = (int)framingSpan1 - 90;
-                joistRef2.FramingSpan = (int)framingSpan2 - 90;
-                var joist1 = new Joist2D(joist.OuterStartPoint, breakPoint, joistRef1,
-                    joistThickness);
-                joist1.ColorMethod = colorMethodType.byEntity;
-                var joist2 = new Joist2D(breakPoint, joist.OuterEndPoint, joistRef2,
-                    joistThickness);
-                joist2.ColorMethod = colorMethodType.byEntity;
-                GeneralJoistName(joistRef1);
-                GeneralJoistName(joistRef2);
-                joist.FramingReference.FramingSheet.Joists.Add(joistRef1);
-                joist.FramingReference.FramingSheet.Joists.Add(joistRef2);
-                var orderedEnumerable = joist.FramingReference.FramingSheet.Joists.OrderBy(framing => framing.Name);
-                var sortedList = orderedEnumerable.ToList();
-                joist.FramingReference.FramingSheet.Joists.Clear();
-                joist.FramingReference.FramingSheet.Joists.AddRange(sortedList);
-                this.EntitiesManager.AddAndRefresh(joist1, joist.LayerName);
-                this.EntitiesManager.AddAndRefresh(joist2, joist.LayerName);
-            
         }
 
         public void ProcessBreakTool(List<FramingRectangle2D> framingList, Line breakLine)
         {
+            
             foreach (var framing2D in framingList)
             {
                 if (framing2D.IntersectWith(breakLine,out var intersecPoint,out var intersectype))
@@ -244,80 +276,25 @@ namespace AppAddons.EditingTools
                         case segmentIntersectionType.Cross:
                             if (framing2D is Joist2D joist)
                             {
-                                ProcessBreakJoist(joist,intersecPoint);
-                            }
-                            
-                            break;
-                        case segmentIntersectionType.Touch:
-                            if (intersecPoint != framing2D.OuterStartPoint && intersecPoint != framing2D.OuterEndPoint)
-                            {
-                                if (framing2D is Joist2D joist2)
+                                var segment = new Segment2D(framing2D.OuterStartPoint, framing2D.OuterEndPoint);
+                                var disc = segment.Project(intersecPoint);
+                                var breakPoint = segment.PointAt(disc);
+                                if (breakPoint!=null)
                                 {
-                                    ProcessBreakJoist(joist2, intersecPoint);
+                                    ProcessBreakJoist(joist, breakPoint.ConvertPoint2DtoPoint3D());
                                 }
                             }
+                            
                             break;
                         default: break;
                     }
                 }
             }
-
+            
         }
 
-        private void GeneralJoistName(Joist joist)
-        {
-            if (joist.FramingSheet.Joists.Count>0)
-            {
-                var maximumSubFixIndex = 0;
-                IFraming maxJoist = null;
-                IFraming maxIndexJoist = null;
-                var maximumIndex = 0;
-                foreach (var existJoist in JobModel.ActiveFloorSheet.Joists)
-                {
-                    if (existJoist.FramingType != joist.FramingType)
-                    {
-                        continue;
-                    }
-                    if (existJoist.FramingInfo != null && joist.FramingInfo != null && existJoist.FramingInfo == joist.FramingInfo)
-                    {
-                        if (Math.Abs(existJoist.QuoteLength - joist.QuoteLength) > 0.001)
-                        {
-                            maxJoist = existJoist;
-                            if (maximumIndex < existJoist.SubFixIndex)
-                            {
-                                maximumIndex = existJoist.SubFixIndex;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (existJoist.NamePrefix == joist.NamePrefix)
-                        {
-                            maxIndexJoist = existJoist;
 
-                            if (maximumIndex < existJoist.Index)
-                            {
-                                maximumIndex = existJoist.Index;
-                            }
-                        }
 
-                    }
-                }
-
-                if (maxJoist != null)
-                {
-                    joist.SubFixIndex = maximumSubFixIndex + 1;
-                }
-
-                else if (maxIndexJoist != null)
-                {
-                    joist.Index = maximumIndex + 1;
-                }
-            }
-        }
-        
-
-       
 
     }
 }

@@ -1,4 +1,6 @@
-﻿using devDept.Eyeshot.Entities;
+﻿using System;
+using AppModels.Interaface;
+using devDept.Eyeshot.Entities;
 
 namespace AppModels.CustomEntity.CustomEntitySurrogate
 {
@@ -14,5 +16,6 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
             CopyDataToObject(ent);
             return ent;
         }
+
     }
 }

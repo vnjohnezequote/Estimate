@@ -94,10 +94,6 @@ namespace AppAddons.DrawingTools
 
         private bool CheckIntersctionOfTwoLine(Line l1,Line l2)
         {
-            Point3D p1 = this._firstLineForAngularDim.StartPoint;
-            Point3D p2 = this._firstLineForAngularDim.EndPoint;
-            Point3D p3 = this._secondLineForAngularDim.StartPoint;
-            Point3D p4 = this._secondLineForAngularDim.EndPoint;
             Segment2D seg1 = new Segment2D(this._firstLineForAngularDim.StartPoint, this._firstLineForAngularDim.EndPoint);
             Segment2D seg2 = new Segment2D(this._secondLineForAngularDim.StartPoint, this._secondLineForAngularDim.EndPoint);
             return Segment2D.IntersectionLine(seg1, seg2, out var centerPoint);

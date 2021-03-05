@@ -56,9 +56,6 @@ namespace AppAddons.DrawingTools
                 var blocking = new Blocking2D(insertPoint,blockRef);
                 var rad = Utility.DegToRad(TextAngle);
                 blocking.Rotate(rad, Vector3D.AxisZ, insertPoint);
-                this.JobModel.ActiveFloorSheet.Blockings.Add(blockRef);
-                //text.ColorMethod = colorMethodType.byEntity;
-                //text.ColorMethod = Color.FromArgb(127, Color.BlueViolet);
                 EntitiesManager.AddAndRefresh(blocking, LayerManager.SelectedLayer.Name);
             }
         }
@@ -77,7 +74,6 @@ namespace AppAddons.DrawingTools
             var tempText = text.ConvertToLinearPaths(0.01, (Environment)canvas);
             foreach (var curve in tempText)
             {
-                //DrawInteractiveUntilities.Draw(curve,canvas);
                 DrawInteractiveUntilities.DrawCurveOrBlockRef(curve, canvas);
             }
 

@@ -488,14 +488,19 @@ namespace Estimate.ViewModels
                     var jsonReader = new JsonTextReader(text);
                     var serializer = new JsonSerializer();
                     var jobOpen = serializer.Deserialize<JobModelPoco>(jsonReader);
-                    jobOpen.Info.JobLocation = folderString;
-                    var drawingFile = folderString + "\\" + jobOpen.Info.JobNumber + ".eye";
-                    if (File.Exists(drawingFile))
+                    if (jobOpen != null)
                     {
-                        this.LoadDrawingWindow();
-                        this.EventAggregator.GetEvent<OpenJobEvent>().Publish(drawingFile);
+                        jobOpen.Info.JobLocation = folderString;
+                        var drawingFile = folderString + "\\" + jobOpen.Info.JobNumber + ".eye";
+                        if (File.Exists(drawingFile))
+                        {
+                            this.LoadDrawingWindow();
+                            this.EventAggregator.GetEvent<OpenJobEvent>().Publish(drawingFile);
+                        }
+
+                        JobModel.LoadJob(jobOpen, Clients.ToList());
                     }
-                    JobModel.LoadJob(jobOpen, Clients.ToList());
+
                     EventAggregator.GetEvent<RefreshFloorEvent>().Publish(true);
                 }
             }

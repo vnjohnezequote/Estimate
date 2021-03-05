@@ -5,6 +5,7 @@ using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings;
+using AppModels.ResponsiveData.Framings.FloorAndRafters.Beam;
 using AppModels.ViewModelEntity;
 using devDept.Geometry;
 using devDept.Serialization;
@@ -206,7 +207,9 @@ namespace AppModels.CustomEntity
             
         }
 
-        public Beam2D(Point3D outerStartPoint, Point3D outerEndPoint, FramingBase framingReference, int thickness = 90, bool flipped = false,bool isBeamUnder = false) : base(outerStartPoint, outerEndPoint, framingReference, thickness, flipped)
+        public Beam2D(Point3D outerStartPoint, Point3D outerEndPoint, IFraming framingReference, int thickness = 90,
+            bool flipped = false, bool centerCreator = false,bool isBeamUnder = false) : base(outerStartPoint,
+            outerEndPoint, framingReference, thickness, flipped,centerCreator)
         {
             IsBeamUnder = isBeamUnder;
         }
@@ -215,7 +218,7 @@ namespace AppModels.CustomEntity
         {
         }
 
-        public Beam2D(FramingRectangle2D another) : base(another)
+        public Beam2D(FramingRectangleContainHangerAndOutTrigger another) : base(another)
         {
         }
 

@@ -87,7 +87,7 @@ namespace AppModels.PocoDataModel.Framings
             Hangers = new List<HangerPoco>();
             foreach (var hanger in hangers)
             {
-                var hangerPoco = new HangerPoco(hanger);
+                var hangerPoco = new HangerPoco((Hanger)hanger);
                 Hangers.Add(hangerPoco);
             }
         }

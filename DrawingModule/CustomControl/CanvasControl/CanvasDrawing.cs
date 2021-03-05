@@ -411,6 +411,7 @@ namespace DrawingModule.CustomControl.CanvasControl
         public CanvasDrawing()
 
         {
+            Unlock("PF21-12NG0-L7K3F-M0CS-FE82");
             PickBoxSize = 16;
             DimTextHeight = 500;
             IsUserInteraction = false;
@@ -426,6 +427,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             this.CurrentIndex = -1;
             Loaded += CanvasDrawing_Loaded;
             this.PrepareLineTypes();
+
 
             //SelectionColor = null;
             //SelectionColor = Color.FromArgb(50,Color.Chocolate);

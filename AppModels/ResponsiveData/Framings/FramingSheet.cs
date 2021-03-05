@@ -108,7 +108,6 @@ namespace AppModels.ResponsiveData.Framings
                 RaisePropertyChanged(nameof(Name));
             }
         }
-
         public FramingSheetTypes FramingSheetType
         {
             get => _framingSheetType;
@@ -168,7 +167,7 @@ namespace AppModels.ResponsiveData.Framings
                         hangerMat = mat;
                     }
                 }
-                var hanger = new Hanger(hangerPoco,this, hangerMat);
+                var hanger = new Hanger(hangerPoco, this, hangerMat);
                 this.Hangers.Add(hanger);
             }
 
@@ -187,9 +186,9 @@ namespace AppModels.ResponsiveData.Framings
         {
             foreach (var joistPoco in joists)
             {
-                var joist = new Joist(joistPoco,this,timbersList,Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
-                joist.LoadHangers(Hangers.ToList(),joistPoco);
-                joist.LoadOutTriggers(OutTriggers.ToList(),joistPoco);
+                var joist = new Joist(joistPoco, this, timbersList, Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
+                joist.LoadHangers(Hangers.ToList(), joistPoco);
+                joist.LoadOutTriggers(OutTriggers.ToList(), joistPoco);
                 Joists.Add(joist);
             }
         }
@@ -198,22 +197,20 @@ namespace AppModels.ResponsiveData.Framings
         {
             foreach (var beamPoco in beams)
             {
-                var fBeam = new FBeam(beamPoco, this,timbersList,Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
+                var fBeam = new FBeam(beamPoco, this, timbersList, Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
                 fBeam.LoadHangers(Hangers.ToList(), beamPoco);
                 fBeam.LoadOutTriggers(OutTriggers.ToList(), beamPoco);
                 Beams.Add(fBeam);
             }
         }
-
         private void LoadBlockings(List<BlockingPoco> blockings, List<TimberBase> timberList)
         {
             foreach (var blockingPoco in blockings)
             {
-                var blocking = new Blocking.Blocking(blockingPoco, this,timberList,Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
+                var blocking = new Blocking.Blocking(blockingPoco, this, timberList, Level.LevelInfo.GlobalInfo.JobModel.EngineerMemberList.ToList());
                 Blockings.Add(blocking);
             }
         }
-
         private void LoadTieDowns(List<TieDownPoco> tiewDowns, List<TieDownMat> tiewDownList)
         {
             foreach (var tieDownPoco in tiewDowns)
@@ -231,5 +228,112 @@ namespace AppModels.ResponsiveData.Framings
                 TieDowns.Add(tieDownMember);
             }
         }
+        public void OrderJoistList()
+        {
+            var orderedEnumerable = this.Joists.OrderBy(framing => framing.Name);
+            var sortedList = orderedEnumerable.ToList();
+            this.Joists.Clear();
+            this.Joists.AddRange(sortedList);
+
+        }
+        public void OrderBeamList()
+        {
+            var orderedEnumerable = this.Beams.OrderBy(framing => framing.Name);
+            var sortedList = orderedEnumerable.ToList();
+            this.Beams.Clear();
+            this.Beams.AddRange(sortedList);
+
+        }
+        public void OrderHangerList()
+        {
+            var orderedEnumerable = this.Hangers.OrderBy(framing => framing.Name);
+            var sortedList = orderedEnumerable.ToList();
+            this.Hangers.Clear();
+            this.Hangers.AddRange(sortedList);
+
+        }
+        public void OrderBlockingList()
+        {
+            var orderedEnumerable = this.Blockings.OrderBy(framing => framing.Name);
+            var sortedList = orderedEnumerable.ToList();
+            this.Blockings.Clear();
+            this.Blockings.AddRange(sortedList);
+
+        }
+        public void OrderOuttriggerList()
+        {
+            var orderedEnumerable = this.OutTriggers.OrderBy(framing => framing.Name);
+            var sortedList = orderedEnumerable.ToList();
+            this.OutTriggers.Clear();
+            this.OutTriggers.AddRange(sortedList);
+
+        }
+        public void GeneralJoistName(Joist joist)
+        {
+            if (joist.FramingSheet.Joists.Count <= 0) return;
+            var maximumSubFixIndex = 0;
+            IFraming matchJoist = null;
+            var matchingJoistLength = false;
+            IFraming maxIndexJoist = null;
+            var maximumIndex = 0;
+            foreach (var existJoist in joist.FramingSheet.Joists)
+            {
+                if (existJoist.FramingType != joist.FramingType)
+                {
+                    continue;
+                }
+                if (existJoist.FramingInfo != null && joist.FramingInfo != null && existJoist.FramingInfo == joist.FramingInfo)
+                {
+                    matchJoist = existJoist;
+                    // nếu giống vật liệu nhưng khác chiều dài thì tìm sub index lớn nhất
+                    if (Math.Abs(existJoist.QuoteLength - joist.QuoteLength) > 0.001)
+                    {
+                        if (maximumIndex < existJoist.SubFixIndex)
+                        {
+                            maximumSubFixIndex = existJoist.SubFixIndex;
+                        }
+                    }
+                    // nếu tìm thấy joist cùng vật liệu cùng chiều dài thì lập matchingJoistLength = true, thoát vòng lặp ko kiểm tra nữa.
+                    else
+                    {
+                        matchingJoistLength = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    if (existJoist.NamePrefix != joist.NamePrefix) continue;
+                    maxIndexJoist = existJoist;
+
+                    if (maximumIndex < existJoist.Index)
+                    {
+                        maximumIndex = existJoist.Index;
+                    }
+
+                }
+            }
+
+            //Nếu có joist giống vật liệu thì
+            if (matchJoist != null)
+            {
+                if (matchingJoistLength)
+                {
+                    joist.Index = matchJoist.Index;
+                    joist.SubFixIndex = matchJoist.SubFixIndex;
+                }
+                else
+                {
+                    joist.Index = matchJoist.Index;
+                    joist.SubFixIndex = maximumSubFixIndex + 1;
+                }
+            }
+            //Nếu không có joist giống vật liệu thì đăng joist index lên;
+            else if (maxIndexJoist != null)
+            {
+                joist.Index = maximumIndex + 1;
+            }
+
+        }
+
     }
 }

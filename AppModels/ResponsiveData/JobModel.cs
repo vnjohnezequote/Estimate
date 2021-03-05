@@ -36,6 +36,7 @@ namespace AppModels.ResponsiveData
         private bool _currentIsLoadBearingWall;
         private bool _cCMode;
         private int _selectedWallThickness;
+        private int _defaultJoistSpacing;
         /// <summary>
         /// The levels.
         /// </summary>
@@ -57,7 +58,12 @@ namespace AppModels.ResponsiveData
         public int SelectedWallThickness { get => _selectedWallThickness; set => SetProperty(ref _selectedWallThickness, value); }
         #endregion
         public bool CCMode { get => _cCMode; set => SetProperty(ref _cCMode, value); }
-        
+        public int DefaultJoistSpacing
+        {
+            get => _defaultJoistSpacing == 0 ? 450 : _defaultJoistSpacing;
+            set=>SetProperty(ref _defaultJoistSpacing,value);
+        }
+
         #endregion
         
         #region Save Properties

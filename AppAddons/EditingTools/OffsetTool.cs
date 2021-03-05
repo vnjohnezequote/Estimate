@@ -20,20 +20,20 @@ using DrawingModule.UserInteractive;
 
 namespace AppAddons.EditingTools
 {
-    public class OffsetTool : ToolBase,IOffsetDisance
+    public class OffsetTool : ToolBase, IOffsetDisance
     {
         public override Point3D BasePoint { get; protected set; }
         public override string ToolName => "Offset";
         private bool _waitingForSelection;
         private int _offsetDistance;
 
-        public int OffsetDistance { get=>_offsetDistance; set=>SetProperty(ref _offsetDistance,value); }
+        public int OffsetDistance { get => _offsetDistance; set => SetProperty(ref _offsetDistance, value); }
         private Entity _selectedEntity;
         //private Entity _offetEntity;
-        
+
         private Point3D _offsetPoint;
 
-        public OffsetTool(): base()
+        public OffsetTool() : base()
         {
             IsUsingOffsetDistance = true;
             IsUsingOrthorMode = true;
@@ -74,7 +74,7 @@ namespace AppAddons.EditingTools
 
                 ProcessOffsetEntity();
             }
-            
+
         }
 
         public override void NotifyMouseMove(object sender, MouseEventArgs e)
@@ -84,26 +84,12 @@ namespace AppAddons.EditingTools
 
         private void ProcessOffsetEntity()
         {
-            if (this._selectedEntity !=null && this._offsetPoint !=null)
+            if (this._selectedEntity != null && this._offsetPoint != null)
             {
                 var offetEntity = CalculatorOffsetEntity(_selectedEntity, _offsetPoint);
                 if (offetEntity != null)
                 {
-                    if (offetEntity is Joist2D joist)
-                    {
-                        if (joist.FramingReference!=null && joist.FramingReference.FramingSheet!=null)
-                        {
-                            joist.FramingReference.FramingSheet.Joists.Add(joist.FramingReference);
-                            EntitiesManager.AddAndRefresh(offetEntity, LayerManager.SelectedLayer.Name);
-                        }
-
-                    }
-                    else
-                    {
-                        EntitiesManager.AddAndRefresh(offetEntity, LayerManager.SelectedLayer.Name);
-                    }
-                    
-                   
+                    EntitiesManager.AddAndRefresh(offetEntity, LayerManager.SelectedLayer.Name);
                 }
 
             }
@@ -130,21 +116,21 @@ namespace AppAddons.EditingTools
                 return;
             }
 
-            if (e.CurrentPoint==null)
+            if (e.CurrentPoint == null)
             {
                 return;
             }
 
-            
+
             var offetEntity = CalculatorOffsetEntity(this._selectedEntity, e.CurrentPoint);
-            
-            
-            if (offetEntity is ICurve)
+
+
+            if (offetEntity is ICurve|| offetEntity is FramingRectangle2D)
             {
                 DrawInteractiveUntilities.DrawCurveOrBlockRef(offetEntity, canvas);
             }
-            
-            if (BasePoint!=null )
+
+            if (BasePoint != null)
             {
                 DrawInteractiveUntilities.DrawInteractiveSpotLine(BasePoint, e.CurrentPoint, canvas);
             }
@@ -165,22 +151,7 @@ namespace AppAddons.EditingTools
                     var trackingLine = new Line(projectedPt, offsetPoint);
                     offsetPoint = trackingLine.PointAt(OffsetDistance);
                 }
-               
-
                 offsetDist = projectedPt.DistanceTo(offsetPoint);
-
-                //if (selEntity is Line line)
-                //{
-                //    var pline = new LinearPath(line.Vertices);
-                //    var offsetCurve = pline.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
-                //    success = offsetCurve.Project(offsetPoint, out t);
-                //    projectedPt = offsetCurve.PointAt(t);
-                //    if (projectedPt.DistanceTo(offsetPoint) > 1e-3)
-                //        offsetCurve = pline.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
-                //    return offsetCurve as Entity;
-                //}
-
-                //return null;
                 ICurve offsetCurve = selCurve.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
                 success = offsetCurve.Project(offsetPoint, out t);
                 projectedPt = offsetCurve.PointAt(t);
@@ -189,11 +160,12 @@ namespace AppAddons.EditingTools
                     offsetCurve = selCurve.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
                 return offsetCurve as Entity;
             }
-            else if(selEntity is Joist2D joist)
+
+            if (selEntity is FramingRectangle2D framingRectangle2D)
             {
                 double t;
-                bool success = joist.Project(offsetPoint, out t);
-                Point3D projectedPt = joist.PointAt(t);
+                bool success = framingRectangle2D.Project(offsetPoint, out t);
+                Point3D projectedPt = framingRectangle2D.PointAt(t);
                 BasePoint = projectedPt;
                 double offsetDist = 0;
                 if (this.OffsetDistance != 0)
@@ -202,17 +174,17 @@ namespace AppAddons.EditingTools
                     offsetPoint = trackingLine.PointAt(OffsetDistance);
                 }
                 offsetDist = projectedPt.DistanceTo(offsetPoint);
-                
-                var offsetJoist = joist.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
+
+                var offsetJoist = framingRectangle2D.Offset(offsetDist, Vector3D.AxisZ, 0.01, true);
                 success = offsetJoist.Project(offsetPoint, out t);
                 projectedPt = offsetJoist.PointAt(t);
-                if (projectedPt.DistanceTo(offsetPoint)>1e-3)
+                if (projectedPt.DistanceTo(offsetPoint) > 1e-3)
                 {
-                    offsetJoist = joist.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
+                    offsetJoist = framingRectangle2D.Offset(-offsetDist, Vector3D.AxisZ, 0.01, true);
                 }
-                return offsetJoist as Entity;
+                return (Entity) offsetJoist;
             }
-            
+
 
             return null;
 

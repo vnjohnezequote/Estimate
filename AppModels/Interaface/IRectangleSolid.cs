@@ -8,16 +8,18 @@ namespace AppModels.Interaface
     {
         Point3D StartPoint { get; }
         Point3D EndPoint { get;  }
-        Point3D OuterStartPoint { get; }
+        Point3D OuterStartPoint { get; set; }
         Point3D InnerStartPoint { get; }
-        Point3D OuterEndPoint { get; }
+        Point3D OuterEndPoint { get; set; }
         Point3D InnerEndPoint { get; }
-        Point3D StartTopPoint { get; }
-        Point3D EndTopPoint { get; }
+        Point3D StartCenterLinePoint { get; }
+        Point3D EndCenterLinePoint { get; }
         Point3D HangerACenterPoint { get; }
         Point3D HangerBCenterPoint { get; }
         int Thickness { get; }
         List<Point3D> FramingVertices { get;  }
+        bool Project(Point3D point, out double t);
+        Point3D PointAt(double t);
 
 
     }

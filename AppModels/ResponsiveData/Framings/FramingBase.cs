@@ -54,6 +54,7 @@ namespace AppModels.ResponsiveData.Framings
                 SetProperty(ref _framingType, value);
                 RaisePropertyChanged(nameof(NamePrefix));
                 RaisePropertyChanged(nameof(Name));
+                //RaisePropertyChanged(nameof(FullLength));
             }
         }
         protected abstract List<FramingTypes> FramingTypeAccepted { get; }

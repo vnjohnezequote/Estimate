@@ -31,7 +31,8 @@
                                         LayersManager="{Binding LayerManager}"
                                         JobModel="{Binding JobModel,Mode=OneWay}"
                                         ActiveLayerName="{Binding LayerManager.SelectedLayer.Name}"
-                                        SelectionFilterMode="Entity" ShowFps="True">
+                                        SelectionFilterMode="Entity" ShowFps="True"
+                                        Renderer="Native">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseLeave">
                                     <b:InvokeCommandAction Command="{Binding CanvasDrawingMouseLeave, Mode=OneWay}"/>

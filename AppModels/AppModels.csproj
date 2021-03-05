@@ -79,10 +79,10 @@
     <Reference Include="CsvHelper, Version=15.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.15.0.5\lib\net47\CsvHelper.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Eyeshot.Control.Wpf.v2021, Version=2021.0.174.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL" />
-    <Reference Include="devDept.Geometry.v2021, Version=2021.0.174.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL" />
-    <Reference Include="devDept.Graphics.Shaders.v2021, Version=2021.0.174.0, Culture=neutral, PublicKeyToken=54ce5f5f803e4b42, processorArchitecture=MSIL" />
-    <Reference Include="devDept.Graphics.Wpf.v2021, Version=2021.0.174.0, Culture=neutral, PublicKeyToken=f3cd437f0d8061b5, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v2021, Version=2021.1.233.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Geometry.v2021, Version=2021.1.233.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Graphics.Shaders.v2021, Version=2021.1.233.0, Culture=neutral, PublicKeyToken=54ce5f5f803e4b42, processorArchitecture=MSIL" />
+    <Reference Include="devDept.Graphics.Wpf.v2021, Version=2021.1.233.0, Culture=neutral, PublicKeyToken=f3cd437f0d8061b5, processorArchitecture=MSIL" />
     <Reference Include="LiteDB, Version=5.0.8.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.5.0.8\lib\net45\LiteDB.dll</HintPath>
     </Reference>
@@ -203,12 +203,25 @@
     <Compile Include="CustomEntity\Wall2D.cs" />
     <Compile Include="CustomMesh.cs" />
     <Compile Include="Database\FramingMaterialBase.cs" />
+    <Compile Include="EntityCreator\Beam2DCreator.cs" />
+    <Compile Include="EntityCreator\Framing2DContaintHangerAndOutTriggerCreator.cs" />
+    <Compile Include="EntityCreator\Framing2DCreator.cs" />
+    <Compile Include="EntityCreator\FramingCreatorFactory.cs" />
+    <Compile Include="EntityCreator\HangerController.cs" />
+    <Compile Include="EntityCreator\HangerCreator.cs" />
+    <Compile Include="EntityCreator\Interface\IFramingRectangle2DCreator.cs" />
+    <Compile Include="EntityCreator\Joist2DController.cs" />
+    <Compile Include="EntityCreator\Joist2DCreator.cs" />
+    <Compile Include="EntityCreator\OutTriggerController.cs" />
+    <Compile Include="EntityCreator\OutTriggerCreator.cs" />
     <Compile Include="Enums\BeamMarkedLocation.cs" />
     <Compile Include="Enums\BlockingTypes.cs" />
     <Compile Include="Enums\CeilingBattensType.cs" />
     <Compile Include="Enums\ClientNames.cs" />
     <Compile Include="Enums\DoorType.cs" />
     <Compile Include="Enums\FocusType.cs" />
+    <Compile Include="Enums\FramingIntersectionType.cs" />
+    <Compile Include="Enums\FramingRectangeDirectionType.cs" />
     <Compile Include="Enums\FramingSheetTypes.cs" />
     <Compile Include="Enums\FramingTypes.cs" />
     <Compile Include="Enums\LineTypes.cs" />

@@ -375,7 +375,8 @@ namespace AppModels.ResponsiveData.Framings.Beams
             InitGlobalInfor(framingSheet.Level.LevelInfo);
             InitializedBeamSupportPoint();
         }
-        public BeamBase(BeamBasePoco beamPoco, FramingSheet framingSheet, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco,framingSheet, timberList,engineerMemberInfos)
+
+        protected BeamBase(BeamBasePoco beamPoco, FramingSheet framingSheet, List<TimberBase> timberList,List<EngineerMemberInfo> engineerMemberInfos) : base(beamPoco,framingSheet, timberList,engineerMemberInfos)
         {
             InitGlobalInfor(framingSheet.Level.LevelInfo);
             Location = beamPoco.Location;

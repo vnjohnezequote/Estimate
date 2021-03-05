@@ -8,6 +8,7 @@ using ApplicationService;
 using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
+using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
@@ -34,24 +35,14 @@ namespace AppAddons.EditingTools
         }
         protected override void ProcessEntities()
         {
-           
+
             var movement = new Vector3D(_startPoint, _endPoint);
             foreach (var selEntity in this.SelectedEntities)
             {
                 var cloneEntity = (Entity)selEntity.Clone();
                 cloneEntity.Translate(movement);
                 selEntity.Selected = false;
-                EntitiesManager.AddAndRefresh(cloneEntity,cloneEntity.LayerName);
-                if (cloneEntity is Joist2D joist && joist.FramingReference!=null && joist.FramingReference.FramingSheet!=null)
-                {
-                    joist.FramingReference.FramingSheet.Joists.Add(joist.FramingReference);
-                }
-
-                if (cloneEntity is Beam2D beam && beam.FramingReference != null && beam.FramingReference.FramingSheet != null)
-                {
-                    beam.FramingReference.Index = beam.FramingReference.FramingSheet.Beams.Count+1;
-                    beam.FramingReference.FramingSheet.Beams.Add(beam.FramingReference);
-                }
+                EntitiesManager.AddAndRefresh(cloneEntity, cloneEntity.LayerName);
             }
             EntitiesManager.Refresh();
             IsSnapEnable = false;
@@ -78,7 +69,7 @@ namespace AppAddons.EditingTools
                         return false;
                 }
             }
-            
+
             IsUsingLengthTextBox = true;
             IsUsingAngleTextBox = true;
             DynamicInput?.FocusDynamicInputTextBox(FocusType.Length);
@@ -100,7 +91,7 @@ namespace AppAddons.EditingTools
 
         protected override void ResetTool()
         {
-            
+
         }
     }
 }

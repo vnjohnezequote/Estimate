@@ -39,7 +39,7 @@ namespace AppAddons.EditingTools
             if (this._selectedEntity != null)
             {
                 var index = EntitiesManager.Entities.IndexOf(_selectedEntity);
-               EntitiesManager.RemoveEntity(_selectedEntity);
+               EntitiesManager.RemoveEntity(_selectedEntity,false);
                EntitiesManager.AddAndRefresh(_selectedEntity,_selectedEntity.LayerName);
                //EntitiesManager.Insert(index - 1, _selectedEntity);
 

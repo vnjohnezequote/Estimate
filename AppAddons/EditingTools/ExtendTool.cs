@@ -95,8 +95,7 @@ namespace AppAddons.EditingTools
                         _selectedEntities = promptResults.Entities;
                         ProcessCommand();
                     }
-                    else if (promptResults.Status == PromptStatus.OK &&
-                             (promptResults.Entities != null || promptResults.Entities.Count != null))
+                    else if (promptResults.Entities != null && promptResults.Status == PromptStatus.OK && (promptResults.Entities != null || promptResults.Entities.Count !=0 ))
                     {
                         continue;
                     }

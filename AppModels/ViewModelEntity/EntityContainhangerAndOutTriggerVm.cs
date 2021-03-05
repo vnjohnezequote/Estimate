@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AppModels.CustomEntity;
+using AppModels.EntityCreator;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
@@ -74,38 +76,20 @@ namespace AppModels.ViewModelEntity
             set
             {
                 if (!(Entity is IFraming2DContaintHangerAndOutTrigger framing)) return;
-                framing.IsHangerA = value;
                 if (value)
                 {
                     if (this.HangerA == null)
                     {
-                        var hangerRef = new Hanger(framing.FramingReference.FramingSheet);
-                        var hanger = new Hanger2D(framing.HangerACenterPoint, "H", 140, hangerRef)
-                        {
-                            Alignment = Text.alignmentType.MiddleCenter,
-                            Color = System.Drawing.Color.CadetBlue,
-                            ColorMethod = colorMethodType.byEntity
-                        };
-                        framing.HangerAId = hanger.Id;
-                        framing.HangerA = hanger;
-                        ((IContaintHanger)framing.FramingReference).HangerA = hangerRef;
-                        framing.FramingReference.FramingSheet.Hangers.Add(hangerRef);
-                        this.EntitiesManager.AddAndRefresh(hanger, this.LayerName);
+                        var hangerController = new HangerControler(EntitiesManager, framing);
+                        hangerController.AddHangerA();
                         RaisePropertyChanged(nameof(HangerA));
                     }
                 }
                 else
                 {
-                    if (this.HangerA != null)
-                    {
-                        this.EntitiesManager.Entities.Remove(HangerA);
-                    }
-                    framing.HangerAId = null;
-                    framing.HangerA = null;
-                    framing.FramingReference.FramingSheet.Hangers.Remove(((IContaintHanger)(framing.FramingReference)).HangerA);
-                    ((IContaintHanger)(framing.FramingReference)).HangerA = null;
+                    var hangerControler = new HangerControler(EntitiesManager, framing);
+                    hangerControler.RemoveHangerA();
                 }
-                Helper.RegenerationHangerName(framing.FramingReference.FramingSheet.Hangers.ToList());
                 RaisePropertyChanged(nameof(IsHangerA));
             }
         }
@@ -123,38 +107,20 @@ namespace AppModels.ViewModelEntity
             set
             {
                 if (!(Entity is IFraming2DContaintHangerAndOutTrigger framing)) return;
-                framing.IsHangerB = value;
                 if (value)
                 {
                     if (this.HangerB == null)
                     {
-                        var hangerRef = new Hanger(framing.FramingReference.FramingSheet);
-                        var hanger = new Hanger2D(framing.HangerBCenterPoint, "H", 140, hangerRef)
-                        {
-                            Alignment = Text.alignmentType.MiddleCenter,
-                            Color = System.Drawing.Color.CadetBlue,
-                            ColorMethod = colorMethodType.byEntity
-                        };
-                        framing.HangerBId = hanger.Id;
-                        framing.HangerB = hanger;
-                        ((IContaintHanger)framing.FramingReference).HangerB = hangerRef;
-                        framing.FramingReference.FramingSheet.Hangers.Add(hangerRef);
-                        this.EntitiesManager.AddAndRefresh(hanger, this.LayerName);
+                        var hangerController = new HangerControler(EntitiesManager, framing);
+                        hangerController.AddHangerB();
                         RaisePropertyChanged(nameof(HangerB));
                     }
                 }
                 else
                 {
-                    if (this.HangerB != null)
-                    {
-                        this.EntitiesManager.Entities.Remove(HangerB);
-                    }
-                    framing.HangerBId = null;
-                    framing.HangerB = null;
-                    framing.FramingReference.FramingSheet.Hangers.Remove(((IContaintHanger)(framing.FramingReference)).HangerB);
-                    ((IContaintHanger)(framing.FramingReference)).HangerB = null;
+                    var hangerController = new HangerControler(EntitiesManager, framing);
+                    hangerController.RemoveHangerB();
                 }
-                Helper.RegenerationHangerName(framing.FramingReference.FramingSheet.Hangers.ToList());
                 RaisePropertyChanged(nameof(IsHangerB));
             }
         }
@@ -263,41 +229,21 @@ namespace AppModels.ViewModelEntity
             {
                 if (Entity is IFraming2DContaintHangerAndOutTrigger framing)
                 {
-                    framing.IsOutTriggerA = value;
+                    
                     if (value)
                     {
                         if (this.OutTriggerA == null)
                         {
-                            Utility.OffsetPoint(framing.OuterEndPoint, framing.OuterStartPoint, 450, out var startPoint);
-                            Utility.OffsetPoint(startPoint, framing.OuterStartPoint, 900, out var endPoint);
-                            var outTrigger = new OutTrigger(framing.FramingReference);
-                            var outTriggerEntity = new OutTrigger2D(startPoint, endPoint, outTrigger, 35);
-                            outTrigger.FullLength = (int)outTriggerEntity.FullLength;
-                            outTriggerEntity.Color = System.Drawing.Color.Brown;
-                            outTriggerEntity.ColorMethod = colorMethodType.byEntity;
-                            framing.OutTriggerAId = outTriggerEntity.Id;
-                            framing.OutTriggerA = outTriggerEntity;
-                            ((IContaintOutTrigger)framing.FramingReference).OutTriggerA = outTrigger;
-                            framing.FramingReference.FramingSheet.OutTriggers.Add(outTrigger);
-                            this.EntitiesManager.AddAndRefresh(outTriggerEntity, this.LayerName);
+                            var outTriggerController = new OutTriggerController(EntitiesManager, framing);
+                            outTriggerController.AddOutriggerA();
                             RaisePropertyChanged(nameof(OutTriggerA));
                         }
                     }
                     else
                     {
-                        this.OutTriggerAFlipped = false;
-                        if (this.OutTriggerA != null)
-                        {
-                            this.EntitiesManager.Entities.Remove(OutTriggerA);
-                        }
-                        framing.OutTriggerAId = null;
-                        framing.OutTriggerA = null;
-                        framing.FramingReference.FramingSheet.OutTriggers.Remove(((IContaintOutTrigger)framing.FramingReference).OutTriggerA);
-                        ((IContaintOutTrigger)framing.FramingReference).OutTriggerA = null;
-                        
-
+                        var outTriggerController = new OutTriggerController(EntitiesManager, framing);
+                        outTriggerController.RemoveOutTriggerA();
                     }
-                    Helper.RegenerationFramingName(framing.FramingReference.FramingSheet.OutTriggers.ToList());
                     RaisePropertyChanged(nameof(IsOutriggerA));
                 }
             }
@@ -317,41 +263,20 @@ namespace AppModels.ViewModelEntity
             {
                 if (Entity is IFraming2DContaintHangerAndOutTrigger framing)
                 {
-                    framing.IsOutTriggerB = value;
                     if (value)
                     {
                         if (this.OutTriggerB == null)
                         {
-                            Utility.OffsetPoint(framing.OuterStartPoint, framing.OuterEndPoint, 450, out var startPoint);
-                            Utility.OffsetPoint(startPoint, framing.OuterEndPoint, 900, out var endPoint);
-                            var outTrigger = new OutTrigger(framing.FramingReference);
-                            var outTriggerEntity = new OutTrigger2D(startPoint, endPoint, outTrigger,  35,false);
-                            outTrigger.FullLength = (int)outTriggerEntity.FullLength;
-                            outTriggerEntity.Color = System.Drawing.Color.Brown;
-                            outTriggerEntity.ColorMethod = colorMethodType.byEntity;
-                            framing.OutTriggerBId = outTriggerEntity.Id;
-                            framing.OutTriggerB = outTriggerEntity;
-                            ((IContaintOutTrigger)framing.FramingReference).OutTriggerB = outTrigger;
-                            framing.FramingReference.FramingSheet.OutTriggers.Add(outTrigger);
-                            this.EntitiesManager.AddAndRefresh(outTriggerEntity, this.LayerName);
+                            var outrTriggerController = new OutTriggerController(EntitiesManager, framing);
+                            outrTriggerController.AddOutriggerB();
                             RaisePropertyChanged(nameof(OutTriggerB));
                         }
                     }
                     else
                     {
-                        if (this.OutTriggerB != null)
-                        {
-                            this.EntitiesManager.Entities.Remove(OutTriggerB);
-                        }
-
-                        OutTriggerBFlipped = false;
-                        framing.OutTriggerBId = null;
-                        framing.OutTriggerB = null;
-                        framing.FramingReference.FramingSheet.OutTriggers.Remove(((IContaintOutTrigger)framing.FramingReference).OutTriggerB);
-                        ((IContaintOutTrigger)framing.FramingReference).OutTriggerB = null;
-                        
+                        var outriggerController = new OutTriggerController(EntitiesManager, framing);
+                        outriggerController.RemoveOutTriggerB();
                     }
-                    Helper.RegenerationFramingName(framing.FramingReference.FramingSheet.OutTriggers.ToList());
                     RaisePropertyChanged(nameof(IsOutriggerB));
                 }
             }
@@ -574,6 +499,85 @@ namespace AppModels.ViewModelEntity
                         OutTriggerB.InSizeLength = value;
                         RaisePropertyChanged(nameof(OutTriggerBInSize));
                     }
+                }
+            }
+        }
+        public FramingNameEntity FramingName
+        {
+            get
+            {
+                if (this.Entity is FramingRectangleContainHangerAndOutTrigger framing)
+                {
+                    return framing.FramingName;
+                }
+
+                return null;
+            }
+        }
+        public bool IsShowFramingName
+        {
+            get
+            {
+                if (Entity is FramingRectangleContainHangerAndOutTrigger framing && framing.FramingReference != null)
+                {
+                    return framing.IsShowFramingName;
+                }
+
+                return false;
+            }
+            set
+            {
+                if (Entity is FramingRectangleContainHangerAndOutTrigger framing)
+                {
+                    framing.IsShowFramingName = value;
+                    if (value)
+                    {
+                        if (framing.FramingReference != null && this.FramingName == null)
+                        {
+                            var p0 = framing.OuterStartPoint;
+                            var p1 = framing.OuterEndPoint;
+                            if (p0.X > p1.X)
+                            {
+                                p0 = framing.InnerStartPoint;
+                                p1 = framing.InnerEndPoint;
+                                //swapp
+                                Utility.Swap(ref p0, ref p1);
+                            }
+                            else if (Math.Abs(p0.X - p1.X) < 0.00001 && p0.Y > p1.Y)
+                            {
+                                //swapp
+                                p0 = framing.InnerStartPoint;
+                                p1 = framing.InnerEndPoint;
+                                Utility.Swap(ref p0, ref p1);
+                            }
+
+                            var framingBaseLine = new Segment2D(p0, p1);
+                            framingBaseLine = framingBaseLine.Offset(-100);
+                            var initPoint = framingBaseLine.MidPoint.ConvertPoint2DtoPoint3D();
+                            var framingName = new FramingNameEntity(initPoint, framing.FramingReference.Name, 200,
+                                Text.alignmentType.BaselineCenter, framing.FramingReference);
+                            framing.FramingName = framingName;
+                            framing.FramingNameId = framingName.Id;
+                            Vector2D v = new Vector2D(p0, p1);
+                            var radian = v.Angle;
+                            framingName.Rotate(radian, Vector3D.AxisZ, framingName.InsertionPoint);
+                            framingName.Color = this.Entity.Color;
+                            framingName.ColorMethod = colorMethodType.byEntity;
+                            EntitiesManager.AddAndRefresh(framingName, this.LayerName);
+
+                        }
+                    }
+                    else
+                    {
+                        if (this.FramingName != null)
+                        {
+                            this.EntitiesManager.Entities.Remove(FramingName);
+                        }
+
+                        framing.FramingNameId = null;
+                        framing.FramingName = null;
+                    }
+                    RaisePropertyChanged(nameof(IsShowFramingName));
                 }
             }
         }

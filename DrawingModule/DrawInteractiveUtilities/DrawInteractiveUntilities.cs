@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using ApplicationInterfaceCore;
+using AppModels.CustomEntity;
 using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -115,6 +116,13 @@ namespace DrawingModule.DrawInteractiveUtilities
                     vertices.Add(picture.Vertices[0]);
                     var screenpts = Utils.GetScreenVertices(vertices, canvas);
                         canvas.renderContext.DrawLineStrip(screenpts);
+                }
+                    break;
+                case FramingRectangle2D framing:
+                {
+                    var vertices = new List<Point3D>() { framing.OuterStartPoint,framing.OuterEndPoint,framing.InnerEndPoint,framing.InnerStartPoint,framing.OuterStartPoint};
+                    var screenpts = Utils.GetScreenVertices(vertices, canvas);
+                    canvas.renderContext.DrawLineStrip(screenpts);
                 }
                     break;
             }

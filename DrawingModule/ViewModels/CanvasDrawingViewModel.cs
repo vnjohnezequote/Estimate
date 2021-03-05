@@ -343,7 +343,7 @@ namespace DrawingModule.ViewModels
             }
 
             canvasDrawingView.CanvasDrawing.SetView(viewType.Top);
-            canvasDrawingView.CanvasDrawing.Camera.ProjectionMode = projectionType.Orthographic;
+            canvasDrawingView.CanvasDrawing.ActiveViewport.Camera.ProjectionMode = projectionType.Orthographic;
             this._canvasDrawing = canvasDrawingView.CanvasDrawing;
             
             

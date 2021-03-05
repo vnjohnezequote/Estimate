@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.CustomEntity;
-using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;

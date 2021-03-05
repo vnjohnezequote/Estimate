@@ -1,0 +1,30 @@
+﻿namespace AppModels.Enums
+{
+    public enum FramingIntersectionType
+    {
+        Cross,
+        TTouch,
+        TEndTouch,
+        TOverlap,
+        TEndOverlap,
+        TCross,
+        TEndCross,
+        LEndCross,
+        LEndCrossTouch,
+        LOverlap,
+        LEndOverlap,
+        LEndTouch,
+        LEndTouchTouch,
+        LTouchTouch,
+        LTTouch,
+        LEndTTouch,
+        Disjoint,
+        ParallelOverlap,
+        ColinearTouch,
+        ColinearOverlap,
+        ParallelOverlapTouch,
+        ParallelTouch,
+        ParallelOverlapOverlap,
+        ParallelTouchOverlap
+    }
+}

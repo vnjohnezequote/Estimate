@@ -21,7 +21,7 @@ using DrawingModule.CommandClass;
 using DrawingModule.DrawToolBase;
 using DrawingModule.UserInteractive;
 using GeometryGym.Ifc;
-using TriangleNet.Geometry;
+//using TriangleNet.Geometry;
 using Region = devDept.Eyeshot.Entities.Region;
 
 namespace AppAddons.DrawingTools

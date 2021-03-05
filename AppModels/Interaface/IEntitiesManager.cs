@@ -18,8 +18,8 @@ namespace AppModels.Interaface
         ObservableCollection<Entity> SelectedEntities { get; }
         List<Wall2D> Walls { get; } 
         ICadDrawAble CanvasDrawing { get; }
-        void AddAndRefresh(Entity entity, string layerName);
-        void RemoveEntity(Entity entity);
+        void AddAndRefresh(Entity entity, string layerName,bool isAddExtension = true,bool isGeneralFramingName = true);
+        void RemoveEntity(Entity entity,bool isRemoveExtension=true);
         void Invalidate();
         void EntitiesRegen();
         void Refresh();

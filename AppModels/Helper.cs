@@ -193,7 +193,6 @@ namespace AppModels
                     }
                 }
             }
-
             foreach (var framingType in framingDict)
             {
                 var tempInfoDic = new Dictionary<TimberBase, Dictionary<double, List<IFraming>>>();

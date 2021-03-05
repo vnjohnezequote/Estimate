@@ -15,6 +15,8 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
         public bool IsOutTriggerB { get; set; }
         public bool OutTriggerAFlipped { get; set; }
         public bool OutTriggerBFlipped { get; set; }
+        public Guid? FramingNameId { get; set; }
+        public bool IsShowFramingName { get; set; }
 
         public FramingRectangleContainHangerAndOutTriggerSurrogate(PlanarEntity text) : base(text)
         {
@@ -46,6 +48,8 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
             framing.OutTriggerBId = OutTriggerBId;
             framing.OuterStartPoint = OuterStartPoint;
             framing.OuterEndPoint = OuterEndPoint;
+            framing.FramingNameId = FramingNameId;
+            framing.IsShowFramingName = IsShowFramingName;
         }
 
         protected override void CopyDataFromObject(Entity entity)
@@ -65,6 +69,8 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
             IsOutTriggerB = framing.IsOutTriggerB;
             OutTriggerAFlipped = framing.OutTriggerAFlipped;
             OutTriggerBFlipped = framing.OutTriggerBFlipped;
+            FramingNameId = framing.FramingNameId;
+            IsShowFramingName = framing.IsShowFramingName;
         }
     }
 }

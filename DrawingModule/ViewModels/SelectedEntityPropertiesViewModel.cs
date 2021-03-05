@@ -550,6 +550,43 @@ namespace DrawingModule.ViewModels
                     }
                 }
             }
+            if (e.PropertyName =="Pitch")
+            {
+                 if (SelectedEntity is FramingVm timberVm)
+                 {
+                     foreach (var selectedEntity in EntitiesManager.SelectedEntities)
+                     {
+                         if (selectedEntity is IFraming2D && selectedEntity is IEntityVmCreateAble entityCreateAble)
+                         {
+                             var entityVm = entityCreateAble.CreateEntityVm(EntitiesManager);
+                             if (entityVm is IFramingVm framingVm)
+                             {
+                                 framingVm.Pitch = timberVm.Pitch;
+                             }
+                         }
+                     }
+                 }
+
+            }
+            if (e.PropertyName=="FramingType")
+            {
+                 if (SelectedEntity is FramingVm timberVm)
+                 {
+                     foreach (var selectedEntity in EntitiesManager.SelectedEntities)
+                     {
+                         if (selectedEntity is IFraming2D && selectedEntity is IEntityVmCreateAble entityCreateAble)
+                         {
+                             var entityVm = entityCreateAble.CreateEntityVm(EntitiesManager);
+                             if (entityVm is IFramingVm framingVm)
+                             {
+                                 framingVm.FramingType= timberVm.FramingType;
+                             }
+                         }
+                       
+                     }
+                 }
+
+            }
             EntitiesManager?.Refresh();
         }
 
@@ -567,7 +604,6 @@ namespace DrawingModule.ViewModels
                         }
                     }
                 }
-
             }
             //TimberList.Clear();
             else if (SelectedEntity is BeamEntityVm beam)
