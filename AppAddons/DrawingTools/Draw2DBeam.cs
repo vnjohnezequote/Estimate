@@ -67,7 +67,7 @@ namespace AppAddons.DrawingTools
                     var beamCreator = new Beam2DCreator(JobModel.ActiveFloorSheet, startPoint, endPoint, beamType,
                         JobModel.SelectedJoitsMaterial, JobModel.CCMode);
                     this.EntitiesManager.AddAndRefresh((Beam2D)beamCreator.GetFraming2D(), LayerManager.SelectedLayer.Name);
-                    
+                    Helper.RegenerationBeamName(JobModel.ActiveFloorSheet.Beams.ToList());
                 }
                 
             }

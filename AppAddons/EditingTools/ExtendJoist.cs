@@ -2,6 +2,7 @@
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.CustomEntity;
+using AppModels.Interaface;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
@@ -67,10 +68,12 @@ namespace AppAddons.EditingTools
                     {
                         if (boundaryBeam.IsBeamUnder)
                         {
+                            TranslateOutTriggerBToo(framing,farPoint);
                             framing.OuterEndPoint = farPoint;
                         }
                         else
                         {
+                            TranslateOutTriggerBToo(framing, closerPoint);
                             framing.OuterEndPoint = closerPoint;
                         }
                     }
@@ -78,15 +81,38 @@ namespace AppAddons.EditingTools
                     {
                         if (boundaryBeam.IsBeamUnder)
                         {
+                            TranslateOutTriggerAToo(framing, farPoint);
                             framing.OuterStartPoint = farPoint;
                         }
                         else
                         {
+                            TranslateOutTriggerAToo(framing, closerPoint);
                             framing.OuterStartPoint = closerPoint;
                         }
                     }
                 }
 
+            }
+        }
+
+        private void TranslateOutTriggerAToo(IRectangleSolid framing,Point3D newPointMove)
+        {
+            if (framing is IFraming2DContaintHangerAndOutTrigger frame2D && frame2D.OutTriggerA != null)
+            {
+                var startP = framing.OuterStartPoint;
+                var endP = newPointMove;
+                var movement = new Vector3D(startP, endP);
+                frame2D.OutTriggerA.Translate(movement);
+            }
+        }
+        private void TranslateOutTriggerBToo(IRectangleSolid framing,Point3D newPointMove)
+        {
+            if (framing is IFraming2DContaintHangerAndOutTrigger frame2D && frame2D.OutTriggerB != null)
+            {
+                var startP = framing.OuterEndPoint;
+                var endP = newPointMove;
+                var movement = new Vector3D(startP, endP);
+                frame2D.OutTriggerB.Translate(movement);
             }
         }
 
@@ -100,10 +126,14 @@ namespace AppAddons.EditingTools
                     var distance2 = framing.OuterEndPoint.DistanceTo(intersectPoint);
                     if (distance1>distance2)
                     {
+                       TranslateOutTriggerBToo((IRectangleSolid)framing,intersectPoint);
+                        
                         framing.OuterEndPoint = intersectPoint;
+                        
                     }
                     else
                     {
+                        TranslateOutTriggerAToo((IRectangleSolid)framing,intersectPoint);
                         framing.OuterStartPoint = intersectPoint;
                     }
                 }

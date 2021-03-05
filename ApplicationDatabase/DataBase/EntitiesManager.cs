@@ -398,6 +398,17 @@ namespace AppDataBase.DataBase
                         Entities.Insert(0, framing.HangerB);
                         framingSheet.Hangers.Add((Hanger)framing.HangerB.FramingReference);
                     }
+
+                    if (framing.OutTriggerA!=null)
+                    {
+                        Entities.Insert(0,framing.OutTriggerA);
+                        framingSheet.OutTriggers.Add(framing.OutTriggerA.FramingReference);
+                    }
+                    if (framing.OutTriggerB != null)
+                    {
+                        Entities.Insert(0, framing.OutTriggerB);
+                        framingSheet.OutTriggers.Add(framing.OutTriggerB.FramingReference);
+                    }
                 }
             }
         }

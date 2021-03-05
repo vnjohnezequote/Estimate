@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings;
+using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -99,6 +100,25 @@ namespace AppModels.CustomEntity
                 FramingReferenceId = this.FramingReference.Id;
             }
 
+            if (another.IsOutTriggerA)
+            {
+                OutTriggerA = (OutTrigger2D)another.OutTriggerA.Clone();
+                OutTriggerA.Framing2D = this;
+                ((OutTrigger) OutTriggerA.FramingReference).Parrent = this.FramingReference;
+                OutTriggerAId = OutTriggerA.Id;
+                IsOutTriggerA = true;
+                ((IContaintOutTrigger) FramingReference).OutTriggerA = (OutTrigger) OutTriggerA.FramingReference;
+            }
+
+            if (another.IsOutTriggerB)
+            {
+                OutTriggerB = (OutTrigger2D)another.OutTriggerB.Clone();
+                OutTriggerB.Framing2D = this;
+                ((OutTrigger)OutTriggerB.FramingReference).Parrent = this.FramingReference;
+                OutTriggerBId = OutTriggerB.Id;
+                IsOutTriggerB = true;
+                ((IContaintOutTrigger)FramingReference).OutTriggerB = (OutTrigger)OutTriggerB.FramingReference;
+            }
         }
 
         #endregion
@@ -159,7 +179,20 @@ namespace AppModels.CustomEntity
                 {
                     framingContaintFraming.FramingName.Translate(v);
                 }
+
+                if (framingContaintFraming.OutTriggerA!=null)
+                {
+                    framingContaintFraming.OutTriggerA.Translate(v);
+                }
+
+                if (framingContaintFraming.OutTriggerB != null)
+                {
+                    framingContaintFraming.OutTriggerB.Translate(v);
+                }    
+
             }
+
+            
 
             return framing;
         }

@@ -31,9 +31,9 @@ namespace AppModels.CustomEntity.CustomEntitySurrogate
                 framingRectangle2D.Id = Id;
                 framingRectangle2D.LevelId = LevelId;
                 framingRectangle2D.FramingSheetId = FramingSheetId;
+                framingRectangle2D.Flipped = Flipped;
                 framingRectangle2D.Thickness = Thickness;
                 framingRectangle2D.Depth = Depth;
-                framingRectangle2D.Flipped = Flipped;
                 framingRectangle2D.OuterStartPoint = OuterStartPoint;
                 framingRectangle2D.OuterEndPoint = OuterEndPoint;
                 

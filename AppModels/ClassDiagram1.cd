@@ -49,7 +49,7 @@
   <Class Name="AppModels.CustomEntity.OutTrigger2D" Collapsed="true">
     <Position X="10.5" Y="18.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAhFCAAAAAABAAAEAAAQACAAAAAAAAAAAAChA=</HashCode>
+      <HashCode>AAQAAAAAhFCAAAAAIBAAAEAAAQACAAAAAAAAAAAAChA=</HashCode>
       <FileName>CustomEntity\OutTrigger2D.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

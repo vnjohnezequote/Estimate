@@ -35,6 +35,7 @@ namespace AppModels.CustomEntity
         public bool IsShowLeader { get; set; }
         
         
+        
         public Guid Id { get; set; }
         public Guid LevelId { get; set; }
         public Guid FramingSheetId { get; set; }
@@ -50,7 +51,7 @@ namespace AppModels.CustomEntity
                 {
                     return;
                 }
-                this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint);
+                this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint,Flipped);
             }
         }
         public Point3D InnerStartPoint { get; set; }
@@ -72,7 +73,7 @@ namespace AppModels.CustomEntity
                 {
                     return;
                 }
-                this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint);
+                this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint,Flipped);
             }
         }
         public Point3D InnerEndPoint { get; set; }
@@ -212,6 +213,7 @@ namespace AppModels.CustomEntity
             EndPoint = (Point3D)another.EndPoint.Clone();
             FramingReference = (FramingBase)another.FramingReference.Clone();
             FramingReferenceId = FramingReference.Id;
+            //Flipped = another.Flipped;
         }
 
 
