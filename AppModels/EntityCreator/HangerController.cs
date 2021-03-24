@@ -19,8 +19,9 @@ namespace AppModels.EntityCreator
         public HangerControler(IEntitiesManager entitiesManager,IFraming2DContaintHangerAndOutTrigger framing2D)
         {
             _entitiesManager = entitiesManager;
-            _framingSheet = framing2D.FramingReference.FramingSheet;
             _framing2D = framing2D;
+            if (framing2D.FramingReference == null) return;
+            _framingSheet = framing2D.FramingReference.FramingSheet;
             _framing = (IContaintHanger)framing2D.FramingReference;
             _hangerA2D = framing2D.HangerA;
             _hangerB2D = framing2D.HangerB;
@@ -42,6 +43,7 @@ namespace AppModels.EntityCreator
                _framingSheet.Hangers.Remove(_hangerA);
 
             }
+            if (_framing == null) return;
             _framing.HangerA = null;
             _framing2D.IsHangerA = false;
         }
@@ -58,6 +60,7 @@ namespace AppModels.EntityCreator
                _framingSheet.Hangers.Remove(_hangerB);
 
             }
+            if (_framing == null) return;
             _framing.HangerB = null;
             _framing2D.IsHangerB = false;
         }

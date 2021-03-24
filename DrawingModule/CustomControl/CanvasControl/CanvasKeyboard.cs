@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
-using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.CustomEntity;
 using AppModels.EntityCreator;
 using AppModels.Enums;
-using AppModels.Factories;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
-using AppModels.ResponsiveData.Framings;
-using AppModels.ResponsiveData.Framings.Blocking;
-using AppModels.ViewModelEntity;
-using DrawingModule.Application;
-using DrawingModule.EditingTools;
-using Syncfusion.Data.Extensions;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
+using devDept.Eyeshot.Entities;
 
 namespace DrawingModule.CustomControl.CanvasControl
 {
@@ -85,8 +79,11 @@ namespace DrawingModule.CustomControl.CanvasControl
                 case Key.Delete:
                     if (this.EntitiesManager.SelectedEntities!=null && this.EntitiesManager.SelectedEntities.Count!=0)
                     {
+                        var undoList = new UndoList() {ActionType = ActionTypes.Remove};
                         foreach (var entitiesManagerSelectedEntity in EntitiesManager.SelectedEntities)
                         {
+                            var backup = BackupEntitiesFactory.CreateBackup(entitiesManagerSelectedEntity, undoList,EntitiesManager);
+                            backup?.Backup();
                             if (entitiesManagerSelectedEntity is BeamEntity beam)
                             {
                                 var curentlevel = beam.FramingReference.Level;
@@ -159,12 +156,18 @@ namespace DrawingModule.CustomControl.CanvasControl
                                 var activesheet = joist.FramingReference.FramingSheet;
                                 if (activesheet.Joists.Contains(joist.FramingReference))
                                         activesheet.Joists.Remove(joist.FramingReference);
+                                AppModels.Helper.RegenerationFramingName(activesheet.Joists.ToList());
                             }
                             if (entitiesManagerSelectedEntity is Beam2D beam2D)
                             {
-                                var activesheet = beam2D.FramingReference.FramingSheet;
-                                if (activesheet.Beams.Contains(beam2D.FramingReference))
-                                    activesheet.Beams.Remove(beam2D.FramingReference);
+                                if(beam2D.FramingReference!=null)
+                                {
+                                    var activesheet = beam2D.FramingReference.FramingSheet;
+                                    if (activesheet.Beams.Contains(beam2D.FramingReference))
+                                        activesheet.Beams.Remove(beam2D.FramingReference);
+                                    AppModels.Helper.RegenerationFramingName(activesheet.Beams.ToList());
+                                }
+                                
                             }
                             if (entitiesManagerSelectedEntity is Hanger2D hanger2D)
                             {
@@ -196,31 +199,42 @@ namespace DrawingModule.CustomControl.CanvasControl
                             if (entitiesManagerSelectedEntity is Blocking2D blocking2D)
                             {
                                 var activeSheet = blocking2D.FramingReference.FramingSheet;
-                                foreach (var entity in EntitiesManager.SelectedEntities)
-                                {
-                                    if (entity is Blocking2D blocking)
-                                    {
-                                        blocking.FramingReference.FramingSheet.Blockings.Remove((Blocking)blocking
-                                            .FramingReference);
-                                    }
-                                }
-
+                                activeSheet.Blockings.Remove(blocking2D.FramingReference);
+                                AppModels.Helper.RegenerationFramingName(activeSheet.Blockings.ToList());
                             }
                             if (entitiesManagerSelectedEntity is FramingNameEntity framingName)
                             {
-                                //IFraming2DContaintHangerAndOutTrigger framingRemove = null;
+                                JoistArrowEntity dependentJoistArrow = null;
                                 foreach (var entity in EntitiesManager.Entities)
                                 {
-                                    if (!(entity is IFraming2DContaintHangerAndOutTrigger framingContainName)) continue;
-                                    if (framingContainName.FramingName != framingName) continue;
-                                    framingContainName.FramingNameId = null;
-                                    framingContainName.FramingName = null;
-                                    framingContainName.IsShowFramingName = false;
-                                    break;
+                                    if (entity is IFraming2DContaintHangerAndOutTrigger framingContainName)
+                                    {
+                                        if (framingContainName.FramingName == framingName)
+                                        {
+                                            framingContainName.FramingNameId = null;
+                                            framingContainName.FramingName = null;
+                                            framingContainName.IsShowFramingName = false;
+                                            break;
+                                        }
+                                    }
+                                    else if (entity is JoistArrowEntity joistArrow)
+                                    {
+                                        if (joistArrow.FramingName == framingName)
+                                        {
+                                            dependentJoistArrow =joistArrow ;
+                                            break;
+                                        }
+                                    }
                                 }
+                                if (dependentJoistArrow != null)
+                                {
+                                    EntitiesManager.Entities.Remove(dependentJoistArrow);
+                                }
+
+
                             }
                         }
-                        
+                        UndoEngineer.SaveSnapshot(undoList);
                         EntitiesManager.SelectedEntities.Clear();
                         EntitiesManager.SelectedEntity = null;
                     }
@@ -232,6 +246,14 @@ namespace DrawingModule.CustomControl.CanvasControl
                 case Key.LeftCtrl:
                 case Key.RightCtrl:
                     return true;
+                case Key.Z:
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                    {
+                        this.ProcessCommand("Undo");
+                        return true;
+                    }
+
+                    return false;
                 case Key.V:
                     if (Keyboard.IsKeyDown(Key.LeftCtrl))
                     {

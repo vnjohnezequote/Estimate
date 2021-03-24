@@ -6,6 +6,7 @@ using AppModels.ResponsiveData;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;
+using AppModels.Enums;
 
 namespace AppModels.Interaface
 {
@@ -22,6 +23,7 @@ namespace AppModels.Interaface
         ObservableCollection<OpeningInfo> DoorSchedules { get; }
         FramingSheet ActiveFloorSheet { get; set; }
         TimberBase SelectedJoitsMaterial { get; set; }
+        SelectionTypes SelectionType { get; set; }
         int SelectedWallThickness { get; set; }
         void LoadJob(JobModelPoco jobOpen,List<ClientPoco> clients);
     }

@@ -16,7 +16,7 @@ namespace AppModels.FileSerializer
 
         public EzequoteFileSerializer(contentType contentType) : base(contentType)
         {
-            LinearDim line = null;
+            //LinearDim line = null;
         }
 
         protected override void FillModel()

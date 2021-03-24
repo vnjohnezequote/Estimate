@@ -1,5 +1,6 @@
 ﻿using System;
 using AppModels.Interaface;
+using AppModels.Undo;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -7,7 +8,7 @@ using devDept.Geometry;
 
 namespace AppModels.CustomEntity
 {
-    public class JoistArrowEntity: Line, IEntityVmCreateAble
+    public class JoistArrowEntity: Line, IEntityVmCreateAble,ICloneAbleToUndo
     {
         public FramingNameEntity FramingName { get; set; }
         public Guid FramingNameId { get; set; }

@@ -40,14 +40,21 @@ namespace AppAddons.DrawingTools
         {
 
             var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
+            
             while (true)
             {
+                if (JobModel.ActiveFloorSheet == null)
+                {
+                    ToolMessage = "Please select Floor Sheet before run Joist/Rafter";
+                    continue;
+                }
                 ToolMessage = "Please Select first line";
                 var promptLineOption = new PromptSelectionOptions();
                 var result = acDoc.Editor.GetSelection(promptLineOption);
                 if (result.Status == PromptStatus.OK)
                 {
-                    this._firstLineForRunJoist= result.Value as Line;
+                    if(result.Value is Line line)
+                    this._firstLineForRunJoist= line;
                 }
                 else
                 {
@@ -58,7 +65,8 @@ namespace AppAddons.DrawingTools
                 result = acDoc.Editor.GetSelection(promptLineOption);
                 if (result.Status == PromptStatus.OK)
                 {
-                    this._secondLineForRunJoist = result.Value as Line;
+                    if(result.Value is Line line)
+                    this._secondLineForRunJoist = line;
                 }
                 else
                 {
@@ -71,15 +79,93 @@ namespace AppAddons.DrawingTools
                     continue;
                 }
                 _waitingForSelection = false;
+
+                var firstLine = GetFirstRunLine(_firstLineForRunJoist, _secondLineForRunJoist);
+
+
+
                 _secondLineForRunJoist.Project(_firstLineForRunJoist.MidPoint,out var distance);
                 var projectPoint = _secondLineForRunJoist.PointAt(distance);
                 var distanceRunLength = _firstLineForRunJoist.MidPoint.DistanceTo(projectPoint);
                 var loopCheck = (int)distanceRunLength / JobModel.DefaultJoistSpacing;
-                this.ProcessAutorunJoist(_firstLineForRunJoist, _secondLineForRunJoist, distanceRunLength, loopCheck);
+                this.ProcessAutorunJoist(firstLine, _secondLineForRunJoist, distanceRunLength, loopCheck);
                 return;
             }
         }
 
+        private enum LineDirectionType
+        {
+            HorizontalLine,
+            VerticalLine,
+            FredomLine
+        }
+        private LineDirectionType GetLineDirectionType (Line line)
+        {
+            
+            if (line.StartPoint.Y.CompareTo(line.EndPoint.Y) == 0)
+                return LineDirectionType.HorizontalLine;
+            if (line.StartPoint.X.CompareTo(line.EndPoint.X) == 0)
+                return LineDirectionType.VerticalLine;
+            return LineDirectionType.FredomLine;
+        }
+
+        private Line GetFirstRunLine(Line firstLine, Line secondLine)
+        {
+            var lineDirect = GetLineDirectionType(firstLine);
+            if(lineDirect == LineDirectionType.HorizontalLine)
+            {
+               if(firstLine.StartPoint.X<firstLine.EndPoint.X)
+                {
+                    if (firstLine.StartPoint.Y > secondLine.StartPoint.Y)
+                        return firstLine;
+                    return new Line(firstLine.EndPoint, firstLine.StartPoint);
+                }
+                else
+                {
+                    if(firstLine.StartPoint.Y < secondLine.StartPoint.Y)
+                        return firstLine;
+                    return new Line(firstLine.EndPoint, firstLine.StartPoint);
+                }
+            }
+            else if(lineDirect == LineDirectionType.VerticalLine)
+            {
+               
+                if(firstLine.StartPoint.Y> firstLine.EndPoint.Y)
+                {
+                    if (firstLine.StartPoint.X > secondLine.StartPoint.X)
+                        return firstLine;
+                    else return new Line(firstLine.EndPoint, firstLine.StartPoint);
+                }
+                else
+                {
+                    if (firstLine.StartPoint.X < secondLine.StartPoint.X)
+                        return firstLine;
+                    else return new Line(firstLine.EndPoint, firstLine.StartPoint);
+                }
+            }
+            else
+            {
+                secondLine.Project(firstLine.StartPoint,out var projectPointDistance);
+                var projectPoint = secondLine.PointAt(projectPointDistance);
+                if (firstLine.StartPoint.X < firstLine.EndPoint.X)
+                {
+                    if (firstLine.StartPoint.Y > projectPoint.Y)
+                    {
+                        return firstLine;
+                    }
+                    else return new Line(firstLine.EndPoint, firstLine.StartPoint);
+                }
+                else
+                {
+                    if (firstLine.StartPoint.Y < projectPoint.Y)
+                    {
+                        return firstLine;
+                    }
+                    else return new Line(firstLine.EndPoint, firstLine.StartPoint);
+                }
+
+            }
+        }
         private void ProcessAutorunJoist(Line firstLine, Line secondLine, double distanceRun, int loopCheck)
         {
             Line joistLine = null;

@@ -17,7 +17,6 @@ namespace AppModels
         {
             return (int)(Math.Ceiling((double)number / 300)*300);
         }
-
         public static int RoundUpto5(this double number)
         {
             return (int)(Math.Ceiling(number / 5) * 5);
@@ -73,7 +72,6 @@ namespace AppModels
             return resultPoints;
 
         }
-
         public static bool IsListContainerSameMaterial(this List<IFraming> framingList, IFraming framingCheck, ref SameFramingTypes sameFramingType,out IFraming sameInfoFraming,ref int maxIndex,ref int minSubIndex)
         {
             sameInfoFraming = null;
@@ -130,7 +128,6 @@ namespace AppModels
                 return (Math.Ceiling(value * 2) / 2);
             }
         }
-
         public static void RegenerationFramingName(List<IFraming> framingList)
         {
             Dictionary<FramingTypes, Dictionary<TimberBase, Dictionary<double, List<IFraming>>>> framingDict =
@@ -240,7 +237,6 @@ namespace AppModels
                 }
             }
         }
-
         public static void RegenerationHangerName(List<Hanger> hangerList)
         {
             Dictionary<HangerMat, List<Hanger>> hangerDict = new Dictionary<HangerMat, List<Hanger>>();
@@ -275,7 +271,6 @@ namespace AppModels
                 index++;
             }
         }
-
         public static void RegenerationBeamName(List<IFraming> beams)
         {
             foreach (var beam in beams)
@@ -299,7 +294,6 @@ namespace AppModels
 
             return resultPoint;
         }
-
         public static Point3D FindClosedPoint(List<Point3D> points, Point3D checkPoint)
         {
             var minDist = Double.MaxValue;

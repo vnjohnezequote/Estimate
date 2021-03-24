@@ -7,6 +7,7 @@ using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings.Blocking;
+using AppModels.Undo;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -14,7 +15,7 @@ using devDept.Serialization;
 
 namespace AppModels.CustomEntity
 {
-    public sealed class Blocking2D : Text,IEntityVmCreateAble,IFraming2D
+    public sealed class Blocking2D : Text,IEntityVmCreateAble,IFraming2D,ICloneAbleToUndo
     {
         #region Private
 

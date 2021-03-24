@@ -34,7 +34,7 @@ namespace AppModels.ResponsiveData
         private int _runLength;
         private bool _isStepDown;
         private bool _isRaisedCeiling;
-        private double _wallLength;
+        //private double _wallLength;
         private bool _forcedWallUnderRakedArea;
         private bool _isDesigned;
         private int _typeId;

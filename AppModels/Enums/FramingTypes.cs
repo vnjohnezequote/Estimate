@@ -23,6 +23,7 @@
         Blocking,
         Hanger,
         TieDown,
-        SteelBeam
+        SteelBeam,
+        DeckRoofBeam
     }
 }

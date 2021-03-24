@@ -5,6 +5,7 @@ using ApplicationService;
 using AppModels.CustomEntity;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -233,6 +234,11 @@ namespace DrawingModule.CustomControl.CanvasControl
                 CurrentTool.SetLayersManager((ILayerManager) LayersManager);
             }
 
+            if (this.UndoEngineer!=null)
+            {
+                CurrentTool.SetUndoEngineer(UndoEngineer);
+            }
+
             CurrentTool.ActiveLevel = this.ActiveLevel;
             if (this.JobModel !=null)
             {
@@ -258,6 +264,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                 CurrentTool.SetDynamicInput(null);
                 CurrentTool.SetEntitiesManager(null);
                 CurrentTool.SetLayersManager(null);
+                CurrentTool.SetUndoEngineer(null);
                 CurrentTool = null;
             }
             IsProcessingTool = false;

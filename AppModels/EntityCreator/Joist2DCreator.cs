@@ -56,7 +56,6 @@ namespace AppModels.EntityCreator
          protected override IFraming2D CreateFraming2D(Point3D startPoint,Point3D endPoint,IFraming framingReference,int thickness=45, bool flipped = false,bool centerCreator = false,bool isUnder = false)
         {
             return new Joist2D((Point3D)startPoint.Clone(),(Point3D)endPoint.Clone(),framingReference,thickness,false,centerCreator);
-
         }
 
 

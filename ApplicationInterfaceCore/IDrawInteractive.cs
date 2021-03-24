@@ -6,6 +6,7 @@ using ApplicationInterfaceCore.Enums;
 using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
 using devDept.Geometry;
 
 namespace ApplicationInterfaceCore
@@ -16,6 +17,7 @@ namespace ApplicationInterfaceCore
         //event EventHandler ToolMessageChanged;
         IEntitiesManager EntitiesManager { get; }
         ILayerManager LayerManager { get; }
+        IUndoEngineering UndoEngineer { get; }
         string ActiveLevel { get; set; }
         string ToolName { get; }
         string ToolMessage { get; }
@@ -54,5 +56,6 @@ namespace ApplicationInterfaceCore
         void SetDynamicInput(IDynamicInputView dynamicInput);
         void SetLayersManager(ILayerManager layerManager);
         void SetEntitiesManager(IEntitiesManager entitiesManager);
+        void SetUndoEngineer(IUndoEngineering undoEngineer);
     }
 }

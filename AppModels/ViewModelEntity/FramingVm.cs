@@ -50,34 +50,34 @@ namespace AppModels.ViewModelEntity
                 }
             }
         }
-        public EngineerMemberInfo EngineerMember
-        {
-            get
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    if (beam.FramingReference != null)
-                    {
-                        return beam.FramingReference.EngineerMember;
-                    }
-                }
+        //public EngineerMemberInfo EngineerMember
+        //{
+        //    get
+        //    {
+        //        if (Entity is BeamEntity beam)
+        //        {
+        //            if (beam.FramingReference != null)
+        //            {
+        //                return beam.FramingReference.EngineerMember;
+        //            }
+        //        }
 
-                return null;
-            }
-            set
-            {
-                if (Entity is BeamEntity beam)
-                {
-                    if (beam.FramingReference != null)
-                    {
-                        beam.FramingReference.EngineerMember = value;
-                        RaisePropertyChanged(nameof(EngineerMember));
-                        RaisePropertyChanged(nameof(FramingInfo));
-                        RaisePropertyChanged(nameof(BeamGrade));
-                    }
-                }
-            }
-        }
+        //        return null;
+        //    }
+        //    set
+        //    {
+        //        if (Entity is BeamEntity beam)
+        //        {
+        //            if (beam.FramingReference != null)
+        //            {
+        //                beam.FramingReference.EngineerMember = value;
+        //                RaisePropertyChanged(nameof(EngineerMember));
+        //                RaisePropertyChanged(nameof(FramingInfo));
+        //                RaisePropertyChanged(nameof(BeamGrade));
+        //            }
+        //        }
+        //    }
+        //}
         public FramingVm(Entity entity, IEntitiesManager entityManager) : base(entity, entityManager)
         {
             

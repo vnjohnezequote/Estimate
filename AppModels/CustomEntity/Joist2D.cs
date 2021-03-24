@@ -13,8 +13,8 @@ namespace AppModels.CustomEntity
 {
     public class Joist2D : FramingRectangleContainHangerAndOutTrigger,IEntityVmCreateAble
     {
-        private bool _outTriggerAFlipped;
-        private bool _outTriggerBFlipped;
+        //private bool _outTriggerAFlipped;
+        //private bool _outTriggerBFlipped;
 
         public Joist2D(Point3D outerStartPoint, Point3D outerEndPoint, IFraming joistReference,
             int thickness = 90,bool flipped = false,bool centerCreater = false) :
@@ -35,14 +35,14 @@ namespace AppModels.CustomEntity
         }
 
         
-        public void SetFlippedOutriggerA(bool outTriggerAFlipped)
-        {
-            _outTriggerAFlipped = outTriggerAFlipped;
-        }
-        public void SetFlippedOutriggerB(bool outTriggerBFlipped)
-        {
-            _outTriggerBFlipped = outTriggerBFlipped;
-        }
+        //public override void SetFlippedOutriggerA(bool outTriggerAFlipped)
+        //{
+        //    _outTriggerAFlipped = outTriggerAFlipped;
+        //}
+        //public override void SetFlippedOutriggerB(bool outTriggerBFlipped)
+        //{
+        //    _outTriggerBFlipped = outTriggerBFlipped;
+        //}
        
         public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {
@@ -83,8 +83,32 @@ namespace AppModels.CustomEntity
             {
                 return;
             } 
+            if(FramingReference.FramingType == FramingTypes.DeckJoist)
+            {
+                Color = System.Drawing.Color.FromArgb(255, 127, 159);
+                return;
+            }    
+            if(FramingReference.FramingType == FramingTypes.HipRafter)
+            {
+                Color = System.Drawing.Color.FromArgb(255, 0, 255);
+                return;
+            }   
+            if(FramingReference.FramingType== FramingTypes.Fascia)
+            {
+                Color = System.Drawing.Color.FromArgb(63,111,127);
+            }    
+            else if(FramingReference.FramingType == FramingTypes.CeilingJoist)
+            {
+                Color = System.Drawing.Color.FromArgb(0,127,0);
+            }    
             switch (thickness)
             {
+                case 35:
+                    if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                    {
+                        Color = System.Drawing.Color.FromArgb(255, 127, 159);
+                    }
+                    break;
                 case 45:
                     if (FramingReference.FramingType == FramingTypes.FloorJoist)
                     {

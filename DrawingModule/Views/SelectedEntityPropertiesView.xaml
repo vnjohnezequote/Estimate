@@ -7,9 +7,7 @@
              xmlns:viewModels="clr-namespace:DrawingModule.ViewModels"
              xmlns:local="clr-namespace:DrawingModule.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-             xmlns:pt="http://propertytools.org/wpf"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"            
              xmlns:applicationConverter="clr-namespace:ApplicationConverter;assembly=ApplicationConverter"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:appModelEnum="clr-namespace:AppModels.Enums;assembly=AppModels"
@@ -287,7 +285,7 @@
                          Margin="15 0 0 0" 
                          materialDesign:HintAssist.Hint="Quote Length" 
                          IsEnabled="False" 
-                         Foreground="GreenYellow" />
+                         Foreground="Purple" />
             </DockPanel>
             <DockPanel Visibility="{Binding HangerOutTriggerVisibility}">
                 <TextBlock Text="HangerA" />

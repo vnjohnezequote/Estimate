@@ -59,7 +59,7 @@ namespace AppModels.ExportData
                 {
                     workbook.SaveAs(warnervaleSheetFile.SheetFile);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     MessageBox.Show("Please closed your excel file before export data");
                     return;

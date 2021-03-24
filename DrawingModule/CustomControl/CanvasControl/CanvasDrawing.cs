@@ -24,6 +24,7 @@ using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -57,7 +58,12 @@ namespace DrawingModule.CustomControl.CanvasControl
                 new PropertyMetadata(null, LayersManagerChangedCallBack));
         public static readonly DependencyProperty JobModelProperty =
             DependencyProperty.Register("JobModel", typeof(IJob), typeof(CanvasDrawing),
-                new PropertyMetadata(null));
+                new PropertyMetadata(null,JobModelChangedCallBack));
+
+        public static readonly DependencyProperty UndoEngineerProperty =
+            DependencyProperty.Register("UndoEngineer", typeof(IUndoEngineering), typeof(CanvasDrawing),
+                new PropertyMetadata(null,UndoEngineerChangedCallBack));
+
         private bool _cursorOutSide;
         private bool _isUserInteraction;
         private bool _isSnappingEnable;
@@ -82,6 +88,11 @@ namespace DrawingModule.CustomControl.CanvasControl
             set => SetValue(EntitiesManagerProperty, value);
         }
 
+        public IUndoEngineering UndoEngineer
+        {
+            get => (IUndoEngineering) GetValue(UndoEngineerProperty);
+            set => SetValue(UndoEngineerProperty, value);
+        }
         public ILayerManager LayersManager
         {
             get => (ILayerManager)GetValue(LayersManagerProperty);
@@ -420,7 +431,7 @@ namespace DrawingModule.CustomControl.CanvasControl
             IsSnappingEnable = true;
             IsOrthoModeEnable = true;
             IsAbsotuleInput = false;
-            this._selectTool = new SelectTool();
+            this._selectTool = new SelectTool(this);
             this.PromptStatus = PromptStatus.None;
             this.IsDrawingMode = false;
             this._entityUnderMouse = null;
@@ -1052,7 +1063,15 @@ namespace DrawingModule.CustomControl.CanvasControl
         #endregion
 
         #region Dependency Change Callback
-
+        private static void JobModelChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var vp = (ICadDrawAble)d;
+            var newValue = (IJob)e.NewValue;
+            if (newValue != null)
+            {
+                vp.SetJobModelForSelectionTool();
+            }
+        }
         private static void EntitiesManagerChangedCallBack(
             DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -1076,6 +1095,20 @@ namespace DrawingModule.CustomControl.CanvasControl
             }
             return new EntitiesManager() as IEntitiesManager;
         }
+        private static void UndoEngineerChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var cadDrawAble = (ICadDrawAble)d;
+            if (cadDrawAble is CanvasDrawing canvasDrawing)
+            {
+                var entitiesManger = canvasDrawing.EntitiesManager;
+                var newValue = (IUndoEngineering)e.NewValue;
+                if (newValue != null)
+                {
+                    newValue.SetEntitiesManager(entitiesManger);
+                }
+            }
+
+        }
         private static void LayersManagerChangedCallBack(
             DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -1093,6 +1126,11 @@ namespace DrawingModule.CustomControl.CanvasControl
                 return layersManager;
             }
             return new LayerManager() as LayerManager;
+        }
+
+        public void SetJobModelForSelectionTool()
+        {
+            _selectTool.JobModel = JobModel;
         }
 
         #endregion

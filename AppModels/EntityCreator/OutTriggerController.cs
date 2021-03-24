@@ -28,6 +28,7 @@ namespace AppModels.EntityCreator
         {
             _entitiesManager = entitiesManager;
             _framing2D = framing2D;
+            if (_framing2D.FramingReference == null) return;
             _framing = (IContaintOutTrigger)framing2D.FramingReference;
             _framingSheet = framing2D.FramingReference.FramingSheet;
             _outTriggerA2D = framing2D.OutTriggerA;
@@ -45,7 +46,9 @@ namespace AppModels.EntityCreator
             }
             _framing2D.OutTriggerAId = null;
             _framing2D.OutTriggerA = null;
+            if (_framingSheet == null) return;
             _framingSheet.OutTriggers.Remove(_outTriggerA);
+            if (_framing == null) return;
             _framing.OutTriggerA = null;
             _framing2D.IsOutTriggerA = false;
         }
@@ -59,7 +62,9 @@ namespace AppModels.EntityCreator
             }
             _framing2D.OutTriggerBId = null;
             _framing2D.OutTriggerB = null;
+            if (_framingSheet == null) return;
             _framingSheet.OutTriggers.Remove(_outTriggerB);
+            if (_framing == null) return;
             _framing.OutTriggerB = null;
             _framing2D.IsOutTriggerB = false;
         }

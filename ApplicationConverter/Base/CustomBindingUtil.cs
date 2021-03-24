@@ -42,7 +42,7 @@ namespace ApplicationConverter.Base
                 object binding = obj.GetValue(SingleBindingProperty);
                 obj.SetValue(BResultProperty, (obj.GetValue(ConverterProperty) as IValueConverter).Convert(binding, null, convparam, null));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;

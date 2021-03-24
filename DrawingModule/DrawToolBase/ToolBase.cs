@@ -5,6 +5,7 @@ using ApplicationInterfaceCore.Enums;
 using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
 using devDept.Geometry;
 using DrawingModule.Enums;
 using DrawingModule.Interface;
@@ -21,6 +22,7 @@ namespace DrawingModule.DrawToolBase
         public string ActiveLevel { get; set; }
         public IEntitiesManager EntitiesManager { get; private set; }
         public ILayerManager LayerManager { get; private set; }
+        public IUndoEngineering UndoEngineer { get; private set; }
         public virtual string ToolName { get; }
         public virtual double CurrentWidth { get; set; }
         public virtual double CurrentHeight { get; set; }
@@ -142,6 +144,12 @@ namespace DrawingModule.DrawToolBase
         public void SetEntitiesManager(IEntitiesManager entitiesManager)
         {
             this.EntitiesManager = entitiesManager;
+        }
+
+        public void SetUndoEngineer(IUndoEngineering undoEngineer)
+        {
+            UndoEngineer = undoEngineer;
+            //UndoEngineer.SetEntitiesManager(this.EntitiesManager);
         }
     }
 }

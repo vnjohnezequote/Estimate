@@ -21,8 +21,8 @@ namespace AppModels.CustomEntity
         private bool _showDimension;
         private Point3D _startPoint;
         private Point3D _endPoint;
-        private bool _showStartWallLine;
-        private bool _showEndWallLine;
+        //private bool _showStartWallLine;
+        //private bool _showEndWallLine;
 
         public Point3D StartPoint
         {

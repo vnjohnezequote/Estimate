@@ -4,6 +4,7 @@ using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Openings;
+using AppModels.Undo;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -14,7 +15,7 @@ using Attribute = devDept.Eyeshot.Entities.Attribute;
 namespace AppModels.CustomEntity
 {
     [Serializable]
-    public class BeamEntity : BlockReference, IFraming2D,IEntityVmCreateAble
+    public class BeamEntity : BlockReference, IFraming2D,IEntityVmCreateAble,ICloneAbleToUndo
     {
 
         private IFraming _framingReference;

@@ -16,6 +16,7 @@ using AppModels.PocoDataModel.Openings;
 using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Openings;
+using AppModels.Enums;
 using Prism.Mvvm;
 
 namespace AppModels.ResponsiveData
@@ -43,6 +44,7 @@ namespace AppModels.ResponsiveData
         private ObservableCollection<LevelWall> _levels;
         private FramingSheet _activeFloorSheet;
         private TimberBase _selectedJoistMaterial;
+        
         #region Property
 
         #region MyRegion
@@ -63,6 +65,7 @@ namespace AppModels.ResponsiveData
             get => _defaultJoistSpacing == 0 ? 450 : _defaultJoistSpacing;
             set=>SetProperty(ref _defaultJoistSpacing,value);
         }
+        public SelectionTypes SelectionType { get; set; }
 
         #endregion
         

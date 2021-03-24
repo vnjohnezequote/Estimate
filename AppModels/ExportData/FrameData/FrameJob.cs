@@ -20,14 +20,14 @@ namespace AppModels.ExportData.FrameData
     {
         #region private
 
-        private string _createDate;
-        private string _refNo;
-        private string _clientName;
-        private string _jobName;
-        private string _address;
-        private string _windRate;
-        private string _roofType;
-        private string _treatement;
+        //private string _createDate;
+        //private string _refNo;
+        //private string _clientName;
+        //private string _jobName;
+        //private string _address;
+        //private string _windRate;
+        //private string _roofType;
+        //private string _treatement;
         //private string JobLocation
         
         #endregion
@@ -260,11 +260,12 @@ namespace AppModels.ExportData.FrameData
                 table.SetTextString(startIndex,0,frame.FullName);
                 table.SetTextString(startIndex, 1, frame.Material);
                 table.SetTextString(startIndex, 2, frame.Quantity.ToString());
-                table.SetTextString(startIndex, 3, frame.Length.ToString());
+                //var length = frame.Length.ToString("0.0");
+                table.SetTextString(startIndex, 3, frame.Length.ToString("0.0"));
                 var totalLength = frame.Quantity * frame.Length;
                 if (isFilltotalQty)
                 {
-                    table.SetTextString(startIndex, 4, frame.TotalLength.ToString());
+                    table.SetTextString(startIndex, 4, frame.TotalLength.ToString("0.0"));
                 }
                 sumtotalLength += frame.TotalLength;
                 startIndex++;

@@ -7,19 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Input;
-using ApplicationInterfaceCore;
-using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.CustomEntity;
-using AppModels.EventArg;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
-using DrawingModule.DrawToolBase;
-using DrawingModule.UserInteractive;
 
 namespace AppAddons.DrawingTools
 {

@@ -2,6 +2,7 @@
 using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Openings;
+using AppModels.Undo;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -11,7 +12,7 @@ using devDept.Serialization;
 namespace AppModels.CustomEntity
 {
     [Serializable]
-    public class DoorCountEntity: Text, IEntityVmCreateAble
+    public class DoorCountEntity: Text, IEntityVmCreateAble,ICloneAbleToUndo
     {
         private Opening _doorReference;
         private string _levelName;

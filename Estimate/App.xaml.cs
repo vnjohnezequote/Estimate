@@ -15,6 +15,7 @@ using ApplicationInterfaceCore;
 using AppModels;
 using AppModels.Interaface;
 using AppModels.ResponsiveData;
+using AppModels.Undo;
 using Serilog;
 
 namespace Estimate
@@ -51,6 +52,7 @@ namespace Estimate
             containerRegistry.RegisterSingleton<IJob, JobModel>();
             containerRegistry.RegisterSingleton<ILayerManager,LayerManager>();
             containerRegistry.RegisterSingleton<IEntitiesManager, EntitiesManager>();
+            containerRegistry.Register<IUndoEngineering, UndoEngineering>();
         }
 
         /// <summary>

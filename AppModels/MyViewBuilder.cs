@@ -52,6 +52,7 @@ namespace AppModels
                     var floorQuantity = sheetEntity as FloorQuantity;
                     if (floorQuantity!=null)
                     {
+                        if(!floorQuantitiesDict.ContainsKey(sheet))
                         floorQuantitiesDict.Add(sheet,floorQuantity);
                     }
                 }
@@ -69,6 +70,7 @@ namespace AppModels
                     var wallName = sheetEntity as WallName;
                     if (wallName != null)
                     {
+                        if(!wallNamesDict.ContainsKey(sheet))
                         wallNamesDict.Add(sheet, wallName);
                     }
                 }

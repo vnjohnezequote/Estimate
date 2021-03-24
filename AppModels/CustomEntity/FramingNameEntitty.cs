@@ -4,13 +4,14 @@ using System.Drawing;
 using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.Undo;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Serialization;
 
 namespace AppModels.CustomEntity
 {
-    public sealed class FramingNameEntity : Text
+    public sealed class FramingNameEntity : Text,ICloneAbleToUndo
     {
         private IFraming _framingReference;
         public IFraming FramingReference
@@ -44,10 +45,21 @@ namespace AppModels.CustomEntity
             this.ColorMethod = colorMethodType.byEntity;
         }
 
-        public FramingNameEntity(FramingNameEntity another):base(another)
+        public FramingNameEntity(FramingNameEntity another,bool isCloneToUndo = false):base(another)
         {
             this.ColorMethod = colorMethodType.byEntity;
-            Id = Guid.NewGuid();
+            if (isCloneToUndo)
+            {
+                Id = another.Id;
+                FramingReference = another.FramingReference;
+                FramingReferenceId = another.FramingReferenceId;
+            }
+            else
+            {
+                Id = Guid.NewGuid();
+                FramingReference = (IFraming)another.FramingReference.Clone();
+                FramingReferenceId = FramingReference.Id;
+            }
             LevelId = another.LevelId;
             FramingSheetId = another.FramingSheetId;
         }
@@ -107,6 +119,12 @@ namespace AppModels.CustomEntity
         public override object Clone()
         {
             return new FramingNameEntity(this);
+        }
+        public object CloneToUndo()
+        {
+            var framingNameEntity = new FramingNameEntity(this,true);
+            framingNameEntity.Id = this.Id;
+            return framingNameEntity;
         }
     }
 }

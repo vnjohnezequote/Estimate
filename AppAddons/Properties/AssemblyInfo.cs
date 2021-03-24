@@ -17,6 +17,7 @@ using DrawingModule.CommandClass;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CommandClass(typeof(DrawingLine))]
+[assembly: CommandClass(typeof(UndoTool))]
 [assembly: CommandClass(typeof(RunJoist))]
 [assembly: CommandClass(typeof(MergeJoist))]
 [assembly: CommandClass(typeof(CreateJoistName))]

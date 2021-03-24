@@ -12,7 +12,7 @@ namespace AppModels.ResponsiveData.Framings.FloorAndRafters.Floor
     public class OutTrigger: FramingBase
     {
         private IFraming _parrent;
-        private FramingTypes _framingType;
+        //private FramingTypes _framingType;
         public override double QuoteLength
         {
             get

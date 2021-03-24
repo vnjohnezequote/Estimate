@@ -14,7 +14,7 @@ namespace AppModels.ViewModelEntity
         {
             get
             {
-                if (Entity is IFraming2D framing)
+                if (Entity is IFraming2D framing && framing.FramingReference !=null)
                 {
                     return framing.FramingReference.FramingType;
                 }
@@ -109,7 +109,7 @@ namespace AppModels.ViewModelEntity
         {
             get
             {
-                if (Entity is IFraming2D framing)
+                if (Entity is IFraming2D framing && framing.FramingReference !=null)
                 {
                     return framing.FramingReference.Name;
                 }
@@ -138,7 +138,7 @@ namespace AppModels.ViewModelEntity
         {
             get
             {
-                if (Entity is IFraming2D framing)
+                if (Entity is IFraming2D framing && framing.FramingReference!=null)
                 {
                     return framing.FramingReference.Index;
                 }
@@ -159,7 +159,7 @@ namespace AppModels.ViewModelEntity
         {
             get
             {
-                if (Entity is IFraming2D framing)
+                if (Entity is IFraming2D framing && framing.FramingReference!=null)
                 {
                     return framing.FramingReference.SubFixIndex;
                 }
@@ -179,7 +179,7 @@ namespace AppModels.ViewModelEntity
         {
             get
             {
-                if (Entity is IFraming2D framing)
+                if (Entity is IFraming2D framing && framing.FramingReference!=null)
                 {
                     return framing.FramingReference.IsExisting;
                 }
@@ -200,7 +200,7 @@ namespace AppModels.ViewModelEntity
         {
             get
             {
-                if (Entity is IFraming2D framing)
+                if (Entity is IFraming2D framing && framing.FramingReference!=null)
                 {
                     return framing.FramingReference.FullLength;
                 }
@@ -221,7 +221,7 @@ namespace AppModels.ViewModelEntity
         public double QuoteLength
         {
             get {
-                if (Entity is IFraming2D framing)
+                if (Entity is IFraming2D framing && framing.FramingReference!=null)
                 {
                     return framing.FramingReference.QuoteLength;
                 }

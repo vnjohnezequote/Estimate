@@ -6,6 +6,7 @@ using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
 using ApplicationService;
 using AppModels.Interaface;
+using AppModels.Undo;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
@@ -29,6 +30,7 @@ namespace DrawingModule.ViewModels
         #region Field
 
         private IEntitiesManager _entitiesManager;
+        private IUndoEngineering _undoEngineer;
         private Grid _canvasGrid;
         private bool _isCanvasMouseOn;
         private readonly ObservableAsPropertyHelper<Visibility> _dynamicInputVisibility;
@@ -59,6 +61,8 @@ namespace DrawingModule.ViewModels
                 }
             }
         }
+
+        public IUndoEngineering UndoEngineering => _undoEngineer;
 
         private void SelectedEntity_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -119,10 +123,11 @@ namespace DrawingModule.ViewModels
         #region Constructor
         public CanvasDrawingViewModel() :base()
         {}
-        public CanvasDrawingViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager, IEntitiesManager entitiesManager,IJob jobModel)
+        public CanvasDrawingViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator eventAggregator,ILayerManager layerManager, IEntitiesManager entitiesManager,IJob jobModel,IUndoEngineering undoEnginering)
             : base(unityContainer, regionManager, eventAggregator,layerManager, jobModel)
         {
             this._entitiesManager = entitiesManager;
+            _undoEngineer = undoEnginering;
             this.LayerManager.SelectedPropertiesChanged += LayerManager_SelectedPropertiesChanged;
             LayerManager.PropertyChanged += LayerManager_PropertyChanged;
             EntitiesManager.PropertyChanged += EntitiesManager_PropertyChanged;

@@ -141,6 +141,7 @@
     <Compile Include="EditingTools\TrimJoist.cs" />
     <Compile Include="EditingTools\TrimTest.cs" />
     <Compile Include="EditingTools\TrimTool.cs" />
+    <Compile Include="EditingTools\UndoTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -27,7 +27,7 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// Gets or sets the wall length.
         /// </summary>
-        public double WallLength { get; set; }
+        //public double WallLength { get; set; }
 
 
         /// <summary>

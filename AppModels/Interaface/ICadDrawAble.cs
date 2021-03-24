@@ -48,7 +48,7 @@ namespace AppModels.Interaface
         //System.Drawing.Size DrawText(int x, int y, string text, Font textFont, System.Drawing.Color textColor, System.Drawing.Color fillColor, ContentAlignment textAlign, RotateFlipType rotateFlip);
         //System.Drawing.Size DrawText(int x, int y, string text, Font textFont, System.Drawing.Color textColor, System.Drawing.Color fillColor, ContentAlignment textAlign);
         System.Drawing.Size DrawTextString(int x, int y, string text, Font textFont, System.Drawing.Color textColor, ContentAlignment textAlign);
-
+        void SetJobModelForSelectionTool();
 
     }
 }

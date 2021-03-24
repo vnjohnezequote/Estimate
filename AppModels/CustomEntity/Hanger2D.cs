@@ -7,6 +7,7 @@ using System.Linq;
 using AppModels.CustomEntity.CustomEntitySurrogate;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Openings;
+using AppModels.Undo;
 using AppModels.ViewModelEntity;
 using devDept.Eyeshot;
 using devDept.Geometry;
@@ -14,7 +15,7 @@ using devDept.Serialization;
 
 namespace AppModels.CustomEntity
 {
-    public sealed class Hanger2D: Text,IEntityVmCreateAble,IFraming2D
+    public sealed class Hanger2D: Text,IEntityVmCreateAble,IFraming2D,ICloneAbleToUndo
     {
         private IFraming _framingReference;
         public Guid FramingSheetId { get; set; }

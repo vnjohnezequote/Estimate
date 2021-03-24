@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
+using AppModels.CustomEntity;
 using AppModels.EventArg;
 using AppModels.Interaface;
 using devDept.Eyeshot;
@@ -24,14 +25,17 @@ namespace DrawingModule.EditingTools
         public PickState CurrentPickState { get; set; }
         public Point3D StartPoint { get; set; }
         public Point3D EndPoint { get; set; }
+        private CanvasDrawing _canvas;
         //public ObservableCollection<Entity> SelectedEntities => this._selectedEntities;
         public DrawInteractiveDelegate DrawInteractiveHandler { get; private set; }
-        public SelectTool()
+       
+        public SelectTool(CanvasDrawing canvas)
         {
             this.CurrentPickState = PickState.Pick;
             //this._selectedEntities = new ObservableCollection<Entity>();
             IsSnapEnable = false;
             DrawInteractiveHandler += DrawInteractiveSelect;
+            _canvas = canvas;
         }
         public void ProcessMouseDownForSelection(MouseButtonEventArgs e, bool isSelected, CanvasDrawing canvasDrawing)
         {
@@ -190,6 +194,65 @@ namespace DrawingModule.EditingTools
                 //this.SelectedEntities.Remove(myEnts[ent]);
                 this.EntitiesManager.SelectedEntities.Remove(myEnts[ent]);
                 return;
+            }
+            if (!_canvas.IsProcessingTool)
+            {
+                switch (this.JobModel.SelectionType)
+                {
+                    case AppModels.Enums.SelectionTypes.All:
+                        break;
+                    case AppModels.Enums.SelectionTypes.Joist:
+                        if (!(myEnts[ent] is Joist2D))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.Beam2D:
+                        if (!(myEnts[ent] is Beam2D))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.BeamEntity:
+                        if (!(myEnts[ent] is BeamEntity))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.Hanger:
+                        if (!(myEnts[ent] is Hanger2D))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.Outtrigger:
+                        if (!(myEnts[ent] is OutTrigger2D))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.Line:
+                        if (!(myEnts[ent] is Line))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.WallLine:
+                        if (!(myEnts[ent] is WallLine2D))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.FramingName:
+                        if (!(myEnts[ent] is FramingNameEntity))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.JoistArrow:
+                        if (!(myEnts[ent] is JoistArrowEntity))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.Blocking:
+                        if (!(myEnts[ent] is Blocking2D))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.DoorCount:
+                        if (!(myEnts[ent] is DoorCountEntity))
+                            return;
+                        break;
+                    case AppModels.Enums.SelectionTypes.Picture:
+                        if (!(myEnts[ent] is PictureEntity))
+                            return;
+                        break;
+                    default:
+                        break;
+                }
+
             }
             myEnts[ent].Selected = true;
             this.EntitiesManager.SelectedEntities.Add(myEnts[ent]);

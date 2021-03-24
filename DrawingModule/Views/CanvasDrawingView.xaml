@@ -29,6 +29,7 @@
 										Units="Millimeters"
                                         EntitiesManager="{Binding EntitiesManager}"
                                         LayersManager="{Binding LayerManager}"
+                                        UndoEngineer="{Binding UndoEngineering}"
                                         JobModel="{Binding JobModel,Mode=OneWay}"
                                         ActiveLayerName="{Binding LayerManager.SelectedLayer.Name}"
                                         SelectionFilterMode="Entity" ShowFps="True"

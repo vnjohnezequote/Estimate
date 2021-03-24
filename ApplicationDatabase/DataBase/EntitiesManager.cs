@@ -206,6 +206,7 @@ namespace AppDataBase.DataBase
                 }
                 else
                 {
+                    entity.LayerName = layerName;
                     Entities.Insert(0, entity);
                     if (entity is IFraming2D framing)
                     {
@@ -313,15 +314,18 @@ namespace AppDataBase.DataBase
             var hangerController = new HangerControler(this, framing);
             hangerController.RemoveHangerA();
             hangerController.RemoveHangerB();
+            Helper.RegenerationHangerName(framing.FramingReference.FramingSheet.Hangers.ToList());
         }
         private void RemoveOutTrigger(FramingRectangleContainHangerAndOutTrigger framing)
         {
             var outTriggerController = new OutTriggerController(this, framing);
             outTriggerController.RemoveOutTriggerA();
             outTriggerController.RemoveOutTriggerB();
+            Helper.RegenerationFramingName(framing.FramingReference.FramingSheet.OutTriggers.ToList());
         }
         private void RemoveFraming2D(IFraming2D framing2D,bool isRemoveExtension = true)
         {
+            
             if (isRemoveExtension)
             {
                 if (framing2D is FramingRectangleContainHangerAndOutTrigger framingContainHanger)
@@ -332,28 +336,37 @@ namespace AppDataBase.DataBase
                 }
             }
             var framingSheet = framing2D.FramingReference.FramingSheet;
-            if (framing2D is Beam2D beam)
+            if(framing2D.FramingReference!=null)
             {
-                framingSheet.Beams.Remove(beam.FramingReference);
-            }
-            if (framing2D is OutTrigger2D outrigger)
-            {
-                framingSheet.OutTriggers.Remove(outrigger.FramingReference);
-            }
-            if (framing2D is Joist2D joist)
-            {
-                framingSheet.Joists.Remove(joist.FramingReference);
-            }
+                if (framing2D is Beam2D beam)
+                {
+                    framingSheet.Beams.Remove(beam.FramingReference);
+                    Helper.RegenerationFramingName(framingSheet.Beams.ToList());
+                }
+                if (framing2D is OutTrigger2D outrigger)
+                {
+                    framingSheet.OutTriggers.Remove(outrigger.FramingReference);
+                    Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
+                }
+                if (framing2D is Joist2D joist)
+                {
+                    framingSheet.Joists.Remove(joist.FramingReference);
+                    Helper.RegenerationFramingName(framingSheet.Joists.ToList());
+                }
 
-            if (framing2D is OutTrigger2D outTrigger)
-            {
-                framingSheet.OutTriggers.Remove(outTrigger.FramingReference);
-            }
+                if (framing2D is Hanger2D hanger)
+                {
+                    framingSheet.Hangers.Remove((Hanger)hanger.FramingReference);
+                    Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
+                }
 
-            if (framing2D is Blocking2D blocking)
-            {
-                framingSheet.Blockings.Remove(blocking.FramingReference);
-            }
+                if (framing2D is Blocking2D blocking)
+                {
+                    framingSheet.Blockings.Remove(blocking.FramingReference);
+                    Helper.RegenerationFramingName(framingSheet.Blockings.ToList());
+                }
+            }    
+            
             this.Entities.Remove((Entity)framing2D);
         }
         private void AddFraming2D(IFraming2D framing2D, bool isAddExtension = true, bool isGeneralFramingName = true)
@@ -362,18 +375,22 @@ namespace AppDataBase.DataBase
             if (framing2D is OutTrigger2D outtrigger)
             {
                 framingSheet.OutTriggers.Add(outtrigger.FramingReference);
+                Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
             }
             if (framing2D is Joist2D joist)
             {
                 framingSheet.Joists.Add(joist.FramingReference);
+                Helper.RegenerationFramingName(framingSheet.Joists.ToList());
             }
             if (framing2D is Beam2D beam)
             {
                 framingSheet.Beams.Add(beam.FramingReference);
+                Helper.RegenerationBeamName(framingSheet.Beams.ToList());
             }
             if (framing2D is Hanger2D hanger)
             {
                 framingSheet.Hangers.Add((Hanger)hanger.FramingReference);
+                Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
             }
             if (framing2D is Blocking2D blocking)
             {
@@ -392,22 +409,27 @@ namespace AppDataBase.DataBase
                     {
                         Entities.Insert(0, framing.HangerA);
                         framingSheet.Hangers.Add((Hanger)framing.HangerA.FramingReference);
+                        Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
+
                     }
                     if (framing.HangerB != null)
                     {
                         Entities.Insert(0, framing.HangerB);
                         framingSheet.Hangers.Add((Hanger)framing.HangerB.FramingReference);
+                        Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
                     }
 
                     if (framing.OutTriggerA!=null)
                     {
                         Entities.Insert(0,framing.OutTriggerA);
                         framingSheet.OutTriggers.Add(framing.OutTriggerA.FramingReference);
+                        Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
                     }
                     if (framing.OutTriggerB != null)
                     {
                         Entities.Insert(0, framing.OutTriggerB);
                         framingSheet.OutTriggers.Add(framing.OutTriggerB.FramingReference);
+                        Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
                     }
                 }
             }

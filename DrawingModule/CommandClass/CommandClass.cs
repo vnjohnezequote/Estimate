@@ -19,7 +19,7 @@ namespace DrawingModule.CommandClass
         public List<CommandThunk> CommandThunks => mCommandThunks;
         private ICommand Command;
         private object _commandObject;
-        private bool _isProcessingTool;
+        private readonly bool _isProcessingTool;
         public CommandClass()
         {
             this._isProcessingTool = false;

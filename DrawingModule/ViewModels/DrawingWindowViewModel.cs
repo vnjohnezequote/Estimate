@@ -226,7 +226,16 @@ namespace DrawingModule.ViewModels
             // LastPropertyPanelWidth = 0;
 
         }
-private void OnPropertyPanelGridSplitterDragComplete()
+
+        private void _drawingModel_WorkCompleted(object sender, WorkCompletedEventArgs e)
+        {
+            if (_isSaving)
+            {
+                _isSaving = false;
+            }
+        }
+
+        private void OnPropertyPanelGridSplitterDragComplete()
         {
             if ((int)this._window.PropertyPanel.ActualWidth <= 0
                 || (int)this._window.PropertyPanel.ActualWidth >= 150) return;
@@ -306,16 +315,23 @@ private void OnPropertyPanelSizeChanged()
         
         private void OnAutoSaveDrawingExcute()
         {
-            if (this.JobModel != null)
+            if (!_isSaving)
             {
-                var fileName = JobModel.Info.JobLocation + "\\" + JobModel.Info.JobNumber +"_back"+ ".eye";
-                WriteFile writeFile = new WriteFile(
-                    new WriteFileParams(_drawingModel)
-                    , fileName,
-                    new EzequoteFileSerializer()
-                );
-                _drawingModel.StartWork(writeFile);
+                _isSaving = true;
+                if (this.JobModel != null)
+                {
+                    _isSaving = true;
+                    var fileName = JobModel.Info.JobLocation + "\\" + JobModel.Info.JobNumber + "_back" + ".eye";
+                    WriteFile writeFile = new WriteFile(
+                        new WriteFileParams(_drawingModel)
+                        , fileName,
+                        new EzequoteFileSerializer()
+                    );
+                    _drawingModel.StartWork(writeFile);
+                }
+
             }
+           
         }
 
         private void OnOpenDrawingEventSubcribe(string drawingPath)
@@ -512,10 +528,10 @@ private void OnPropertyPanelSizeChanged()
                         , fileName,
                         new EzequoteFileSerializer()
                     );
+
                     _drawingModel.StartWork(writeFile);
                     
                 }
-                _isSaving = false;
             }
         }
 
@@ -640,6 +656,7 @@ private void OnPropertyPanelSizeChanged()
             if (window == null) throw new ArgumentNullException(nameof(window));
             this._window = window ?? throw new ArgumentNullException(nameof(window));
             this._drawingModel = window.CanvasDrawing.CanvasDrawing;
+            this._drawingModel.WorkCompleted += _drawingModel_WorkCompleted;
             _canvasExport = window.CanvasDrawing.CanvasExportDrawing;
             //InitsLayers();
             //InitEntitiesManager();

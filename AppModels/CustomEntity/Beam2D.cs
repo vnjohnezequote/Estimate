@@ -195,6 +195,22 @@ namespace AppModels.CustomEntity
                 {
                     Color = Color.Blue;
                 }
+                else if(FramingReference.FramingType == FramingTypes.HipRafter)
+                {
+                    Color = Color.Magenta;
+                }    
+                else if(FramingReference.FramingType == FramingTypes.PolePlate)
+                {
+                    Color = Color.Cyan;
+                }    
+                else if (FramingReference.FramingType == FramingTypes.Fascia)
+                {
+                    Color = System.Drawing.Color.FromArgb(63, 111, 127);
+                }
+                else if(FramingReference.FramingType == FramingTypes.DeckRoofBeam)
+                {
+                    Color = Color.FromArgb(0, 165, 0);
+                }    
                 else
                 {
                     IsBeamUnder = _isBeamUnder;

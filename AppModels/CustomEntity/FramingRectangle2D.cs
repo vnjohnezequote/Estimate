@@ -8,6 +8,7 @@ using AppModels.EntityCreator.Interface;
 using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings;
+using AppModels.Undo;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Milling;
@@ -24,7 +25,7 @@ namespace AppModels.CustomEntity
         AtEndPoint,
         None
     }
-    public abstract class FramingRectangle2D : PlanarEntity, IRectangleSolid, IFraming2D
+    public abstract class FramingRectangle2D : PlanarEntity, IRectangleSolid, IFraming2D,ICloneAbleToUndo
     {
         private Point3D _outerStartPoint;
         //private Point3D _innerStartPoint;

@@ -61,7 +61,8 @@
                       Text="{Binding JobModel.Info.Customer,Mode=TwoWay}"
                       SelectedValuePath="Name"
                       DisplayMemberPath="Name"
-                      ItemsSource="{Binding SelectedClient.Customers}"/>
+                      ItemsSource="{Binding SelectedClient.Customers}"
+                      IsEditable="True"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Builder Name"/>

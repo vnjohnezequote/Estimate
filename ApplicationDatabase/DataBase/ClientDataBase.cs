@@ -513,7 +513,8 @@ namespace AppDataBase.DataBase
                 Builders = new List<string>() { },
                 Customers = new List<Customer>(),
                 WallTypes = new List<WallTypePoco>(),
-                TimberMaterialList =  CreateFloorAndRafterList()
+                TimberMaterialList =  CreateFloorAndRafterList(),
+                Hangers = CreateHangerList()
 
             };
 
