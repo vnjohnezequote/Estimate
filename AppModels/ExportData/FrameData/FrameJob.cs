@@ -221,7 +221,7 @@ namespace AppModels.ExportData.FrameData
                 table.SetStyleName(startIndex,0, "TotalHeader");
                 if (isFillTotalLength)
                 {
-                    table.SetTextString(startIndex, 4, totalLength.ToString());
+                    table.SetTextString(startIndex, 4, totalLength.ToString("0.0"));
                 }
                 else
                 {
