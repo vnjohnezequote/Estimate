@@ -58,9 +58,21 @@ namespace DrawingModule.CustomControl.PaperSpaceControl
             {
                 //FramingSheetName = FramingSheet.Name;
                 this.Name = FramingSheet.Name;
+                RebuildTitle();
             }
         }
+        private void RebuildTitle()
+        {
+            foreach (var entity in this.Entities)
+            {
+                if(entity is BlockReference blockRef)
+                {
+                    if (blockRef.Attributes.ContainsKey("Title"))
+                        blockRef.Attributes["Title"].Value = Name;
+                }
 
+            }
+        }
         public IJob Job
         {
             get => _job;

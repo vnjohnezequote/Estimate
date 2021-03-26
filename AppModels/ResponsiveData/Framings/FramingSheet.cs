@@ -25,6 +25,7 @@ namespace AppModels.ResponsiveData.Framings
         private string _floorName;
         private bool _showSheetId;
         private int _framingSpacing;
+        //private string _name;
         private FramingSheetTypes _framingSheetType;
         public LevelWall Level { get; }
         public Guid Id { get; set; }
@@ -64,6 +65,8 @@ namespace AppModels.ResponsiveData.Framings
         {
             get
             {
+                //if (!string.IsNullOrEmpty(_name))
+                //    return _name;
                 if (ShowSheetId)
                 {
                     switch (FramingSheetType)
@@ -98,6 +101,7 @@ namespace AppModels.ResponsiveData.Framings
                     }
                 }
             }
+            //set=>  SetProperty(ref _name, value);
         }
         public string FloorName
         {

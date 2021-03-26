@@ -133,6 +133,7 @@
     <Compile Include="DrawingSaveJobEvent.cs" />
     <Compile Include="DynamicInputViewEvent.cs" />
     <Compile Include="EntityService.cs" />
+    <Compile Include="FramingSheetNameChanged.cs" />
     <Compile Include="HintViewerServices.cs" />
     <Compile Include="JobAddressService.cs" />
     <Compile Include="JobModelService.cs" />

@@ -139,8 +139,14 @@ namespace DrawingModule.ViewModels
             CanvasDrawingMouseEnter = new DelegateCommand(OnCanvasDrawingMouseEnter);
             this.EventAggregator.GetEvent<CommandExcuteStringEvent>().Subscribe(ExcuteCommand);
             this.EventAggregator.GetEvent<LevelNameService>().Subscribe(OnSelectedLevelChanged);
+            this.EventAggregator.GetEvent<FramingSheetNameChanged>().Subscribe(OnFramingSheetNameChanged);
             JobModel.PropertyChanged+= JobModelOnPropertyChanged;
             //this.EventAggregator.GetEvent<ScaleDrawingsChangedEvent>().Subscribe(OnDrawingScaleChanged);
+        }
+
+        private void OnFramingSheetNameChanged()
+        {
+            
         }
 
         private void JobModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -174,10 +180,15 @@ namespace DrawingModule.ViewModels
         {
             if (SelectedEntity is BlockReferenceVm blokcRef && blokcRef.Entity is BlockReference)
             {
-                var floorRef = _canvasDrawingView.GetFloorNameRef(_paperSpace.ActiveSheet);
+                var floorRef = _canvasDrawingView.GetFloorNameRef(_paperSpace.ActiveSheet);    
                 if (floorRef!=null && floorRef.Attributes.ContainsKey("Title"))
                 {
                     floorRef.Attributes["Title"].Value = floorName;
+                }
+                var floorQty = _canvasDrawingView.GetFloorQuantityRef(_paperSpace.ActiveSheet);
+                if(floorQty!=null && floorQty.Attributes.ContainsKey("Title"))
+                    {
+                    floorQty.Attributes["Title"].Value = floorName;
                 }
             }
             else

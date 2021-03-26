@@ -27,7 +27,7 @@ namespace AppModels.EntityCreator
             _framing2D = new OutTrigger2D(startPoint, endPoint, (OutTrigger)_framingReference,framing, thickness, flipped,
                 outSizeLength, inSizeLength);
             _framingReference.FullLength = (int)_framing2D.FullLength;
-            _framing2D.Color = Color.Brown;
+            _framing2D.Color = Color.FromArgb(255,127,0);
             _framing2D.ColorMethod = colorMethodType.byEntity;
             if (isCreatorA)
             {

@@ -233,6 +233,7 @@ namespace WallFrameInputModule.ViewModels
                 {
                     this.Level.FramingSheets.Remove(this.JobModel.ActiveFloorSheet);
                 }
+                this.JobModel.ActiveFloorSheet.PropertyChanged -= FloorSheet_PropertyChanged;
             }
         }
         
@@ -250,8 +251,18 @@ namespace WallFrameInputModule.ViewModels
             }
             floorSheet.Index = id;
             Level.FramingSheets.Add(floorSheet);
+            floorSheet.PropertyChanged += FloorSheet_PropertyChanged;
 
         }
+
+        private void FloorSheet_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+           if(e.PropertyName=="Name")
+            {
+                this.EventAggregator.GetEvent<FramingSheetNameChanged>().Publish();
+            }
+        }
+
         private void JobInfoPropertyChanged(object sender,PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(JobModel.Info.QuoteFloorFrame))

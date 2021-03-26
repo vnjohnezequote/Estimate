@@ -96,39 +96,41 @@ namespace AppModels.CustomEntity
             if(FramingReference.FramingType== FramingTypes.Fascia)
             {
                 Color = System.Drawing.Color.FromArgb(63,111,127);
+                return;
             }    
             else if(FramingReference.FramingType == FramingTypes.CeilingJoist)
             {
                 Color = System.Drawing.Color.FromArgb(0,127,0);
+                return;
             }    
             switch (thickness)
             {
                 case 35:
-                    if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                    if (FramingReference.FramingType == FramingTypes.FloorJoist || FramingReference.FramingType == FramingTypes.RafterJoist)
                     {
                         Color = System.Drawing.Color.FromArgb(255, 127, 159);
                     }
                     break;
                 case 45:
-                    if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                    if (FramingReference.FramingType == FramingTypes.FloorJoist || FramingReference.FramingType == FramingTypes.RafterJoist)
                     {
                         Color = System.Drawing.Color.FromArgb(82, 165, 0);
                     }
                     break;
                 case 50:
-                    if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                    if (FramingReference.FramingType == FramingTypes.FloorJoist || FramingReference.FramingType == FramingTypes.RafterJoist)
                     {
                         Color = System.Drawing.Color.White;
                     }
                     break;
                 case 63:
-                    if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                    if (FramingReference.FramingType == FramingTypes.FloorJoist || FramingReference.FramingType == FramingTypes.RafterJoist)
                     {
                         Color = System.Drawing.Color.FromArgb(0, 76, 0);
                     }
                     break;
                 case 90:
-                    if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                    if (FramingReference.FramingType == FramingTypes.FloorJoist || FramingReference.FramingType == FramingTypes.RafterJoist)
                     {
                         Color = System.Drawing.Color.FromArgb(0, 63, 255);
                     }

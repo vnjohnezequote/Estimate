@@ -174,7 +174,15 @@ namespace DrawingModule.Views
             }
             return null;
         }
-
+        public FloorQuantity GetFloorQuantityRef(Sheet sheet)
+        {
+            foreach (var sheetEntity in sheet.Entities)
+            {
+                if (sheetEntity is FloorQuantity floorQuantity)
+                    return floorQuantity;
+            }
+            return null;
+        }
         public VectorView GetVecterViewRef(Sheet sheet)
         {
             foreach (var entity in sheet.Entities)

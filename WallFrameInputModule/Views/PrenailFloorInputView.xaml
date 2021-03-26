@@ -612,6 +612,8 @@
                                 <ComboBox ItemsSource="{Binding FramingSpacings}"
                                           SelectedItem="{Binding ActiveFloorSheet.FramingSpacing}"
                                           Width="150"/>
+                                <!--<TextBox Text="{Binding ActiveFloorSheet.FloorName}" Width="150" Margin="5 0 0 0"/>-->
+                                         
                             </DockPanel>
                         </StackPanel>
                         <TextBlock Text="Joists"/>
