@@ -587,6 +587,74 @@ namespace DrawingModule.ViewModels
                  }
 
             }
+            if (e.PropertyName == "HangerAMat")
+            {
+                if(SelectedEntity is EntityContainhangerAndOutTriggerVm framingVm)
+                {
+                    foreach(var selecttedEntity in EntitiesManager.SelectedEntities)
+                    {
+                        if(selecttedEntity is IFraming2DContaintHangerAndOutTrigger && selecttedEntity is IEntityVmCreateAble vmCreateAble)
+                        {
+                            var entityVM = vmCreateAble.CreateEntityVm(EntitiesManager);
+                            if (entityVM is IFraming2DContainHangerAndOutTriggerVm frameVM)
+                            {
+                                frameVM.HangerAMat = framingVm.HangerAMat;
+                            }
+                        }
+                    }
+                }
+            }
+            if (e.PropertyName == "HangerBMat")
+            {
+                if (SelectedEntity is EntityContainhangerAndOutTriggerVm framingVm)
+                {
+                    foreach (var selecttedEntity in EntitiesManager.SelectedEntities)
+                    {
+                        if (selecttedEntity is IFraming2DContaintHangerAndOutTrigger && selecttedEntity is IEntityVmCreateAble vmCreateAble)
+                        {
+                            var entityVM = vmCreateAble.CreateEntityVm(EntitiesManager);
+                            if (entityVM is IFraming2DContainHangerAndOutTriggerVm frameVM)
+                            {
+                                frameVM.HangerBMat = framingVm.HangerBMat;
+                            }
+                        }
+                    }
+                }
+            }
+            if (e.PropertyName == "OutTriggerAMat")
+            {
+                if (SelectedEntity is EntityContainhangerAndOutTriggerVm framingVm)
+                {
+                    foreach (var selecttedEntity in EntitiesManager.SelectedEntities)
+                    {
+                        if (selecttedEntity is IFraming2DContaintHangerAndOutTrigger && selecttedEntity is IEntityVmCreateAble vmCreateAble)
+                        {
+                            var entityVM = vmCreateAble.CreateEntityVm(EntitiesManager);
+                            if (entityVM is IFraming2DContainHangerAndOutTriggerVm frameVM)
+                            {
+                                frameVM.OutTriggerAMat = framingVm.OutTriggerAMat;
+                            }
+                        }
+                    }
+                }
+            }
+            if (e.PropertyName == "OutTriggerBMat")
+            {
+                if (SelectedEntity is EntityContainhangerAndOutTriggerVm framingVm)
+                {
+                    foreach (var selecttedEntity in EntitiesManager.SelectedEntities)
+                    {
+                        if (selecttedEntity is IFraming2DContaintHangerAndOutTrigger && selecttedEntity is IEntityVmCreateAble vmCreateAble)
+                        {
+                            var entityVM = vmCreateAble.CreateEntityVm(EntitiesManager);
+                            if (entityVM is IFraming2DContainHangerAndOutTriggerVm frameVM)
+                            {
+                                frameVM.OutTriggerBMat = framingVm.OutTriggerBMat;
+                            }
+                        }
+                    }
+                }
+            }
             EntitiesManager?.Refresh();
         }
 

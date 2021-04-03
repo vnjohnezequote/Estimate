@@ -100,8 +100,11 @@ namespace DrawingModule.Views
                             br.Attributes["JobNo"].Value = _viewModel.JobModel.Info.JobNumber;
                             break;
                         case nameof(_viewModel.JobModel.Info.Customer):
-                            if (_viewModel.JobModel.Info.Client.Name == "StickFrame")
+                            if (_viewModel.JobModel.Info.Client.Name == "StickFrame" || _viewModel.JobModel.Info.QuoteFloorFrame)
                             {
+                                if (string.IsNullOrEmpty(_viewModel.JobModel.Info.Customer))
+                                    br.Attributes["Client"].Value = "";
+                                else
                                 br.Attributes["Client"].Value = _viewModel.JobModel.Info.Customer;
                             }
                             break;

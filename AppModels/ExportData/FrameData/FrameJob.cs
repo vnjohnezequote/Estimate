@@ -221,11 +221,11 @@ namespace AppModels.ExportData.FrameData
                 table.SetStyleName(startIndex,0, "TotalHeader");
                 if (isFillTotalLength)
                 {
-                    table.SetTextString(startIndex, 4, totalLength.ToString("0.0"));
+                    table.SetTextString(startIndex, 4, totalLength.ToString("0.00"));
                 }
                 else
                 {
-                    table.SetTextString(startIndex, 4, "0.0");
+                    table.SetTextString(startIndex, 4, "0.00");
                 }
                 
                 startIndex+=2;
@@ -261,11 +261,11 @@ namespace AppModels.ExportData.FrameData
                 table.SetTextString(startIndex, 1, frame.Material);
                 table.SetTextString(startIndex, 2, frame.Quantity.ToString());
                 //var length = frame.Length.ToString("0.0");
-                table.SetTextString(startIndex, 3, frame.Length.ToString("0.0"));
+                table.SetTextString(startIndex, 3, frame.Length.ToString("0.00"));
                 var totalLength = frame.Quantity * frame.Length;
                 if (isFilltotalQty)
                 {
-                    table.SetTextString(startIndex, 4, frame.TotalLength.ToString("0.0"));
+                    table.SetTextString(startIndex, 4, frame.TotalLength.ToString("0.00"));
                 }
                 sumtotalLength += frame.TotalLength;
                 startIndex++;

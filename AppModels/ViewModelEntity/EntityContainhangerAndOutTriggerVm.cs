@@ -163,7 +163,7 @@ namespace AppModels.ViewModelEntity
                 {
                     ((Hanger)HangerB.FramingReference).HangerMaterial = value;
                 }
-                RaisePropertyChanged(nameof(HangerAMat));
+                RaisePropertyChanged(nameof(HangerBMat));
             }
         }
         public OutTrigger2D OutTriggerA

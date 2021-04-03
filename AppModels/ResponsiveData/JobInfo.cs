@@ -153,6 +153,7 @@ namespace AppModels.ResponsiveData
                         return;
                     case 1:
                         JobAddress = jobAddresses[0];
+                        SubAddress = "";
                         return;
                     case 2:
                         JobAddress = jobAddresses[0];
