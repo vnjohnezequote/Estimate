@@ -11,7 +11,7 @@ namespace AppModels.ViewModelEntity
         {
             get
             {
-                if (Entity is Hanger2D hanger)
+                if (Entity is Hanger2D hanger && hanger.FramingReference !=null)
                 {
                     return ((Hanger)hanger.FramingReference).HangerMaterial;
                 }
@@ -20,13 +20,11 @@ namespace AppModels.ViewModelEntity
             }
             set
             {
-                if (Entity is Hanger2D hanger)
+                if (Entity is Hanger2D hanger && hanger.FramingReference!=null)
                 {
                     ((Hanger)hanger.FramingReference).HangerMaterial = value;
                     RaisePropertyChanged(nameof(Material));
                 }
-
-                
             }
         }
 
@@ -34,7 +32,7 @@ namespace AppModels.ViewModelEntity
         {
             get
             {
-                if (Entity is Hanger2D hanger)
+                if (Entity is Hanger2D hanger && hanger.FramingReference!=null)
                 {
                     return hanger.FramingReference.Name;
                 }
@@ -43,7 +41,7 @@ namespace AppModels.ViewModelEntity
             }
             set
             {
-                if (Entity is Hanger2D hanger) 
+                if (Entity is Hanger2D hanger && hanger.FramingReference!=null) 
                 {
                     if (value == hanger.FramingReference.Name)
                     {
@@ -60,7 +58,7 @@ namespace AppModels.ViewModelEntity
         {
             get
             {
-                if (Entity is Hanger2D hanger)
+                if (Entity is Hanger2D hanger && hanger.FramingReference!=null)
                 {
                     return hanger.FramingReference.SubFixIndex;
                 }
@@ -69,7 +67,7 @@ namespace AppModels.ViewModelEntity
             }
             set
             {
-                if (Entity is Hanger2D hanger)
+                if (Entity is Hanger2D hanger && hanger.FramingReference!=null)
                 {
                     hanger.FramingReference.SubFixIndex = value;
                     RaisePropertyChanged(nameof(SubFixIndex));
@@ -82,7 +80,7 @@ namespace AppModels.ViewModelEntity
         { 
             get
             {
-                if (Entity is Hanger2D hanger)
+                if (Entity is Hanger2D hanger && hanger.FramingReference!=null)
                 {
                     return hanger.FramingReference.Index;
                 }
@@ -91,7 +89,7 @@ namespace AppModels.ViewModelEntity
             }
             set
             {
-                if (Entity is Hanger2D hanger)
+                if (Entity is Hanger2D hanger && hanger.FramingReference!=null)
                 {
                     hanger.FramingReference.Index = value;
                     RaisePropertyChanged(nameof(Index));

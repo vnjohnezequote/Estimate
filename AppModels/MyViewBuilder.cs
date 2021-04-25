@@ -485,7 +485,7 @@ namespace AppModels
                     case Line wallLine:
                         var line = (Line)wallLine.Clone();
 
-                        if (line.Color == Color.White)
+                        if (line.Color == Color.White|| line.Color == Color.Snow || line.LayerName == "LBW")
                         {
                             line.Color = Color.Black;
                             line.ColorMethod = colorMethodType.byEntity;

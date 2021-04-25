@@ -124,6 +124,7 @@
     <Compile Include="DrawingTools\DrawLinearDim.cs" />
     <Compile Include="DrawingTools\DrawWall.cs" />
     <Compile Include="DrawingTools\MTextTool.cs" />
+    <Compile Include="EditingTools\ClearFramingReference.cs" />
     <Compile Include="EditingTools\ConvertToWall2D.cs" />
     <Compile Include="EditingTools\CopyTool.cs" />
     <Compile Include="EditingTools\CreateJoistName.cs" />

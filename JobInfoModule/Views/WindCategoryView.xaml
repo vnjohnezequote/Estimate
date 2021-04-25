@@ -17,35 +17,43 @@
     <!--<ContentControl prism:RegionManager.RegionManager="{Binding RegionManager}"
             prism:RegionManager.RegionName="WindRegion"/>-->
     <StackPanel>
-        <ComboBox Margin="0 10 0 0" x:Name="WindRateCombobox"
+        <DockPanel>
+            <TextBlock Text="Wind Rate"/>
+            <ComboBox Margin="0 10 0 0" x:Name="WindRateCombobox"
                       materialDesign:HintAssist.Hint="WindRate"
                       HorizontalAlignment="Stretch"
                       ItemsSource="{Binding WindRates}"
                       SelectedItem="{Binding JobInfo.WindRate}"
                       SelectedValue="{Binding JobInfo.WindRate}"
                       materialDesign:TextFieldAssist.HasClearButton="True"
-                      materialDesign:TextFieldAssist.HasOutlinedTextField="True">
+                      materialDesign:TextFieldAssist.HasOutlinedTextField="True"/>
+        </DockPanel>
+        
             <!--<interactions:Interaction.Triggers>
                 <interactions:EventTrigger EventName="LostFocus">
                     <interactions:InvokeCommandAction	Command="{Binding BuilderNameLostFocusCommand}"
                                                         CommandParameter="{Binding ElementName=BuiderNameComboBox}"/>
                 </interactions:EventTrigger>
-            </interactions:Interaction.Triggers>-->
-        </ComboBox>
-        <ComboBox Margin="0 10 0 0" x:Name="TreatmentCombobox"
+            </interactions:Interaction.Triggers>
+        </ComboBox>-->
+        <DockPanel>
+            <TextBlock Text="Treatment"/>
+            <ComboBox Margin="0 10 0 0" x:Name="TreatmentCombobox"
                       materialDesign:HintAssist.Hint="Treatment"
                       HorizontalAlignment="Stretch"
                       ItemsSource="{Binding Treatments}"
                       SelectedItem="{Binding JobInfo.Treatment}"
                       SelectedValue="{Binding JobInfo.Treatment}"
                       materialDesign:TextFieldAssist.HasClearButton="True"
-                      materialDesign:TextFieldAssist.HasOutlinedTextField="True">
+                      materialDesign:TextFieldAssist.HasOutlinedTextField="True"/>
+        </DockPanel>
+        
             <!--<interactions:Interaction.Triggers>
                 <interactions:EventTrigger EventName="LostFocus">
                     <interactions:InvokeCommandAction	Command="{Binding BuilderNameLostFocusCommand}"
                                                         CommandParameter="{Binding ElementName=BuiderNameComboBox}"/>
                 </interactions:EventTrigger>
-            </interactions:Interaction.Triggers>-->
-        </ComboBox>
+            </interactions:Interaction.Triggers>
+        </ComboBox>-->
     </StackPanel>
 </UserControl>

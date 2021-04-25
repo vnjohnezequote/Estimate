@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows;
 using ApplicationCore.BaseModule;
 using ApplicationInterfaceCore;
@@ -292,8 +293,7 @@ namespace DrawingModule.ViewModels
             if (e.PropertyName != "SelectedEntity") return;
             if (EntitiesManager.SelectedEntity != null)
             {
-                var objectEntity = EntitiesManager.SelectedEntity;
-                this.SelectedEntity = objectEntity;
+                this.SelectedEntity = EntitiesManager.SelectedEntity;
                 this.SelectedEntity.PropertyChanged += SelectedEntity_PropertyChanged;
                 GeneralTimberList();
                 GeneralEngineerList();
@@ -308,6 +308,7 @@ namespace DrawingModule.ViewModels
 
         private void SelectedEntity_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+         
             if (e.PropertyName == "WallLevelName")
             {
                 if (EntitiesManager != null)
@@ -354,7 +355,27 @@ namespace DrawingModule.ViewModels
                     }
                 }
             }
-
+            if (e.PropertyName == "LayerName")
+            {
+                foreach(var entity in EntitiesManager.SelectedEntities)
+                {
+                    entity.LayerName = SelectedEntity.LayerName;
+                }
+            }
+            if (e.PropertyName== "ColorMethod")
+            {
+                foreach(var entity in EntitiesManager.SelectedEntities)
+                {
+                    entity.ColorMethod = SelectedEntity.ColorMethod;
+                }
+            }
+            if (e.PropertyName == "Color")
+            {
+                foreach (var entity in EntitiesManager.SelectedEntities)
+                {
+                    entity.Color = (Color)SelectedEntity.Color;
+                }
+            }
             if (e.PropertyName == "BeamGrade" || e.PropertyName == "OutTriggerBGrade" || e.PropertyName == "OutTriggerAGrade")
             {
                 GeneralTimberList();

@@ -603,13 +603,15 @@
                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                     <StackPanel Grid.Column="2">
                         <StackPanel Margin="10 0 0 10">
-                            <DockPanel Width="500" HorizontalAlignment="Left">
+                            <DockPanel HorizontalAlignment="Left">
                                 <TextBlock Text="Sheet Name" VerticalAlignment="Center"/>
                                 <ComboBox ItemsSource="{Binding Source={StaticResource FramingSheetTypes}}"
                                           SelectedItem="{Binding ActiveFloorSheet.FramingSheetType}"
                                           Width="150"/>
-                                <TextBox Text="{Binding ActiveFloorSheet.Index}" Width="150" Margin="5 0 0 0"/>
-                                <ComboBox ItemsSource="{Binding FramingSpacings}"
+                            <TextBlock Text="Sheet Number"/>
+                            <TextBox Text="{Binding ActiveFloorSheet.Index}" Width="150" Margin="5 0 0 0"/>
+                            <TextBlock Text="Blocking Length"/>
+                            <ComboBox ItemsSource="{Binding FramingSpacings}"
                                           SelectedItem="{Binding ActiveFloorSheet.FramingSpacing}"
                                           Width="150"/>
                                 <!--<TextBox Text="{Binding ActiveFloorSheet.FloorName}" Width="150" Margin="5 0 0 0"/>-->

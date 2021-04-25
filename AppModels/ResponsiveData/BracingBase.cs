@@ -50,8 +50,8 @@ namespace AppModels.ResponsiveData
         /// <summary>
         /// The size.
         /// </summary>
-        public string Size => this.Height + "x" + this.Width;
-        
+        //public string Size => this.Height + "x" + this.Width;
+        public string Size => $"{Height} x {Width}";
         /// <summary>
         /// Gets or sets the thickness.
         /// </summary>

@@ -210,6 +210,8 @@ namespace DrawingModule.Views
                     ReloadFramingReferenceForLayout();
                     ReloadBlockingForBeamLayout();
                     ReloadFramingNameForLayOut();
+                    //Remove all Entities does not have Framing Reference available
+                    RemoveAllEntitiesDoesNotHaveFramingReference();
                 }
             }
             catch (Exception exception)
@@ -218,6 +220,22 @@ namespace DrawingModule.Views
                 Logger.None.Error(exception,"Can not open Job File");
                 throw;
             }
+        }
+       private void RemoveAllEntitiesDoesNotHaveFramingReference()
+        {
+            var i = 0;
+            var entitiesManager = this._drawingWindowViewModel.EntitiesManager;
+            while (i < entitiesManager.Entities.Count)
+            {
+                var entity = entitiesManager.Entities[i];
+                if (entity is IFraming2D framing2D && framing2D.FramingReference == null)
+                    entitiesManager.Entities.Remove(entity);
+                else if (entity is FramingNameEntity framingName && framingName.FramingReference == null)
+                    entitiesManager.Entities.Remove(entity);
+                else
+                    i++;
+            }
+            entitiesManager.EntitiesRegen();
         }
         private void ReloadBlockingForBeamLayout()
         {

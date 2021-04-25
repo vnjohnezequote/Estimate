@@ -371,6 +371,8 @@ namespace AppDataBase.DataBase
         }
         private void AddFraming2D(IFraming2D framing2D, bool isAddExtension = true, bool isGeneralFramingName = true)
         {
+            if (framing2D.FramingReference == null)
+                return;
             var framingSheet = framing2D.FramingReference.FramingSheet;
             if (framing2D is OutTrigger2D outtrigger)
             {
@@ -400,32 +402,32 @@ namespace AppDataBase.DataBase
             {
                 if (framing2D is FramingRectangleContainHangerAndOutTrigger framing && framing.FramingReference != null && framing.FramingReference.FramingSheet != null)
                 {
-                    if (framing.FramingName != null)
+                    if (framing.FramingName != null && framing.FramingName.FramingReference!=null)
                     {
                         framing.FramingName.LayerName = framing2D.LayerName;
                         Entities.Insert(0, framing.FramingName);
                     }
-                    if (framing.HangerA != null)
+                    if (framing.HangerA != null && framing.HangerA.FramingReference!=null)
                     {
                         Entities.Insert(0, framing.HangerA);
                         framingSheet.Hangers.Add((Hanger)framing.HangerA.FramingReference);
                         Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
 
                     }
-                    if (framing.HangerB != null)
+                    if (framing.HangerB != null && framing.FramingReference!=null)
                     {
                         Entities.Insert(0, framing.HangerB);
                         framingSheet.Hangers.Add((Hanger)framing.HangerB.FramingReference);
                         Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
                     }
 
-                    if (framing.OutTriggerA!=null)
+                    if (framing.OutTriggerA!=null&&framing.OutTriggerA.FramingReference!=null)
                     {
                         Entities.Insert(0,framing.OutTriggerA);
                         framingSheet.OutTriggers.Add(framing.OutTriggerA.FramingReference);
                         Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
                     }
-                    if (framing.OutTriggerB != null)
+                    if (framing.OutTriggerB != null && framing.OutTriggerB.FramingReference!=null)
                     {
                         Entities.Insert(0, framing.OutTriggerB);
                         framingSheet.OutTriggers.Add(framing.OutTriggerB.FramingReference);

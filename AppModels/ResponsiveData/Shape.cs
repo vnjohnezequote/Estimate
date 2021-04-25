@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Prism.Mvvm;
+using System;
 
 namespace AppModels.ResponsiveData
 {
@@ -21,6 +22,7 @@ namespace AppModels.ResponsiveData
         /// </summary>
         private int _width;
 
+        
         /// <summary>
         /// The height.
         /// </summary>

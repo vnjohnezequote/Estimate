@@ -510,12 +510,12 @@ namespace WallFrameInputModule.ViewModels
 
         private void ExportPrenailData()
         {
-            if (!CheckJobInfo(out var message))
-            {
-                MessageBox.Show(message);
+            //if (!CheckJobInfo(out var message))
+            //{
+            //    MessageBox.Show(message);
 
-                return;
-            }
+            //    return;
+            //}
             var excel = new Excel.Application();
             
             var workbook = excel.Workbooks.Open(System.AppDomain.CurrentDomain.BaseDirectory + "PrenailTemplate.xlsm");

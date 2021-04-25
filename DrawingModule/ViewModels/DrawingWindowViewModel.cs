@@ -189,7 +189,7 @@ namespace DrawingModule.ViewModels
             ExportDWGCommand = new DelegateCommand(this.OnExportDWG);
             ImportDWGCommand = new DelegateCommand(this.OnImportDWG);
             
-            SaveCommand = new DelegateCommand(this.OnSaveDrawing);
+            SaveCommand = new DelegateCommand(this.SaveJob);
             OpenCommand = new DelegateCommand(this.OnOpenDrawing);
             EventAggregator.GetEvent<OpenJobEvent>().Subscribe(OnOpenDrawingEventSubcribe);
             EventAggregator.GetEvent<AutoSaveDrawingEvent>().Subscribe(OnAutoSaveDrawing);
@@ -226,7 +226,12 @@ namespace DrawingModule.ViewModels
             // LastPropertyPanelWidth = 0;
 
         }
+        
 
+        //private void OnSaveButtorPressed()
+        //{
+        //    //EventAggregator
+        //}
         private void _drawingModel_WorkCompleted(object sender, WorkCompletedEventArgs e)
         {
             if (_isSaving)

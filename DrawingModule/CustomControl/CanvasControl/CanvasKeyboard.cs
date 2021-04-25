@@ -151,7 +151,7 @@ namespace DrawingModule.CustomControl.CanvasControl
                                 outriggerController.RemoveOutTriggerA();
                                 outriggerController.RemoveOutTriggerB();
                             }
-                            if (entitiesManagerSelectedEntity is Joist2D joist)
+                            if (entitiesManagerSelectedEntity is Joist2D joist && joist.FramingReference != null)
                             {
                                 var activesheet = joist.FramingReference.FramingSheet;
                                 if (activesheet.Joists.Contains(joist.FramingReference))
