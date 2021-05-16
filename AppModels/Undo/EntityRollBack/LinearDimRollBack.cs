@@ -8,7 +8,7 @@ using devDept.Geometry;
 
 namespace AppModels.Undo.EntityRollBack
 {
-    public class LinearDimRollBack: RollBackEntity
+    public class LinearDimRollBack: DimensionRollBack
     {
         private bool _showExtLine2;
         private bool _showExtLine1;

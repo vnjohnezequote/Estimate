@@ -161,6 +161,7 @@ namespace AppModels.ResponsiveData.Framings
         }
         private void LoadHangers(List<HangerPoco> hangers, List<HangerMat> hangerMats)
         {
+            if(hangerMats == null) return;
             foreach (var hangerPoco in hangers)
             {
                 HangerMat hangerMat = null;

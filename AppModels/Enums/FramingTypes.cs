@@ -24,6 +24,7 @@
         Hanger,
         TieDown,
         SteelBeam,
-        DeckRoofBeam
+        DeckRoofBeam,
+        DeckBeam
     }
 }

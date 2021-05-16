@@ -103,7 +103,7 @@ namespace AppModels.ExportData.FrameData
                     preName = "Rimbard";
                     break;
                 case FramingTypes.HipRafter:
-                    preName = "Roof Beam";
+                    preName = "HiprRafter";
                     break;
                 case FramingTypes.TrussBeam:
                     preName = "Roof Beam";
@@ -124,8 +124,22 @@ namespace AppModels.ExportData.FrameData
                     preName = IsDouble ? "Double Deck Joist" : "Deck Joist";
                     
                     break;
+                case FramingTypes.LintelBeam:
+                    preName = "Lintel Beam";
+                    break;
+                case FramingTypes.SteelBeam:
+                    preName = "Steel Beam";
+                    break;
+                case FramingTypes.DeckBeam:
+                    preName = "Deck Beam";
+                    break;
+                case FramingTypes.DeckRoofBeam:
+                    preName = "Deck Roof Beam";
+                    break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    preName = "";
+                    break;
+                    
             }
 
             FullName = preName + " (" + Name + ")";
