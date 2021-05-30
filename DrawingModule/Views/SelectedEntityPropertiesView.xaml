@@ -181,9 +181,9 @@
                 <TextBlock Text="Show Beam Name Only"  />
                 <CheckBox IsChecked="{Binding SelectedEntity.ShowBeamNameOnly, Mode=TwoWay}"/>
             </DockPanel>
-            <DockPanel Visibility="{Binding FramingBaseVisibility}" HorizontalAlignment="Stretch">
+            <DockPanel Visibility="{Binding FramingNameVisibility}" HorizontalAlignment="Stretch">
                 <TextBlock Text="Name" VerticalAlignment="Bottom" />
-                <TextBox Text="{Binding SelectedEntity.Name}" Width="300" />
+                <TextBox Text="{Binding SelectedEntity.Name}" Width="300" IsReadOnly="True"/>
                 <TextBox Text="{Binding SelectedEntity.Index}" materialDesign:HintAssist.Hint="Index" Width="70" Margin="15 0 0 0"/>
                 <TextBox Text="{Binding SelectedEntity.SubFixIndex}" materialDesign:HintAssist.Hint="SubFix Index" Margin="15 0 0 0"/>
             </DockPanel>
@@ -367,10 +367,10 @@
                 <TextBlock Text="Is Rotate"/>
                 <CheckBox IsChecked="{Binding SelectedEntity.IsRotateBlocking}"/>
             </DockPanel>
-            <DockPanel>
+            <!--<DockPanel>
                 <Button Content="Select Joist"/>
                 <TextBlock Text="{Binding SelectedEntity.FramingName}"/>
-            </DockPanel>
+            </DockPanel>-->
         </StackPanel>
     </Grid>
 

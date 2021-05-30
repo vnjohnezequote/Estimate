@@ -11,7 +11,7 @@ using devDept.Serialization;
 
 namespace AppModels.CustomEntity
 {
-    public sealed class FramingNameEntity : Text,ICloneAbleToUndo
+    public sealed class FramingNameEntity : Text,IDependencyUndoEntity
     {
         private IFraming _framingReference;
         public IFraming FramingReference
@@ -68,11 +68,14 @@ namespace AppModels.CustomEntity
         {
             if (FramingReference.FramingInfo != null)
             {
-                if (FramingReference.FramingType == FramingTypes.FloorJoist)
+                if (FramingReference.FramingType == FramingTypes.FloorJoist || FramingReference.FramingType == FramingTypes.RafterJoist)
                 {
                     var thickness = FramingReference.FramingInfo.Depth * FramingReference.FramingInfo.NoItem;
                     switch (thickness)
                     {
+                        case 35:
+                            Color = System.Drawing.Color.FromArgb(255, 127, 159);
+                            break;
                         case 45:
                             this.Color = System.Drawing.Color.FromArgb(82, 165, 0);
                             break;
@@ -99,7 +102,9 @@ namespace AppModels.CustomEntity
         }
         private void FramingReferenceOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(FramingReference.Name))
+            if (e.PropertyName == nameof(FramingReference.Name) 
+                || e.PropertyName==nameof(FramingReference.Index)
+                ||e.PropertyName==nameof(FramingReference.NamePrefix))
             {
                 SetFramingName();
             }
@@ -125,6 +130,25 @@ namespace AppModels.CustomEntity
             var framingNameEntity = new FramingNameEntity(this,true);
             framingNameEntity.Id = this.Id;
             return framingNameEntity;
+        }
+
+        public void RollBackDependency(UndoList undoItem,IEntitiesManager entitiesManager)
+        {
+            if (undoItem.DependencyEntitiesDictionary.TryGetValue(this,
+                                 out var dependencyEntity))
+            {
+                if (dependencyEntity is FramingRectangleContainHangerAndOutTrigger framing)
+                {
+                    framing.FramingName = this;
+                    framing.FramingNameId = Id;
+                    framing.IsShowFramingName = true;
+                }
+
+                if (dependencyEntity is JoistArrowEntity joistArrow)
+                {
+                    entitiesManager.AddAndRefresh(joistArrow, joistArrow.LayerName);
+                }
+            }
         }
     }
 }

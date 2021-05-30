@@ -11,6 +11,8 @@ using ApplicationService;
 using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -110,6 +112,7 @@ namespace AppAddons.EditingTools
 
         protected override void ProcessEntities()
         {
+            var undoItem = new UndoList() { ActionType = ActionTypes.Edit };
             var vector1 = new Vector2D(BasePoint,_refPoint2);
             vector1.Normalize();
             var vector2 = new Vector2D(BasePoint, _endPoint);
@@ -118,9 +121,12 @@ namespace AppAddons.EditingTools
             this._currentAngle = angle;
             foreach (var selEntity in this.SelectedEntities)
             {
+                var backup = BackupEntitiesFactory.CreateBackup(selEntity, undoItem, EntitiesManager);
+                backup?.Backup();
                 selEntity.Rotate(_currentAngle, Vector3D.AxisZ, _clickPoints[0]);
             }
-            EntitiesManager.Refresh();
+            this.UndoEngineer.SaveSnapshot(undoItem);
+            EntitiesManager.EntitiesRegen();
             CurrentAngle = 0;
         }
         public override void OnJigging(object sender, DrawInteractiveArgs e)

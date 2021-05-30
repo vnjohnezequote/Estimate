@@ -57,8 +57,7 @@ namespace AppModels.CustomEntity
         }
         public Guid? FramingNameId { get; set; }
         public bool IsShowFramingName { get; set; }
-        public FramingNameEntity FramingName { get; set; }
-
+        
         public List<FramingRectangleContainHangerAndOutTrigger> ConectedFramings =
             new List<FramingRectangleContainHangerAndOutTrigger>();
         #endregion

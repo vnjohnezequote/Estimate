@@ -15,7 +15,7 @@ using devDept.Serialization;
 
 namespace AppModels.CustomEntity
 {
-    public sealed class Hanger2D: Text,IEntityVmCreateAble,IFraming2D,ICloneAbleToUndo
+    public sealed class Hanger2D: Text,IEntityVmCreateAble,IFraming2D,IDependencyUndoEntity
     {
         private IFraming _framingReference;
         public Guid FramingSheetId { get; set; }
@@ -44,6 +44,7 @@ namespace AppModels.CustomEntity
             LevelId = reference.LevelId;
             FramingSheetId = reference.FramingSheetId;
             FramingReference = reference;
+            FramingReferenceId = reference.Id;
             this.TextString = reference.Name;
             Color = Color.FromArgb(127,127,63);
             Framing2D = framing2D;
@@ -73,7 +74,7 @@ namespace AppModels.CustomEntity
             {
                 RegenerationHangeName();
             }
-            if (e.PropertyName == nameof(FramingReference.Name))
+            if (e.PropertyName == nameof(FramingReference.Name) || e.PropertyName == nameof(FramingReference.Index))
             {
                 TextString = FramingReference.Name;
             }
@@ -142,6 +143,19 @@ namespace AppModels.CustomEntity
         public override Object Clone()
         {
             return new Hanger2D(this);
+        }
+
+        public void RollBackDependency(UndoList undoItem, IEntitiesManager entitiesManager)
+        {
+            var i = undoItem.EditedEntities.Count - 1;
+            while(i>-1)
+            {
+                var rollBackEntitiy = undoItem.EditedEntities[i];
+                rollBackEntitiy.Undo();
+                i--;
+            }
+           
+            
         }
     }
 }

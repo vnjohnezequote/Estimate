@@ -15,7 +15,7 @@ using Attribute = devDept.Eyeshot.Entities.Attribute;
 namespace AppModels.CustomEntity
 {
     [Serializable]
-    public class BeamEntity : BlockReference, IFraming2D,IEntityVmCreateAble,ICloneAbleToUndo
+    public class BeamEntity : BlockReference, IFraming2D,IEntityVmCreateAble,IDependencyUndoEntity
     {
 
         private IFraming _framingReference;
@@ -694,9 +694,14 @@ namespace AppModels.CustomEntity
             return new BeamEntity(this);
             //return base.Clone();
         }
-       //public void SetFramingType(FramingTypes framingType)
-       // {
-       //     FramingType = framingType;
-       // }
+
+        public void RollBackDependency(UndoList undoItem, IEntitiesManager entitiesManager)
+        {
+           
+        }
+        //public void SetFramingType(FramingTypes framingType)
+        // {
+        //     FramingType = framingType;
+        // }
     }
 }

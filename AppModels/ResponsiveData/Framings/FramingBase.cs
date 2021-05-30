@@ -336,6 +336,7 @@ namespace AppModels.ResponsiveData.Framings
             TimberGrade = framingPoco.TimberGrade;
             EngineerMember = InitEngineerInfo(framingPoco, engineerMembers);
             FramingInfo = InitFramingInfo(framingPoco, timberList);
+            Quantity = framingPoco.Quantity;
         }
         #endregion
 

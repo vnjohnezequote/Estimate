@@ -12,7 +12,7 @@ using devDept.Serialization;
 namespace AppModels.CustomEntity
 {
     [Serializable]
-    public class DoorCountEntity: Text, IEntityVmCreateAble,ICloneAbleToUndo
+    public class DoorCountEntity: Text, IEntityVmCreateAble,IDependencyUndoEntity
     {
         private Opening _doorReference;
         private string _levelName;
@@ -137,6 +137,11 @@ namespace AppModels.CustomEntity
         public override EntitySurrogate ConvertToSurrogate()
         {
             return new DoorCountEntitySurrogate(this);
+        }
+
+        public void RollBackDependency(UndoList undoItem, IEntitiesManager entitiesManager)
+        {
+            
         }
     }
 }

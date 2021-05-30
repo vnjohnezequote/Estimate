@@ -1,11 +1,14 @@
 ﻿using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.ResponsiveData;
+using AppModels.ResponsiveData.EngineerMember;
 using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot.Entities;
 
 namespace AppModels.ViewModelEntity
 {
-    public class Hanger2DVm: EntityVmBase
+    public class Hanger2DVm: EntityVmBase,IFraming2DVmContainName
     {
         public HangerMat Material
         {
@@ -97,9 +100,12 @@ namespace AppModels.ViewModelEntity
             }
         }
 
+        public IEntitiesManager EntitiesManager { get; }
+        
 
         public Hanger2DVm(IEntity entity,IEntitiesManager entityManager) : base(entity)
         {
+            EntitiesManager = entityManager;
         }
     }
 }

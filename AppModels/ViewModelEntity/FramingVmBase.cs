@@ -151,6 +151,7 @@ namespace AppModels.ViewModelEntity
                 {
                     framing.FramingReference.Index = value;
                     RaisePropertyChanged(nameof(Index));
+                    RaisePropertyChanged(nameof(Name));
                 }
 
             }
@@ -172,6 +173,7 @@ namespace AppModels.ViewModelEntity
                 {
                     framing.FramingReference.SubFixIndex = value;
                     RaisePropertyChanged(nameof(SubFixIndex));
+                    RaisePropertyChanged(nameof(Name));
                 }
             }
         }

@@ -53,7 +53,6 @@ namespace AppModels.ResponsiveData.Openings
                 SetProperty(ref _name, value);
             }
         }
-
         public string NamePrefix => "H";
         public int SubFixIndex
         {

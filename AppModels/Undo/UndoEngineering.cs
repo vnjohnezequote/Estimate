@@ -56,24 +56,10 @@ namespace AppModels.Undo
                     {
                         removeEntity.Selected = false;
                         _entitiesMangager.AddAndRefresh(removeEntity, removeEntity.LayerName);
-                        if (removeEntity is FramingNameEntity framingName)
+                        
+                        if (removeEntity is IDependencyUndoEntity dependRollBack)
                         {
-                            if (undoItem.DependencyEntitiesDictionary.TryGetValue(framingName,
-                                out var dependencyEntity))
-                            {
-                                if (dependencyEntity is FramingRectangleContainHangerAndOutTrigger framing)
-                                {
-                                    framing.FramingName = framingName;
-                                    framing.FramingNameId = framingName.Id;
-                                    framing.IsShowFramingName = true;
-                                }
-
-                                if (dependencyEntity is JoistArrowEntity joistArrow)
-                                {
-                                    _entitiesMangager.AddAndRefresh(joistArrow,joistArrow.LayerName);
-                                }
-                            }
-
+                            dependRollBack.RollBackDependency(undoItem,_entitiesMangager);
                         }
                     }
                     break;

@@ -40,7 +40,6 @@ namespace AppAddons.DrawingTools
         {
 
             var acDoc = DrawingModule.Application.Application.DocumentManager.MdiActiveDocument;
-            
             while (true)
             {
                 if (JobModel.ActiveFloorSheet == null)
@@ -48,30 +47,39 @@ namespace AppAddons.DrawingTools
                     ToolMessage = "Please select Floor Sheet before run Joist/Rafter";
                     continue;
                 }
-                ToolMessage = "Please Select first line";
                 var promptLineOption = new PromptSelectionOptions();
-                var result = acDoc.Editor.GetSelection(promptLineOption);
-                if (result.Status == PromptStatus.OK)
+                PromptSelectionResult result = null;
+                while(_firstLineForRunJoist == null)
                 {
-                    if(result.Value is Line line)
-                    this._firstLineForRunJoist= line;
+                    ToolMessage = "Please Select First line to Run Joist";
+                    result = acDoc.Editor.GetSelection(promptLineOption);
+                    if (result.Status == PromptStatus.OK)
+                    {
+                        if (result.Value is Line line)
+                            this._firstLineForRunJoist = line;
+                        else continue;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                else
+                while (_secondLineForRunJoist == null)
                 {
-                    return;
+                    ToolMessage = "Please Select Second line";
+                    result = acDoc.Editor.GetSelection(promptLineOption);
+                    if (result.Status == PromptStatus.OK)
+                    {
+                        if (result.Value is Line line)
+                            this._secondLineForRunJoist = line;
+                        else continue;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-
-                ToolMessage = "Please Select Second line";
-                result = acDoc.Editor.GetSelection(promptLineOption);
-                if (result.Status == PromptStatus.OK)
-                {
-                    if(result.Value is Line line)
-                    this._secondLineForRunJoist = line;
-                }
-                else
-                {
-                    return;
-                }
+                
 
                 if (!IsTwoLineParallel(_firstLineForRunJoist,_secondLineForRunJoist))
                 {
@@ -81,8 +89,6 @@ namespace AppAddons.DrawingTools
                 _waitingForSelection = false;
 
                 var firstLine = GetFirstRunLine(_firstLineForRunJoist, _secondLineForRunJoist);
-
-
 
                 _secondLineForRunJoist.Project(_firstLineForRunJoist.MidPoint,out var distance);
                 var projectPoint = _secondLineForRunJoist.PointAt(distance);

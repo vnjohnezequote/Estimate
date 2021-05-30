@@ -101,7 +101,7 @@ namespace AppAddons.EditingTools
             if (e.Key == Key.Escape)
             {
                 this._processingTool = false;
-                e.Handled = true;
+                e.Handled = false;
             }
         }
 

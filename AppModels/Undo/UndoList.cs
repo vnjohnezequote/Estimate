@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using devDept.Eyeshot.Entities;
+using AppModels.Undo.Backup.BackupEntity;
 
 namespace AppModels.Undo
 {
@@ -16,6 +17,7 @@ namespace AppModels.Undo
         public List<IRollBackEntity> EditedEntities = new List<IRollBackEntity>();
         public Dictionary<Entity,Entity> RemoveAndAddDictionary= new Dictionary<Entity, Entity>();
         public Dictionary<Entity, Entity> DependencyEntitiesDictionary = new Dictionary<Entity, Entity>();
+        //public Dictionary<Entity, RollBackBackupEntities> OriginalRestoringDictionnary = new Dictionary<Entity, RollBackBackupEntities>();
 
     }
 }

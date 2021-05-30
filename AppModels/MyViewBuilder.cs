@@ -289,6 +289,8 @@ namespace AppModels
                     //drawingsBlock.Entities.Regen();
                 }
             }
+            if (drawings.Entities.Count == 0)
+                return;
             drawings.Entities.Regen();
         }
 

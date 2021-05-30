@@ -254,12 +254,14 @@
     <Compile Include="Factories\WallLayerFactory.cs" />
     <Compile Include="FileSerializer\EzequoteFileSerializer.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Interaface\IFraming2DVmContainName.cs" />
     <Compile Include="Undo\Backup\AddAndRemoveBackupFactory.cs" />
     <Compile Include="Undo\Backup\AddNewBackupFactory.cs" />
     <Compile Include="Undo\Backup\BackupEntitiesFactory.cs" />
     <Compile Include="Undo\Backup\BackupEntity\BaseBackupEntity.cs" />
     <Compile Include="Undo\Backup\BackupEntity\FramingNameRemoveBackupEntity.cs" />
-    <Compile Include="Undo\Backup\BackupEntity\RemoveBackupEntity.cs" />
+    <Compile Include="Undo\Backup\BackupEntity\HangerRemoveBackupEntity.cs" />
+    <Compile Include="Undo\Backup\BackupEntity\StandardRemoveBackupEntity.cs" />
     <Compile Include="Undo\Backup\BackupEntity\RollBackBackupEntities.cs" />
     <Compile Include="Undo\Backup\EditBackupFactory.cs" />
     <Compile Include="Undo\Backup\IBackupEntity.cs" />
@@ -285,7 +287,7 @@
     <Compile Include="Undo\EntityRollBack\PlannarRollBack.cs" />
     <Compile Include="Undo\EntityRollBack\TextRollBack.cs" />
     <Compile Include="Undo\EntityRollBack\WallLineRollBack.cs" />
-    <Compile Include="Undo\ICloneToUndo.cs" />
+    <Compile Include="Undo\IDependencyUndoEntity.cs" />
     <Compile Include="Interaface\ICadDrawAble.cs" />
     <Compile Include="Interaface\I2DContaintHanger.cs" />
     <Compile Include="Interaface\I2DContaintOutTrigger.cs" />
@@ -482,7 +484,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClassDiagram1.cd" />
+    <None Include="Diagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

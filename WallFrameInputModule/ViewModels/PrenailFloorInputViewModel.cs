@@ -346,7 +346,7 @@ namespace WallFrameInputModule.ViewModels
 
                 if (this.JobModel.Info.QuoteRafterFrame)
                 {
-                    ExportDataToRafterFrame();
+                    ExportDataToFloorFrame();
                 }
             }
             

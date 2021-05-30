@@ -109,6 +109,7 @@ namespace AppModels.ResponsiveData
             GlobalWallInfo.LoadWallGlobalInfo(jobLoaded.GlobalWallInfo);
             LoadEngineerList(jobLoaded.EngineerMemberList,Info.Client.Beams);
             LoadDoorSchedules(jobLoaded.DoorSchedules);
+            Levels.Clear();
             if (Info.Client !=null)
             {
                 LoadLevel(jobLoaded.Levels,Info.Client);    

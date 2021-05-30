@@ -163,7 +163,18 @@ namespace DrawingModule.ViewModels
                 return Visibility.Collapsed;
             }
         }
+        public Visibility FramingNameVisibility
+        {
+            get
+            {
+                if (SelectedEntity is IFraming2DVmContainName)
+                {
+                    return Visibility.Visible;
+                }
 
+                return Visibility.Collapsed;
+            }
+        }
         public Visibility FramingBaseVisibility
         {
             get
@@ -218,6 +229,7 @@ namespace DrawingModule.ViewModels
                 RaisePropertyChanged(nameof(IsBlockingVm));
                 RaisePropertyChanged(nameof(FramingTypeCanChange));
                 RaisePropertyChanged(nameof(ShowFramingNameVisibility));
+                RaisePropertyChanged(nameof(FramingNameVisibility));
             }
         }
         public ObservableCollection<LevelWall> Levels { get; private set; }
@@ -589,7 +601,7 @@ namespace DrawingModule.ViewModels
                  }
 
             }
-            if (e.PropertyName=="FramingType")
+            if (e.PropertyName== "FramingType")
             {
                  if (SelectedEntity is FramingVm timberVm)
                  {
@@ -676,6 +688,21 @@ namespace DrawingModule.ViewModels
                     }
                 }
             }
+            if (e.PropertyName == "Index")
+            {
+                if(SelectedEntity is IFraming2DVmContainName framing2D)
+                {
+                    foreach(var selectedEntity in EntitiesManager.SelectedEntities)
+                    {
+                        if(selectedEntity is IFraming2D selectedFraming2D && selectedEntity is IEntityVmCreateAble entityVMCreate)
+                        {
+                            var entVm = entityVMCreate.CreateEntityVm(EntitiesManager);
+                            if (entVm is IFraming2DVmContainName entVmBase)
+                                entVmBase.Index = framing2D.Index;
+                        }
+                    }
+                }
+            }    
             EntitiesManager?.Refresh();
         }
 

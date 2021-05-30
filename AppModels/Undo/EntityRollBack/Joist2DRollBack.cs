@@ -11,6 +11,11 @@ namespace AppModels.Undo.EntityRollBack
     {
         public Joist2DRollBack(Entity entity) : base(entity)
         {
+            
+        }
+        public override void Undo()
+        {
+            base.Undo();
         }
     }
 }

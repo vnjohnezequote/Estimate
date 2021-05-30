@@ -8,7 +8,7 @@ using devDept.Geometry;
 
 namespace AppModels.CustomEntity
 {
-    public class JoistArrowEntity: Line, IEntityVmCreateAble,ICloneAbleToUndo
+    public class JoistArrowEntity: Line, IEntityVmCreateAble,IDependencyUndoEntity
     {
         public FramingNameEntity FramingName { get; set; }
         public Guid FramingNameId { get; set; }
@@ -49,6 +49,11 @@ namespace AppModels.CustomEntity
         public IEntityVm CreateEntityVm(IEntitiesManager entitiesManager)
         {
             return new JoistArrowVm(this, entitiesManager);
+        }
+
+        public void RollBackDependency(UndoList undoItem, IEntitiesManager entitiesManager)
+        {
+            
         }
     }
 }

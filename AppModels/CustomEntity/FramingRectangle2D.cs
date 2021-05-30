@@ -25,7 +25,7 @@ namespace AppModels.CustomEntity
         AtEndPoint,
         None
     }
-    public abstract class FramingRectangle2D : PlanarEntity, IRectangleSolid, IFraming2D,ICloneAbleToUndo
+    public abstract class FramingRectangle2D : PlanarEntity, IRectangleSolid, IFraming2D,IDependencyUndoEntity
     {
         private Point3D _outerStartPoint;
         //private Point3D _innerStartPoint;
@@ -34,9 +34,7 @@ namespace AppModels.CustomEntity
         private IFraming _framingReference;
         private int _thickness;
         public bool IsShowLeader { get; set; }
-        
-        
-        
+        public FramingNameEntity FramingName { get; set; }
         public Guid Id { get; set; }
         public Guid LevelId { get; set; }
         public Guid FramingSheetId { get; set; }
@@ -1369,6 +1367,18 @@ namespace AppModels.CustomEntity
             return Vector2D.AreOrthogonal(centeraxisVector, thiscenterVector) &&
                    Vector2D.AreOrthogonal(centeraxisVector, otherCenterVector);
 
+        }
+
+        public void ResetPoint(Point3D outerStartPoint, Point3D outerEndPoint)
+        {
+            _outerStartPoint = outerStartPoint;
+            _outerEndPoint = outerEndPoint;
+            this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint,Flipped);
+        }
+
+        public void RollBackDependency(UndoList undoItem, IEntitiesManager entitiesManager)
+        {
+            
         }
     }
 }

@@ -15,7 +15,7 @@ using devDept.Serialization;
 
 namespace AppModels.CustomEntity
 {
-    public sealed class Blocking2D : Text,IEntityVmCreateAble,IFraming2D,ICloneAbleToUndo
+    public sealed class Blocking2D : Text,IEntityVmCreateAble,IFraming2D
     {
         #region Private
 
@@ -112,5 +112,9 @@ namespace AppModels.CustomEntity
             return new Blocking2DSurrogate(this);
         }
 
+        public void RollBackDependency(UndoList undoItem, IEntitiesManager entitiesManager)
+        {
+            
+        }
     }
 }
