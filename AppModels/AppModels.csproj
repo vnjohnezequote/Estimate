@@ -182,6 +182,10 @@
     <Compile Include="CustomEntity\CustomEntitySurrogate\DoorCountEntitySurrogate.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\Framing2DSurrogate.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\FramingBase2DSurrogate.cs" />
+    <Compile Include="Undo\Backup\AddAndRemoveRollBack\LineAddAndRemoveBackUp.cs" />
+    <Compile Include="Undo\Backup\AddAndRemoveRollBack\MultiLineAddAndRemoveBackup.cs" />
+    <Compile Include="Undo\Backup\AddNewBackup\AddNewBackupRollBack.cs" />
+    <Compile Include="Undo\Backup\BackupEntity\FramingContaintHangerAndOutTriggerRemoveBackupEntity.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\FramingNameSurrogate.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\FramingRectangle2DSurrogate.cs" />
     <Compile Include="CustomEntity\CustomEntitySurrogate\FramingRectangleContainHangerAndOutTriggerSurrogate.cs" />
@@ -261,6 +265,8 @@
     <Compile Include="Undo\Backup\BackupEntity\BaseBackupEntity.cs" />
     <Compile Include="Undo\Backup\BackupEntity\FramingNameRemoveBackupEntity.cs" />
     <Compile Include="Undo\Backup\BackupEntity\HangerRemoveBackupEntity.cs" />
+    <Compile Include="Undo\Backup\BackupEntity\MultitiesRollBackBackUpEntities.cs" />
+    <Compile Include="Undo\Backup\BackupEntity\OutTriggerFramingRemoveBackupEntity.cs" />
     <Compile Include="Undo\Backup\BackupEntity\StandardRemoveBackupEntity.cs" />
     <Compile Include="Undo\Backup\BackupEntity\RollBackBackupEntities.cs" />
     <Compile Include="Undo\Backup\EditBackupFactory.cs" />
@@ -270,6 +276,7 @@
     <Compile Include="Undo\EntityRollBack\Beam2DRollBack.cs" />
     <Compile Include="Undo\EntityRollBack\BeamRollBack.cs" />
     <Compile Include="Undo\EntityRollBack\Blocking2DRollBack.cs" />
+    <Compile Include="Undo\EntityRollBack\BlockRefRollBack.cs" />
     <Compile Include="Undo\EntityRollBack\DimensionRollBack.cs" />
     <Compile Include="Undo\EntityRollBack\Framing2DRollBack.cs" />
     <Compile Include="Undo\EntityRollBack\FramingNameRollBack.cs" />
@@ -484,7 +491,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Diagram1.cd" />
+    <None Include="Backup Diagram.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

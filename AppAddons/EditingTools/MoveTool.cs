@@ -1,5 +1,6 @@
 ﻿using System;
 using ApplicationService;
+using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Undo;
@@ -31,6 +32,10 @@ namespace AppAddons.EditingTools
             var undoItem = new UndoList() { ActionType = ActionTypes.Edit };
             foreach (var selEntity in this.SelectedEntities)
             {
+                if (selEntity is Hanger2D || selEntity is OutTrigger2D)
+                {
+                    continue;
+                }
                 var backup = BackupEntitiesFactory.CreateBackup(selEntity, undoItem, EntitiesManager);
                 backup?.Backup();
                 selEntity.Translate(movement);

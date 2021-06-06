@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using AppModels.Interaface;
-using AppModels.ResponsiveData.Framings;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot.Entities;

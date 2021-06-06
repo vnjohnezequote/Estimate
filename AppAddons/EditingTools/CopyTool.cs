@@ -9,6 +9,8 @@ using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using AppModels.ResponsiveData.Openings;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
@@ -37,13 +39,21 @@ namespace AppAddons.EditingTools
         {
 
             var movement = new Vector3D(_startPoint, _endPoint);
+            var undoItem = new UndoList() {ActionType = ActionTypes.Add};
             foreach (var selEntity in this.SelectedEntities)
             {
+                if (selEntity is Hanger2D || selEntity is OutTrigger2D)
+                {
+                    continue;
+                }
                 var cloneEntity = (Entity)selEntity.Clone();
                 cloneEntity.Translate(movement);
                 selEntity.Selected = false;
+                var backup = BackupEntitiesFactory.CreateBackup(cloneEntity, undoItem, EntitiesManager);
+                backup?.Backup();
                 EntitiesManager.AddAndRefresh(cloneEntity, cloneEntity.LayerName);
             }
+            this.UndoEngineer.SaveSnapshot(undoItem);
             EntitiesManager.Refresh();
             IsSnapEnable = false;
         }

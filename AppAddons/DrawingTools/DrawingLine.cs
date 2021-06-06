@@ -11,6 +11,8 @@ using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
@@ -74,6 +76,10 @@ namespace AppAddons.DrawingTools
                 }
                 line.Color = LayerManager.SelectedLayer.Color;
                 //wall2D.WallLevelName = "Level 1";
+                var undoItem = new UndoList() {ActionType = ActionTypes.Add};
+                var backup = BackupEntitiesFactory.CreateBackup(line, undoItem, EntitiesManager);
+                backup?.Backup();
+                this.UndoEngineer.SaveSnapshot(undoItem);
                 this.EntitiesManager.AddAndRefresh(line, this.LayerManager.SelectedLayer.Name);
             }
         }

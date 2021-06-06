@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AppModels;
 using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -111,10 +114,7 @@ namespace AppAddons.EditingTools
         public void ProcessTrim(MouseButtonEventArgs e, bool isSelected, ICadDrawAble canvas)
         {
             var currentLocation = RenderContextUtility.ConvertPoint(canvas.GetMousePosition(e));
-            //EntityList myEnts = canvas.Entities;
-            //var clickedPoints = new List<Point3D>();
-            //var intersectPoints = new List<Point3D>();
-            
+            var undoItem = new UndoList() {ActionType = ActionTypes.AddAndRemove};
 
             int[] ents;
             if (isSelected)
@@ -124,50 +124,8 @@ namespace AppAddons.EditingTools
                 if (ent>=0)
                 {
                     var tempEntity = canvas.Entities[ent];
-                    TrimEntites(tempEntity,clickedPoint);
-                    //Segment2D tempSegment = null;
-                    //if (tempEntity is Line line)
-                    //{
-                    //    tempSegment = new Segment2D(line.StartPoint, line.EndPoint);
-                    //}
-                    //else
-                    //{
-                        
-                    //}
-                    //foreach (var canvasEntity in canvas.Entities)
-                    //{
-                    //    if (canvasEntity is Line lineToCheck)
-                    //    {
-
-                    //        var segmentToCheck = new Segment2D(lineToCheck.StartPoint, lineToCheck.EndPoint);
-                    //        if (segmentToCheck.P0 == tempSegment.P0 && segmentToCheck.P1 == tempSegment.P1)
-                    //        {
-                    //            continue;
-                    //        }
-                    //        if (Segment2D.IntersectionAndT(tempSegment,segmentToCheck,out var intersectPoint))
-                    //        {
-                    //            intersectPoints.Add(intersectPoint.ConvertPoint2DtoPoint3D());
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                            
-                    //    }
-                    //}
-                    //intersectPoints.Insert(0,tempSegment.P0.ConvertPoint2DtoPoint3D());
-                    //intersectPoints.Add(tempSegment.P1.ConvertPoint2DtoPoint3D());
-                    //intersectPoints = Helper.SortPointInLine(intersectPoints);
-                    //this.FindTrimSegment(intersectPoints,clickedPoint,out var point1, out var point2);
-                    //var newEntities = new List<Entity>();
-                    //this.RemoveLineBetween(tempEntity, newEntities,point1,point2);
-                    //if (newEntities.Count>0)
-                    //{
-                    //    this.EntitiesManager.RemoveEntity(tempEntity);
-                    //    foreach (var newEntity in newEntities)
-                    //    {
-                    //        this.EntitiesManager.AddAndRefresh(newEntity, tempEntity.LayerName);
-                    //    }
-                    //}
+                    TrimEntites(tempEntity,clickedPoint,undoItem);
+                   
                     
                 }
                 this.ResetTrimTool();
@@ -195,16 +153,18 @@ namespace AppAddons.EditingTools
             {
                 foreach (var crossEntity in crossEntityDicts)
                 {
-                    TrimEntites(crossEntity.Value,crossEntity.Key);
+                    TrimEntites(crossEntity.Value,crossEntity.Key,undoItem);
                 }
             }
+            UndoEngineer.SaveSnapshot(undoItem);
 
             this.ResetTrimTool();
 
         }
 
-        public void TrimEntites(Entity trimEntity, Point3D crossPoint)
+        public void TrimEntites(Entity trimEntity, Point3D crossPoint, UndoList undoItem)
         {
+            
             var intersectPoints = new List<Point3D>();
             Segment2D tempSegment = null;
             if (trimEntity is Line line)
@@ -243,6 +203,8 @@ namespace AppAddons.EditingTools
             this.RemoveLineBetween(trimEntity, newEntities, point1, point2);
             if (newEntities.Count > 0)
             {
+                var bacup = BackupEntitiesFactory.CreateBackup(newEntities, trimEntity, undoItem, EntitiesManager);
+                bacup?.Backup();
                 this.EntitiesManager.RemoveEntity(trimEntity);
                 foreach (var newEntity in newEntities)
                 {

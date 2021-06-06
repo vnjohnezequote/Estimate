@@ -128,9 +128,7 @@ namespace AppModels.CustomEntity
             }
 
         }
-
         public Guid FramingSheetId { get; set; }
-
         public IFraming FramingReference
         {
             get => _framingReference;
@@ -145,9 +143,7 @@ namespace AppModels.CustomEntity
 
             }
         }
-
         public Guid FramingReferenceId { get; set; }
-
         public string LevelName
         {
             get;
@@ -194,7 +190,6 @@ namespace AppModels.CustomEntity
                 }
             }
         }
-
         public bool ContinuesBeam
         {
             get => _continuesBeam;
@@ -204,7 +199,6 @@ namespace AppModels.CustomEntity
                 PreCalculatorAttributePoint();
             }
         }
-
         public bool SupportWallOver
         {
             get => _supportWallOver;
@@ -214,7 +208,6 @@ namespace AppModels.CustomEntity
                 PreCalculatorAttributePoint();
             }
         }
-
         public string CustomAtrributeString
         {
             get => _customAtrributeString;

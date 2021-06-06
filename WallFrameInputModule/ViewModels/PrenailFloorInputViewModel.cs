@@ -229,11 +229,12 @@ namespace WallFrameInputModule.ViewModels
         {
             if (this.JobModel.ActiveFloorSheet != null)
             {
+                this.JobModel.ActiveFloorSheet.PropertyChanged -= FloorSheet_PropertyChanged;
                 if (this.Level.FramingSheets.Contains(this.JobModel.ActiveFloorSheet))
                 {
                     this.Level.FramingSheets.Remove(this.JobModel.ActiveFloorSheet);
                 }
-                this.JobModel.ActiveFloorSheet.PropertyChanged -= FloorSheet_PropertyChanged;
+                
             }
         }
         

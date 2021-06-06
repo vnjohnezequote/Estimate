@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using AppModels;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
@@ -118,11 +121,16 @@ namespace AppAddons.EditingTools
                     {
                         var firstSegment = new Segment2D(firstLine.StartPoint, firstLine.EndPoint);
                         var secondSegment = new Segment2D(secondLine.StartPoint, secondLine.EndPoint);
-
+                        var undoItem = new UndoList() {ActionType = ActionTypes.Edit};
                         //Segment2D.Intersection(firstSegment, secondSegment, out var interSectPTest);
                         //Segment2D.IntersectionAndT(firstSegment, secondSegment, out var interSectPTest2);
+                        var backup =
+                            BackupEntitiesFactory.CreateBackup(new List<Entity>(){firstLine,secondLine}, undoItem, EntitiesManager);
+                        backup?.Backup();
+                        UndoEngineer.SaveSnapshot(undoItem);
                         if (Segment2D.IntersectionAndT(firstSegment, secondSegment, out var interSectP))
                         {
+                            
                             SetNewPoint(firstLine,_firstMousePoint,interSectP.ConvertPoint2DtoPoint3D());
                             SetNewPoint(secondLine, _secondMousePoint, interSectP.ConvertPoint2DtoPoint3D());
                         }
@@ -137,19 +145,6 @@ namespace AppAddons.EditingTools
                             
                         }
                     }
-                    //bool success = false;
-                    //bool success2 = false;
-                    //success = FilletProcess(_firstSelectedEntity, _secondSelectedEntity);
-                    //success2 = FilletProcess(_secondSelectedEntity, _firstSelectedEntity);
-                    //if (success)
-                    //{
-                    //    EntitiesManager.RemoveEntity(_secondSelectedEntity);
-                    //}
-
-                    //if (success2)
-                    //{
-                    //    EntitiesManager.RemoveEntity(_firstSelectedEntity);
-                    //}
                     EntitiesManager.Refresh();
                 }
                 _firstSelectedEntity = null;
@@ -164,6 +159,7 @@ namespace AppAddons.EditingTools
         {
             var distance = line.StartPoint.DistanceTo(apendPoint);
             var distance2 = line.EndPoint.DistanceTo(apendPoint);
+            
             Point3D movePoint = null;
             if (distance>distance2)
             {

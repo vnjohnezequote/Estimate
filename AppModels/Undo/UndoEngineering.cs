@@ -55,12 +55,11 @@ namespace AppModels.Undo
                     foreach (var removeEntity in undoItem.RemovedEntities)
                     {
                         removeEntity.Selected = false;
-                        _entitiesMangager.AddAndRefresh(removeEntity, removeEntity.LayerName);
-                        
                         if (removeEntity is IDependencyUndoEntity dependRollBack)
                         {
-                            dependRollBack.RollBackDependency(undoItem,_entitiesMangager);
+                            dependRollBack.RollBackDependency(undoItem, _entitiesMangager);
                         }
+                        _entitiesMangager.AddAndRefresh(removeEntity, removeEntity.LayerName);
                     }
                     break;
             }

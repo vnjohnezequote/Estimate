@@ -7,8 +7,11 @@ using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
@@ -40,21 +43,17 @@ namespace AppAddons.EditingTools
 
         protected override void ProcessEntities()
         {
+            var undoItem = new UndoList() { ActionType = ActionTypes.Add };
             foreach (var selectedEntity in SelectedEntities)
             {
                 var mirrorEntity = (Entity)selectedEntity.Clone();
                 var mirror = new Mirror(_mirrorPlane);
                 mirrorEntity.TransformBy(mirror);
+                var backup = BackupEntitiesFactory.CreateBackup(mirrorEntity, undoItem, EntitiesManager);
+                backup?.Backup();
                 EntitiesManager.AddAndRefresh(mirrorEntity, mirrorEntity.LayerName);
-                if (mirrorEntity is Joist2D joist)
-                {
-                    if (joist.FramingReference!=null && joist.FramingReference.FramingSheet!=null)
-                    {
-                        joist.FramingReference.FramingSheet.Joists.Add(joist.FramingReference);
-                        
-                    }
-                }
             }
+            this.UndoEngineer.SaveSnapshot(undoItem);
 
         }
 

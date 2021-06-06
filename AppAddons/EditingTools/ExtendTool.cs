@@ -7,8 +7,11 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using ApplicationInterfaceCore;
 using ApplicationService;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
@@ -108,12 +111,16 @@ namespace AppAddons.EditingTools
         private void ProcessCommand()
         {
             var i = 0;
-
+            var undoItem = new UndoList() {ActionType = ActionTypes.Edit};
             while (i<_selectedEntities.Count)
             {
-                ExtendProcess(_firstSelectedEntity, _selectedEntities[i]);
+                var selEntity = _selectedEntities[i];
+                var backup = BackupEntitiesFactory.CreateBackup(selEntity, undoItem, EntitiesManager);
+                backup?.Backup();
+                ExtendProcess(_firstSelectedEntity, _selectedEntities[i],undoItem);
                 i++;
             }
+            this.UndoEngineer.SaveSnapshot(undoItem);
             EntitiesManager.Refresh();
             ResetTool();
         }
@@ -128,7 +135,7 @@ namespace AppAddons.EditingTools
 
         }
 
-        private void ExtendProcess(Entity boundaryEntity, Entity extendEntity)
+        private void ExtendProcess(Entity boundaryEntity, Entity extendEntity,UndoList undoItem)
         {
             if (boundaryEntity is ICurve && extendEntity is ICurve)
             {
@@ -147,61 +154,38 @@ namespace AppAddons.EditingTools
                 double curveEndDistance = curve.EndPoint.DistanceTo(projEndPt);
 
                 bool success = false;
+                Entity successEntity = null;
                 if (curveStartDistance < curveEndDistance)
                 {
                     if (curve is Line)
                     {
-                        success = ExtendLine(curve, boundary, true);
+                        success = ExtendLine(curve, boundary, true,ref successEntity);
                     }
                     else if (curve is LinearPath)
                     {
-                        success = ExtendPolyLine(curve, boundary, true);
+                        success = ExtendPolyLine(curve, boundary, true,ref successEntity);
                     }
-                    else if (curve is Arc)
-                    {
-                        success = ExtendCircularArc(curve, boundary, true);
-                    }
-                    else if (curve is EllipticalArc)
-                    {
-                        success = ExtendEllipticalArc(curve, boundary, true);
-                    }
-#if NURBS
-                        else if (curve is Curve)
-                        {
-                            success = ExtendSpline(curve, boundary, true);
-                        }
-#endif
                 }
                 else
                 {
                     if (curve is Line)
                     {
-                        success = ExtendLine(curve, boundary, false);
+                        success = ExtendLine(curve, boundary, false,ref successEntity);
                     }
                     else if (curve is LinearPath)
                     {
-                        success = ExtendPolyLine(curve, boundary, false);
+                        success = ExtendPolyLine(curve, boundary, false,ref successEntity);
                     }
-#if NURBS
-                        else if (curve is Arc)
-                        {
-                            success = ExtendCircularArc(curve, boundary, false);
-                        }
-                        else if (curve is EllipticalArc)
-                        {
-                            success = ExtendEllipticalArc(curve, boundary, false);
-                        }
-
-                        else if (curve is Curve)
-                        {
-                            success = ExtendSpline(curve, boundary, false);
-                        }
-#endif
                 }
-
+                
                 if (success)
                 {
-                    EntitiesManager.RemoveEntity(extendEntity);
+                    //EntitiesManager.EntitiesRegen();
+                    //var backup =
+                    //    BackupEntitiesFactory.CreateBackup(successEntity, extendEntity, undoItem, EntitiesManager);
+                    //backup.Backup();
+                    //EntitiesManager.AddAndRefresh(successEntity, extendEntity.LayerName);
+                    //EntitiesManager.RemoveEntity(extendEntity);
                 }
             }
         }
@@ -240,64 +224,7 @@ namespace AppAddons.EditingTools
 
         }
 
-
-        private bool ExtendEllipticalArc(ICurve ellipticalArcCurve, ICurve boundary, bool start)
-        {
-            EllipticalArc selEllipseArc = ellipticalArcCurve as EllipticalArc;
-            Ellipse tempEllipse = new Ellipse(selEllipseArc.Plane, selEllipseArc.Center, selEllipseArc.RadiusX, selEllipseArc.RadiusY);
-#if NURBS
-            Point3D[] intersetionPoints = Curve.Intersection(boundary, tempEllipse);
-            if (intersetionPoints.Length == 0)
-                intersetionPoints = Curve.Intersection(GetExtendedBoundary(boundary), tempEllipse);
-
-            EllipticalArc newArc = null;
-
-            if (intersetionPoints.Length > 0)
-            {
-                Plane arcPlane = selEllipseArc.Plane;
-                if (start)
-                {
-                    Point3D intPoint = GetClosestPoint(selEllipseArc.StartPoint, intersetionPoints);
-
-                    newArc = new EllipticalArc(arcPlane, selEllipseArc.Center, selEllipseArc.RadiusX,
-                                                    selEllipseArc.RadiusY, selEllipseArc.EndPoint, intPoint, false);
-                    // If start point is not on the new arc, flip needed
-                    double t;
-                    newArc.ClosestPointTo(selEllipseArc.StartPoint, out t);
-                    Point3D projPt = newArc.PointAt(t);
-                    if (projPt.DistanceTo(selEllipseArc.StartPoint) > 0.1)
-                    {
-                        newArc = new EllipticalArc(arcPlane, selEllipseArc.Center, selEllipseArc.RadiusX,
-                                                selEllipseArc.RadiusY, selEllipseArc.EndPoint, intPoint, true);
-                    }
-                    AddAndRefresh(newArc);
-                }
-                else
-                {
-                    Point3D intPoint = GetClosestPoint(selEllipseArc.EndPoint, intersetionPoints);
-                    newArc = new EllipticalArc(arcPlane, selEllipseArc.Center, selEllipseArc.RadiusX,
-                                                selEllipseArc.RadiusY, selEllipseArc.StartPoint, intPoint, false);
-
-                    // If end point is not on the new arc, flip needed
-                    double t;
-                    newArc.ClosestPointTo(selEllipseArc.EndPoint, out t);
-                    Point3D projPt = newArc.PointAt(t);
-                    if (projPt.DistanceTo(selEllipseArc.EndPoint) > 0.1)
-                    {
-                        newArc = new EllipticalArc(arcPlane, selEllipseArc.Center, selEllipseArc.RadiusX,
-                                               selEllipseArc.RadiusY, selEllipseArc.StartPoint, intPoint, true);
-                    }
-                }
-                if (newArc != null)
-                {
-                    AddAndRefresh(newArc);
-                    return true;
-                }
-            }
-#endif
-            return false;
-        }
-        private bool ExtendLine(ICurve lineCurve, ICurve boundary, bool nearStart)
+        private bool ExtendLine(ICurve lineCurve, ICurve boundary, bool nearStart,ref Entity successEntity)
         {
             Line line = lineCurve as Line;
 
@@ -334,126 +261,13 @@ namespace AppAddons.EditingTools
                 else
                     line.EndPoint = Utils.GetClosestPoint(line.EndPoint, intersetionPoints);
 
-                var tempEntity = (Entity)line.Clone();
-                EntitiesManager.AddAndRefresh(tempEntity, tempEntity.LayerName);
+                successEntity = (Entity)line.Clone();
+                //EntitiesManager.AddAndRefresh(tempEntity, tempEntity.LayerName);
                 return true;
             }
             return false;
         }
-        private bool ExtendSpline(ICurve curve, ICurve boundary, bool nearStart)
-        {
-#if NURBS
-            Curve originalSpline = curve as Curve;
-
-            Line tempLine = null;
-            Vector3D direction = null;
-            if (nearStart)
-            {
-                tempLine = new Line(curve.StartPoint, curve.StartPoint);
-                direction = curve.StartTangent; direction.Normalize(); direction.Negate();
-                tempLine.EndPoint = tempLine.EndPoint + direction * _extensionLength;
-            }
-            else
-            {
-                tempLine = new Line(curve.EndPoint, curve.EndPoint);
-                direction = curve.EndTangent; direction.Normalize();
-                tempLine.EndPoint = tempLine.EndPoint + direction * _extensionLength;
-            }
-
-            Point3D[] intersetionPoints = Curve.Intersection(boundary, tempLine);
-            if (intersetionPoints.Length == 0)
-                intersetionPoints = Curve.Intersection(GetExtendedBoundary(boundary), tempLine);
-
-            if (intersetionPoints.Length > 0)
-            {
-                List<Point4D> ctrlPoints = originalSpline.ControlPoints.ToList();
-                List<Point3D> newCtrlPoints = new List<Point3D>();
-                if (nearStart)
-                {
-                    newCtrlPoints.Add(GetClosestPoint(curve.StartPoint, intersetionPoints));
-                    foreach (Point4D ctrlPt in ctrlPoints)
-                    {
-                        Point3D point = new Point3D(ctrlPt.X, ctrlPt.Y, ctrlPt.Z);
-                        if (!point.Equals(originalSpline.StartPoint))
-                            newCtrlPoints.Add(point);
-                    }
-                }
-                else
-                {
-                    foreach (Point4D ctrlPt in ctrlPoints)
-                    {
-                        Point3D point = new Point3D(ctrlPt.X, ctrlPt.Y, ctrlPt.Z);
-                        if (!point.Equals(originalSpline.EndPoint))
-                            newCtrlPoints.Add(point);
-                    }
-                    newCtrlPoints.Add(GetClosestPoint(curve.EndPoint, intersetionPoints));
-                }
-
-                Curve newCurve = new Curve(originalSpline.Degree, newCtrlPoints);
-                if (newCurve != null)
-                {
-                    AddAndRefresh(newCurve);
-                    return true;
-                }
-            }
-#endif
-            return false;
-        }
-        private bool ExtendCircularArc(ICurve arcCurve, ICurve boundary, bool nearStart)
-        {
-            Arc selCircularArc = arcCurve as Arc;
-            Circle tempCircle = new Circle(selCircularArc.Plane, selCircularArc.Center, selCircularArc.Radius);
-#if NURBS
-            Point3D[] intersetionPoints = Curve.Intersection(boundary, tempCircle);
-            if (intersetionPoints.Length == 0)
-                intersetionPoints = Curve.Intersection(GetExtendedBoundary(boundary), tempCircle);
-
-            if (intersetionPoints.Length > 0)
-            {
-                if (nearStart)
-                {
-                    Point3D intPoint = GetClosestPoint(selCircularArc.StartPoint, intersetionPoints);
-                    Vector3D xAxis = new Vector3D(selCircularArc.Center, selCircularArc.EndPoint);
-                    xAxis.Normalize();
-                    Vector3D yAxis = Vector3D.Cross(Vector3D.AxisZ, xAxis);
-                    yAxis.Normalize();
-                    Plane arcPlane = new Plane(selCircularArc.Center, xAxis, yAxis);
-
-                    Vector2D v1 = new Vector2D(selCircularArc.Center, selCircularArc.EndPoint);
-                    v1.Normalize();
-                    Vector2D v2 = new Vector2D(selCircularArc.Center, intPoint);
-                    v2.Normalize();
-
-                    double arcSpan = Vector2D.SignedAngleBetween(v1, v2);
-                    Arc newArc = new Arc(arcPlane, arcPlane.Origin, selCircularArc.Radius, 0, arcSpan);
-                    AddAndRefresh(newArc);
-                }
-                else
-                {
-                    Point3D intPoint = GetClosestPoint(selCircularArc.EndPoint, intersetionPoints);
-
-                    //plane
-                    Vector3D xAxis = new Vector3D(selCircularArc.Center, selCircularArc.StartPoint);
-                    xAxis.Normalize();
-                    Vector3D yAxis = Vector3D.Cross(Vector3D.AxisZ, xAxis);
-                    yAxis.Normalize();
-                    Plane arcPlane = new Plane(selCircularArc.Center, xAxis, yAxis);
-
-                    Vector2D v1 = new Vector2D(selCircularArc.Center, selCircularArc.StartPoint);
-                    v1.Normalize();
-                    Vector2D v2 = new Vector2D(selCircularArc.Center, intPoint);
-                    v2.Normalize();
-
-                    double arcSpan = Vector2D.SignedAngleBetween(v1, v2);
-                    Arc newArc = new Arc(arcPlane, arcPlane.Origin, selCircularArc.Radius, 0, arcSpan);
-                    AddAndRefresh(newArc);
-                }
-                return true;
-            }
-#endif
-            return false;
-        }
-        private bool ExtendPolyLine(ICurve lineCurve, ICurve boundary, bool nearStart)
+        private bool ExtendPolyLine(ICurve lineCurve, ICurve boundary, bool nearStart,ref Entity successEntity)
         {
             LinearPath line = _secondSelectedEntity as LinearPath;
             Point3D[] tempVertices = line.Vertices;
@@ -482,8 +296,8 @@ namespace AppAddons.EditingTools
                     tempVertices[tempVertices.Length - 1] = Utils.GetClosestPoint(line.EndPoint, intersetionPoints);
 
                 line.Vertices = tempVertices;
-                var tempEntity = (Entity)line.Clone();
-                EntitiesManager.AddAndRefresh(tempEntity, tempEntity.LayerName);
+                successEntity = (Entity)line.Clone();
+                //EntitiesManager.AddAndRefresh(tempEntity, tempEntity.LayerName);
                 return true;
             }
 

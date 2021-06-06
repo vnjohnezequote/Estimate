@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AppModels.Undo.Backup.BackupEntity.BaseBackupEntity" Collapsed="true">
+    <Position X="9.5" Y="33" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Undo\Backup\BackupEntity\BaseBackupEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.Undo.Backup.BackupEntity.FramingNameRemoveBackupEntity" Collapsed="true">
+    <Position X="3" Y="35.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\Backup\BackupEntity\FramingNameRemoveBackupEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.Backup.BackupEntity.HangerRemoveBackupEntity" Collapsed="true">
+    <Position X="10.25" Y="35.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\Backup\BackupEntity\HangerRemoveBackupEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.Backup.BackupEntity.RollBackBackupEntities">
+    <Position X="0.5" Y="35.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\Backup\BackupEntity\RollBackBackupEntities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.Backup.BackupEntity.StandardRemoveBackupEntity" Collapsed="true">
+    <Position X="6.5" Y="35.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\Backup\BackupEntity\StandardRemoveBackupEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.CustomEntity.Beam2D" Collapsed="true">
+    <Position X="25" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAEAAAgAEAAAAAAAAAAAAAAAACAAAAAAIAAAAECxA=</HashCode>
+      <FileName>CustomEntity\Beam2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.FramingRectangle2D" Collapsed="true">
+    <Position X="25" Y="33.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UCKCSAFxqJAtwlEAAAABCGEIFBBCEZCgIAIUoAgChgg=</HashCode>
+      <FileName>CustomEntity\FramingRectangle2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.FramingRectangleContainHangerAndOutTrigger" Collapsed="true">
+    <Position X="26" Y="35.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAEAQgAgAAAAAQBAECAAkoACQAAMAQAQAAEAAAAgAA=</HashCode>
+      <FileName>CustomEntity\FramingRectangleContainHangerAndOutTrigger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.Joist2D" Collapsed="true">
+    <Position X="27.25" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAChA=</HashCode>
+      <FileName>CustomEntity\Joist2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.OutTrigger2D" Collapsed="true">
+    <Position X="22.75" Y="35.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAhFCAAAAAIBAAAEAAAQACAAAAAAAAAAAAChA=</HashCode>
+      <FileName>CustomEntity\OutTrigger2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.Undo.Backup.BackupEntity.FramingContaintHangerAndOutTriggerRemoveBackupEntity" Collapsed="true">
+    <Position X="12.75" Y="35.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\Backup\BackupEntity\FramingContaintHangerAndOutTriggerRemoveBackupEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.Backup.BackupEntity.OutTriggerFramingRemoveBackupEntity" Collapsed="true">
+    <Position X="15" Y="35.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\Backup\BackupEntity\OutTriggerFramingRemoveBackupEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.CustomEntity.BeamEntity" Collapsed="true">
+    <Position X="33.25" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EKACAABwYABEQBCAgIRRKAAFQBAiAAAAwEQZgAAAzBA=</HashCode>
+      <FileName>CustomEntity\BeamEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.Blocking2D" Collapsed="true">
+    <Position X="28.5" Y="35.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAABAIAAAAAAAAAABAAAAABACAAAAAAAQgFAACAA=</HashCode>
+      <FileName>CustomEntity\Blocking2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="devDept.Eyeshot.Entities.Text" Collapsed="true">
+    <Position X="29.5" Y="33.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="devDept.Eyeshot.Entities.BlockReference" Collapsed="true">
+    <Position X="33.25" Y="31.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="devDept.Eyeshot.Entities.PlanarEntity" Collapsed="true">
+    <Position X="27.25" Y="31.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="devDept.Eyeshot.Entities.Entity" Collapsed="true">
+    <Position X="30.75" Y="29.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Orientation="Right" Position="0.362" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.DoorCountEntity" Collapsed="true">
+    <Position X="30.75" Y="35.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAEAAAAAoAAAAAAAAAAAAADARAgEECAgAQAGAA=</HashCode>
+      <FileName>CustomEntity\DoorCountEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.FramingNameEntity" Collapsed="true">
+    <Position X="32.75" Y="35.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgBAIAAEAAAAAIAAAAAAABACAAAAAAAQgAAECBA=</HashCode>
+      <FileName>CustomEntity\FramingNameEntitty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.JoistArrowEntity" Collapsed="true">
+    <Position X="36.25" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgEAAAAgAAAACAAAAAAAACAAAAAAAQgAIAABA=</HashCode>
+      <FileName>CustomEntity\JoistArrowEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="devDept.Eyeshot.Entities.Line" Collapsed="true">
+    <Position X="36.25" Y="31.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.CustomEntity.LinearPathWall2D" Collapsed="true">
+    <Position X="38.5" Y="32.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>CustomEntity\LinearPathWall2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="devDept.Eyeshot.Entities.LinearPath" Collapsed="true">
+    <Position X="38.5" Y="31" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.AngularDimRollBack" Collapsed="true">
+    <Position X="43.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAQACAIABAAAAAAAMAAAQAAAAAAAAAAAAAgCAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\AngularDimRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.Beam2DRollBack" Collapsed="true">
+    <Position X="34.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAABAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\Beam2DRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.BeamRollBack" Collapsed="true">
+    <Position X="28" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\BeamRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.Blocking2DRollBack" Collapsed="true">
+    <Position X="41.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAABABIABAAAAAAAAAAABAQAAAAAQA=</HashCode>
+      <FileName>Undo\EntityRollBack\Blocking2DRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.DimensionRollBack" Collapsed="true">
+    <Position X="44.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAEBEhAISBRAAAAAERAQAAAMBQBAICAAAACA=</HashCode>
+      <FileName>Undo\EntityRollBack\DimensionRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.Framing2DRollBack" Collapsed="true">
+    <Position X="31.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAABABIAAAAAAAAAAAAABAQAAAAAQA=</HashCode>
+      <FileName>Undo\EntityRollBack\Framing2DRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.FramingNameRollBack" Collapsed="true">
+    <Position X="37" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAABABIAAAAAAAAAAAAAAAQAAAAAQA=</HashCode>
+      <FileName>Undo\EntityRollBack\FramingNameRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.FramingRectangle2DRollBack" Collapsed="true">
+    <Position X="32.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAMAAAAAAAAABIAAAAAAAAAAAAgAAACAAAAAAAAAhAA=</HashCode>
+      <FileName>Undo\EntityRollBack\FramingRectangle2DRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.FramingRectangleContainHangerAndOutTriggerRollBack" Collapsed="true">
+    <Position X="33.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAgAAgAAAAABAACAAIAABIIAAAABEAAAEDAEgAAAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\FramingRectangleContainHangerAndOutTriggerRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.HangerRollBack" Collapsed="true">
+    <Position X="48.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAABABIAAAAAAAAAAAAABAQAAAAAQA=</HashCode>
+      <FileName>Undo\EntityRollBack\HangerRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.Joist2DRollBack" Collapsed="true">
+    <Position X="32.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\Joist2DRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.LeaderRollBack" Collapsed="true">
+    <Position X="43.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAgQAAAAACA=</HashCode>
+      <FileName>Undo\EntityRollBack\LeaderRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.LinearDimRollBack" Collapsed="true">
+    <Position X="46" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAIABAAAAAAAMAAAQAAAAAAAAAAAAAgCAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\LinearDimRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.LinearPathRollBack" Collapsed="true">
+    <Position X="46.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAAQAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\LinearPathRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.MultilineTextRollBack" Collapsed="true">
+    <Position X="39.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAQCABAABAAAAACAAAAAAAQAAAABAAAAAAAg=</HashCode>
+      <FileName>Undo\EntityRollBack\MultilineTextRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.OutTriggerRollBack" Collapsed="true">
+    <Position X="30.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACABAAABAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\OutTriggerRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.PlannarRollBack" Collapsed="true">
+    <Position X="38" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAABAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\PlannarRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.TextRollBack" Collapsed="true">
+    <Position X="42.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAMCAAACABAAAABEAAABAAAAAAQAAAIAAAAAAAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\TextRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.EntityRollBack.BlockRefRollBack" Collapsed="true">
+    <Position X="29.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAIAAAgAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Undo\EntityRollBack\BlockRefRollBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppModels.Undo.RollBackEntity" Collapsed="true">
+    <Position X="39.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIIAAQAAAAAIBAAAAAAAAAQAAAABAAAAAABAAAACEAA=</HashCode>
+      <FileName>Undo\RollBackEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

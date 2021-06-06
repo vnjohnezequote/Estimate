@@ -11,6 +11,8 @@ using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
@@ -89,7 +91,11 @@ namespace AppAddons.EditingTools
                 var offetEntity = CalculatorOffsetEntity(_selectedEntity, _offsetPoint);
                 if (offetEntity != null)
                 {
+                    var undoItem = new UndoList() {ActionType = ActionTypes.Add};
+                    var backup = BackupEntitiesFactory.CreateBackup(offetEntity, undoItem, EntitiesManager);
+                    backup?.Backup();
                     EntitiesManager.AddAndRefresh(offetEntity, LayerManager.SelectedLayer.Name);
+                    UndoEngineer.SaveSnapshot(undoItem);
                 }
 
             }

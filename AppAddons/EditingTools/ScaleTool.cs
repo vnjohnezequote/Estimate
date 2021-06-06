@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using ApplicationInterfaceCore;
-using ApplicationInterfaceCore.Enums;
 using ApplicationService;
+using AppModels.CustomEntity;
 using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -137,11 +135,18 @@ namespace AppAddons.EditingTools
         protected override void ProcessEntities()
         {
             //CalculatorScaleFactor(_endPoint);
-
+            var undoItem = new UndoList() { ActionType = ActionTypes.Edit };
             foreach (var selEntity in this.SelectedEntities)
             {
+                if (selEntity is IFraming2D|| selEntity is JoistArrowEntity)
+                {
+                    continue;
+                }
+                var backup = BackupEntitiesFactory.CreateBackup(selEntity, undoItem, EntitiesManager);
+                backup?.Backup();
                 selEntity.Scale(BasePoint, ScaleFactor);
             }
+            this.UndoEngineer.SaveSnapshot(undoItem);
             this.EntitiesManager.Refresh();
         }
 

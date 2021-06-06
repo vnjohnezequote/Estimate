@@ -1376,9 +1376,15 @@ namespace AppModels.CustomEntity
             this.RegenFramingGeometry(_outerStartPoint, _outerEndPoint,Flipped);
         }
 
-        public void RollBackDependency(UndoList undoItem, IEntitiesManager entitiesManager)
+        public virtual void RollBackDependency(UndoList undoItem, IEntitiesManager entitiesManager)
         {
-            
+            var i = undoItem.EditedEntities.Count - 1;
+            while (i > -1)
+            {
+                var rollBackEntitiy = undoItem.EditedEntities[i];
+                rollBackEntitiy.Undo();
+                i--;
+            }
         }
     }
 }

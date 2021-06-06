@@ -21,6 +21,15 @@ namespace AppModels.Undo
             {
                 return new Joist2DRollBack(joistArrow);
             }
+
+            if (entity is Leader leader)
+            {
+                return new LeaderRollBack(leader);
+            }
+            if (entity is LinearPath linePath)
+            {
+                return new LinearPathRollBack(linePath);
+            }
             if (entity is Line line)
             {
                 return new LineRollBack(line);
@@ -45,6 +54,10 @@ namespace AppModels.Undo
                 return new FramingNameRollBack(framingName);
             }
 
+            if (entity is MultilineText mText)
+            {
+                return new MultilineTextRollBack(mText);
+            }
             if (entity is Text text)
             {
                 return new TextRollBack(text);

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppModels.CustomEntity;
 using AppModels.Interaface;
+using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using AppModels.ResponsiveData.Openings;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -29,7 +30,8 @@ namespace AppModels.Undo.EntityRollBack
         private bool _outTriggerBFlipped;
         private Guid? _framingNameId;
         private bool _isShowFramingName;
-
+        private OutTrigger _outTriggerARef;
+        private OutTrigger _outTriggerBRef;
         private Hanger _hangerARef;
         private Hanger _hangerBRef;
         
@@ -62,6 +64,14 @@ namespace AppModels.Undo.EntityRollBack
                 {
                     _hangerBRef = ((IContaintHanger)(framing.FramingReference)).HangerB;
                 }
+                if(_outTriggerA!=null)
+                {
+                    _outTriggerARef = ((IContaintOutTrigger)(framing.FramingReference)).OutTriggerA;
+                }
+                if (_outTriggerA != null)
+                {
+                    _outTriggerBRef = ((IContaintOutTrigger)(framing.FramingReference)).OutTriggerB;
+                }
             }
 
         }
@@ -89,12 +99,19 @@ namespace AppModels.Undo.EntityRollBack
                 if (_hangerA != null)
                 {
                     ((IContaintHanger)(framing.FramingReference)).HangerA = _hangerARef;
-
                 }
                 if (_hangerB != null)
                 {
                     ((IContaintHanger)(framing.FramingReference)).HangerB = _hangerBRef;
 
+                }
+                if (_outTriggerA != null)
+                {
+                     ((IContaintOutTrigger)(framing.FramingReference)).OutTriggerA= _outTriggerARef ;
+                }
+                if (_outTriggerA != null)
+                {
+                    ((IContaintOutTrigger)(framing.FramingReference)).OutTriggerB = _outTriggerBRef ;
                 }
             }
         }
