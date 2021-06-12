@@ -66,7 +66,7 @@ namespace DrawingModule.ViewModels
         private bool _isSaving;
         private bool _isPropertyBarOpened = false;
         private int _lastPropertyWidth;
-
+        private string _selectedLayout;
         #endregion
         #region public Property
         public IEntitiesManager EntitiesManager { get; }
@@ -82,9 +82,26 @@ namespace DrawingModule.ViewModels
             set
             {
                 SetProperty(ref _levels, value);
+                if (string.IsNullOrEmpty(_selectedLayout))
+                {
+                    return;
+                }
                 this.RaisePropertyChanged(SelectedLevel);
             }
         }
+
+        public ObservableCollection<string> Layouts { get; set; } = new ObservableCollection<string>();
+
+        public string SelectedLayout
+        {
+            get => _selectedLayout;
+            set
+            {
+                SetProperty(ref _selectedLayout, value);
+                ChangedLayout(_selectedLayout);
+            }
+        }
+
         public List<int> WallThicknessList { get; set; } = new List<int>() { 70, 90, 140,180,190, 200, 230 };
         public List<int> WallSpacingList { get; set; } = new List<int>() { 300,450,600,900,1200};
         public string SelectedLevel
@@ -122,7 +139,7 @@ namespace DrawingModule.ViewModels
 
         #endregion
         #region Command
-
+        
         /// <summary>
         /// Gets the control loaded command.
         /// </summary>
@@ -251,6 +268,10 @@ namespace DrawingModule.ViewModels
             this.LastPropertyPanelWidth = 150;
         }
 
+        private void ChangedLayout(string layout)
+        {
+            EventAggregator?.GetEvent<LayoutNameService>().Publish(layout);
+        }
 
         public void OnOpenPropertiesPanelCommand()
         {
@@ -277,7 +298,7 @@ namespace DrawingModule.ViewModels
 
 
         }
-private void OnPropertyPanelSizeChanged()
+        private void OnPropertyPanelSizeChanged()
         {
             if ((int)this._window.PropertyPanel.ActualWidth > 0)
             {

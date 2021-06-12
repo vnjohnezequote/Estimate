@@ -31,7 +31,7 @@ namespace AppModels.Undo.EntityRollBack
                 _thickness = framingRectangle2D.Thickness;
                 _isShowLeader = framingRectangle2D.IsShowLeader;
                 _framingName = framingRectangle2D.FramingName;
-                _flipped = framingRectangle2D.Flipped = _flipped;
+                _flipped = framingRectangle2D.Flipped;
                 if (framingRectangle2D.FramingName != null)
                 {
                     _framingNamePoint = framingRectangle2D.FramingName.InsertionPoint;

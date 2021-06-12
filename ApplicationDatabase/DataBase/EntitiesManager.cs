@@ -311,16 +311,34 @@ namespace AppDataBase.DataBase
         }
         private void RemoveHanger(FramingRectangleContainHangerAndOutTrigger framing)
         {
-            var hangerController = new HangerControler(this, framing);
-            hangerController.RemoveHangerA();
-            hangerController.RemoveHangerB();
+            //var hangerController = new HangerControler(this, framing);
+            //hangerController.RemoveHangerA();
+            //hangerController.RemoveHangerB();
+            if (framing.HangerA!=null)
+            {
+                this.RemoveEntity(framing.HangerA);
+            }
+
+            if (framing.HangerB!=null)
+            {
+                this.RemoveEntity(framing.HangerB);
+            }
             Helper.RegenerationHangerName(framing.FramingReference.FramingSheet.Hangers.ToList());
         }
         private void RemoveOutTrigger(FramingRectangleContainHangerAndOutTrigger framing)
         {
-            var outTriggerController = new OutTriggerController(this, framing);
-            outTriggerController.RemoveOutTriggerA();
-            outTriggerController.RemoveOutTriggerB();
+            //var outTriggerController = new OutTriggerController(this, framing);
+            //outTriggerController.RemoveOutTriggerA();
+            //outTriggerController.RemoveOutTriggerB();
+            if (framing.OutTriggerA != null)
+            {
+                this.RemoveEntity(framing.OutTriggerA);
+            }
+
+            if (framing.OutTriggerB != null)
+            {
+                this.RemoveEntity(framing.OutTriggerB);
+            }
             Helper.RegenerationFramingName(framing.FramingReference.FramingSheet.OutTriggers.ToList());
         }
         private void RemoveFraming2D(IFraming2D framing2D,bool isRemoveExtension = true)
@@ -377,22 +395,26 @@ namespace AppDataBase.DataBase
             if (framing2D is OutTrigger2D outtrigger)
             {
                 framingSheet.OutTriggers.Add(outtrigger.FramingReference);
-                Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
+                //if(isGeneralFramingName)
+                    Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
             }
             if (framing2D is Joist2D joist)
             {
                 framingSheet.Joists.Add(joist.FramingReference);
-                Helper.RegenerationFramingName(framingSheet.Joists.ToList());
+                //if (isGeneralFramingName)
+                    Helper.RegenerationFramingName(framingSheet.Joists.ToList());
             }
             if (framing2D is Beam2D beam)
             {
                 framingSheet.Beams.Add(beam.FramingReference);
-                Helper.RegenerationBeamName(framingSheet.Beams.ToList());
+                //if (isGeneralFramingName)
+                    Helper.RegenerationBeamName(framingSheet.Beams.ToList());
             }
             if (framing2D is Hanger2D hanger)
             {
                 framingSheet.Hangers.Add((Hanger)hanger.FramingReference);
-                Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
+                //if (isGeneralFramingName)
+                    Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
             }
             if (framing2D is Blocking2D blocking)
             {
@@ -411,27 +433,31 @@ namespace AppDataBase.DataBase
                     {
                         Entities.Insert(0, framing.HangerA);
                         framingSheet.Hangers.Add((Hanger)framing.HangerA.FramingReference);
-                        Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
+                        //if (isGeneralFramingName)
+                            Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
 
                     }
                     if (framing.HangerB != null && framing.FramingReference!=null)
                     {
                         Entities.Insert(0, framing.HangerB);
                         framingSheet.Hangers.Add((Hanger)framing.HangerB.FramingReference);
-                        Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
+                        //if (isGeneralFramingName)
+                            Helper.RegenerationHangerName(framingSheet.Hangers.ToList());
                     }
 
                     if (framing.OutTriggerA!=null&&framing.OutTriggerA.FramingReference!=null)
                     {
                         Entities.Insert(0,framing.OutTriggerA);
                         framingSheet.OutTriggers.Add(framing.OutTriggerA.FramingReference);
-                        Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
+                        //if (isGeneralFramingName)
+                            Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
                     }
                     if (framing.OutTriggerB != null && framing.OutTriggerB.FramingReference!=null)
                     {
                         Entities.Insert(0, framing.OutTriggerB);
                         framingSheet.OutTriggers.Add(framing.OutTriggerB.FramingReference);
-                        Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
+                        //if (isGeneralFramingName)
+                            Helper.RegenerationFramingName(framingSheet.OutTriggers.ToList());
                     }
                 }
             }

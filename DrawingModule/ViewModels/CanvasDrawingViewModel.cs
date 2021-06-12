@@ -226,6 +226,26 @@ namespace DrawingModule.ViewModels
             }
 
         }
+        private void OnSelectedLayoutChanged(string layout){
+            var checkIfLayoutAvailable = false;
+            if (_paperSpace == null)
+            {
+                return;
+            }
+
+            foreach (var paperSpaceSheet in _paperSpace.Sheets)
+            {
+                if (layout == paperSpaceSheet.Name)
+                {
+                    checkIfLayoutAvailable = true;
+                }
+            }
+
+            if (checkIfLayoutAvailable)
+            {
+                _paperSpace.ActiveSheet = _paperSpace.Sheets[layout];
+            }
+        }
         private void EntitiesManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (EntitiesManager.SelectedEntity == null)

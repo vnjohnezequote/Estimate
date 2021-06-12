@@ -95,7 +95,7 @@ namespace AppModels.ResponsiveData.Framings
                     case FramingTypes.PolePlate:
                         return "PP";
                     case FramingTypes.Fascia:
-                        return "FS";
+                        return "FSA";
                     case FramingTypes.TieDown:
                         return string.Empty;
                     case FramingTypes.Hanger:

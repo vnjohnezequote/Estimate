@@ -9,7 +9,7 @@ namespace AppModels.Undo.EntityRollBack
 {
     public class Joist2DRollBack: FramingRectangleContainHangerAndOutTriggerRollBack
     {
-        public Joist2DRollBack(Entity entity) : base(entity)
+        public Joist2DRollBack(Entity entity,UndoList undoItem) : base(entity,undoItem)
         {
             
         }

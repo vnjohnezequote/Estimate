@@ -9,6 +9,8 @@ using ApplicationService;
 using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
@@ -71,11 +73,18 @@ namespace AppAddons.DrawingTools
                     _clickPoints.Add(point);
                 }
 
+                var undoList = new UndoList() {ActionType = ActionTypes.Add};
+                
                 var leader = new Leader(Plane.XY, _clickPoints) { ArrowheadSize = this.ArrowSize };
                 EntitiesManager.AddAndRefresh(leader, "BeamMarked");
                 var text = Utils.CreateNewTextLeader(this._clickPoints[_clickPoints.Count - 2], this._clickPoints[_clickPoints.Count - 1],TextInput,TextHeight);
+                var backup =
+                    BackupEntitiesFactory.CreateBackup(new List<Entity>() {leader, text}, undoList, EntitiesManager);
+                backup?.Backup();
+                UndoEngineer.SaveSnapshot(undoList);
                 EntitiesManager.AddAndRefresh(text, "BeamMarked");
                 _clickPoints.Clear();
+
                 BasePoint = null;
                     //EntitiesManager.AddAndRefresh(text, LayerManager.SelectedLayer.Name);
             }

@@ -2,7 +2,10 @@
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
@@ -58,8 +61,11 @@ namespace AppAddons.EditingTools
 
         private void ProcessExtendJoist(Beam2D boundaryBeam)
         {
+            var undoItem = new UndoList() {ActionType = ActionTypes.Edit};
             foreach (var framing in _framingList)
             {
+                var backup = BackupEntitiesFactory.CreateBackup(framing,undoItem,EntitiesManager);
+                backup?.Backup();
                 if (framing.IntersectWith(boundaryBeam,out var farPoint, out var closerPoint))
                 {
                     var distance1 = framing.OuterStartPoint.DistanceTo(farPoint);
@@ -93,6 +99,7 @@ namespace AppAddons.EditingTools
                 }
 
             }
+            UndoEngineer.SaveSnapshot(undoItem);
         }
 
         private void TranslateOutTriggerAToo(IRectangleSolid framing,Point3D newPointMove)
@@ -118,8 +125,11 @@ namespace AppAddons.EditingTools
 
         private void ProcessExtendJoist(Line boundaryLine)
         {
+            var undoItem = new UndoList() { ActionType = ActionTypes.Edit };
             foreach (var framing in _framingList)
             {
+                var backup = BackupEntitiesFactory.CreateBackup(framing, undoItem, EntitiesManager);
+                backup?.Backup();
                 if (framing.IntersectWith(boundaryLine, out var intersectPoint))
                 {
                     var distance1 = framing.OuterStartPoint.DistanceTo(intersectPoint);
@@ -138,6 +148,7 @@ namespace AppAddons.EditingTools
                     }
                 }
             }
+            UndoEngineer.SaveSnapshot(undoItem);
 
         }
 

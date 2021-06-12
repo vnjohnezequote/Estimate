@@ -11,7 +11,7 @@ namespace AppModels.Undo
 {
     public static class RollBackEntitiesFactory
     {
-        public static IRollBackEntity CreateRollBackEntity(Entity entity)
+        public static IRollBackEntity CreateRollBackEntity(Entity entity,UndoList undolist)
         {
             if (entity is WallLine2D wallLine)
             {
@@ -19,7 +19,7 @@ namespace AppModels.Undo
             }
             if (entity is JoistArrowEntity joistArrow)
             {
-                return new Joist2DRollBack(joistArrow);
+                return new Joist2DRollBack(joistArrow,undolist);
             }
 
             if (entity is Leader leader)
@@ -65,12 +65,12 @@ namespace AppModels.Undo
 
             if (entity is Joist2D joist2D)
             {
-                return new Joist2DRollBack(joist2D);
+                return new Joist2DRollBack(joist2D,undolist);
             }
 
             if (entity is Beam2D beam2D)
             {
-                return new Beam2DRollBack(beam2D);
+                return new Beam2DRollBack(beam2D,undolist);
             }
 
             if (entity is OutTrigger2D outTrigger)

@@ -12,7 +12,7 @@ namespace AppModels.Undo.EntityRollBack
     {
         private bool _isBeamUnder;
         private bool _showDimension;
-        public Beam2DRollBack(Entity entity) : base(entity)
+        public Beam2DRollBack(Entity entity,UndoList undoItem) : base(entity,undoItem)
         {
             if (entity is Beam2D beam)
             {

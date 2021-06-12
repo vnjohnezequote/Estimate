@@ -7,6 +7,7 @@ using AppModels.CustomEntity;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
 using AppModels.ResponsiveData.Openings;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 
@@ -36,7 +37,7 @@ namespace AppModels.Undo.EntityRollBack
         private Hanger _hangerBRef;
         
 
-        public FramingRectangleContainHangerAndOutTriggerRollBack(Entity entity) : base(entity)
+        public FramingRectangleContainHangerAndOutTriggerRollBack(Entity entity,UndoList undoItem) : base(entity)
         {
             if(EntityRollBack is FramingRectangleContainHangerAndOutTrigger framing)
             {
@@ -58,18 +59,26 @@ namespace AppModels.Undo.EntityRollBack
                 _isShowFramingName = framing.IsShowFramingName;
                 if(_hangerA!=null)
                 {
+                    var iRollBack = EditBackupFactory.CreateBackup(_hangerA, undoItem, null);
+                    iRollBack?.Backup();
                     _hangerARef =((IContaintHanger)(framing.FramingReference)).HangerA;
                 }
                 if (_hangerB != null)
                 {
+                    var iRollBack = EditBackupFactory.CreateBackup(_hangerB, undoItem, null);
+                    iRollBack?.Backup();
                     _hangerBRef = ((IContaintHanger)(framing.FramingReference)).HangerB;
                 }
                 if(_outTriggerA!=null)
                 {
+                    var iRollBack = EditBackupFactory.CreateBackup(_outTriggerA, undoItem, null);
+                    iRollBack?.Backup();
                     _outTriggerARef = ((IContaintOutTrigger)(framing.FramingReference)).OutTriggerA;
                 }
-                if (_outTriggerA != null)
+                if (_outTriggerB != null)
                 {
+                    var iRollBack = EditBackupFactory.CreateBackup(_outTriggerB, undoItem, null);
+                    iRollBack?.Backup();
                     _outTriggerBRef = ((IContaintOutTrigger)(framing.FramingReference)).OutTriggerB;
                 }
             }
@@ -92,8 +101,8 @@ namespace AppModels.Undo.EntityRollBack
                 framing.OutTriggerB = _outTriggerB;
                 framing.IsOutTriggerA = _isOutTriggerA;
                 framing.IsOutTriggerB = _isOutriggerB;
-                framing.OutTriggerAFlipped = _outTriggerAFlipped;
-                framing.OutTriggerBFlipped = _outTriggerBFlipped;
+                framing.SetFlippedOutriggerA(_outTriggerAFlipped);
+                framing.SetFlippedOutriggerB(_outTriggerBFlipped);
                 framing.FramingNameId = _framingNameId;
                 framing.IsShowFramingName = _isShowFramingName;
                 if (_hangerA != null)

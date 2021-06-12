@@ -209,7 +209,8 @@
                 <TextBlock Text="SelectionType"/>
                 <ComboBox ItemsSource="{Binding Source={StaticResource SelectionTypes}}"
                           SelectedItem="{Binding JobModel.SelectionType}"/>
-
+                <ComboBox ItemsSource="{Binding Layouts}"
+                          SelectedItem="{Binding SelectedLayouts}"/>
             </StackPanel>
 
             <!--<Button Content="{materialDesign:PackIcon InsertDriveFile}" Command="{Binding ImportPDFCommand}" Margin="10 0 0 0"/>-->

@@ -117,10 +117,12 @@ namespace DrawingModule.Views
             }
             else
             {
-                foreach (var levelWall in _drawingWindowViewModel.Levels)
-                {
-                    CanvasDrawing.AddSheet(levelWall.LevelName, linearUnitsType.Millimeters, formatType.A4_LANDSCAPE_ISO, _drawingWindowViewModel.JobModel);
-                }
+                if (_drawingWindowViewModel != null)
+                    foreach (var levelWall in _drawingWindowViewModel.Levels)
+                    {
+                        CanvasDrawing.AddSheet(levelWall.LevelName, linearUnitsType.Millimeters,
+                            formatType.A4_LANDSCAPE_ISO, _drawingWindowViewModel.JobModel);
+                    }
             }
             
 

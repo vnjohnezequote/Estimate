@@ -183,7 +183,7 @@
             </DockPanel>
             <DockPanel Visibility="{Binding FramingNameVisibility}" HorizontalAlignment="Stretch">
                 <TextBlock Text="Name" VerticalAlignment="Bottom" />
-                <TextBox Text="{Binding SelectedEntity.Name}" Width="300" IsReadOnly="True"/>
+                <TextBox Text="{Binding SelectedEntity.Name}" Width="300"/>
                 <TextBox Text="{Binding SelectedEntity.Index}" materialDesign:HintAssist.Hint="Index" Width="70" Margin="15 0 0 0"/>
                 <TextBox Text="{Binding SelectedEntity.SubFixIndex}" materialDesign:HintAssist.Hint="SubFix Index" Margin="15 0 0 0"/>
             </DockPanel>

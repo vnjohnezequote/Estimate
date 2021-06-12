@@ -89,10 +89,10 @@ namespace AppAddons.EditingTools
         { 
             if (countJoist<4)
             {
-                for (int i = 0; i < countJoist; i++)
+                for (var i = 0; i < countJoist; i++)
                 {
-                    var joistVm = sortedJoistList[startIndex].CreateEntityVm(EntitiesManager) as Joist2dVm;
-                    joistVm.IsShowFramingName = true;
+                    if (sortedJoistList[startIndex].CreateEntityVm(EntitiesManager) is Joist2dVm joistVm)
+                        joistVm.IsShowFramingName = true;
                     startIndex++;
                 }
 

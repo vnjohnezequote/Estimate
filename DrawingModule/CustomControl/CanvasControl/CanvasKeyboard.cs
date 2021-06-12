@@ -143,13 +143,29 @@ namespace DrawingModule.CustomControl.CanvasControl
                                 {
                                     EntitiesManager.Entities.Remove(framing.FramingName);
                                 }
-
+                                /*
                                 var hangerController = new HangerControler(EntitiesManager, framing);
                                 hangerController.RemoveHangerA();
                                 hangerController.RemoveHangerB();
                                 var outriggerController = new OutTriggerController(EntitiesManager, framing);
                                 outriggerController.RemoveOutTriggerA();
-                                outriggerController.RemoveOutTriggerB();
+                                outriggerController.RemoveOutTriggerB();*/
+                                if (framing.HangerA!=null)
+                                {
+                                    EntitiesManager.RemoveEntity(framing.HangerA);
+                                }
+                                if (framing.HangerB != null)
+                                {
+                                    EntitiesManager.RemoveEntity(framing.HangerB);
+                                }
+                                if (framing.OutTriggerA != null)
+                                {
+                                    EntitiesManager.RemoveEntity(framing.OutTriggerA);
+                                }
+                                if (framing.OutTriggerB != null)
+                                {
+                                    EntitiesManager.RemoveEntity(framing.OutTriggerB);
+                                }
                             }
                             if (entitiesManagerSelectedEntity is Joist2D joist && joist.FramingReference != null)
                             {

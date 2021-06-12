@@ -12,6 +12,8 @@ using ApplicationService;
 using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.Application;
@@ -71,9 +73,14 @@ namespace AppAddons.DrawingTools
         }
         protected virtual void ProcessDrawEntities(Point3D insertPoint)
         {
+            var undoList = new UndoList() {ActionType = ActionTypes.Add};
+
             var text = new Text(insertPoint, TextInput, TextHeight);
             var rad = Utility.DegToRad(TextAngle);
             text.Rotate(rad, Vector3D.AxisZ, insertPoint);
+            var backup = BackupEntitiesFactory.CreateBackup(text, undoList, EntitiesManager);
+            backup?.Backup();
+            UndoEngineer.SaveSnapshot(undoList);
             //text.ColorMethod = colorMethodType.byEntity;
             //text.ColorMethod = Color.FromArgb(127, Color.BlueViolet);
             EntitiesManager.AddAndRefresh(text,LayerManager.SelectedLayer.Name);

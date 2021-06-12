@@ -702,7 +702,20 @@ namespace DrawingModule.ViewModels
                         }
                     }
                 }
-            }    
+            }
+            if (e.PropertyName == "IsRotateBlocking")
+            {
+                foreach (var selectedEnt in EntitiesManager.SelectedEntities)
+                {
+                    if (selectedEnt is Blocking2D blocking && selectedEnt is IEntityVmCreateAble blocVmCreateAble)
+                    {
+                        var entityVM = blocVmCreateAble.CreateEntityVm(EntitiesManager);
+                        if (entityVM is BlockingVm blockVm)
+                            blockVm.IsRotateBlocking = ((BlockingVm)SelectedEntity).IsRotateBlocking;
+                    }
+                }
+                
+            }
             EntitiesManager?.Refresh();
         }
 

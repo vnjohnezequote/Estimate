@@ -7,8 +7,11 @@ using ApplicationService;
 using AppModels;
 using AppModels.CustomEntity;
 using AppModels.EntityCreator;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
@@ -152,11 +155,13 @@ namespace AppAddons.EditingTools
 
         public void ProcessTrim(MouseButtonEventArgs e, bool isSelected, ICadDrawAble canvas)
         {
+            var undoItem = new UndoList() { ActionType = ActionTypes.AddAndRemove };
             if (isSelected)
             {
                 if (_entityUnderMouse != null && _entityUnderMouse is Joist2D joist)
                 {
-                    TrimingJoist(joist, _currentMouse);
+                    
+                    TrimingJoist(joist, _currentMouse,undoItem);
                     _processingTool = false;
                 }
             }
@@ -183,13 +188,14 @@ namespace AppAddons.EditingTools
                     {
                         foreach (var crossJoist in crossJoists)
                         {
-                            TrimingJoist(crossJoist.Key, crossJoist.Value);
+                            TrimingJoist(crossJoist.Key, crossJoist.Value,undoItem);
                         }
                     }
 
                     _processingTool = false;
                 }
             }
+            UndoEngineer.SaveSnapshot(undoItem);
         }
 
         private void RemoveFarestLine(List<Line> boundaryLines, Point3D crossPoint)
@@ -213,7 +219,7 @@ namespace AppAddons.EditingTools
             }
         }
 
-        private void TrimingJoist(Joist2D joist, Point3D crossedPoint)
+        private void TrimingJoist(Joist2D joist, Point3D crossedPoint,UndoList undoItem)
         {
             var intersectPoints = new List<Point3D>();
             if (_boundaryLines.Count > 2)
@@ -242,14 +248,19 @@ namespace AppAddons.EditingTools
                 if (trimedSegments.Count > 0)
                 {
                     var framingSheet = joist.FramingReference.FramingSheet;
+                    var listAddNewJoist = new List<Entity>();
                     foreach (var segment in trimedSegments)
                     {
                         var joistSegment = ProjectSegmentOn(new Segment2D(joist.OuterStartPoint, joist.OuterEndPoint),
                             segment);
                         var joistCreator = new Joist2DCreator(joist, joistSegment.P0.ConvertPoint2DtoPoint3D(),
                             joistSegment.P1.ConvertPoint2DtoPoint3D());
+                        listAddNewJoist.Add((Joist2D)joistCreator.GetFraming2D());
                         this.EntitiesManager.AddAndRefresh((Joist2D)joistCreator.GetFraming2D(), joist.LayerName);
                     }
+
+                    var backup = BackupEntitiesFactory.CreateBackup(listAddNewJoist, joist, undoItem, EntitiesManager);
+                    backup?.Backup();
                     this.EntitiesManager.RemoveEntity(joist);
                 }
             }

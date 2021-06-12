@@ -140,6 +140,7 @@
     <Compile Include="JobNumberService.cs" />
     <Compile Include="JobUnitService.cs" />
     <Compile Include="LayerManagerService.cs" />
+    <Compile Include="LayoutNameService.cs" />
     <Compile Include="LevelNameService.cs" />
     <Compile Include="OpenJobEvent.cs" />
     <Compile Include="PromptStatus.cs" />

@@ -9,6 +9,10 @@ using ApplicationService;
 using AppModels;
 using AppModels.CustomEntity;
 using AppModels.EntityCreator;
+using AppModels.Enums;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
+using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
 using DrawingModule.DrawToolBase;
@@ -82,6 +86,7 @@ namespace AppAddons.EditingTools
 
                     if (joistDic.Count>0)
                     {
+                        var undoList = new UndoList() {ActionType = ActionTypes.AddAndRemove};
                         foreach (var joist in joistDic)
                         {
                             var listPoints = new List<Point3D>();
@@ -112,14 +117,20 @@ namespace AppAddons.EditingTools
                             var newSegment2D = FindMaxSegment(listPoints);
                             if (newSegment2D!=null)
                             {
+                                
                                 var joiseCreator = new Joist2DCreator(joist.Key,
                                     newSegment2D.P0.ConvertPoint2DtoPoint3D(),
                                     newSegment2D.P1.ConvertPoint2DtoPoint3D(),true);
+                                var backup = BackupEntitiesFactory.CreateBackup(
+                                    new List<Entity>() {joist.Key, joist.Value}, (Joist2D) joiseCreator.GetFraming2D(),
+                                    undoList, EntitiesManager,true);
+                                backup?.Backup();
                                  this.EntitiesManager.RemoveEntity(joist.Key);
                                 this.EntitiesManager.RemoveEntity(joist.Value);
                                 EntitiesManager.AddAndRefresh((Joist2D)joiseCreator.GetFraming2D(),joist.Key.LayerName);
                             }
                         }
+                        UndoEngineer.SaveSnapshot(undoList);
                     }
                     return;
                 }
