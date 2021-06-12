@@ -8,6 +8,8 @@ using AppModels.Enums;
 using AppModels.Interaface;
 using AppModels.NewReposiveData;
 using AppModels.ResponsiveData.Framings.FloorAndRafters.Floor;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
@@ -57,6 +59,10 @@ namespace AppAddons.DrawingTools
                 var joistCreator = new Joist2DCreator(JobModel.ActiveFloorSheet, startPoint, endPoint,
                     framingType, JobModel.SelectedJoitsMaterial);
                 joistCreator.GetFraming2D().ColorMethod = colorMethodType.byEntity;
+                var undoList = new UndoList() { ActionType = ActionTypes.Add };
+                var backup = BackupEntitiesFactory.CreateBackup((Joist2D)joistCreator.GetFraming2D(), undoList, EntitiesManager);
+                backup?.Backup();
+                UndoEngineer.SaveSnapshot(undoList);
                 this.EntitiesManager.AddAndRefresh((Joist2D)joistCreator.GetFraming2D(), LayerManager.SelectedLayer.Name);
             }
         }

@@ -3,8 +3,11 @@ using System.Drawing;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
@@ -108,6 +111,10 @@ namespace AppAddons.DrawingTools
         private void ProcessAngularDim(Plane drawingPlane,Line firstLine, Line secondLine,Point3D dimPosition, double dimTextHeight = 10)
         {
             var angularDim = new AngularDim(drawingPlane, (Line)firstLine.Clone(), (Line)secondLine.Clone(), dimPosition, dimPosition, dimTextHeight) { TextSuffix = "°" };
+            var undoItem = new UndoList() { ActionType = ActionTypes.Add };
+            var backup = BackupEntitiesFactory.CreateBackup(angularDim, undoItem, EntitiesManager);
+            backup?.Backup();
+            this.UndoEngineer.SaveSnapshot(undoItem);
             EntitiesManager.AddAndRefresh(angularDim, this.LayerManager.SelectedLayer.Name);
         }
 

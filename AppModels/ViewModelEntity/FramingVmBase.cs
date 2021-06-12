@@ -7,7 +7,7 @@ using devDept.Eyeshot.Entities;
 
 namespace AppModels.ViewModelEntity
 {
-    public abstract class FramingVmBase: EntityVm,IFramingVmBase
+    public abstract class FramingVmBase: EntityVm,IFramingVmBase,IFraming2DVmContainName
     {
         public IEntitiesManager EntitiesManager { get;  }
         public FramingTypes FramingType

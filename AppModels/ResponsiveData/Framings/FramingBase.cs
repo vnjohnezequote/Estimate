@@ -70,6 +70,8 @@ namespace AppModels.ResponsiveData.Framings
                         return "FB";
                     case FramingTypes.TrussBeam:
                         return "B";
+                    case FramingTypes.DeckBeam:
+                        return "DB";
                     case FramingTypes.RafterJoist:
                         if (FramingInfo != null && FramingInfo.NoItem == 2)
                         {

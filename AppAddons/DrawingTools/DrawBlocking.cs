@@ -5,6 +5,8 @@ using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
 using AppModels.ResponsiveData.Framings.Blocking;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -56,6 +58,10 @@ namespace AppAddons.DrawingTools
                 var blocking = new Blocking2D(insertPoint,blockRef);
                 var rad = Utility.DegToRad(TextAngle);
                 blocking.Rotate(rad, Vector3D.AxisZ, insertPoint);
+                var undoItem = new UndoList() { ActionType = ActionTypes.Add };
+                var backup = BackupEntitiesFactory.CreateBackup(blocking, undoItem, EntitiesManager);
+                backup?.Backup();
+                this.UndoEngineer.SaveSnapshot(undoItem);
                 EntitiesManager.AddAndRefresh(blocking, LayerManager.SelectedLayer.Name);
             }
         }

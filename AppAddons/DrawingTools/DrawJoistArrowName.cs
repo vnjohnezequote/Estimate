@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 using ApplicationService;
 using AppModels;
 using AppModels.CustomEntity;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
@@ -101,12 +104,17 @@ namespace AppAddons.DrawingTools
                         return;
                     }
                 }
-                this.GeneralFramingName(selectEntity.FramingReference,line);
+                var undoItem = new UndoList() { ActionType = ActionTypes.Add };
+                var backup = BackupEntitiesFactory.CreateBackup(line, undoItem, EntitiesManager);
+                backup?.Backup();
+                this.GeneralFramingName(selectEntity.FramingReference,line,undoItem);
+                
+                this.UndoEngineer.SaveSnapshot(undoItem);
                 this.EntitiesManager.AddAndRefresh(line, this.LayerManager.SelectedLayer.Name);
                 return;
             }
         }
-        private void GeneralFramingName(IFraming framingReference,JoistArrowEntity joistArrow)
+        private void GeneralFramingName(IFraming framingReference,JoistArrowEntity joistArrow,UndoList undoItem)
         {
             if (framingReference == null) return;
             var p0 = joistArrow.StartPoint;
@@ -131,6 +139,8 @@ namespace AppAddons.DrawingTools
             framingName.Rotate(radian, Vector3D.AxisZ, framingName.InsertionPoint);
             //framingName.Color =;
             framingName.ColorMethod = colorMethodType.byEntity;
+            var backup = BackupEntitiesFactory.CreateBackup(framingName, undoItem, EntitiesManager);
+            backup?.Backup();
             EntitiesManager.AddAndRefresh(framingName, this.LayerManager.SelectedLayer.Name);
         }
         protected override void DrawInteractiveLine(ICadDrawAble drawTable, DrawInteractiveArgs e)

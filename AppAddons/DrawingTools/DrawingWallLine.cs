@@ -9,6 +9,9 @@
 
 using ApplicationService;
 using AppModels.CustomEntity;
+using AppModels.Enums;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DrawingModule.CommandClass;
@@ -65,6 +68,10 @@ namespace AppAddons.DrawingTools
                 var wall2D = new WallLine2D(line);
                 wall2D.WallLevelName = this.ActiveLevel;
                 wall2D.LineTypeScale = 1;
+                var undoList = new UndoList() { ActionType = ActionTypes.Add };
+                var backup = BackupEntitiesFactory.CreateBackup(wall2D, undoList, EntitiesManager);
+                backup?.Backup();
+                UndoEngineer.SaveSnapshot(undoList);
                 //wall2D.WallLevelName = "Level 1";
                 this.EntitiesManager.AddAndRefresh(wall2D,this.LayerManager.SelectedLayer.Name);
             }

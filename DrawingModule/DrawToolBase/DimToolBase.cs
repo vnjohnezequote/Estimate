@@ -10,8 +10,11 @@ using ApplicationInterfaceCore;
 using ApplicationInterfaceCore.Enums;
 using ApplicationService;
 using AppModels;
+using AppModels.Enums;
 using AppModels.EventArg;
 using AppModels.Interaface;
+using AppModels.Undo;
+using AppModels.Undo.Backup;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
@@ -86,7 +89,10 @@ namespace DrawingModule.DrawToolBase
             linearEntity.LineTypeMethod = colorMethodType.byLayer;
             linearEntity.TextSuffix = "mm";
             //var testLinear = new LinearTest(linearEntity);
-
+            var undoList = new UndoList() { ActionType = ActionTypes.Add};
+            var backup = BackupEntitiesFactory.CreateBackup(linearEntity, undoList, EntitiesManager);
+            backup?.Backup();
+            UndoEngineer.SaveSnapshot(undoList);
             EntitiesManager.AddAndRefresh(linearEntity, this.LayerManager.SelectedLayer.Name);
             //EntitiesManager.AddAndRefresh(testLinear, this.LayerManager.SelectedLayer.Name);
         }

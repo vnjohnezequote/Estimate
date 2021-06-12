@@ -528,7 +528,14 @@ namespace AppModels
                 {
                     cloneEntitiy.Color = modelEntity.Color;
                     cloneEntitiy.ColorMethod = colorMethodType.byEntity;
-                    cloneEntitiy.LineWeight = 0.6f;
+                    if(cloneEntitiy is Leader)
+                    {
+                        cloneEntitiy.LineWeight = 0.1f;
+                    }
+                    else
+                    {
+                        cloneEntitiy.LineWeight = 0.6f;
+                    }
                     cloneEntitiy.LineWeightMethod = colorMethodType.byEntity;
                     floorBlock.Entities.Add(cloneEntitiy);
                 }

@@ -44,7 +44,7 @@ namespace AppModels.ResponsiveData.Openings
 
         
 
-        protected override List<FramingTypes> FramingTypeAccepted { get; } = new List<FramingTypes>() {FramingTypes.TrussBeam,FramingTypes.LintelBeam,FramingTypes.FloorBeam,FramingTypes.PolePlate,FramingTypes.RafterBeam,FramingTypes.HipRafter,FramingTypes.SteelBeam,FramingTypes.RidgeBeam};
+        protected override List<FramingTypes> FramingTypeAccepted { get; } = new List<FramingTypes>() {FramingTypes.TrussBeam,FramingTypes.LintelBeam,FramingTypes.FloorBeam,FramingTypes.PolePlate,FramingTypes.RafterBeam,FramingTypes.HipRafter,FramingTypes.SteelBeam,FramingTypes.RidgeBeam,FramingTypes.DeckBeam,FramingTypes.DeckRoofBeam};
 
         #endregion
 
